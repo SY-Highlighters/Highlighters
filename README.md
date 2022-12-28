@@ -1,2 +1,1 @@
-# Highlighters-Client
-Client
+# Highlighters
