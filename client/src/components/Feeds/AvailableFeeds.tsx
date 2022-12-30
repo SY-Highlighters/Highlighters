@@ -1,21 +1,21 @@
 import { PaperClipIcon } from "@heroicons/react/20/solid";
 import FeedItem from "./FeedItem/FeedItem";
+import { useState, useRef, useEffect } from "react";
 const AvailableFeeds = () => {
   // nest 서버에서 피드 데이터 받아오기 fix: params -> 피드 타입설정
-  getFeedData(123);
-  async function getFeedData(params: any) {
-    try {
-      const data = await fetch(`/${params}`).then((res) =>
-        res.json()).then((res) => {
-          console.log(res);
-        });
-      return data;
-    } catch (error) {
-      console.log(error);
-    }
-    
-    
-  }
+  // getFeedData(123);
+  // async function getFeedData(params: any) {
+  //   try {
+  //     const data = await fetch(`/${params}`)
+  //       .then((res) => res.json())
+  //       .then((res) => {
+  //         console.log(res);
+  //       });
+  //     return data;
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+
   const DUMMY_Feeds = [
     {
       id: "m1",
@@ -50,6 +50,22 @@ const AvailableFeeds = () => {
 
       Date: "2023-01-02 03:12",
     },
+    {
+      id: "m4",
+      title: "피드 이름 5",
+      description: "유저 코멘트?",
+      highlight: ["하이라이팅 효과", "하이라이팅 효과", "하이라이팅 효과"],
+
+      Date: "2023-01-02 03:12",
+    },
+    {
+      id: "m4",
+      title: "피드 이름 6",
+      description: "유저 코멘트?",
+      highlight: ["하이라이팅 효과", "하이라이팅 효과", "하이라이팅 효과"],
+
+      Date: "2023-01-02 03:12",
+    },
   ];
 
   const feedsList = DUMMY_Feeds.map((feed) => (
@@ -64,14 +80,16 @@ const AvailableFeeds = () => {
   ));
 
   return (
-    <div className="h-12">
+    <div className="h-12 overscroll-auto">
       {/* 위에 여백 두고 그룹피드 타이틀 만들기 */}
       <div className="h-5"></div>
       {/* 그룹 피드 타이틀 */}
-      <div className="flex">
+      <div className="">
         <h1 className="text-2xl font-bold">그룹 피드</h1>
       </div>
-      <ul>{feedsList}</ul>
+      <div className="overscroll-auto">
+        <ul className="">{feedsList}</ul>
+      </div>
     </div>
   );
 };
