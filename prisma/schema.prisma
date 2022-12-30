@@ -1,0 +1,19 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+// 데이터베이스 연동
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model Feed {
+  id    Int     @default(autoincrement()) @id
+  url   String  
+  content String?
+  alarm Boolean? @default(true)
+}
