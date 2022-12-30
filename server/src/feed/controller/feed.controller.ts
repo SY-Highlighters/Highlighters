@@ -7,22 +7,22 @@ import { Body, Param } from '@nestjs/common/decorators';
 export class FeedController {
   constructor(private readonly feedService: FeedService) {}
 
-  @Get()
+  @Get('/')
   async fetchAllFeeds(): Promise<Feed[]> {
     return this.feedService.fetchAllFeeds();
   }
 
-  @Get(':id')
+  @Get('/:id')
   async fetchFeedById(@Param('id') id: number): Promise<Feed | null> {
     return this.feedService.fetchFeedById(id);
   }
 
-  @Delete(':id')
+  @Delete('/:id')
   async deleteFeedById(@Param('id') id: number): Promise<Feed | null> {
     return this.feedService.deleteFeedById(id);
   }
 
-  @Post()
+  @Post('/')
   async addFeed(@Body() data: Feed): Promise<Feed> {
     return this.feedService.addFeed(data);
   }
