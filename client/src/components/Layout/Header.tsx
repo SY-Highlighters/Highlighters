@@ -1,4 +1,4 @@
-import { Fragment } from "react";
+import { Fragment, useState } from "react";
 import { Disclosure, Menu, Transition } from "@headlessui/react";
 import {
   Bars3Icon,
@@ -6,7 +6,10 @@ import {
   XMarkIcon,
   UserIcon,
   BookmarkIcon,
+  HomeIcon,
 } from "@heroicons/react/24/outline";
+import { useRecoilState, useResetRecoilState } from "recoil";
+import { bookmarkState } from "../../states/atom";
 
 const user = {
   name: "Tom Cook",
@@ -32,7 +35,14 @@ const userNavigation = [
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(" ");
 }
-const Header:React.FC = (props) => {
+const Header: React.FC = () => {
+  // const [bookmarkClick, setBookmarkClick] = useState(false);
+  const [bookmark, setBookmark] = useRecoilState(bookmarkState);
+  const handleBookmarkClick = () => {
+    console.log("bookmark click");
+    console.log(bookmarkState);
+    setBookmark(!bookmark);
+  };
   return (
     <>
       {/*
@@ -102,25 +112,39 @@ const Header:React.FC = (props) => {
                   {/*  오른쪽 프로필 부분 */}
                   <div className="hidden md:block">
                     <div className="flex items-center ml-4 md:ml-6">
-                      {/* 북마크 버튼 */}
-                      <button className="p-1 text-white rounded-full bg-sky-600 hover:bg-sky-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-sky-500 focus:ring-white">
-                        <span className="sr-only">View notifications</span>
-                        {/* <!-- Heroicon name: outline/bell --> */}
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                          strokeWidth={1.5}
-                          stroke="currentColor"
-                          className="w-6 h-6"
+                      {/* 홈버튼 or 북마크 버튼  */}
+                      {!bookmark ? (
+                        <button
+                          onClick={handleBookmarkClick}
+                          type="button"
+                          className="p-1 text-white rounded-full bg-sky-600 hover:bg-sky-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-sky-500 focus:ring-white"
                         >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            d="M13 17h8m0 0v-6m0 6a2 2 0 11-4 0 2 2 0 014 0zm-6 0h.01M6 17h.01M18 6a2 2 0 00-2-2H8a2 2 0 00-2 2v11a2 2 0 002 2h8a2 2 0 002-2V6z"
-                          />
-                        </svg>
-                      </button>
+                          <span className="sr-only">View notifications</span>
+                          <HomeIcon className="w-6 h-6" aria-hidden="true" />
+                        </button>
+                      ) : (
+                        <button
+                          onClick={handleBookmarkClick}
+                          className="p-1 text-white rounded-full bg-sky-600 hover:bg-sky-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-sky-500 focus:ring-white"
+                        >
+                          <span className="sr-only">View notifications</span>
+                          {/* <!-- Heroicon name: outline/bell --> */}
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            strokeWidth={1.5}
+                            stroke="currentColor"
+                            className="w-6 h-6"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              d="M13 17h8m0 0v-6m0 6a2 2 0 11-4 0 2 2 0 014 0zm-6 0h.01M6 17h.01M18 6a2 2 0 00-2-2H8a2 2 0 00-2 2v11a2 2 0 002 2h8a2 2 0 002-2V6z"
+                            />
+                          </svg>
+                        </button>
+                      )}
 
                       {/* Profile dropdown */}
                       <Menu as="div" className="relative ml-3">
@@ -128,7 +152,7 @@ const Header:React.FC = (props) => {
                           <Menu.Button className="flex items-center max-w-xs text-sm bg-gray-800 rounded-full focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
                             <span className="sr-only">Open user menu</span>
                             <img
-                              className="w-8 h-8 rounded-full"
+                              className="w-12 h-12 rounded-full"
                               src={user.imageUrl}
                               alt=""
                             />
