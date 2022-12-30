@@ -5,7 +5,6 @@ generator client {
   provider = "prisma-client-js"
 }
 
-// 데이터베이스 연동
 datasource db {
   provider = "mysql"
   url      = env("DATABASE_URL")

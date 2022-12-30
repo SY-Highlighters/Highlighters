@@ -3,9 +3,10 @@ import { Controller, Get, Post, Delete } from '@nestjs/common';
 import { Feed } from '@prisma/client';
 import { Body, Param } from '@nestjs/common/decorators';
 
-@Controller('api/v1/feeds')
+@Controller('api/feeds')
 export class FeedController {
   constructor(private readonly feedService: FeedService) {}
+
   @Get()
   async fetchAllFeeds(): Promise<Feed[]> {
     return this.feedService.fetchAllFeeds();
