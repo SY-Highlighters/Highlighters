@@ -49,5 +49,4 @@ model TestFeed{
   content   String?
   group     String
   createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
 }
