@@ -32,35 +32,20 @@ const userNavigation = [
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(" ");
 }
-const Header:React.FC = (props) => {
+const Header: React.FC = (props) => {
   return (
     <>
-      {/*
-        This example requires updating your template:
-
-        ```
-        <html class="h-full bg-gray-100">
-        <body class="h-full">
-        ```
-      */}
       <div className="min-h-full">
-        <Disclosure as="nav" className="bg-sky-500">
+        <Disclosure as="nav" className=" bg-sky-500">
           {({ open }) => (
             <>
-              <div className="px-4 mx-auto max-w-7xl sm:px-6 lg:px-8">
+              <div className="px-4 mx-auto max-w-7xl sm:px-6 lg:px-8 ">
                 <div className="flex items-center justify-between h-16">
                   <div className="flex items-center">
-                    {/* <div className="flex-shrink-0">
-                      <img
-                        className="w-8 h-8"
-                        src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=500"
-                        alt="Your Company"
-                      />
-                    </div> */}
                     {/* 네브 타이틀 */}
                     <div className="flex items-center flex-shrink-0 mr-6 text-white">
                       <span className="text-xl font-semibold tracking-tight">
-                        Highlighters
+                        Highlighterss
                       </span>
                     </div>
                     {/* 이부분에서 메뉴 만들어주는듯? */}
