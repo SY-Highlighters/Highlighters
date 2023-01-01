@@ -1,5 +1,5 @@
-import { TestFeedRequestDto } from './../dto/testfeed.request';
-import { FeedService } from './../service/feed.service';
+import { TestFeedRequestDto } from './dto/testfeed.request';
+import { FeedService } from './feed.service';
 import { Controller, Get, Post, Delete } from '@nestjs/common';
 import { Feed, TestFeed } from '@prisma/client';
 import { Body, Param } from '@nestjs/common/decorators';
@@ -8,7 +8,7 @@ import { Body, Param } from '@nestjs/common/decorators';
 export class FeedController {
   constructor(private readonly feedService: FeedService) {}
 
-  @Get('/:id')
+  @Get('test/:id')
   async fetchAllFeeds(@Body() body: TestFeedRequestDto): Promise<TestFeed[]> {
     return this.feedService.fetchAllFeeds(body);
   }

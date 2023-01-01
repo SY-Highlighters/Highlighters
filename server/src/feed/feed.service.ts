@@ -1,7 +1,7 @@
-import { Feed, TestFeed } from './../../../node_modules/.prisma/client/index.d';
+import { Feed, TestFeed } from '.prisma/client';
 import { Injectable } from '@nestjs/common';
-import { PrismaService } from 'src/prisma.service';
-import { TestFeedRequestDto } from '../dto/testfeed.request';
+import { PrismaService } from 'src/repository/prisma.service';
+import { TestFeedRequestDto } from './dto/testfeed.request';
 
 @Injectable()
 export class FeedService {

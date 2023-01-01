@@ -1,10 +1,9 @@
-import { PrismaService } from './../prisma.service';
 import { Module } from '@nestjs/common';
-import { FeedController } from './controller/feed.controller';
-import { FeedService } from './service/feed.service';
+import { FeedController } from './feed.controller';
+import { FeedService } from './feed.service';
 
 @Module({
   controllers: [FeedController],
-  providers: [FeedService, PrismaService],
+  providers: [FeedService],
 })
 export class FeedModule {}
