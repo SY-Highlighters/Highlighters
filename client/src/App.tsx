@@ -33,10 +33,10 @@ function App() {
         // span.innerHTML = node.outerHTML;
       }
     });
-
-    async function getData() {
+  };
+    const getData =() => {
       try {
-        const data = await fetch("/api/feeds")
+        const data = fetch("http://localhost:3001/api/feeds/1")
           .then((res) => res.json())
           .then((data) => console.log(data));
         return data;
@@ -50,7 +50,6 @@ function App() {
     //   range.surroundContents(span);
 
     // console.log(dragnode);
-  };
   return (
     <Fragment>
       {/* {bookmarkState && <Cart onClose={hideCartHandler} />} */}
@@ -70,6 +69,7 @@ function App() {
         {/* <Alert></Alert> */}
       </div>
       {/*<Meals></Meals>  */}
+      <button onClick={getData} className="bg-black">클릭</button>
     </Fragment>
     // // 하이라이트 테스트
     // <div>

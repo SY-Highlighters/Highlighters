@@ -89,7 +89,7 @@ const AvailableFeeds = () => {
     ]);
   };
   
-    const feedsList = feeds.map((feed) => (
+    const feedsList = feeds.map((feed:any) => (
       <FeedItem
         id={feed.id}
         key={feed.id}
