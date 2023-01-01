@@ -42,3 +42,12 @@ model Feed {
   group     Group    @relation(fields: [groupId], references: [id])
   groupId   Int
 }
+
+model TestFeed{
+  id        Int      @id @default(autoincrement())
+  url       String
+  content   String?
+  group     String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
