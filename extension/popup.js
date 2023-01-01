@@ -3,7 +3,7 @@ let changeColor = document.getElementById("changeColor");
 chrome.storage.sync.get("color", ({ color }) => {
   changeColor.style.backgroundColor = color;
 });
-
+//test
 // 버튼을 클릭했을때, 현재 페이지에 설정된 배경색으로 바꿉니다.
 changeColor.addEventListener("click", async () => {
   let [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
