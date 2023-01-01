@@ -20,8 +20,39 @@ const AvailableBookmarks = () => {
       highlight: ["하이라이팅 효과", "하이라이팅 효과", "하이라이팅 효과"],
       Date: "2022-12-31 12:21",
     },
+      {
+      id: "m3",
+      title: "피드 이름 3",
+      description: "유저 코멘트?",
+      highlight: ["하이라이팅 효과", "하이라이팅 효과", "하이라이팅 효과"],
+      Date: "2023-01-01 04:52",
+    },
+    {
+      id: "m4",
+      title: "피드 이름 4",
+      description: "유저 코멘트?",
+      highlight: ["하이라이팅 효과", "하이라이팅 효과", "하이라이팅 효과"],
 
+      Date: "2023-01-02 03:12",
+    },
+    {
+      id: "m4",
+      title: "피드 이름 5",
+      description: "유저 코멘트?",
+      highlight: ["하이라이팅 효과", "하이라이팅 효과", "하이라이팅 효과"],
+
+      Date: "2023-01-02 03:12",
+    },
+    {
+      id: "m4",
+      title: "피드 이름 6",
+      description: "유저 코멘트?",
+      highlight: ["하이라이팅 효과", "하이라이팅 효과", "하이라이팅 효과"],
+
+      Date: "2023-01-02 03:12",
+    },
   ];
+  
 
   const feedsList = DUMMY_Feeds.map((feed) => (
     <BookmarkItem
@@ -35,14 +66,16 @@ const AvailableBookmarks = () => {
   ));
 
   return (
-    <div className="h-12">
+    <div className="h-12 overscroll-auto">
       {/* 위에 여백 두고 그룹피드 타이틀 만들기 */}
       <div className="h-5"></div>
       {/* 그룹 피드 타이틀 */}
-      <div className="flex">
+      <div className="">
         <h1 className="text-2xl font-bold">북마크</h1>
       </div>
-      <ul>{feedsList}</ul>
+      <div className="overscroll-auto">
+        <ul>{feedsList}</ul>
+      </div>
     </div>
   );
 };
