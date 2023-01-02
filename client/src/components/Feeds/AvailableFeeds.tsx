@@ -1,10 +1,9 @@
 import { PaperClipIcon } from "@heroicons/react/20/solid";
 import FeedItem from "./FeedItem/FeedItem";
-import { useState, useRef, useEffect } from "react";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import { feedState } from "../../states/atom";
-import { group } from "console";
 const AvailableFeeds = () => {
+    const feeds = useRecoilValue(feedState);
   // nest 서버에서 피드 데이터 받아오기 fix: params -> 피드 타입설정
   // getFeedData(123);
   // async function getFeedData(params: any) {
@@ -70,45 +69,7 @@ const AvailableFeeds = () => {
   //     Date: "2023-01-02 03:12",
   //   },
   // ];
-  const [feeds, setFeeds] = useRecoilState(feedState);
-  // 바디형식
-  // const fetchda = {
-  //   'group_id': 1
-  // }
-  // 파람형식
-  const fetchda = 1;
-  // 바디형식
-  // const fetchda = JSON.stringify({
-  //   'group_id': 1
-  // })
-  // 렌더링된 후 바로 실행
-  useEffect(() => {
-    async function fetchData() {
-      const response = await fetch(
-        `http://localhost:3001/api/feeds/test/${fetchda}`
-      );
-      const data = await response.json();
-      console.log(data);
-    }
-    fetchData();
-  }, []);
-  // 피드리스트에 피드아이템 넣기
-  const feedadd = () => {
-    setFeeds([
-      ...feeds,
-      {
-        id: "m1",
-        title: "도커(Docker)를 사용하는 이유는 무엇일까?",
-        description: "이것좀 봐봐 도커가 이거래",
-        highlight: [
-          "도커를 사용하면 기존에 개발자들이 환경 설정으로부터 겪던 고충을 말끔히 해결시켜 준다. 사실상 업계 표준이 되어가고 있으니 사용법을 꼭 익히면 좋을 것이다",
-          "도커를 사용하면 기존에 개발자들이 환경 설정으로부터 겪던 고충을 말끔히 해결시켜 준다. 사실상 업계 표준이 되어가고 있으니 사용법을 꼭 익히면 좋을 것이다",
-          "도커를 사용하면 기존에 개발자들이 환경 설정으로부터 겪던 고충을 말끔히 해결시켜 준다. 사실상 업계 표준이 되어가고 있으니 사용법을 꼭 익히면 좋을 것이다",
-        ],
-        Date: "2022-12-30 12:00",
-      },
-    ]);
-  };
+  
   // // 서버에 데이터 보내기
   // const feedadd2 = () => {
   //   axios.post("http://localhost:3000/api/feed", {
@@ -138,13 +99,13 @@ const AvailableFeeds = () => {
       <div className="h-10"></div>
       {/* 그룹 피드 타이틀 */}
       <div className="relative p-6 rounded-3xl -top-5">
-        <h1 onClick={feedadd} className="text-2xl font-bold">
+        <h1 className="text-2xl font-bold">
           그룹 피드
         </h1>
-        </div>
-        <div className="">
-          <ul className="">{feedsList}</ul>
-        </div>
+      </div>
+      <div className="">
+        <ul className="">{feedsList}</ul>
+      </div>
     </div>
   );
 };

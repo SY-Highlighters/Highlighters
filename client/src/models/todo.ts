@@ -1,4 +1,3 @@
-
 class Todo {
   id: string;
   text: string;
@@ -9,3 +8,4 @@ class Todo {
   }
 }
 export default Todo;
+
