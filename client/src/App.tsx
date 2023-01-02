@@ -3,16 +3,15 @@ import Feeds from "./components/Feeds/Feeds";
 import Cart from "./components/back/Cart/Cart";
 import AvailableBookmarks from "./components/Bookmarks/AvailableBookmarks";
 // 레이아웃 구상
-import HeaderTest from "./components/Layout/HeaderTest";
+import HeaderTest from "./components/Layout/Header";
 import User from "./components/User/User";
 import AvailableFeeds from "./components/Feeds/AvailableFeeds";
 
 import { bookmarkState, feedState } from "./states/atom";
 import { useRecoilValue } from "recoil";
 function App() {
-  const bookmarkOn = useRecoilValue(bookmarkState); 
+  const bookmarkOn = useRecoilValue(bookmarkState);
   // const showCartHandler = () => {
-  
 
   // const [cartIsShown, setCartIsShown] = useState(false)
   // const [feedIsShown, setFeedIsShown] = useState(false);
@@ -37,33 +36,34 @@ function App() {
   //     }
   //   });
   // };
-    const getData =() => {
-      try {
-        const data = fetch("43.200.165.44/api/feeds/test/1")
-          .then((res) => res.json())
-          .then((data) => console.log(data));
-        return data;
-      } catch (err) {
-        console.log(err);
-      }
+  const getData = () => {
+    try {
+      const data = fetch("43.200.165.44/api/feeds/test/1")
+        .then((res) => res.json())
+        .then((data) => console.log(data));
+      return data;
+    } catch (err) {
+      console.log(err);
     }
-    
-    // const span = document.createElement("span");
-    //   span.style.backgroundColor = "yellow";
-    //   span.innerHTML = node.outerHTML;
-    //   range.surroundContents(span);
+  };
 
-    // console.log(dragnode);
+  // const span = document.createElement("span");
+  //   span.style.backgroundColor = "yellow";
+  //   span.innerHTML = node.outerHTML;
+  //   range.surroundContents(span);
+
+  // console.log(dragnode);
   return (
     <Fragment>
       {/* {bookmarkState && <Cart onClose={hideCartHandler} />} */}
       {/* <Header onShowCart={showCartHandler}></Header>
        */}
+       
       <HeaderTest></HeaderTest>
       {}
       {/* <div className="flex justify-evenly">
        */}
-      <div className="grid grid-cols-3 gap-4">
+      <div className="grid gap-4 xl:px-40 lg:grid-cols-2 xl:grid-cols-3 sm:grid-cols-1">
         <User></User>
         {bookmarkOn ? (
           <AvailableFeeds></AvailableFeeds>
@@ -71,8 +71,9 @@ function App() {
           <AvailableBookmarks></AvailableBookmarks>
         )}
       </div>
-      {/*<Meals></Meals>  */}
-      <button onClick={getData} className="bg-black">클릭</button>
+      {/* <button onClick={getData} className="bg-black">
+        클릭
+      </button> */}
     </Fragment>
     // // 하이라이트 테스트
     // <div>

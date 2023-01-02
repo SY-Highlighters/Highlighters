@@ -71,15 +71,22 @@ const AvailableFeeds = () => {
   //   },
   // ];
   const [feeds, setFeeds] = useRecoilState(feedState);
-
-  const fetchda = {
-    group_id: 1
-  }
-  
+  // 바디형식
+  // const fetchda = {
+  //   'group_id': 1
+  // }
+  // 파람형식
+  const fetchda = 1;
+  // 바디형식
+  // const fetchda = JSON.stringify({
+  //   'group_id': 1
+  // })
   // 렌더링된 후 바로 실행
   useEffect(() => {
     async function fetchData() {
-      const response = await fetch(`http://localhost:3001/api/feeds/test/${fetchda}`);
+      const response = await fetch(
+        `http://localhost:3001/api/feeds/test/${fetchda}`
+      );
       const data = await response.json();
       console.log(data);
     }
@@ -126,18 +133,18 @@ const AvailableFeeds = () => {
     />
   ));
   return (
-    <div className="h-12">
+    <div className="h-12 overscroll-auto">
       {/* 위에 여백 두고 그룹피드 타이틀 만들기 */}
-      <div className="h-5"></div>
+      <div className="h-10"></div>
       {/* 그룹 피드 타이틀 */}
-      <div className="">
+      <div className="relative p-6 rounded-3xl -top-5">
         <h1 onClick={feedadd} className="text-2xl font-bold">
           그룹 피드
         </h1>
-      </div>
-      <div className="">
-        <ul className="overflow-auto">{feedsList}</ul>
-      </div>
+        </div>
+        <div className="">
+          <ul className="">{feedsList}</ul>
+        </div>
     </div>
   );
 };

@@ -7,7 +7,7 @@ import {
 import Card from "../UI/Card";
 const Alert = () => {
   return (
-    <div className="justify-self-center">
+    <div className="justify-self-center basis-1/4">
       <div className="h-5"></div>
       {/* 그룹 피드 타이틀 */}
       <div className="flex">
