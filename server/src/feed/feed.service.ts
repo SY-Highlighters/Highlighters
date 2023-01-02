@@ -1,8 +1,3 @@
-import { Cheerio } from './../../node_modules/cheerio/lib/cheerio.d';
-import {
-  JsonObject,
-  JsonArray,
-} from './../../../client/node_modules/boxen/node_modules/type-fest/source/basic.d';
 import { Feed } from '@prisma/client';
 import { FeedRequestDto } from './dto/feed.request';
 import { TestFeed } from '.prisma/client';
@@ -35,16 +30,12 @@ export class FeedService {
     const feeds: Feed[] = await this.prismaService
       .$queryRaw`SELECT * FROM FEED WHERE group_id = ${id}`;
     const feedswithOg: object[] = [];
-    // console.log(feeds);
 
     // http meta data 가져오기
     for (const feed of feeds) {
       // url이 있으면 메타데이터 가져오기
-      // console.log(feed);
       if (feed.url) {
-        console.log(feed.url);
         const meta = await getUrlMeta(feed.url);
-        // console.log(meta);
         const feedwithOg = {
           feed_id: feed.id,
           group_id: feed.group_id,
@@ -56,7 +47,6 @@ export class FeedService {
           og_desc: meta.desc,
           og_image: meta.image,
         };
-        console.log(feedswithOg);
         feedswithOg.push(feedwithOg);
       }
     }

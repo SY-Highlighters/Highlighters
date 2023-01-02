@@ -1,17 +1,17 @@
 import * as cheerio from 'cheerio';
 
-export function _getHostname(url) {
-  let start = url.indexOf('://') + 3;
-  let end = url.indexOf('/', start);
+export function _getHostname(url: string) {
+  const start = url.indexOf('://') + 3;
+  const end = url.indexOf('/', start);
   return url.slice(start, end);
 }
 
-export function _getProtocol(url) {
-  let end = url.indexOf('://') + 3;
+export function _getProtocol(url: string) {
+  const end = url.indexOf('://') + 3;
   return url.slice(0, end);
 }
 
-export function _bodyScrap(url) {
+export function _bodyScrap(url: string) {
   return ($) => {
     // 글제목
     let title = $("meta[property='og:title']").attr('content');
@@ -50,11 +50,10 @@ export function _bodyScrap(url) {
   };
 }
 
-export async function getUrlMeta(url) {
+export async function getUrlMeta(url: string) {
   const meta = await fetch(url)
     .then((res) => res.text())
     .then(cheerio.load)
     .then(_bodyScrap(url));
-//   console.log('hi');
   return meta;
 }
