@@ -1,4 +1,6 @@
-import { Prisma, Feed, TestFeed } from '.prisma/client';
+import { Feed } from '@prisma/client';
+import { FeedRequestDto } from './dto/feed.request';
+import { TestFeed } from '.prisma/client';
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/repository/prisma.service';
 import { TestFeedRequestDto } from './dto/testfeed.request';
@@ -21,13 +23,11 @@ export class FeedService {
   }
 
   // 아이디에 따른 피드 조회
-  // async fetchFeedByGroupId(id: number): Promise<Feed | null> {
-  //   const result = await this.prismaService
-  //     .$queryRaw`SELECT * FROM feed WHERE group_id = ${id}`;
-  //   // return this.prismaService.feed.findUnique({
-  //   //   where: { feed_id: Number(id) },
-  //   // });
-  // }
+  async fetchFeedByGroupId(body: FeedRequestDto): Promise<Feed | null> {
+    const group_id = body.group_id;
+    return await this.prismaService
+      .$queryRaw`SELECT * FROM FEED WHERE group_id = ${group_id}`;
+  }
 
   // 삭제
   async deleteFeedById(id: number): Promise<Feed | null> {

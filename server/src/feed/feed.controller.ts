@@ -3,6 +3,7 @@ import { FeedService } from './feed.service';
 import { Controller, Get, Post, Delete } from '@nestjs/common';
 import { Feed, TestFeed } from '@prisma/client';
 import { Body, Param } from '@nestjs/common/decorators';
+import { FeedRequestDto } from './dto/feed.request';
 
 @Controller('api/feeds')
 export class FeedController {
@@ -20,10 +21,10 @@ export class FeedController {
     this.feedService.testjson(body);
   }
 
-  // @Get('')
-  // async fetchFeedByGroupId(@Body() body: number): Promise<Feed | null> {
-  //   return this.feedService.fetchFeedByGroupId(body);
-  // }
+  @Get()
+  async fetchFeedByGroupId(@Body() body: FeedRequestDto): Promise<Feed | null> {
+    return this.feedService.fetchFeedByGroupId(body);
+  }
 
   @Delete('/:id')
   async deleteFeedById(@Param('id') id: number): Promise<Feed | null> {
