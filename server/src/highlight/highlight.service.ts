@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from 'src/repository/prisma.service';
 import { highlight } from '.prisma/client';
 import { CreateHighlightDto } from './dto/create-highlight.dto';
@@ -27,6 +27,10 @@ export class HighlightService {
       where: { highlight_id: id },
     });
 
+    if (!result) {
+      throw new NotFoundException(`Can't find highlight with id ${id}`);
+    }
+
     return result;
   }
 
@@ -51,10 +55,6 @@ export class HighlightService {
   }
 
   async deleteHighlight(id: number): Promise<highlight> {
-    const result = await this.prismaService.highlight.delete({
-      where: { highlight_id: id },
-    });
-
-    return result;
+    return this.prismaService.highlight.delete({ where: { highlight_id: id } });
   }
 }
