@@ -1,3 +1,4 @@
+import { Prisma } from '@prisma/client';
 import { IsNotEmpty } from 'class-validator';
 
 export class CreateHighlightDto {
@@ -6,4 +7,7 @@ export class CreateHighlightDto {
 
   @IsNotEmpty()
   user_email: string;
+
+  @IsNotEmpty()
+  selection: Prisma.JsonArray;
 }
