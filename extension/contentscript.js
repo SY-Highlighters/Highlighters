@@ -11297,6 +11297,7 @@ function onWindowReady() {
     var newNode = document.createElement("span");
     newNode.style.backgroundColor = "yellow";
     range.surroundContents(newNode);
+    postHighlight(range); // hilight post 요청
     $("#btn").hide();
   }
   var penButton = `<input id="btn" type="image" src="https://images.vexels.com/media/users/3/206292/isolated/preview/0a3fddb8fdf07b7c1f42a371d420c3f2-yellow-highlighter-flat.png" 
@@ -11308,15 +11309,100 @@ function onWindowReady() {
   document.getElementById("btn").addEventListener("click", highlight);
 }
 
+function makeXPath(node, currentPath) {
+  /* this should suffice in HTML documents for selectable nodes, XML with namespaces needs more code */
+  currentPath = currentPath || "";
+  switch (node.nodeType) {
+    case 3:
+    case 4:
+      return makeXPath(
+        node.parentNode,
+        "text()[" +
+          (document.evaluate(
+            "preceding-sibling::text()",
+            node,
+            null,
+            XPathResult.ORDERED_NODE_SNAPSHOT_TYPE,
+            null
+          ).snapshotLength +
+            1) +
+          "]"
+      );
+    case 1:
+      return makeXPath(
+        node.parentNode,
+        node.nodeName +
+          "[" +
+          (document.evaluate(
+            "preceding-sibling::" + node.nodeName,
+            node,
+            null,
+            XPathResult.ORDERED_NODE_SNAPSHOT_TYPE,
+            null
+          ).snapshotLength +
+            1) +
+          "]" +
+          (currentPath ? "/" + currentPath : "")
+      );
+    case 9:
+      return "/" + currentPath;
+    default:
+      return "";
+  }
+}
 //하이라이트 처리
 function postHighlight(range) {
+  console.log(range);
+  const rangeobj = {
+    startXPath: makeXPath(range.startContainer),
+    startOffset: range.startOffset,
+    endXPath: makeXPath(range.endContainer),
+    endOffset: range.endOffset,
+  };
+
   $.ajax({
     type: "POST",
     url: "http://localhost:3001/api/feeds/test/json",
-    data: JSON.stringify(range),
+    data: rangeobj,
     success: function (response) {
       if (response["result"] == "success") {
         alert("포스팅 성공!");
+      } else {
+        alert("서버 오류!");
+      }
+    },
+  });
+}
+
+function getHighlight() {
+  $.ajax({
+    type: "GET",
+    url: "http://localhost:3001/api/feeds/test/json",
+    data: {},
+    success: function (response) {
+      if (response["result"] == "success") {
+        alert("GET 성공!");
+        var range = document.createRange();
+        range.setStart(
+          document.evaluate(
+            selectionDetails[0],
+            document,
+            null,
+            XPathResult.FIRST_ORDERED_NODE_TYPE,
+            null
+          ).singleNodeValue,
+          Number(selectionDetails[1])
+        );
+        range.setEnd(
+          document.evaluate(
+            selectionDetails[2],
+            document,
+            null,
+            XPathResult.FIRST_ORDERED_NODE_TYPE,
+            null
+          ).singleNodeValue,
+          Number(selectionDetails[3])
+        );
       } else {
         alert("서버 오류!");
       }

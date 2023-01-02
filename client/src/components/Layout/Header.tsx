@@ -42,6 +42,7 @@ const Header: React.FC = () => {
     console.log("bookmark click");
     console.log(bookmarkState);
     setBookmark(!bookmark);
+    
   };
   return (
     <>

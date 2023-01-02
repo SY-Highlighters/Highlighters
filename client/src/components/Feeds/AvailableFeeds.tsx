@@ -3,6 +3,7 @@ import FeedItem from "./FeedItem/FeedItem";
 import { useState, useRef, useEffect } from "react";
 import { useRecoilState } from "recoil";
 import { feedState } from "../../states/atom";
+import { group } from "console";
 const AvailableFeeds = () => {
   // nest 서버에서 피드 데이터 받아오기 fix: params -> 피드 타입설정
   // getFeedData(123);
@@ -71,6 +72,19 @@ const AvailableFeeds = () => {
   // ];
   const [feeds, setFeeds] = useRecoilState(feedState);
 
+  const fetchda = {
+    group_id: 1
+  }
+  
+  // 렌더링된 후 바로 실행
+  useEffect(() => {
+    async function fetchData() {
+      const response = await fetch(`http://localhost:3001/api/feeds/test/${fetchda}`);
+      const data = await response.json();
+      console.log(data);
+    }
+    fetchData();
+  }, []);
   // 피드리스트에 피드아이템 넣기
   const feedadd = () => {
     setFeeds([
@@ -88,18 +102,29 @@ const AvailableFeeds = () => {
       },
     ]);
   };
-  
-    const feedsList = feeds.map((feed:any) => (
-      <FeedItem
-        id={feed.id}
-        key={feed.id}
-        title={feed.title}
-        description={feed.description}
-        text={feed.highlight}
-        date={feed.Date}
-      />
-    ));
-
+  // // 서버에 데이터 보내기
+  // const feedadd2 = () => {
+  //   axios.post("http://localhost:3000/api/feed", {
+  //     title: "도커(Docker)를 사용하는 이유는 무엇일까?",
+  //     description: "이것좀 봐봐 도커가 이거래",
+  //     highlight: [
+  //       "도커를 사용하면 기존에 개발자들이 환경 설정으로부터 겪던 고충을 말끔히 해결시켜 준다. 사실상 업계 표준이 되어가고 있으니 사용법을 꼭 익히면 좋을 것이다",
+  //       "도커를 사용하면 기존에 개발자들이 환경 설정으로부터 겪던 고충을 말끔히 해결시켜 준다. 사실상 업계 표준이 되어가고 있으니 사용법을 꼭 익히면 좋을 것이다",
+  //       "도커를 사용하면 기존에 개발자들이 환경 설정으로부터 겪던 고충을 말끔히 해결시켜 준다. 사실상 업계 표준이 되어가고 있으니 사용법을 꼭 익히면 좋을 것이다",
+  //     ],
+  //     Date: "2022-12-30 12:00",
+  //   });
+  // };
+  const feedsList = feeds.map((feed: any) => (
+    <FeedItem
+      id={feed.id}
+      key={feed.id}
+      title={feed.title}
+      description={feed.description}
+      text={feed.highlight}
+      date={feed.Date}
+    />
+  ));
   return (
     <div className="h-12">
       {/* 위에 여백 두고 그룹피드 타이틀 만들기 */}
