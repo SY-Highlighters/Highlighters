@@ -15,7 +15,7 @@ export class FeedService {
     return feeds;
   }
 
-  async testjson(body: Prisma.JsonValue): Promise<null> {
+  async testjson(body): Promise<null> {
     console.log(body);
     return null;
   }
