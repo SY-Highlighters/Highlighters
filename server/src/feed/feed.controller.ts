@@ -9,14 +9,21 @@ export class FeedController {
   constructor(private readonly feedService: FeedService) {}
 
   @Get('test/:id')
-  async fetchAllFeeds(@Body() body: TestFeedRequestDto): Promise<TestFeed[]> {
-    return this.feedService.fetchAllFeeds(body);
+  async testfetchAllFeeds(
+    @Body() body: TestFeedRequestDto,
+  ): Promise<TestFeed[]> {
+    return this.feedService.testfetchAllFeeds(body);
   }
 
-  @Get(':id')
-  async fetchFeedById(@Param('id') id: number): Promise<Feed | null> {
-    return this.feedService.fetchFeedById(id);
+  @Get('test/json')
+  async testjson(@Body() body): Promise<void> {
+    this.feedService.testjson(body);
   }
+
+  // @Get('')
+  // async fetchFeedByGroupId(@Body() body: number): Promise<Feed | null> {
+  //   return this.feedService.fetchFeedByGroupId(body);
+  // }
 
   @Delete('/:id')
   async deleteFeedById(@Param('id') id: number): Promise<Feed | null> {
