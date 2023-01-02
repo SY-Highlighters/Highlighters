@@ -21,13 +21,21 @@ export class FeedController {
     this.feedService.testjson(body);
   }
 
-  @Get()
-  async fetchFeedByGroupId(@Body() body: FeedRequestDto): Promise<Feed | null> {
-    return this.feedService.fetchFeedByGroupId(body);
+  // 그룹아이디에 따른 피드 조회
+  @Get('/:id')
+  async fetchFeedByGroupId(@Param('id') id: number): Promise<object[] | null> {
+    return this.feedService.fetchFeedByGroupId(id);
   }
 
-  @Delete('/:id')
-  async deleteFeedById(@Param('id') id: number): Promise<Feed | null> {
-    return this.feedService.deleteFeedById(id);
+  // 유저아이디, 그룹아이디에 따른 피드 생성
+  @Post('/:groupid')
+  async createFeed(@Body() body: FeedRequestDto): Promise<Feed> {
+    return this.feedService.createFeed(body);
+  }
+
+  // 피드아이디에 따른 피드 삭제
+  @Delete('delete/:id')
+  async deleteFeedById(@Param('id') id: number): Promise<number> {
+    return this.feedService.deleteFeedByFeedId(id);
   }
 }

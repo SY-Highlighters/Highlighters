@@ -1,3 +1,8 @@
+import { Cheerio } from './../../node_modules/cheerio/lib/cheerio.d';
+import {
+  JsonObject,
+  JsonArray,
+} from './../../../client/node_modules/boxen/node_modules/type-fest/source/basic.d';
 import { Feed } from '@prisma/client';
 import { FeedRequestDto } from './dto/feed.request';
 import { TestFeed } from '.prisma/client';
@@ -22,15 +27,31 @@ export class FeedService {
     return null;
   }
 
-  // 아이디에 따른 피드 조회
-  async fetchFeedByGroupId(body: FeedRequestDto): Promise<Feed | null> {
-    const group_id = body.group_id;
-    return await this.prismaService
-      .$queryRaw`SELECT * FROM FEED WHERE group_id = ${group_id}`;
+  // 그룹아이디에 따른 피드 조회
+  async fetchFeedByGroupId(id: number): Promise<Feed[]> {
+    const feeds = await this.prismaService.feed.findMany({
+      where: { group_id: id },
+    });
+    return feeds;
   }
 
-  // 삭제
-  async deleteFeedById(id: number): Promise<Feed | null> {
-    return this.prismaService.feed.delete({ where: { feed_id: Number(id) } });
+  // 유저아이디, 그룹아이디에 따른 피드 생성
+  async createFeed(body: FeedRequestDto): Promise<Feed> {
+    return;
+    // return await this.prismaService.feed.create({
+    //   data: {
+    //     group: {
+    //       connect: {
+    //         group_id: body.group_id,
+    //       },
+    //     },
+    //   },
+    // });
+  }
+
+  // 피드아이디에 따른 피드 삭제
+  async deleteFeedByFeedId(id: number): Promise<number> {
+    return await this.prismaService
+      .$executeRaw`DELETE FROM FEED WHERE feed_id = ${id}`;
   }
 }
