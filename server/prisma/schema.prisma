@@ -8,7 +8,7 @@ datasource db {
 }
 
 model User {
-  user_id     Int         @id @default(autoincrement()) @map("USER_ID")
+  user_id     Int         @id @default(autoincrement()) @map("USER_ID") // 없어도 될 듯
   email       String      @unique @map("EMAIL") @db.Char(20)
   password    String      @map("PASSWORD") @db.Char(100)
   nickname    String?     @map("NICKNAME") @db.Char(20)
