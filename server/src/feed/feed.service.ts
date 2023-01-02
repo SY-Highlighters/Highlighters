@@ -22,14 +22,15 @@ export class FeedService {
     return null;
   }
 
-  // 아이디에 따른 피드 조회
+  // 그룹아이디에 따른 피드 조회
   async fetchFeedByGroupId(id: number): Promise<Feed | null> {
     return await this.prismaService
       .$queryRaw`SELECT * FROM FEED WHERE group_id = ${id}`;
   }
 
-  // 삭제
-  async deleteFeedById(id: number): Promise<Feed | null> {
-    return this.prismaService.feed.delete({ where: { feed_id: Number(id) } });
+  // 피드아이디에 따른 피드 삭제
+  async deleteFeedByFeedId(id: number): Promise<number> {
+    return await this.prismaService
+      .$executeRaw`DELETE FROM FEED WHERE feed_id = ${id}`;
   }
 }
