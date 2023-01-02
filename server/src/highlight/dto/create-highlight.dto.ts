@@ -5,5 +5,5 @@ export class CreateHighlightDto {
   feed_id: number;
 
   @IsNotEmpty()
-  user_id: number;
+  user_email: string;
 }

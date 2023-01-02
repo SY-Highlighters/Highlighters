@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from 'src/repository/prisma.service';
-import { highlight } from '.prisma/client';
+import { Highlight } from '.prisma/client';
 import { CreateHighlightDto } from './dto/create-highlight.dto';
 import { UpdateHighlightDto } from './dto/update-highlight.dto';
 
@@ -10,11 +10,11 @@ export class HighlightService {
 
   async createHighlight(
     createHighlightDto: CreateHighlightDto,
-  ): Promise<highlight> {
+  ): Promise<Highlight> {
     const result = await this.prismaService.highlight.create({
       data: {
         feed_id: createHighlightDto.feed_id,
-        user_id: createHighlightDto.user_id,
+        user_email: createHighlightDto.user_email,
         selection: {},
       },
     });
@@ -22,9 +22,9 @@ export class HighlightService {
     return result;
   }
 
-  async findHighlight(id: number): Promise<highlight> {
+  async findHighlight(id: number): Promise<Highlight> {
     const result = await this.prismaService.highlight.findUnique({
-      where: { highlight_id: id },
+      where: { id: id },
     });
 
     if (!result) {
@@ -34,9 +34,9 @@ export class HighlightService {
     return result;
   }
 
-  async findAllHighlightInFeed(feed_id: number): Promise<highlight[]> {
+  async findAllHighlightInFeed(feed_id: number): Promise<Highlight[]> {
     const result = await this.prismaService.highlight.findMany({
-      where: { feed_id },
+      where: { id: feed_id },
     });
 
     return result;
@@ -45,16 +45,16 @@ export class HighlightService {
   async updateHighlight(
     id: number,
     updateHighlightDto: UpdateHighlightDto,
-  ): Promise<highlight> {
+  ): Promise<Highlight> {
     const result = await this.prismaService.highlight.update({
-      where: { highlight_id: id },
+      where: { id: id },
       data: updateHighlightDto,
     });
 
     return result;
   }
 
-  async deleteHighlight(id: number): Promise<highlight> {
-    return this.prismaService.highlight.delete({ where: { highlight_id: id } });
+  async deleteHighlight(id: number): Promise<Highlight> {
+    return this.prismaService.highlight.delete({ where: { id: id } });
   }
 }

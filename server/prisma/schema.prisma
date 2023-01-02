@@ -8,49 +8,54 @@ datasource db {
 }
 
 model User {
-  email       String      @id  @db.Char(50)
-  password    String      @db.Char(100)
-  nickname    String?     @db.Char(20)
-  group_id    Int?        
-  Feed        Feed[]
-  highlight   Highlight[]
-  group       Group?      @relation(fields: [group_id], references: [id])
+  email     String      @id @db.Char(50)
+  group_id  Int?
+  nickname  String?     @db.Char(20)
+  password  String      @db.Char(100)
+  Feed      Feed[]
+  highlight Highlight[]
+  group     Group?      @relation(fields: [group_id], references: [id])
 
+  @@index([group_id], map: "USER_group_id_fkey")
   @@map("USER")
 }
 
 model Group {
-  id Int    @id @default(autoincrement()) 
-  name     String  @db.Char(20)
-  Feed     Feed[]
+  id     Int    @id @default(autoincrement())
+  name   String @db.Char(20)
+  Feed   Feed[]
   member User[]
 
   @@map("GROUP")
 }
 
 model Feed {
-  id      Int              @id @default(autoincrement())
-  url          String      @db.Char(100)
-  group_id     Int         
-  user_email   String     
   createdAt    DateTime    @default(now())
-  updatedAt    DateTime    @default(now()) @updatedAt 
+  group_id     Int
+  id           Int         @id @default(autoincrement())
+  updatedAt    DateTime    @default(now()) @updatedAt
+  url          String      @db.Char(100)
+  user_email   String
   group        Group       @relation(fields: [group_id], references: [id])
   user         User        @relation(fields: [user_email], references: [email])
   highlight_id Highlight[]
 
+  @@index([group_id], map: "FEED_group_id_fkey")
+  @@index([user_email], map: "FEED_user_email_fkey")
   @@map("FEED")
 }
 
 model Highlight {
-  id Int                @id @default(autoincrement()) 
-  feed_id      Int      
-  user_email   String  
-  selection    Json    
-  createdAt    DateTime @default(now())
-  feed         Feed     @relation(fields: [feed_id], references: [id])
-  user         User     @relation(fields: [user_email], references: [email])
+  createdAt  DateTime @default(now())
+  feed_id    Int
+  id         Int      @id @default(autoincrement())
+  selection  Json
+  user_email String
+  feed       Feed     @relation(fields: [feed_id], references: [id])
+  user       User     @relation(fields: [user_email], references: [email])
 
+  @@index([feed_id], map: "HIGHLIGHT_feed_id_fkey")
+  @@index([user_email], map: "HIGHLIGHT_user_email_fkey")
   @@map("HIGHLIGHT")
 }
 

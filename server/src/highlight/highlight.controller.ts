@@ -7,7 +7,7 @@ import {
   Patch,
   Post,
 } from '@nestjs/common';
-import { highlight } from '@prisma/client';
+import { Highlight } from '@prisma/client';
 import { CreateHighlightDto } from './dto/create-highlight.dto';
 import { UpdateHighlightDto } from './dto/update-highlight.dto';
 import { HighlightService } from './highlight.service';
@@ -20,19 +20,19 @@ export class HighlightController {
   @Post('/')
   async createHighlight(
     @Body() createHighlightDto: CreateHighlightDto,
-  ): Promise<highlight> {
+  ): Promise<Highlight> {
     return this.highlightService.createHighlight(createHighlightDto);
   }
 
   // Read One by ID
   @Get('/:id')
-  async findHighlight(@Param('id') id: number): Promise<highlight> {
+  async findHighlight(@Param('id') id: number): Promise<Highlight> {
     return this.highlightService.findHighlight(id);
   }
 
   // Read Many by Feed_ID
   @Get('/feed/:id')
-  async findHighlightAll(@Param('id') feed_id: number): Promise<highlight[]> {
+  async findHighlightAll(@Param('id') feed_id: number): Promise<Highlight[]> {
     return this.highlightService.findAllHighlightInFeed(feed_id);
   }
 
@@ -41,13 +41,13 @@ export class HighlightController {
   async updateHighlight(
     @Param('id') id: number,
     @Body() updateHighlightDto: UpdateHighlightDto,
-  ): Promise<highlight> {
+  ): Promise<Highlight> {
     return this.highlightService.updateHighlight(id, updateHighlightDto);
   }
 
   // Delete by ID
   @Delete('/:id')
-  async deleteHighlight(@Param('id') id: number): Promise<highlight> {
+  async deleteHighlight(@Param('id') id: number): Promise<Highlight> {
     return this.highlightService.deleteHighlight(id);
   }
 }
