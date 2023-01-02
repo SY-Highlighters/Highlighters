@@ -11309,6 +11309,20 @@ function onWindowReady() {
 }
 
 //하이라이트 처리
+function postHighlight(range) {
+  $.ajax({
+    type: "POST",
+    url: "http://localhost:3001/api/feeds/test/json",
+    data: JSON.stringify(range),
+    success: function (response) {
+      if (response["result"] == "success") {
+        alert("포스팅 성공!");
+      } else {
+        alert("서버 오류!");
+      }
+    },
+  });
+}
 
 function selectText() {
   var sel = "";

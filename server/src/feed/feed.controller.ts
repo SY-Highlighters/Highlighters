@@ -15,7 +15,7 @@ export class FeedController {
     return this.feedService.testfetchAllFeeds(body);
   }
 
-  @Get('test/json')
+  @Post('test/json')
   async testjson(@Body() body): Promise<void> {
     this.feedService.testjson(body);
   }
