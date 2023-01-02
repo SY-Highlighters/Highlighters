@@ -11374,6 +11374,42 @@ function postHighlight(range) {
   });
 }
 
+function getHighlight() {
+  $.ajax({
+    type: "GET",
+    url: "http://localhost:3001/api/feeds/test/json",
+    data: {},
+    success: function (response) {
+      if (response["result"] == "success") {
+        alert("GET 성공!");
+        var range = document.createRange();
+        range.setStart(
+          document.evaluate(
+            selectionDetails[0],
+            document,
+            null,
+            XPathResult.FIRST_ORDERED_NODE_TYPE,
+            null
+          ).singleNodeValue,
+          Number(selectionDetails[1])
+        );
+        range.setEnd(
+          document.evaluate(
+            selectionDetails[2],
+            document,
+            null,
+            XPathResult.FIRST_ORDERED_NODE_TYPE,
+            null
+          ).singleNodeValue,
+          Number(selectionDetails[3])
+        );
+      } else {
+        alert("서버 오류!");
+      }
+    },
+  });
+}
+
 function selectText() {
   var sel = "";
   if (document.getSelection) {
