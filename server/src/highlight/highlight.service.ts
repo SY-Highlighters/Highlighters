@@ -11,11 +11,12 @@ export class HighlightService {
   async createHighlight(
     createHighlightDto: CreateHighlightDto,
   ): Promise<Highlight> {
+    const { feed_id, user_email, selection } = createHighlightDto;
     const result = await this.prismaService.highlight.create({
       data: {
-        feed_id: createHighlightDto.feed_id,
-        user_email: createHighlightDto.user_email,
-        selection: createHighlightDto.selection,
+        feed_id: +feed_id,
+        user_email: user_email,
+        selection: selection,
       },
     });
 

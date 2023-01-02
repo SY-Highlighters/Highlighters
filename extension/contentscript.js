@@ -11289,7 +11289,7 @@ let highlightStr = "null";
   return jQuery;
 });
 
-//시작
+//함수 정의
 
 function onWindowReady() {
   function highlight() {
@@ -11350,9 +11350,8 @@ function makeXPath(node, currentPath) {
       return "";
   }
 }
-//하이라이트 처리
+//하이라이트 Post
 function postHighlight(range) {
-  console.log(range);
   const rangeobj = {
     startXPath: makeXPath(range.startContainer),
     startOffset: range.startOffset,
@@ -11362,18 +11361,15 @@ function postHighlight(range) {
 
   $.ajax({
     type: "POST",
-    url: "http://localhost:3001/api/feeds/test/json",
-    data: rangeobj,
+    url: "http://localhost:3001/api/highlight/",
+    data: { feed_id: 1, user_email: "testuser3@test.com", selection: rangeobj },
     success: function (response) {
-      if (response["result"] == "success") {
-        alert("포스팅 성공!");
-      } else {
-        alert("서버 오류!");
-      }
+      console.log(response);
     },
   });
 }
 
+// 하이라이트 Get
 function getHighlight() {
   $.ajax({
     type: "GET",
@@ -11410,6 +11406,7 @@ function getHighlight() {
   });
 }
 
+// select
 function selectText() {
   var sel = "";
   if (document.getSelection) {
@@ -11420,6 +11417,8 @@ function selectText() {
   highlightStr = sel.toString(); //스트링으로 저장
   return sel;
 }
+
+// contentscript 시작
 
 $(document).ready(onWindowReady);
 
