@@ -6,8 +6,6 @@ import {
   Param,
   Patch,
   Post,
-  UsePipes,
-  ValidationPipe,
 } from '@nestjs/common';
 import { highlight } from '@prisma/client';
 import { CreateHighlightDto } from './dto/create-highlight.dto';
