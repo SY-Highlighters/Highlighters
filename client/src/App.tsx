@@ -1,4 +1,4 @@
-import { Fragment, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import Feeds from "./components/Feeds/Feeds";
 import Cart from "./components/back/Cart/Cart";
 import AvailableBookmarks from "./components/Bookmarks/AvailableBookmarks";
@@ -6,37 +6,40 @@ import AvailableBookmarks from "./components/Bookmarks/AvailableBookmarks";
 import HeaderTest from "./components/Layout/HeaderTest";
 import User from "./components/User/User";
 import AvailableFeeds from "./components/Feeds/AvailableFeeds";
-import Alert from "./components/Right/Alert";
-import { bookmarkState } from "./states/atom";
+
+import { bookmarkState, feedState } from "./states/atom";
 import { useRecoilValue } from "recoil";
 function App() {
-  const bookmarkOn = useRecoilValue(bookmarkState);
+  const bookmarkOn = useRecoilValue(bookmarkState); 
+  // const showCartHandler = () => {
+  
 
-  const [feedIsShown, setFeedIsShown] = useState(false);
-  const showFeedHandler = () => {
-    setFeedIsShown(true);
-  };
-  const hideFeedHandler = () => {
-    setFeedIsShown(false);
-  };
-  const clickB = () => {
-    const dragnode = window.getSelection();
-    // drarnode에 포함된 노드들의 엘리먼트를 가져온다
+  // const [cartIsShown, setCartIsShown] = useState(false)
+  // const [feedIsShown, setFeedIsShown] = useState(false);
+  // const showFeedHandler = () => {
+  //   setFeedIsShown(true);
+  // };
+  // const hideFeedHandler = () => {
+  //   setFeedIsShown(false);
+  // };
+  // const clickB = () => {
+  //   const dragnode = window.getSelection();
+  //   // drarnode에 포함된 노드들의 엘리먼트를 가져온다
 
-    const range = dragnode!.getRangeAt(0);
-    const rangeArray = range.cloneContents().childNodes;
-    console.log(rangeArray);
-    rangeArray.forEach((node) => {
-      if (node.nodeType === 1) {
-        const span = document.createElement("span");
-        span.style.backgroundColor = "yellow";
-        // span.innerHTML = node.outerHTML;
-      }
-    });
-  };
+  //   const range = dragnode!.getRangeAt(0);
+  //   const rangeArray = range.cloneContents().childNodes;
+  //   console.log(rangeArray);
+  //   rangeArray.forEach((node) => {
+  //     if (node.nodeType === 1) {
+  //       const span = document.createElement("span");
+  //       span.style.backgroundColor = "yellow";
+  //       // span.innerHTML = node.outerHTML;
+  //     }
+  //   });
+  // };
     const getData =() => {
       try {
-        const data = fetch("http://localhost:3001/api/feeds/1")
+        const data = fetch("43.200.165.44/api/feeds/test/1")
           .then((res) => res.json())
           .then((data) => console.log(data));
         return data;
@@ -44,6 +47,7 @@ function App() {
         console.log(err);
       }
     }
+    
     // const span = document.createElement("span");
     //   span.style.backgroundColor = "yellow";
     //   span.innerHTML = node.outerHTML;
@@ -66,7 +70,6 @@ function App() {
         ) : (
           <AvailableBookmarks></AvailableBookmarks>
         )}
-        {/* <Alert></Alert> */}
       </div>
       {/*<Meals></Meals>  */}
       <button onClick={getData} className="bg-black">클릭</button>
