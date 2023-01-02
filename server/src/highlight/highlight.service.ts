@@ -15,7 +15,7 @@ export class HighlightService {
       data: {
         feed_id: createHighlightDto.feed_id,
         user_email: createHighlightDto.user_email,
-        selection: {},
+        selection: createHighlightDto.selection,
       },
     });
 
