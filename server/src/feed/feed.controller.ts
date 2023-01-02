@@ -27,6 +27,12 @@ export class FeedController {
     return this.feedService.fetchFeedByGroupId(id);
   }
 
+  // 유저아이디, 그룹아이디에 따른 피드 생성
+  @Post('/:groupid')
+  async createFeed(@Body() body: FeedRequestDto): Promise<Feed> {
+    return this.feedService.createFeed(body);
+  }
+
   // 피드아이디에 따른 피드 삭제
   @Delete('delete/:id')
   async deleteFeedById(@Param('id') id: number): Promise<number> {

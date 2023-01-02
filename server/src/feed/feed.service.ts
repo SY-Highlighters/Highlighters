@@ -4,6 +4,7 @@ import { TestFeed } from '.prisma/client';
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/repository/prisma.service';
 import { TestFeedRequestDto } from './dto/testfeed.request';
+import { getUrlMeta } from 'src/utils/geturlmeta';
 
 @Injectable()
 export class FeedService {
@@ -26,6 +27,20 @@ export class FeedService {
   async fetchFeedByGroupId(id: number): Promise<Feed | null> {
     return await this.prismaService
       .$queryRaw`SELECT * FROM FEED WHERE group_id = ${id}`;
+  }
+
+  // 유저아이디, 그룹아이디에 따른 피드 생성
+  async createFeed(body: FeedRequestDto): Promise<Feed> {
+    return;
+    // return await this.prismaService.feed.create({
+    //   data: {
+    //     group: {
+    //       connect: {
+    //         group_id: body.group_id,
+    //       },
+    //     },
+    //   },
+    // });
   }
 
   // 피드아이디에 따른 피드 삭제
