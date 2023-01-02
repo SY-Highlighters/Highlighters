@@ -17,6 +17,7 @@ export class HighlightService {
         feed_id: +feed_id,
         user_email: user_email,
         selection: selection,
+        contents: 'Hello There',
       },
     });
 

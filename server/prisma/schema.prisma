@@ -51,6 +51,7 @@ model Highlight {
   id         Int      @id @default(autoincrement())
   selection  Json
   user_email String
+  contents   String
   feed       Feed     @relation(fields: [feed_id], references: [id])
   user       User     @relation(fields: [user_email], references: [email])
 
