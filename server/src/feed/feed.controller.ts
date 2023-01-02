@@ -21,9 +21,9 @@ export class FeedController {
     this.feedService.testjson(body);
   }
 
-  @Get()
-  async fetchFeedByGroupId(@Body() body: FeedRequestDto): Promise<Feed | null> {
-    return this.feedService.fetchFeedByGroupId(body);
+  @Get('/:id')
+  async fetchFeedByGroupId(@Param('id') id: number): Promise<Feed | null> {
+    return this.feedService.fetchFeedByGroupId(id);
   }
 
   @Delete('/:id')

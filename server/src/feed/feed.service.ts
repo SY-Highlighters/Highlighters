@@ -23,10 +23,9 @@ export class FeedService {
   }
 
   // 아이디에 따른 피드 조회
-  async fetchFeedByGroupId(body: FeedRequestDto): Promise<Feed | null> {
-    const group_id = body.group_id;
+  async fetchFeedByGroupId(id: number): Promise<Feed | null> {
     return await this.prismaService
-      .$queryRaw`SELECT * FROM FEED WHERE group_id = ${group_id}`;
+      .$queryRaw`SELECT * FROM FEED WHERE group_id = ${id}`;
   }
 
   // 삭제
