@@ -13,6 +13,11 @@ export class FeedController {
     return this.feedService.fetchAllFeeds(body);
   }
 
+  @Get(':id')
+  async fetchFeedById(@Param('id') id: number): Promise<Feed | null> {
+    return this.feedService.fetchFeedById(id);
+  }
+
   @Delete('/:id')
   async deleteFeedById(@Param('id') id: number): Promise<Feed | null> {
     return this.feedService.deleteFeedById(id);

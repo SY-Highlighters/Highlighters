@@ -15,8 +15,15 @@ export class FeedService {
     return feeds;
   }
 
+  // 단건조회
+  async fetchFeedById(id: number): Promise<Feed | null> {
+    return this.prismaService.feed.findUnique({
+      where: { feed_id: Number(id) },
+    });
+  }
+
   // 삭제
   async deleteFeedById(id: number): Promise<Feed | null> {
-    return this.prismaService.feed.delete({ where: { id: Number(id) } });
+    return this.prismaService.feed.delete({ where: { feed_id: Number(id) } });
   }
 }

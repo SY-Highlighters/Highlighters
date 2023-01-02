@@ -17,7 +17,9 @@ model User {
   password String  @map("PASSWORD") @db.Char(100)
   nickname String? @map("NICKNAME") @db.Char(20)
 
-  owner_Group Group? @relation("Owner")
+  owner_Group Group?      @relation("Owner")
+  Feed        Feed[]
+  highlight   highlight[]
 
   @@map("USER")
 }
@@ -28,9 +30,39 @@ model Group {
   name     String @map("NAME") @db.Char(20)
   owner_id Int    @unique @map("OWNER_ID")
 
-  owner User @relation("Owner", fields: [owner_id], references: [user_id])
+  owner User   @relation("Owner", fields: [owner_id], references: [user_id])
+  Feed  Feed[]
 
   @@map("GROUP")
+}
+
+// Feed
+model Feed {
+  feed_id      Int         @id @default(autoincrement()) @map("FEED_ID")
+  url          String      @map("URL") @db.Char(100)
+  highlight_id highlight[]
+  group_id     Int         @map("GROUP_ID")
+  user_id      Int         @map("SHARE_USER_ID")
+  createdAt    DateTime    @default(now()) @map("CREATED_AT")
+  updatedAt    DateTime    @default(now()) @updatedAt @map("UPDATED_AT")
+
+  group Group @relation(fields: [group_id], references: [group_id])
+  user  User  @relation(fields: [user_id], references: [user_id])
+
+  @@map("FEED")
+}
+
+model highlight {
+  highlight_id Int      @id @default(autoincrement()) @map("HIGHLIGHT_ID")
+  feed_id      Int      @map("FEED_ID")
+  user_id      Int      @map("USER_ID")
+  selection    Json     @map("SELECTION")
+  createdAt    DateTime @default(now()) @map("CREATED_AT")
+
+  feed Feed @relation(fields: [feed_id], references: [feed_id])
+  user User @relation(fields: [user_id], references: [user_id])
+
+  @@map("HIGHLIGHT")
 }
 
 model TestFeed {
