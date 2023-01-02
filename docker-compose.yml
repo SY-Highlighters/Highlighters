@@ -1,0 +1,21 @@
+version: "3"
+
+services:
+  nginxproxy:
+    image: nginx
+    ports:
+      - "80:3000"
+      - "3001:3001"
+    restart: always
+    volumes:
+      - "./nginx.conf:/etc/nginx/nginx.conf"
+
+  server:
+    build:
+      context: ./server
+      dockerfile: Dockerfile
+
+  client:
+    build:
+      context: ./client
+      dockerfile: Dockerfile
