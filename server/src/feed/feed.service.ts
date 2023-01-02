@@ -1,3 +1,7 @@
+import {
+  JsonObject,
+  JsonArray,
+} from './../../../client/node_modules/boxen/node_modules/type-fest/source/basic.d';
 import { Feed } from '@prisma/client';
 import { FeedRequestDto } from './dto/feed.request';
 import { TestFeed } from '.prisma/client';
@@ -24,9 +28,33 @@ export class FeedService {
   }
 
   // 그룹아이디에 따른 피드 조회
-  async fetchFeedByGroupId(id: number): Promise<Feed | null> {
-    return await this.prismaService
+  async fetchFeedByGroupId(id: number): Promise<object[] | null> {
+    // feeds 받기
+    const feeds: JsonArray = await this.prismaService
       .$queryRaw`SELECT * FROM FEED WHERE group_id = ${id}`;
+    const feedswithOg: object[] = [];
+    console.log(typeof feeds);
+    feeds.map(async (feed: JsonObject) => {
+      // const getfeed: Feed = JSON.parse(feed.toString());
+      // url이 있으면 메타데이터 가져오기
+      if (feed.URL) {
+        console.log(feed.URL);
+        const meta = await getUrlMeta(feed.URL);
+        const feedwithOg = {
+          feed_id: feed.FEED_ID,
+          group_id: feed.GROUP_ID,
+          url: feed.URL,
+          createdAt: feed.CREATEDAT,
+          updatedAt: feed.UPADATEDAT,
+          user_id: feed.USER_ID,
+          og_title: meta.title,
+          og_desc: meta.desc,
+          og_image: meta.image,
+        };
+        feedswithOg.push(feedwithOg);
+      }
+    });
+    return feedswithOg;
   }
 
   // 유저아이디, 그룹아이디에 따른 피드 생성

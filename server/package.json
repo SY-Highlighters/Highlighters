@@ -27,6 +27,7 @@
     "@nestjs/platform-express": "^9.0.0",
     "@nestjs/swagger": "^6.1.4",
     "@prisma/client": "^4.8.0",
+    "cheerio": "^1.0.0-rc.12",
     "class-validator": "^0.13.2",
     "node": "^19.3.0",
     "prisma": "^4.8.0",

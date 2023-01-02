@@ -23,7 +23,7 @@ export class FeedController {
 
   // 그룹아이디에 따른 피드 조회
   @Get('/:id')
-  async fetchFeedByGroupId(@Param('id') id: number): Promise<Feed | null> {
+  async fetchFeedByGroupId(@Param('id') id: number): Promise<object[] | null> {
     return this.feedService.fetchFeedByGroupId(id);
   }
 

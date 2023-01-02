@@ -1,3 +1,5 @@
+// @ts-check
+import fetch from 'node-fetch';
 import cheerio from 'cheerio';
 
 export function _getHostname(url) {
