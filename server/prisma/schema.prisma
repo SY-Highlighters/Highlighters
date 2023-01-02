@@ -8,56 +8,61 @@ datasource db {
 }
 
 model User {
-  // user_id     Int         @id @default(autoincrement()) @map("USER_ID") // 없어도 될 듯
-  email       String      @id @map("EMAIL") @db.Char(50)
-  password    String      @map("PASSWORD") @db.Char(100)
-  nickname    String?     @map("NICKNAME") @db.Char(20)
-  group_id    Int?        @map("GROUP_ID") 
-  Feed        Feed[]
-  highlight   Highlight[]
-  group       Group?      @relation(fields: [group_id], references: [id])
-  // owner_Group Group?      @relation("Owner")
+  email     String      @id @db.Char(50)
+  group_id  Int?
+  nickname  String?     @db.Char(20)
+  password  String      @db.Char(100)
+  FEED      Feed[]
+  HIGHLIGHT Highlight[]
+  GROUP     Group?      @relation(fields: [group_id], references: [id])
 
+  @@index([group_id], map: "USER_group_id_fkey")
   @@map("USER")
 }
 
 model Group {
-  id Int    @id @default(autoincrement()) @map("ID")
-  name     String @map("NAME") @db.Char(20)
-  // owner_user Int    @unique @map("OWNER_ID")
-  Feed     Feed[]
-  // owner    User   @relation("Owner", fields: [owner_user], references: [email])
-  member User[]
+  id   Int    @id @default(autoincrement())
+  name String @db.Char(20)
+  FEED Feed[]
+  USER User[]
 
   @@map("GROUP")
 }
 
 model Feed {
-  id      Int         @id @default(autoincrement()) @map("ID")
-  url          String      @map("URL") @db.Char(100)
-  group_id     Int         @map("GROUP_ID")
-  user_email   String      @map("USER_EMAIL")
-  createdAt    DateTime    @default(now()) @map("CREATED_AT")
-  updatedAt    DateTime    @default(now()) @updatedAt @map("UPDATED_AT")
-  group        Group       @relation(fields: [group_id], references: [id])
-  user         User        @relation(fields: [user_email], references: [email])
-  highlight_id Highlight[]
+  createdAt  DateTime    @default(now())
+  group_id   Int
+  id         Int         @id @default(autoincrement())
+  updatedAt  DateTime    @default(now())
+  url        String      @db.Char(100)
+  user_email String
+  GROUP      Group       @relation(fields: [group_id], references: [id])
+  USER       User        @relation(fields: [user_email], references: [email])
+  HIGHLIGHT  Highlight[]
 
-  @@index([group_id], map: "FEED_GROUP_ID_fkey")
-  @@index([user_email], map: "FEED_SHARE_USER_ID_fkey")
+  @@index([group_id], map: "FEED_group_id_fkey")
+  @@index([user_email], map: "FEED_user_email_fkey")
   @@map("FEED")
 }
 
 model Highlight {
-  id Int                @id @default(autoincrement()) @map("ID")
-  feed_id      Int      @map("FEED_ID")
-  user_email   String   @map("USER_EMAIL")
-  selection    Json     @map("SELECTION")
-  createdAt    DateTime @default(now()) @map("CREATED_AT")
-  feed         Feed     @relation(fields: [feed_id], references: [id])
-  user         User     @relation(fields: [user_email], references: [email])
+  createdAt  DateTime @default(now())
+  feed_id    Int
+  id         Int      @id @default(autoincrement())
+  selection  Json
+  user_email String
+  FEED       Feed     @relation(fields: [feed_id], references: [id])
+  USER       User     @relation(fields: [user_email], references: [email])
 
-  @@index([feed_id], map: "HIGHLIGHT_FEED_ID_fkey")
-  @@index([user_email], map: "HIGHLIGHT_USER_ID_fkey")
+  @@index([feed_id], map: "HIGHLIGHT_feed_id_fkey")
+  @@index([user_email], map: "HIGHLIGHT_user_email_fkey")
   @@map("HIGHLIGHT")
+}
+
+model TestFeed {
+  id        Int      @id @default(autoincrement())
+  url       String
+  content   String?
+  group     String
+  createdAt DateTime @default(now())
 }
