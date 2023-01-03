@@ -6,13 +6,17 @@ import {
   Param,
   Patch,
   Post,
+  UseGuards,
 } from '@nestjs/common';
-import { Highlight } from '@prisma/client';
+import { AuthGuard } from '@nestjs/passport';
+import { Highlight, User } from '@prisma/client';
+import { GetUser } from 'src/auth/get-user.decorator';
 import { CreateHighlightDto } from './dto/create-highlight.dto';
 import { UpdateHighlightDto } from './dto/update-highlight.dto';
 import { HighlightService } from './highlight.service';
 
 @Controller('api/highlight')
+@UseGuards(AuthGuard())
 export class HighlightController {
   constructor(private readonly highlightService: HighlightService) {}
 
@@ -20,12 +24,18 @@ export class HighlightController {
   @Post('/')
   async createHighlight(
     @Body() createHighlightDto: CreateHighlightDto,
+    @GetUser() user: User,
   ): Promise<Highlight> {
-    return this.highlightService.createHighlight(createHighlightDto);
+    const user_email = user.email;
+
+    return this.highlightService.createHighlight(
+      user_email,
+      createHighlightDto,
+    );
   }
 
   // Read One by ID
-  @Get('/:id')
+  @Get('/id/:id')
   async findHighlight(@Param('id') id: number): Promise<Highlight> {
     return this.highlightService.findHighlight(id);
   }
@@ -37,7 +47,7 @@ export class HighlightController {
   }
 
   // Update
-  @Patch('/:id')
+  @Patch('/update/:id')
   async updateHighlight(
     @Param('id') id: number,
     @Body() updateHighlightDto: UpdateHighlightDto,
@@ -46,8 +56,13 @@ export class HighlightController {
   }
 
   // Delete by ID
-  @Delete('/:id')
+  @Delete('/delete/:id')
   async deleteHighlight(@Param('id') id: number): Promise<Highlight> {
     return this.highlightService.deleteHighlight(id);
+  }
+
+  @Get('/test')
+  async testToken() {
+    console.log();
   }
 }
