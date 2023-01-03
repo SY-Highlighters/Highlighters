@@ -54,6 +54,14 @@ export class HighlightService {
     return result;
   }
 
+  async findAllHighlightById(id: number): Promise<Highlight[]> {
+    const highlights = await this.prismaService.highlight.findMany({
+      where: { feed_id: id },
+    });
+
+    return highlights;
+  }
+
   async findAllHighlightInFeed(url: string): Promise<Highlight[]> {
     const find_feed = await this.feedService.findFeedByURL(url);
 
