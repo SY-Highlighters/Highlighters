@@ -1,13 +1,20 @@
 import { MemberService } from './member.service';
-import { Controller, UseGuards, UseInterceptors } from '@nestjs/common';
+import {
+  Controller,
+  UseGuards,
+  UseInterceptors,
+  UseFilters,
+} from '@nestjs/common';
 import { Body, Post } from '@nestjs/common/decorators';
 import { AuthGuard } from '@nestjs/passport';
 import { GetUser } from 'src/auth/get-user.decorator';
 import { User } from '@prisma/client';
 import { SuccessInterceptor } from 'src/common/interceptors/success.interceptors';
+import { HttpExceptionFilter } from 'src/common/exceptions/http-exception.filter';
 
 @Controller('api/member')
 @UseInterceptors(SuccessInterceptor)
+@UseFilters(HttpExceptionFilter)
 @UseGuards(AuthGuard())
 export class MemberController {
   constructor(private readonly memberService: MemberService) {}

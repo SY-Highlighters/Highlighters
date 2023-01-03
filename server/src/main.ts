@@ -4,12 +4,14 @@ import { AppModule } from './app.module';
 import { ValidationPipe } from '@nestjs/common';
 import { DocumentBuilder } from '@nestjs/swagger';
 import { SwaggerModule } from '@nestjs/swagger/dist';
+import { HttpExceptionFilter } from './common/exceptions/http-exception.filter';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
   const prismaService = app.get(PrismaService);
   await prismaService.enableShutdownHooks(app);
+  app.useGlobalFilters(new HttpExceptionFilter());
   app.enableCors({
     origin: true,
     credentials: true,
