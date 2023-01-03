@@ -17,7 +17,7 @@ const GroupTag = () => {
           <div className="flex flex-col items-center px-5"></div>
         </div>
         {/* 태그 공간 -> fix:동적 처리*/}
-        <div className="relative flex items-end justify-center col-span-3">
+        <div className="relative flex items-end justify-end col-span-3">
           <span className="inline-flex px-3 py-0.5 rounded-full text-sm font-medium bg-sky-100 text-sky-800">
             #모시깽
           </span>
@@ -30,9 +30,7 @@ const GroupTag = () => {
           <span className="inline-flex  px-3 py-0.5 rounded-full text-sm font-medium bg-sky-100 text-sky-800">
             #컴퓨터
           </span>
-          <span className="inline-flex  px-3 py-0.5 rounded-full text-sm font-medium bg-sky-100 text-sky-800">
-            #컴퓨터
-          </span>
+
         </div>
       </div>
     </div>

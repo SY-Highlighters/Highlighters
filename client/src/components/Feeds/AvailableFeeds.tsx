@@ -88,6 +88,8 @@ const AvailableFeeds = () => {
       key={feed.id}
       title={feed.title}
       description={feed.description}
+      og_image={feed.og_image}
+      url={feed.url}
       // text={feed.highlight}
       date={feed.Date}
     />

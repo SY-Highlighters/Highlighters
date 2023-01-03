@@ -66,6 +66,8 @@ function App() {
     data.map((item: any) => {
       const newfeed = {
         id: item.id,
+        url: item.url,
+        og_image: item.og_image,
         title: item.og_title,
         description: item.og_desc,
         // highlight: item.highlight,

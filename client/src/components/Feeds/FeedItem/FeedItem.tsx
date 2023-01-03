@@ -14,7 +14,13 @@ const FeedItem = (props: any) => {
   // 여러개의 하이라이트를 받아서 하나의 리스트로 만들어준다.
   // 하이라이트별 색상 지정해줘야함. -> 수정해야함
   let font_color = "text-sky-500";
-
+  // 날짜 파싱
+  const date = new Date(props.date);
+  const year = date.getFullYear();
+  const month = date.getMonth() + 1;
+  const day = date.getDate();
+  
+  
   // if (props.text.length > 1) {
   //   const highlights = props.text.map((hl: string) => (
   //     <li className={font_color}>{hl}</li>
@@ -30,13 +36,15 @@ const FeedItem = (props: any) => {
               className="mr-1.5 h-5 w-5 flex-shrink-0 text-gray-400 "
               aria-hidden="true"
             />
-            9월 9일, 2020
+            {`${month}월 ${day}일, ${year}년 `}
           </div>
 
           <div className="px-4 py-5 sm:px-6">
-            <h2 className="text-lg font-medium leading-6 text-gray-900">
-              {props.title}
-            </h2>
+            <a href={props.url} target="_blank" rel="noreferrer">
+              <h2 className="text-lg font-medium leading-6 text-gray-900">
+                {props.title}
+              </h2>
+            </a>
             <p className="max-w-2xl mt-1 text-sm text-gray-500">
               {props.description}
             </p>
@@ -44,7 +52,7 @@ const FeedItem = (props: any) => {
             <span className="text-sm font-medium bg-sky-500"> {props.text}</span> 
           </p> */}
             {/* 다수의 하이라이팅 표시 -> 수정해야할듯?*/}
-{/* 
+            {/* 
             <div>
               <ul>{highlights}</ul>
             </div> */}
@@ -52,7 +60,7 @@ const FeedItem = (props: any) => {
             {/* 태그 */}
             <div className="flex flex-wrap mt-2">
               <span className="inline-flex items-center px-3 py-0.5 rounded-full text-sm font-medium bg-sky-100 text-sky-800">
-                #모시꺵
+                #오늘도 또 야근 사장님 죽어
               </span>
               <span className="inline-flex items-center px-3 py-0.5 rounded-full text-sm font-medium bg-sky-100 text-sky-800">
                 #도커
