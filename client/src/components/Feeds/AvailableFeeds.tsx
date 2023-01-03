@@ -83,7 +83,6 @@ const AvailableFeeds = () => {
   //     Date: "2022-12-30 12:00",
   //   });
   // };
-  console.log(feeds);
   const feedsList = feeds.map((feed: any) => (
     <FeedItem
       key={feed}
