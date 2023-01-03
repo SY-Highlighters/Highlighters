@@ -2,6 +2,8 @@ import { PrismaService } from 'src/repository/prisma.service';
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { ValidationPipe } from '@nestjs/common';
+import { DocumentBuilder } from '@nestjs/swagger';
+import { SwaggerModule } from '@nestjs/swagger/dist';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -18,6 +20,15 @@ async function bootstrap() {
       transform: true,
     }),
   );
+
+  const config = new DocumentBuilder()
+    .setTitle('NestJS Prisma')
+    .setDescription('NestJS Prisma API description')
+    .setVersion('1.0')
+    .addTag('NestJS Prisma')
+    .build();
+  const document = SwaggerModule.createDocument(app, config);
+  SwaggerModule.setup('api_docs', app, document);
 
   await app.listen(3001);
 }
