@@ -1,6 +1,6 @@
 let selectionText;
 let highlightStr = "null";
-let rangeobject;
+
 /*!
  * jQuery JavaScript Library v3.6.3
  * https://jquery.com/
@@ -11297,17 +11297,18 @@ function onWindowReady() {
   function highlight() {
     let range = selectionText.getRangeAt(0);
     postHighlight(range, highlightStr); // highlight post 요청
-    var newNode = document.createElement("span");
+    let newNode = document.createElement("span");
     newNode.style.backgroundColor = "yellow";
     range.surroundContents(newNode);
     $("#btn").hide();
   }
 
-  var penButton = `<input id="btn" type="image" src="https://images.vexels.com/media/users/3/206292/isolated/preview/0a3fddb8fdf07b7c1f42a371d420c3f2-yellow-highlighter-flat.png" 
-    hidden="true" height = "50" width="50">`;
+  let penButton = `<input id="btn" type="image" src="https://images.vexels.com/media/users/3/206292/isolated/preview/0a3fddb8fdf07b7c1f42a371d420c3f2-yellow-highlighter-flat.png" 
+    height = "50" width="50">`;
 
-  var body = document.querySelector("html");
+  let body = document.querySelector("html");
   body.innerHTML += penButton;
+  $("#btn").hide();
 
   document.getElementById("btn").addEventListener("click", highlight);
 }
@@ -11387,7 +11388,6 @@ function getHighlight(url) {
       console.log(response);
       for (const highlight of response) {
         let selection = highlight.selection;
-        // console.log(selection);
         let range = document.createRange();
 
         // 시작 노드 복원
@@ -11414,9 +11414,7 @@ function getHighlight(url) {
         range.setStart(startNode, startOff);
         range.setEnd(endNode, endOff);
 
-        // console.log(range);
-
-        var newNode = document.createElement("span");
+        let newNode = document.createElement("span");
         newNode.style.backgroundColor = "yellow";
         range.surroundContents(newNode);
       }
@@ -11425,8 +11423,8 @@ function getHighlight(url) {
 }
 
 // select
-function selectText() {
-  var sel = "";
+function getSelect() {
+  let sel = "";
   if (document.getSelection) {
     sel = document.getSelection();
   } else if (document.selection) {
@@ -11440,16 +11438,15 @@ $(document).ready(onWindowReady);
 
 // 드래그하고 마우스를 떼면 selection 객체 생성
 document.onmouseup = function (e) {
-  let sel = selectText();
+  let sel = getSelect();
 
   if (sel.toString() != "" && sel.toString() != highlightStr) {
     selectionText = sel;
-    console.log(selectionText);
     highlightStr = sel.toString();
 
     // 드래그한 영역의 위치를 가져온다.
-    var divTop = e.pageY + 10;
-    var divLeft = e.pageX + 10;
+    let divTop = e.pageY + 10;
+    let divLeft = e.pageX + 10;
 
     // 드래그한 영역의 위치에 레이어를 띄운다.
     // 레이어의 위치를 변경하고 싶으면 위치값을 수정한다.
