@@ -56,29 +56,31 @@ export class AuthService {
 
   // 구글 로그인
   async googleLogin(json) {
-    if(!json) {
-        return 'No user from google'
+    if (!json) {
+      return 'No user from google';
     }
     const user_email = json.userProfile.email;
     let find_user = await this.prismaService.user.findUnique({
-        where: { email: user_email }
-    })
+      where: { email: user_email },
+    });
 
     // 가입하지 않았을 경우, 자동 signup
     if (!find_user) {
-        const new_signup_dto = new AuthSignupCredentialsDto();
-        new_signup_dto.email = user_email;
-        new_signup_dto.password = "random_password";
-        new_signup_dto.nickname = json.userProfile.firstName;
-    
-        find_user = await this.signUp(new_signup_dto)
+      const new_signup_dto = new AuthSignupCredentialsDto();
+      new_signup_dto.email = user_email;
+      new_signup_dto.password = 'random_password';
+      new_signup_dto.nickname = json.userProfile.firstName;
+
+      find_user = await this.signUp(new_signup_dto);
     }
 
     // sign in
     const new_signin_dto = new AuthSigninCredentialsDto();
     new_signin_dto.email = user_email;
-    new_signin_dto.password = "random_password";
-    return this.signIn(new_signin_dto);
+    new_signin_dto.password = 'random_password';
+    const res = await this.signIn(new_signin_dto);
+    console.log(res);
 
+    return res;
   }
 }

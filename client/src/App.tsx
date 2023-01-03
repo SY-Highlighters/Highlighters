@@ -36,37 +36,37 @@ function App() {
   // })
   
   // 렌더링된 후 바로 실행
-  // useEffect(() => {
-  //   async function fetchData() {
-  //     const response = await fetch(
-  //       `http://localhost:3001/api/feed/group/${fetchda}`
-  //     );
-  //     const data = await response.json();
-  //     console.log(data);
-  //     feedadd(data);
-  //   }
-  //   fetchData();
-  // }, []);
+  useEffect(() => {
+    async function fetchData() {
+      const response = await fetch(
+        `http://localhost:3001/api/feed/group/${fetchda}`
+      );
+      const data = await response.json();
+      console.log(data);
+      feedadd(data);
+    }
+    fetchData();
+  }, []);
 
-  // // 피드리스트에 피드아이템 넣기
-  // const feedadd = (data: []) => {
-  //   data.map((item: any) => {
-  //     const newfeed = {
-  //       id: item.id,
-  //       title: item.og_title,
-  //       description: item.og_desc,
-  //       // highlight: [
-  //       //   "도커를 사용하면 기존에 개발자들이 환경 설정으로부터 겪던 고충을 말끔히 해결시켜 준다. 사실상 업계 표준이 되어가고 있으니 사용법을 꼭 익히면 좋을 것이다",
-  //       //   "이건 몰루",
-  //       //   "도커를 사용하면 기존에 개발자들이 환경 설정으로부터 겪던 고충을 말끔히 해결시켜 준다. 사실상 업계 표준이 되어가고 있으니 사용법을 꼭 익히면 좋을 것이다",
-  //       // ],
-  //       Date: item.createdAt,
-  //     };
-  //     console.log(newfeed);
-  //     // recoil feeds state에 피드 추가
-  //     setFeeds((oldFeeds: any) => [...oldFeeds, newfeed]);
-  //   });
-  // };
+  // 피드리스트에 피드아이템 넣기
+  const feedadd = (data: []) => {
+    data.map((item: any) => {
+      const newfeed = {
+        id: item.id,
+        title: item.og_title,
+        description: item.og_desc,
+        // highlight: [
+        //   "도커를 사용하면 기존에 개발자들이 환경 설정으로부터 겪던 고충을 말끔히 해결시켜 준다. 사실상 업계 표준이 되어가고 있으니 사용법을 꼭 익히면 좋을 것이다",
+        //   "이건 몰루",
+        //   "도커를 사용하면 기존에 개발자들이 환경 설정으로부터 겪던 고충을 말끔히 해결시켜 준다. 사실상 업계 표준이 되어가고 있으니 사용법을 꼭 익히면 좋을 것이다",
+        // ],
+        Date: item.createdAt,
+      };
+      console.log(newfeed);
+      // recoil feeds state에 피드 추가
+      setFeeds((oldFeeds: any) => [...oldFeeds, newfeed]);
+    });
+  };
 
 
   return (
