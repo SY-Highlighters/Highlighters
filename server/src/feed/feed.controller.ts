@@ -40,4 +40,11 @@ export class FeedController {
   async deleteFeedById(@Param('id') id: number): Promise<Feed> {
     return this.feedService.deleteFeedById(id);
   }
+
+  // @Get('/getusertest/')
+  // getuser(@GetUser() user: User): Promise<User> { // 
+  //   console.log('getuser 들어왔다')
+  //   console.log('user', user.email, user.group_id)
+  //   return 
+  // }
 }
