@@ -11373,6 +11373,7 @@ function postHighlight(range, highlightStr) {
       url: range.startContainer.baseURI,
       contents: highlightStr,
       selection: rangeobj,
+      // Authorization: `Bearer ${document.cookie}`,
     },
     success: function (response) {
       console.log(response);
@@ -11382,10 +11383,15 @@ function postHighlight(range, highlightStr) {
 
 /* 하이라이트 Get */
 function getHighlight(url) {
+  // console.log("get들어옴");
+  // console.log(window.cookie);
   $.ajax({
     type: "POST",
     url: "http://localhost:3001/api/highlight/feed",
-    data: { url: url },
+    data: {
+      url: url,
+      // Authorization: `Bearer ${document.cookie}`
+    },
     success: function (response) {
       console.log(response);
       for (const highlight of response) {
