@@ -32,6 +32,7 @@ export class FeedController {
   // group_id로 찾은 group에 있는 모든 feed 찾기
   @Get('/group/:id')
   async findFeedByGroupId(@Param('id') id: number): Promise<object[]> {
+    // console.log()
     return this.feedService.findGroupFeedWithOg(id);
   }
 
