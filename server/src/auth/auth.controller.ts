@@ -1,6 +1,7 @@
 import { Body, Controller, Get, Post, Req, UseGuards } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { User } from '@prisma/client';
+import { json } from 'stream/consumers';
 import { AuthService } from './auth.service';
 import {
   AuthSigninCredentialsDto,
@@ -14,14 +15,21 @@ export class AuthController {
   // 구글 로그인 메인 화면
   @Get()
   @UseGuards(AuthGuard('google'))
-  async googleAuth() {
+  async googleAuth(@Req() req) {
+    console.log(`req : ${req}`);
+    return;
   }
 
   // 구글 로그인 콜백
   @Get('/google/callback')
   @UseGuards(AuthGuard('google'))
   googleAuthRedirect(@Req() req) {
-    return this.authService.googleLogin(req)
+    return this.authService.googleLogin(req);
+  }
+
+  @Post('/google')
+  async validateGoogleToken(@Body() json: JSON) {
+    console.log(json);
   }
 
   @Post('/signup')
@@ -37,6 +45,4 @@ export class AuthController {
   ): Promise<{ accessToken: string }> {
     return this.authService.signIn(authSigninCredentialsDto);
   }
-
-  
 }
