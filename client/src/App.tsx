@@ -1,22 +1,29 @@
+// React
 import { Fragment, useEffect, useState } from "react";
-import Feeds from "./components/Feeds/Feeds";
-import Cart from "./components/back/Cart/Cart";
-import AvailableBookmarks from "./components/Bookmarks/AvailableBookmarks";
-// 레이아웃 구상
-import HeaderTest from "./components/Layout/Header";
+// Layout
+//  header section
+import Header from "./components/Layout/Header";
+import LoginHeader from "./components/Layout/LoginHeader";
+// aside section
 import User from "./components/User/User";
+// feed & bookmark section
 import AvailableFeeds from "./components/Feeds/AvailableFeeds";
+import AvailableBookmarks from "./components/Bookmarks/AvailableBookmarks";
 
+// user before login section
+import GoogleButton from "./GoogleButton";
+
+// Recoil -> state management
 import { bookmarkState, feedState } from "./states/atom";
-import { useRecoilState, useRecoilValue } from "recoil";
-import Feed from "./models/feed";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
+
 function App() {
   const bookmarkOn = useRecoilValue(bookmarkState);
-  // const showCartHandler = () => {
+  const [logged, setLog] = useState(false);
 
-  // const [cartIsShown, setCartIsShown] = useState(false)
-  // const [feedIsShown, setFeedIsShown] = useState(false);
-  // const showFeedHandler = () => {
+  // 로그인 상태를 확인해서 로그인 상태면 전체적으로 뷰 변경
+  const header = logged ? <LoginHeader /> : <Header />;
+  
   //   setFeedIsShown(true);
   // };
   // const hideFeedHandler = () => {
@@ -37,7 +44,8 @@ function App() {
   //     }
   //   });
   // };
-  const [feeds, setFeeds] = useRecoilState(feedState);
+  // const [feeds, setFeeds] = useRecoilState(feedState);
+  const setFeeds= useSetRecoilState(feedState);
   // 바디형식
   // const fetchda = {
   //   'group_id': 1
@@ -52,7 +60,7 @@ function App() {
   useEffect(() => {
     async function fetchData() {
       const response = await fetch(
-        `http://localhost:3001/api/feeds/${fetchda}`
+        `http://localhost:3001/api/feed/group/${fetchda}`
       );
       const data = await response.json();
       console.log(data);
@@ -65,20 +73,20 @@ function App() {
   const feedadd = (data: []) => {
     data.map((item: any) => {
       const newfeed = {
-        id: item.feed_id,
+        id: item.id,
         title: item.og_title,
         description: item.og_desc,
-        highlight: [
-          "도커를 사용하면 기존에 개발자들이 환경 설정으로부터 겪던 고충을 말끔히 해결시켜 준다. 사실상 업계 표준이 되어가고 있으니 사용법을 꼭 익히면 좋을 것이다",
-          "이건 몰루",
-          "도커를 사용하면 기존에 개발자들이 환경 설정으로부터 겪던 고충을 말끔히 해결시켜 준다. 사실상 업계 표준이 되어가고 있으니 사용법을 꼭 익히면 좋을 것이다",
-        ],
+        // highlight: [
+        //   "도커를 사용하면 기존에 개발자들이 환경 설정으로부터 겪던 고충을 말끔히 해결시켜 준다. 사실상 업계 표준이 되어가고 있으니 사용법을 꼭 익히면 좋을 것이다",
+        //   "이건 몰루",
+        //   "도커를 사용하면 기존에 개발자들이 환경 설정으로부터 겪던 고충을 말끔히 해결시켜 준다. 사실상 업계 표준이 되어가고 있으니 사용법을 꼭 익히면 좋을 것이다",
+        // ],
         Date: item.createdAt,
       };
-      console.log(newfeed)
-      setFeeds([...feeds, newfeed]);
+      console.log(newfeed);
+      // recoil feeds state에 피드 추가
+      setFeeds((oldFeeds:any) => [...oldFeeds, newfeed]);
     });
-    console.log(feeds);
   };
 
   // const span = document.createElement("span");
@@ -92,19 +100,37 @@ function App() {
       {/* {bookmarkState && <Cart onClose={hideCartHandler} />} */}
       {/* <Header onShowCart={showCartHandler}></Header>
        */}
-
-      <HeaderTest></HeaderTest>
+      {header}
+      {/* <HeaderTest></HeaderTest>
+       */}
       {}
       {/* <div className="flex justify-evenly">
        */}
-      <div className="grid gap-4 xl:px-40 lg:grid-cols-2 xl:grid-cols-3 sm:grid-cols-1">
+      {/* 로그인 후 메인페이지 */}
+
+      {!logged ? (
+        <div className="grid gap-4 xl:px-40 lg:grid-cols-2 xl:grid-cols-3 sm:grid-cols-1">
+          <User></User>
+          {bookmarkOn ? (
+            <AvailableFeeds></AvailableFeeds>
+          ) : (
+            <AvailableBookmarks></AvailableBookmarks>
+          )}
+        </div>
+      ) : (
+        <div className="mt-10">
+          <GoogleButton></GoogleButton>
+        </div>
+      )}
+      {/* <div className="grid gap-4 xl:px-40 lg:grid-cols-2 xl:grid-cols-3 sm:grid-cols-1">
         <User></User>
         {bookmarkOn ? (
           <AvailableFeeds></AvailableFeeds>
         ) : (
           <AvailableBookmarks></AvailableBookmarks>
         )}
-      </div>
+      </div> */}
+
       {/* <button onClick={getData} className="bg-black">
         클릭
       </button> */}
