@@ -1,6 +1,6 @@
 let selectionText;
 let highlightStr = "null";
-
+let src = chrome.runtime.getURL("images/pen.png");
 // 토큰이 없으면 한번만 리다이렉트
 // if (localStorage.getItem("token") == null) {
 //   if (window.location.href != "https://www.naver.com/") {
@@ -8,7 +8,7 @@ let highlightStr = "null";
 //   }
 // }
 
-let penButton = `<input id="btn" type="image" src="https://images.vexels.com/media/users/3/206292/isolated/preview/0a3fddb8fdf07b7c1f42a371d420c3f2-yellow-highlighter-flat.png"
+let penButton = `<input id="btn" type="image" src=${src}
       height = "50" width="50">`;
 
 let body = document.querySelector("html");
