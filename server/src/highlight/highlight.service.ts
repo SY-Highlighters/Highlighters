@@ -5,11 +5,15 @@ import { CreateHighlightDto } from './dto/create-highlight.dto';
 import { UpdateHighlightDto } from './dto/update-highlight.dto';
 import { FeedService } from 'src/feed/feed.service';
 import { CreateFeedDto } from 'src/feed/dto/feed.dto';
+import { forwardRef } from '@nestjs/common/utils';
+import { Inject } from '@nestjs/common/decorators';
 
 @Injectable()
 export class HighlightService {
   constructor(
     private readonly prismaService: PrismaService,
+
+    @Inject(forwardRef(() => FeedService))
     private readonly feedService: FeedService,
   ) {}
 
