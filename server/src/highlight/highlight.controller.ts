@@ -20,33 +20,31 @@ import { HighlightService } from './highlight.service';
 export class HighlightController {
   constructor(private readonly highlightService: HighlightService) {}
 
-  // Create
+  /*새로운 Highlight 생성*/
   @Post('/')
   async createHighlight(
     @Body() createHighlightDto: CreateHighlightDto,
     @GetUser() user: User,
   ): Promise<Highlight> {
-    const user_email = user.email;
+    createHighlightDto.user_email = user.email;
+    createHighlightDto.group_id = user.group_id;
 
-    return this.highlightService.createHighlight(
-      user_email,
-      createHighlightDto,
-    );
+    return this.highlightService.createHighlight(createHighlightDto);
   }
 
-  // Read One by ID
+  // Id로 highlight 찾기
   @Get('/id/:id')
   async findHighlight(@Param('id') id: number): Promise<Highlight> {
     return this.highlightService.findHighlight(id);
   }
 
-  // Read Many by URL
+  // URL로 찾은 Feed에 있는 모든 highlight 찾기
   @Post('/feed')
   async findHighlightAll(@Body('url') url: string): Promise<Highlight[]> {
     return this.highlightService.findAllHighlightInFeed(url);
   }
 
-  // Update
+  // Update(미완성)
   @Patch('/update/:id')
   async updateHighlight(
     @Param('id') id: number,
@@ -55,14 +53,9 @@ export class HighlightController {
     return this.highlightService.updateHighlight(id, updateHighlightDto);
   }
 
-  // Delete by ID
+  // Id로 Highlight 찾은 후 삭제
   @Delete('/delete/:id')
   async deleteHighlight(@Param('id') id: number): Promise<Highlight> {
     return this.highlightService.deleteHighlight(id);
-  }
-
-  @Get('/test')
-  async testToken() {
-    console.log();
   }
 }

@@ -14,17 +14,17 @@ export class HighlightService {
   ) {}
 
   async createHighlight(
-    user_email: string,
     createHighlightDto: CreateHighlightDto,
   ): Promise<Highlight> {
-    const { url, contents, selection } = createHighlightDto;
+    const { user_email, group_id, url, contents, selection } =
+      createHighlightDto;
 
     let find_feed = await this.feedService.findFeedByURL(url);
 
     if (!find_feed) {
       const newFeedDto = new CreateFeedDto();
       newFeedDto.user_email = user_email;
-      newFeedDto.group_id = 1;
+      newFeedDto.group_id = group_id;
       newFeedDto.url = url;
 
       find_feed = await this.feedService.createFeed(newFeedDto);
@@ -33,7 +33,7 @@ export class HighlightService {
     const result = await this.prismaService.highlight.create({
       data: {
         feed_id: find_feed.id,
-        user_email: 'siaksiak@jungle.com',
+        user_email: user_email,
         selection: selection,
         contents: contents,
       },
