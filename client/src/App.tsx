@@ -15,7 +15,6 @@ import AvailableBookmarks from "./components/Bookmarks/AvailableBookmarks";
 
 // user before login section
 import GoogleButton from "./GoogleButton";
-import SignUpButton from "./SignUpButton";
 // Recoil -> state management
 import { bookmarkState, feedState } from "./states/atom";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
@@ -23,6 +22,7 @@ import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 function App() {
   const bookmarkOn = useRecoilValue(bookmarkState);
   const [logged, setLog] = useState(false);
+  // const navigate = useNavigate();
 
   // 로그인 상태를 확인해서 로그인 상태면 전체적으로 뷰 변경
   const header = logged ? <LoginHeader /> : <Header />;
@@ -68,17 +68,18 @@ function App() {
         id: item.id,
         title: item.og_title,
         description: item.og_desc,
-        // highlight: [
-        //   "도커를 사용하면 기존에 개발자들이 환경 설정으로부터 겪던 고충을 말끔히 해결시켜 준다. 사실상 업계 표준이 되어가고 있으니 사용법을 꼭 익히면 좋을 것이다",
-        //   "이건 몰루",
-        //   "도커를 사용하면 기존에 개발자들이 환경 설정으로부터 겪던 고충을 말끔히 해결시켜 준다. 사실상 업계 표준이 되어가고 있으니 사용법을 꼭 익히면 좋을 것이다",
-        // ],
+        // highlight: item.highlight,
         Date: item.createdAt,
       };
       console.log(newfeed);
       // recoil feeds state에 피드 추가
       setFeeds((oldFeeds: any) => [...oldFeeds, newfeed]);
     });
+  };
+
+  const logout = () => {
+    removeCookie("logCookie");
+    // navigate('/');
   };
 
   return (
@@ -102,6 +103,7 @@ function App() {
           ) : (
             <AvailableBookmarks></AvailableBookmarks>
           )}
+          <button onClick={logout} className="justify-center bg-black" />
         </div>
       ) : (
         <div className="flex justify-center mt-10">

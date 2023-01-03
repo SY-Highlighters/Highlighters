@@ -3,6 +3,7 @@ import "./index.css";
 import App from "./App";
 import { RecoilRoot } from "recoil";
 import axios from "axios";
+import { CookiesProvider } from "react-cookie";
 axios.defaults.baseURL = "http://localhost/";
 axios.defaults.withCredentials = true;
 const root = ReactDOM.createRoot(
@@ -11,7 +12,9 @@ const root = ReactDOM.createRoot(
 root.render(
   // <React.StrictMode>
   <RecoilRoot>
-    <App />
+    <CookiesProvider>
+      <App />
+    </CookiesProvider>
   </RecoilRoot>
   // </React.StrictMode>
 );

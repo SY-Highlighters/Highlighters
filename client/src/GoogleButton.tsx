@@ -2,7 +2,6 @@ import { GoogleLogin } from "react-google-login";
 import { useEffect } from "react";
 import { gapi } from "gapi-script";
 import { useRef } from "react";
-import useScript from "./hooks/useScript";
 import axios from "axios";
 import { useCookies } from "react-cookie";
 
@@ -22,10 +21,10 @@ export default function GoogleButton() {
     gapi.load("client:auth2", start);
   }, []);
 
-  const onSuccess = (response: any) => {
+  const onSuccess = async(response: any) => {
     // 서버에 보내고
     console.log(response);
-    fetch("http://localhost:3001/api/auth/google", {
+    await fetch("http://localhost:3001/api/auth/google", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

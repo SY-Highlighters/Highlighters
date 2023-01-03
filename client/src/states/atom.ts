@@ -8,5 +8,12 @@ export const bookmarkState = atom<boolean>({
 export const feedState = atom<any>({
   key: "feedState",
   default: [
+    {
+      id: "1",
+      title: "더미1",
+      description: "더미1",
+      highlight: ["바보", "멍청이"],
+      Date: "2021-01-01",
+    },
   ],
 });
