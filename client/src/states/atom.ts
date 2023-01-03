@@ -7,5 +7,6 @@ export const bookmarkState = atom<boolean>({
 
 export const feedState = atom<any>({
   key: "feedState",
-  default: [],
+  default: [
+  ],
 });

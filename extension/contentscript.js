@@ -11289,15 +11289,17 @@ let highlightStr = "null";
   return jQuery;
 });
 
-//함수 정의
+//[코드시작]
 
 function onWindowReady() {
+  getHighlight(window.location.href);
+
   function highlight() {
     let range = selectionText.getRangeAt(0);
     var newNode = document.createElement("span");
     newNode.style.backgroundColor = "yellow";
     range.surroundContents(newNode);
-    postHighlight(range); // hilight post 요청
+    postHighlight(range, highlightStr); // hilight post 요청
     $("#btn").hide();
   }
   var penButton = `<input id="btn" type="image" src="https://images.vexels.com/media/users/3/206292/isolated/preview/0a3fddb8fdf07b7c1f42a371d420c3f2-yellow-highlighter-flat.png" 
@@ -11350,8 +11352,10 @@ function makeXPath(node, currentPath) {
       return "";
   }
 }
-//하이라이트 Post
-function postHighlight(range) {
+
+/*하이라이트 Post*/
+function postHighlight(range, highlightStr) {
+  console.log(range);
   const rangeobj = {
     startXPath: makeXPath(range.startContainer),
     startOffset: range.startOffset,
@@ -11362,7 +11366,11 @@ function postHighlight(range) {
   $.ajax({
     type: "POST",
     url: "http://localhost:3001/api/highlight/",
-    data: { feed_id: 1, user_email: "testuser3@test.com", selection: rangeobj },
+    data: {
+      url: range.startContainer.baseURI,
+      contents: highlightStr,
+      selection: rangeobj,
+    },
     success: function (response) {
       console.log(response);
     },
@@ -11370,38 +11378,41 @@ function postHighlight(range) {
 }
 
 // 하이라이트 Get
-function getHighlight() {
+function getHighlight(url) {
   $.ajax({
-    type: "GET",
-    url: "http://localhost:3001/api/feeds/test/json",
-    data: {},
+    type: "POST",
+    url: "http://localhost:3001/api/highlight/feed",
+    data: { url: url },
     success: function (response) {
-      if (response["result"] == "success") {
-        alert("GET 성공!");
-        var range = document.createRange();
-        range.setStart(
-          document.evaluate(
-            selectionDetails[0],
-            document,
-            null,
-            XPathResult.FIRST_ORDERED_NODE_TYPE,
-            null
-          ).singleNodeValue,
-          Number(selectionDetails[1])
-        );
-        range.setEnd(
-          document.evaluate(
-            selectionDetails[2],
-            document,
-            null,
-            XPathResult.FIRST_ORDERED_NODE_TYPE,
-            null
-          ).singleNodeValue,
-          Number(selectionDetails[3])
-        );
-      } else {
-        alert("서버 오류!");
+      for (const highlight of response) {
+        console.log(highlight.selection);
       }
+      // var selection = window.getSelection();
+      // selection.removeAllRanges();
+      // var range = document.createRange();
+      // range.setStart(
+      //   document.evaluate(
+      //     selectionDetails[0],
+      //     document,
+      //     null,
+      //     XPathResult.FIRST_ORDERED_NODE_TYPE,
+      //     null
+      //   ).singleNodeValue,
+      //   Number(selectionDetails[1])
+      // );
+      // range.setEnd(
+      //   document.evaluate(
+      //     selectionDetails[2],
+      //     document,
+      //     null,
+      //     XPathResult.FIRST_ORDERED_NODE_TYPE,
+      //     null
+      //   ).singleNodeValue,
+      //   Number(selectionDetails[3])
+      // );
+      // var newNode = document.createElement("span");
+      // newNode.style.backgroundColor = "yellow";
+      // range.surroundContents(newNode);
     },
   });
 }
@@ -11414,6 +11425,7 @@ function selectText() {
   } else if (document.selection) {
     sel = document.selection.createRange().text;
   }
+  console.log(sel);
   highlightStr = sel.toString(); //스트링으로 저장
   return sel;
 }
@@ -11437,6 +11449,10 @@ document.onmouseup = function (e) {
     let divLeft = e.clientX + 5;
     let divTop = e.clientY + 5;
 
+    // 스크롤 위치를 더한다.
+    divTop += window.pageYOffset;
+    divLeft += window.pageXOffset;
+
     // 레이어가 화면 크기를 벗어나면 위치를 바꾸어 배치한다.
     if (divLeft + oWidth > sWidth) divLeft -= oWidth;
     if (divTop + oHeight > sHeight) divTop -= oHeight;
@@ -11444,6 +11460,8 @@ document.onmouseup = function (e) {
     // 레이어 위치를 바꾸었더니 상단기준점(0,0) 밖으로 벗어난다면 상단기준점(0,0)에 배치하자.
     if (divLeft < 0) divLeft = 0;
     if (divTop < 0) divTop = 0;
+
+    // 레이어 위치를 변경한다.
     $("#btn")
       .css({
         top: divTop,
