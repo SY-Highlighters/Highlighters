@@ -11296,10 +11296,13 @@ function onWindowReady() {
 
   function highlight() {
     let range = selectionText.getRangeAt(0);
+    console.log(range);
+    // console.log(range.startOffset);
+    // console.log(range.endOffset);
+    postHighlight(range, highlightStr); // hilight post 요청
     var newNode = document.createElement("span");
     newNode.style.backgroundColor = "yellow";
     range.surroundContents(newNode);
-    postHighlight(range, highlightStr); // hilight post 요청
     $("#btn").hide();
   }
 
@@ -11356,13 +11359,13 @@ function makeXPath(node, currentPath) {
 
 /*하이라이트 Post*/
 function postHighlight(range, highlightStr) {
-  // console.log(range);
   const rangeobj = {
     startXPath: makeXPath(range.startContainer),
     startOffset: range.startOffset,
     endXPath: makeXPath(range.endContainer),
     endOffset: range.endOffset,
   };
+
 
   $.ajax({
     type: "POST",
@@ -11385,8 +11388,9 @@ function getHighlight(url) {
     url: "http://localhost:3001/api/highlight/feed",
     data: { url: url },
     success: function (response) {
+      // console.log(response);
       for (const highlight of response) {
-        // console.log(highlight.selection);
+        selection = highlight.selection;
       }
       // var selection = window.getSelection();
       // selection.removeAllRanges();
@@ -11437,13 +11441,13 @@ $(document).ready(onWindowReady);
 document.onmouseup = function (e) {
   let sel = selectText();
 
+  // selection 안에 텍스트가 포함되어 있으며,
   if (sel.toString() != "" && sel.toString() != highlightStr) {
     selectionText = sel;
     highlightStr = sel.toString();
-    console.log("hi");
-    console.log(sel.anchorOffset);
-    console.log(sel.focusOffset);
-    console.log(highlightStr);
+    // console.log(sel.anchorOffset);
+    // console.log(sel.focusOffset);
+    // console.log(highlightStr);
 
     let sWidth = window.innerWidth;
     let sHeight = window.innerHeight;
