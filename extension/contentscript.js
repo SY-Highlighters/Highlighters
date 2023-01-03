@@ -11302,6 +11302,7 @@ function onWindowReady() {
     postHighlight(range, highlightStr); // hilight post 요청
     $("#btn").hide();
   }
+
   var penButton = `<input id="btn" type="image" src="https://images.vexels.com/media/users/3/206292/isolated/preview/0a3fddb8fdf07b7c1f42a371d420c3f2-yellow-highlighter-flat.png" 
     hidden="true" height = "50" width="50">`;
 
@@ -11355,7 +11356,7 @@ function makeXPath(node, currentPath) {
 
 /*하이라이트 Post*/
 function postHighlight(range, highlightStr) {
-  console.log(range);
+  // console.log(range);
   const rangeobj = {
     startXPath: makeXPath(range.startContainer),
     startOffset: range.startOffset,
@@ -11372,7 +11373,7 @@ function postHighlight(range, highlightStr) {
       selection: rangeobj,
     },
     success: function (response) {
-      console.log(response);
+      // console.log(response);
     },
   });
 }
@@ -11385,7 +11386,7 @@ function getHighlight(url) {
     data: { url: url },
     success: function (response) {
       for (const highlight of response) {
-        console.log(highlight.selection);
+        // console.log(highlight.selection);
       }
       // var selection = window.getSelection();
       // selection.removeAllRanges();
@@ -11425,8 +11426,6 @@ function selectText() {
   } else if (document.selection) {
     sel = document.selection.createRange().text;
   }
-  console.log(sel);
-  highlightStr = sel.toString(); //스트링으로 저장
   return sel;
 }
 
@@ -11438,8 +11437,13 @@ $(document).ready(onWindowReady);
 document.onmouseup = function (e) {
   let sel = selectText();
 
-  if (highlightStr != "") {
+  if (sel.toString() != "" && sel.toString() != highlightStr) {
     selectionText = sel;
+    highlightStr = sel.toString();
+    console.log("hi");
+    console.log(sel.anchorOffset);
+    console.log(sel.focusOffset);
+    console.log(highlightStr);
 
     let sWidth = window.innerWidth;
     let sHeight = window.innerHeight;
