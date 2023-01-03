@@ -3,10 +3,10 @@ import { IsNotEmpty } from 'class-validator';
 
 export class CreateHighlightDto {
   @IsNotEmpty()
-  feed_id: number;
+  url: string;
 
   @IsNotEmpty()
-  user_email: string;
+  contents: string;
 
   @IsNotEmpty()
   selection: Prisma.JsonArray;

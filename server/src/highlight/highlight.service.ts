@@ -3,21 +3,38 @@ import { PrismaService } from 'src/repository/prisma.service';
 import { Highlight } from '.prisma/client';
 import { CreateHighlightDto } from './dto/create-highlight.dto';
 import { UpdateHighlightDto } from './dto/update-highlight.dto';
+import { FeedService } from 'src/feed/feed.service';
+import { CreateFeedDto } from 'src/feed/dto/feed.dto';
 
 @Injectable()
 export class HighlightService {
-  constructor(private readonly prismaService: PrismaService) {}
+  constructor(
+    private readonly prismaService: PrismaService,
+    private readonly feedService: FeedService,
+  ) {}
 
   async createHighlight(
     createHighlightDto: CreateHighlightDto,
   ): Promise<Highlight> {
-    const { feed_id, user_email, selection } = createHighlightDto;
+    const { url, contents, selection } = createHighlightDto;
+
+    let find_feed = await this.feedService.findFeedByURL(url);
+
+    if (!find_feed) {
+      const newFeedDto = new CreateFeedDto();
+      newFeedDto.user_email = 'siaksiak@jungle.com';
+      newFeedDto.group_id = 1;
+      newFeedDto.url = url;
+
+      find_feed = await this.feedService.createFeed(newFeedDto);
+    }
+
     const result = await this.prismaService.highlight.create({
       data: {
-        feed_id: +feed_id,
-        user_email: user_email,
+        feed_id: find_feed.id,
+        user_email: 'siaksiak@jungle.com',
         selection: selection,
-        contents: 'Hello There',
+        contents: contents,
       },
     });
 
