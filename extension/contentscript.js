@@ -11289,17 +11289,13 @@ let highlightStr = "null";
   return jQuery;
 });
 
-//[코드시작]
-
+/* 코드시작 */
 function onWindowReady() {
   getHighlight(window.location.href);
 
   function highlight() {
     let range = selectionText.getRangeAt(0);
-    console.log(range);
-    // console.log(range.startOffset);
-    // console.log(range.endOffset);
-    postHighlight(range, highlightStr); // hilight post 요청
+    postHighlight(range, highlightStr); // highlight post 요청
     var newNode = document.createElement("span");
     newNode.style.backgroundColor = "yellow";
     range.surroundContents(newNode);
@@ -11314,6 +11310,7 @@ function onWindowReady() {
 
   document.getElementById("btn").addEventListener("click", highlight);
 }
+
 
 function makeXPath(node, currentPath) {
   /* this should suffice in HTML documents for selectable nodes, XML with namespaces needs more code */
@@ -11357,7 +11354,7 @@ function makeXPath(node, currentPath) {
   }
 }
 
-/*하이라이트 Post*/
+/* 하이라이트 Post */
 function postHighlight(range, highlightStr) {
   const rangeobj = {
     startXPath: makeXPath(range.startContainer),
@@ -11366,6 +11363,7 @@ function postHighlight(range, highlightStr) {
     endOffset: range.endOffset,
   };
 
+  console.log(rangeobj);
 
   $.ajax({
     type: "POST",
@@ -11376,21 +11374,21 @@ function postHighlight(range, highlightStr) {
       selection: rangeobj,
     },
     success: function (response) {
-      // console.log(response);
+      console.log(response);
     },
   });
 }
 
-// 하이라이트 Get
+/* 하이라이트 Get */
 function getHighlight(url) {
   $.ajax({
     type: "POST",
     url: "http://localhost:3001/api/highlight/feed",
     data: { url: url },
     success: function (response) {
-      // console.log(response);
+      console.log(response);
       for (const highlight of response) {
-        selection = highlight.selection;
+        let highlightSel = highlight.selection;
       }
       // var selection = window.getSelection();
       // selection.removeAllRanges();
@@ -11433,21 +11431,17 @@ function selectText() {
   return sel;
 }
 
-// contentscript 시작
 
+/* contentscript 시작 */
 $(document).ready(onWindowReady);
 
 // 드래그하고 마우스를 떼면 selection 객체 생성
 document.onmouseup = function (e) {
   let sel = selectText();
 
-  // selection 안에 텍스트가 포함되어 있으며,
   if (sel.toString() != "" && sel.toString() != highlightStr) {
     selectionText = sel;
     highlightStr = sel.toString();
-    // console.log(sel.anchorOffset);
-    // console.log(sel.focusOffset);
-    // console.log(highlightStr);
 
     let sWidth = window.innerWidth;
     let sHeight = window.innerHeight;
