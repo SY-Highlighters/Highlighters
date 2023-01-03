@@ -15,12 +15,12 @@ const FeedItem = (props: any) => {
   // 하이라이트별 색상 지정해줘야함. -> 수정해야함
   let font_color = "text-sky-500";
 
-  const highlights = props.text.map((hl: string) => (
-    <li className={font_color}>{hl}</li>
-  ));
+  // const highlights = props.text.map((hl: string) => (
+  //   <li className={font_color}>{hl}</li>
+  // ));
 
   return (
-    // <Fragment>
+    <Fragment>
       <li className="py-5">
         <div className="overflow-hidden bg-white shadow sm:rounded-lg">
           <div className="flex flex-row-reverse items-center px-3 mt-2 text-sm text-gray-500">
@@ -42,9 +42,9 @@ const FeedItem = (props: any) => {
             <span className="text-sm font-medium bg-sky-500"> {props.text}</span> 
           </p> */}
             {/* 다수의 하이라이팅 표시 -> 수정해야할듯?*/}
-            <div>
+            {/* <div>
               <ul>{highlights}</ul>
-            </div>
+            </div> */}
             {/* 태그 */}
             <div className="flex flex-wrap mt-2">
               <span className="inline-flex items-center px-3 py-0.5 rounded-full text-sm font-medium bg-sky-100 text-sky-800">
@@ -77,7 +77,7 @@ const FeedItem = (props: any) => {
           </div>
         </div>
       </li>
-    // </Fragment>
+    </Fragment>
   );
 };
 
