@@ -1,5 +1,6 @@
 let selectionText;
 let highlightStr = "null";
+let rangeobject;
 /*!
  * jQuery JavaScript Library v3.6.3
  * https://jquery.com/
@@ -11291,15 +11292,15 @@ let highlightStr = "null";
 
 /* 코드시작 */
 function onWindowReady() {
-  getHighlight(window.location.href);
+  // getHighlight(window.location.href);
 
   function highlight() {
     let range = selectionText.getRangeAt(0);
     postHighlight(range, highlightStr); // highlight post 요청
-    var newNode = document.createElement("span");
-    newNode.style.backgroundColor = "yellow";
-    range.surroundContents(newNode);
-    $("#btn").hide();
+    // var newNode = document.createElement("span");
+    // newNode.style.backgroundColor = "yellow";
+    // range.surroundContents(newNode);
+    // $("#btn").hide();
   }
 
   var penButton = `<input id="btn" type="image" src="https://images.vexels.com/media/users/3/206292/isolated/preview/0a3fddb8fdf07b7c1f42a371d420c3f2-yellow-highlighter-flat.png" 
@@ -11362,61 +11363,69 @@ function postHighlight(range, highlightStr) {
     endOffset: range.endOffset,
   };
 
-  console.log(rangeobj);
+  rangeobject = rangeobj;
+  // console.log(rangeobj);
 
-  $.ajax({
-    type: "POST",
-    url: "http://localhost:3001/api/highlight/",
-    data: {
-      url: range.startContainer.baseURI,
-      contents: highlightStr,
-      selection: rangeobj,
-    },
-    success: function (response) {
-      console.log(response);
-    },
-  });
+  // $.ajax({
+  //   type: "POST",
+  //   url: "http://localhost:3001/api/highlight/",
+  //   data: {
+  //     url: range.startContainer.baseURI,
+  //     contents: highlightStr,
+  //     selection: rangeobj,
+  //   },
+  //   success: function (response) {
+  //     console.log(response);
+  //   },
+  // });
+
+  getHighlight();
 }
 
 /* 하이라이트 Get */
 function getHighlight(url) {
-  $.ajax({
-    type: "POST",
-    url: "http://localhost:3001/api/highlight/feed",
-    data: { url: url },
-    success: function (response) {
-      console.log(response);
-      for (const highlight of response) {
-        let highlightSel = highlight.selection;
-      }
-      // var selection = window.getSelection();
-      // selection.removeAllRanges();
-      // var range = document.createRange();
-      // range.setStart(
-      //   document.evaluate(
-      //     selectionDetails[0],
-      //     document,
-      //     null,
-      //     XPathResult.FIRST_ORDERED_NODE_TYPE,
-      //     null
-      //   ).singleNodeValue,
-      //   Number(selectionDetails[1])
-      // );
-      // range.setEnd(
-      //   document.evaluate(
-      //     selectionDetails[2],
-      //     document,
-      //     null,
-      //     XPathResult.FIRST_ORDERED_NODE_TYPE,
-      //     null
-      //   ).singleNodeValue,
-      //   Number(selectionDetails[3])
-      // );
-      // var newNode = document.createElement("span");
-      // newNode.style.backgroundColor = "yellow";
-      // range.surroundContents(newNode);
-    },
-  });
+  // $.ajax({
+  //   type: "POST",
+  //   url: "http://localhost:3001/api/highlight/feed",
+  //   data: { url: url },
+  //   success: function (response) {
+  //     for (const highlight of response) {
+  //       let selection = highlight.selection;
+
+  let selection = rangeobject;
+  console.log(rangeobject);
+
+  let range = document.createRange();
+
+  // 시작 노드 복원
+  let startNode = document.evaluate(
+    selection.startXPath,
+    document,
+    null,
+    XPathResult.FIRST_ORDERED_NODE_TYPE,
+    null
+  ).singleNodeValue;
+  let startOff = Number(selection.startOffset);
+
+  // 종료 노드 복원
+  let endNode = document.evaluate(
+    selection.endXPath,
+    document,
+    null,
+    XPathResult.FIRST_ORDERED_NODE_TYPE,
+    null
+  ).singleNodeValue;
+  let endOff = Number(selection.endOffset);
+
+  // 복원한 시작노드, 종료 노드 기준으로 range 복원
+  range.setStart(startNode, startOff);
+  range.setEnd(endNode, endOff);
+
+  console.log(range);
+
+  // var newNode = document.createElement("span");
+  // newNode.style.backgroundColor = "yellow";
+  // range.surroundContents(newNode);
 }
 
 // select
@@ -11439,6 +11448,7 @@ document.onmouseup = function (e) {
 
   if (sel.toString() != "" && sel.toString() != highlightStr) {
     selectionText = sel;
+    console.log(selectionText);
     highlightStr = sel.toString();
 
     // 드래그한 영역의 위치를 가져온다.
