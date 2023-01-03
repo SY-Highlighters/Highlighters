@@ -2,6 +2,7 @@
 import { Fragment, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useCookies } from "react-cookie";
+import axios from "axios";
 // Layout
 //  header section
 import Header from "./components/Layout/Header";
@@ -14,7 +15,6 @@ import AvailableBookmarks from "./components/Bookmarks/AvailableBookmarks";
 
 // user before login section
 import GoogleButton from "./GoogleButton";
-import SignUpButton from "./SignUpButton";
 // Recoil -> state management
 import { bookmarkState, feedState } from "./states/atom";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
@@ -22,26 +22,39 @@ import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 function App() {
   const bookmarkOn = useRecoilValue(bookmarkState);
   const [logged, setLog] = useState(false);
+  // const navigate = useNavigate();
 
   // 로그인 상태를 확인해서 로그인 상태면 전체적으로 뷰 변경
   const header = logged ? <LoginHeader /> : <Header />;
   // const [feeds, setFeeds] = useRecoilState(feedState);
   const setFeeds = useSetRecoilState(feedState);
-  const [cookies, setCookie, removeCookie] = useCookies(["cookie_name"]);
+  const [cookies, setCookie, removeCookie] = useCookies(["logCookie"]);
+  console.log(cookies);
   // 파람형식
   const fetchda = 1;
   // 바디형식
   // const fetchda = JSON.stringify({
   //   'group_id': 1
   // })
-  
+
   // 렌더링된 후 바로 실행
   useEffect(() => {
     async function fetchData() {
-      const response = await fetch(
-        `http://localhost:3001/api/feed/group/${fetchda}`
-      );
-      const data = await response.json();
+      // const response = await fetgch(
+      //   `http://localhost:3001/api/feed/group/${fetchda}`
+      // );
+      // const data = await response.json();
+      // console.log(data);
+      const response = await axios({
+        method: "get",
+        url: `http://localhost:3001/api/feed/group/${fetchda}`,
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${cookies.logCookie}`,
+        },
+      });
+
+      const data = response.data;
       console.log(data);
       feedadd(data);
     }
@@ -53,13 +66,11 @@ function App() {
     data.map((item: any) => {
       const newfeed = {
         id: item.id,
+        url: item.url,
+        og_image: item.og_image,
         title: item.og_title,
         description: item.og_desc,
-        // highlight: [
-        //   "도커를 사용하면 기존에 개발자들이 환경 설정으로부터 겪던 고충을 말끔히 해결시켜 준다. 사실상 업계 표준이 되어가고 있으니 사용법을 꼭 익히면 좋을 것이다",
-        //   "이건 몰루",
-        //   "도커를 사용하면 기존에 개발자들이 환경 설정으로부터 겪던 고충을 말끔히 해결시켜 준다. 사실상 업계 표준이 되어가고 있으니 사용법을 꼭 익히면 좋을 것이다",
-        // ],
+        // highlight: item.highlight,
         Date: item.createdAt,
       };
       console.log(newfeed);
@@ -68,6 +79,10 @@ function App() {
     });
   };
 
+  const logout = () => {
+    removeCookie("logCookie");
+    // navigate('/');
+  };
 
   return (
     <Fragment>
@@ -82,7 +97,7 @@ function App() {
        */}
       {/* 로그인 후 메인페이지 */}
 
-      {logged ? (
+      {cookies.logCookie ? (
         <div className="grid gap-4 xl:px-40 lg:grid-cols-2 xl:grid-cols-3 sm:grid-cols-1">
           <User></User>
           {bookmarkOn ? (
@@ -90,6 +105,7 @@ function App() {
           ) : (
             <AvailableBookmarks></AvailableBookmarks>
           )}
+          <button onClick={logout} className="justify-center bg-black" />
         </div>
       ) : (
         <div className="flex justify-center mt-10">
@@ -98,7 +114,7 @@ function App() {
               회원가입해서 그룹을 만드세요 !
             </h1>
           </div>
-            {/* SignUpButton h1 아래로 보내기 */}
+          {/* SignUpButton h1 아래로 보내기 */}
           <GoogleButton></GoogleButton>
           {/* <SignUpButton></SignUpButton> */}
         </div>
