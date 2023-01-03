@@ -20,13 +20,13 @@ export default function GoogleButton() {
   const onSuccess = (response:any) => {
     // 서버에 보내기
     console.log(response);
-      fetch("http://localhost:3001/api/auth/post", {
+      fetch("http://localhost:3001/api/auth/google", {
           method: "POST",
           headers: {
               "Content-Type": "application/json",
           },
           body: JSON.stringify({
-              all: response
+              userProfile: response.profileObj
           }),
       })    
         
