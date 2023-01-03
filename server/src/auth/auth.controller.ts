@@ -12,24 +12,24 @@ import {
 export class AuthController {
   constructor(private authService: AuthService) {}
 
-//   // 구글 로그인 메인 화면
-//   @Get()
-//   @UseGuards(AuthGuard('google'))
-//   async googleAuth(@Req() req) {
-//     console.log(`req : ${req}`);
-//     return;
-//   }
+  //   // 구글 로그인 메인 화면
+  //   @Get()
+  //   @UseGuards(AuthGuard('google'))
+  //   async googleAuth(@Req() req) {
+  //     console.log(`req : ${req}`);
+  //     return;
+  //   }
 
-//   // 구글 로그인 콜백
-//   @Get('/google/callback')
-//   @UseGuards(AuthGuard('google'))
-//   googleAuthRedirect(@Req() req) {
-//     return this.authService.googleLogin(req);
-//   }
+  //   // 구글 로그인 콜백
+  //   @Get('/google/callback')
+  //   @UseGuards(AuthGuard('google'))
+  //   googleAuthRedirect(@Req() req) {
+  //     return this.authService.googleLogin(req);
+  //   }
 
   @Post('/google')
   async validateGoogleToken(@Body() json: JSON) {
-    return this.authService.googleLogin(json)
+    return this.authService.googleLogin(json);
   }
 
   @Post('/signup')
