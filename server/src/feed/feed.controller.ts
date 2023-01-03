@@ -12,6 +12,11 @@ import { GetUser } from 'src/auth/get-user.decorator';
 export class FeedController {
   constructor(private readonly feedService: FeedService) {}
 
+  @Get('test')
+  test(@GetUser() user: User) {
+    console.log('user', user);
+  }
+
   @Get('test/:id')
   async testfetchAllFeeds(
     @Body() body: TestFeedRequestDto,
@@ -40,10 +45,5 @@ export class FeedController {
   @Delete('delete/:id')
   async deleteFeedById(@Param('id') id: number): Promise<number> {
     return this.feedService.deleteFeedByFeedId(id);
-  }
-
-  @Get('test')
-  test(@GetUser() user: User) {
-    console.log('user', user)
   }
 }

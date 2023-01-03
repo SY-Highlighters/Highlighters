@@ -7,6 +7,7 @@ import { PrismaModule } from './repository/prisma.module';
 import { AuthModule } from './auth/auth.module';
 import { HighlightModule } from './highlight/highlight.module';
 import { LoggerMiddleware } from './common/middlewares/logger.middleware';
+import { MemberModule } from './member/member.module';
 
 @Module({
   imports: [
@@ -15,6 +16,7 @@ import { LoggerMiddleware } from './common/middlewares/logger.middleware';
     ConfigModule.forRoot({ isGlobal: true }),
     HighlightModule,
     AuthModule,
+    MemberModule,
   ],
   controllers: [AppController],
   providers: [AppService],
