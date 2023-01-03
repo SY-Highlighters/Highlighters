@@ -30,10 +30,10 @@ export class HighlightController {
     return this.highlightService.findHighlight(id);
   }
 
-  // Read Many by Feed_ID
-  @Get('/feed/:id')
-  async findHighlightAll(@Param('id') feed_id: number): Promise<Highlight[]> {
-    return this.highlightService.findAllHighlightInFeed(feed_id);
+  // Read Many by URL
+  @Post('/feed')
+  async findHighlightAll(@Body('url') url: string): Promise<Highlight[]> {
+    return this.highlightService.findAllHighlightInFeed(url);
   }
 
   // Update

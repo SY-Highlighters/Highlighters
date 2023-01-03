@@ -24,14 +24,8 @@ export class FeedService {
   }
 
   async findFeedByURL(url: string): Promise<Feed> {
-    return await this.prismaService.feed.findFirst({
+    const result = await this.prismaService.feed.findFirst({
       where: { url: url },
-    });
-  }
-
-  async deleteFeedById(id: number): Promise<Feed> {
-    const result = await this.prismaService.feed.delete({
-      where: { id },
     });
 
     return result;
@@ -65,5 +59,13 @@ export class FeedService {
     }
 
     return feedswithOg;
+  }
+
+  async deleteFeedById(id: number): Promise<Feed> {
+    const result = await this.prismaService.feed.delete({
+      where: { id },
+    });
+
+    return result;
   }
 }
