@@ -2,6 +2,7 @@
 import { Fragment, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useCookies } from "react-cookie";
+import axios from "axios";
 // Layout
 //  header section
 import Header from "./components/Layout/Header";
@@ -27,21 +28,33 @@ function App() {
   const header = logged ? <LoginHeader /> : <Header />;
   // const [feeds, setFeeds] = useRecoilState(feedState);
   const setFeeds = useSetRecoilState(feedState);
-  const [cookies, setCookie, removeCookie] = useCookies(["cookie_name"]);
+  const [cookies, setCookie, removeCookie] = useCookies(["logCookie"]);
+  console.log(cookies);
   // 파람형식
   const fetchda = 1;
   // 바디형식
   // const fetchda = JSON.stringify({
   //   'group_id': 1
   // })
-  
+
   // 렌더링된 후 바로 실행
   useEffect(() => {
     async function fetchData() {
-      const response = await fetch(
-        `http://localhost:3001/api/feed/group/${fetchda}`
-      );
-      const data = await response.json();
+      // const response = await fetgch(
+      //   `http://localhost:3001/api/feed/group/${fetchda}`
+      // );
+      // const data = await response.json();
+      // console.log(data);
+      const response = await axios({
+        method: "get",
+        url: `http://localhost:3001/api/feed/group/${fetchda}`,
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${cookies.logCookie}`,
+        },
+      });
+
+      const data = response.data;
       console.log(data);
       feedadd(data);
     }
@@ -68,7 +81,6 @@ function App() {
     });
   };
 
-
   return (
     <Fragment>
       {/* {bookmarkState && <Cart onClose={hideCartHandler} />} */}
@@ -82,7 +94,7 @@ function App() {
        */}
       {/* 로그인 후 메인페이지 */}
 
-      {logged ? (
+      {cookies.logCookie ? (
         <div className="grid gap-4 xl:px-40 lg:grid-cols-2 xl:grid-cols-3 sm:grid-cols-1">
           <User></User>
           {bookmarkOn ? (
@@ -98,7 +110,7 @@ function App() {
               회원가입해서 그룹을 만드세요 !
             </h1>
           </div>
-            {/* SignUpButton h1 아래로 보내기 */}
+          {/* SignUpButton h1 아래로 보내기 */}
           <GoogleButton></GoogleButton>
           {/* <SignUpButton></SignUpButton> */}
         </div>

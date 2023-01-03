@@ -3,9 +3,14 @@ import { useEffect } from "react";
 import { gapi } from "gapi-script";
 import { useRef } from "react";
 import useScript from "./hooks/useScript";
+import axios from "axios";
+import { useCookies } from "react-cookie";
+
+// clientId
 const clientId =
   "1051615347268-qio4ne1nai8flq7felb5h0relc1lcp0b.apps.googleusercontent.com";
 export default function GoogleButton() {
+  const [cookies, setCookie, removeCookie] = useCookies(["logCookie"]);
   useEffect(() => {
     function start() {
       gapi.client.init({
@@ -20,7 +25,7 @@ export default function GoogleButton() {
   const onSuccess = (response: any) => {
     // 서버에 보내고
     console.log(response);
-    const res = fetch("http://localhost:3001/api/auth/google", {
+    fetch("http://localhost:3001/api/auth/google", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -31,9 +36,22 @@ export default function GoogleButton() {
     })
       .then((res) => res.json())
       .then((data) => {
-        console.log(data);
+        console.log(data.accessToken);
+          if (data) {
+              axios.defaults.headers.common["Authorization"] = `Bearer ${data.accessToken}`;
+              handleCookie(data.accessToken);
+          }
+          else {
+            alert("로그인 실패");
+          }
       });
   };
+    
+    const handleCookie = (data: any) => {
+        const expireDate = new Date();
+        expireDate.setMinutes(expireDate.getMinutes() + 10);
+        setCookie("logCookie", data, { path: "/", expires: expireDate });
+    }
   const onFailure = (response: any) => {
     console.log(response);
   };
