@@ -11311,7 +11311,6 @@ function onWindowReady() {
   document.getElementById("btn").addEventListener("click", highlight);
 }
 
-
 function makeXPath(node, currentPath) {
   /* this should suffice in HTML documents for selectable nodes, XML with namespaces needs more code */
   currentPath = currentPath || "";
@@ -11431,7 +11430,6 @@ function selectText() {
   return sel;
 }
 
-
 /* contentscript 시작 */
 $(document).ready(onWindowReady);
 
@@ -11443,25 +11441,17 @@ document.onmouseup = function (e) {
     selectionText = sel;
     highlightStr = sel.toString();
 
-    let sWidth = window.innerWidth;
-    let sHeight = window.innerHeight;
-    let oWidth = $("#btn").width();
-    let oHeight = $("#btn").height();
+    // 드래그한 영역의 위치를 가져온다.
+    var divTop = e.pageY + 10;
+    var divLeft = e.pageX + 10;
 
-    let divLeft = e.clientX + 5;
-    let divTop = e.clientY + 5;
-
-    // 스크롤 위치를 더한다.
-    divTop += window.pageYOffset;
-    divLeft += window.pageXOffset;
-
-    // 레이어가 화면 크기를 벗어나면 위치를 바꾸어 배치한다.
-    if (divLeft + oWidth > sWidth) divLeft -= oWidth;
-    if (divTop + oHeight > sHeight) divTop -= oHeight;
-
-    // 레이어 위치를 바꾸었더니 상단기준점(0,0) 밖으로 벗어난다면 상단기준점(0,0)에 배치하자.
-    if (divLeft < 0) divLeft = 0;
-    if (divTop < 0) divTop = 0;
+    // 드래그한 영역의 위치에 레이어를 띄운다.
+    // 레이어의 위치를 변경하고 싶으면 위치값을 수정한다.
+    // 레이어가 화면을 벗어나면 안되므로 위치값을 수정한다.
+    if (divLeft + $("#btn").width() > $(document).width())
+      divLeft = $(document).width() - $("#btn").width();
+    if (divTop + $("#btn").height() > $(document).height())
+      divTop = $(document).height() - $("#btn").height();
 
     // 레이어 위치를 변경한다.
     $("#btn")
