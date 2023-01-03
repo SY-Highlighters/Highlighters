@@ -3,10 +3,18 @@ import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/repository/prisma.service';
 import { getUrlMeta } from 'src/util/geturlmeta';
 import { CreateFeedDto } from './dto/feed.dto';
+import { HighlightService } from 'src/highlight/highlight.service';
+import { Inject } from '@nestjs/common/decorators';
+import { forwardRef } from '@nestjs/common/utils';
 
 @Injectable()
 export class FeedService {
-  constructor(private readonly prismaService: PrismaService) {}
+  constructor(
+    private readonly prismaService: PrismaService,
+
+    @Inject(forwardRef(() => HighlightService))
+    private readonly highlightService: HighlightService,
+  ) {}
 
   async createFeed(createFeedDto: CreateFeedDto): Promise<Feed> {
     const { user_email, group_id, url } = createFeedDto;
@@ -21,7 +29,6 @@ export class FeedService {
     return await this.prismaService.feed.findUnique({
       where: { id },
     });
-    
   }
 
   async findFeedByURL(url: string): Promise<Feed> {
@@ -47,10 +54,15 @@ export class FeedService {
     // http meta data 가져오기
     for (const feed of feeds) {
       // url이 있으면 메타데이터 가져오기
+      const highlights = await this.highlightService.findAllHighlightById(
+        feed.id,
+      );
+
       if (feed.url) {
         const meta = await getUrlMeta(feed.url);
         const feedwithOg = {
           ...feed,
+          highlight: highlights,
           og_title: meta.title,
           og_desc: meta.desc,
           og_image: meta.image,

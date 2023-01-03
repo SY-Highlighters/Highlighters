@@ -11292,6 +11292,13 @@ let highlightStr = "null";
 
 /* 코드시작 */
 function onWindowReady() {
+  // 토큰이 없으면 한번만 리다이렉트
+  // if (localStorage.getItem("token") == null) {
+  //   if (window.location.href != "https://www.naver.com/") {
+  //     window.location.href = "https://www.naver.com/";
+  //   }
+  // }
+
   getHighlight(window.location.href);
 
   function highlight() {
