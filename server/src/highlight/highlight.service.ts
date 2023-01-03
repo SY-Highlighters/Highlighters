@@ -14,6 +14,7 @@ export class HighlightService {
   ) {}
 
   async createHighlight(
+    user_email: string,
     createHighlightDto: CreateHighlightDto,
   ): Promise<Highlight> {
     const { url, contents, selection } = createHighlightDto;
@@ -22,7 +23,7 @@ export class HighlightService {
 
     if (!find_feed) {
       const newFeedDto = new CreateFeedDto();
-      newFeedDto.user_email = 'siaksiak@jungle.com';
+      newFeedDto.user_email = user_email;
       newFeedDto.group_id = 1;
       newFeedDto.url = url;
 

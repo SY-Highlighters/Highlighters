@@ -8,10 +8,7 @@ import { AuthService } from './auth.service';
 @Injectable() // 다른 곳에서도 사용하기 위함
 export class JwtStrategy extends PassportStrategy(Strategy) {
   // jwt strategy 사용
-  constructor(
-    private readonly prismaService: PrismaService,
-    private readonly authService: AuthService,
-  ) {
+  constructor(private readonly prismaService: PrismaService) {
     super({
       secretOrKey: process.env.JWT_SECRET,
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
