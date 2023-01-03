@@ -55,11 +55,11 @@ export class AuthService {
   }
 
   // 구글 로그인
-  async googleLogin(req) {
-    if(!req.user) {
+  async googleLogin(json) {
+    if(!json) {
         return 'No user from google'
     }
-    const user_email = req.user.email;
+    const user_email = json.userProfile.email;
     let find_user = await this.prismaService.user.findUnique({
         where: { email: user_email }
     })
@@ -69,7 +69,7 @@ export class AuthService {
         const new_signup_dto = new AuthSignupCredentialsDto();
         new_signup_dto.email = user_email;
         new_signup_dto.password = "random_password";
-        new_signup_dto.nickname = req.user.firstName;
+        new_signup_dto.nickname = json.userProfile.firstName;
     
         find_user = await this.signUp(new_signup_dto)
     }
