@@ -21,6 +21,7 @@ export class FeedService {
     return await this.prismaService.feed.findUnique({
       where: { id },
     });
+    
   }
 
   async findFeedByURL(url: string): Promise<Feed> {
