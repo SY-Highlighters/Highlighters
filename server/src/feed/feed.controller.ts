@@ -10,22 +10,9 @@ import { CreateFeedDto } from './dto/feed.dto';
 export class FeedController {
   constructor(private readonly feedService: FeedService) {}
 
-<<<<<<< HEAD
-  @Get('test')
-  test(@GetUser() user: User) {
-    console.log('user', user);
-  }
-
-  @Get('test/:id')
-  async testfetchAllFeeds(
-    @Body() body: TestFeedRequestDto,
-  ): Promise<TestFeed[]> {
-    return this.feedService.testfetchAllFeeds(body);
-=======
   @Post('/')
   async createFeed(@Body() createFeedDto: CreateFeedDto): Promise<Feed> {
     return this.feedService.createFeed(createFeedDto);
->>>>>>> 26550f0 (feat : highlighter->contents, feed CRUD)
   }
 
   @Get('/:id')
@@ -38,15 +25,8 @@ export class FeedController {
     return this.feedService.findGroupFeedWithOg(id);
   }
 
-<<<<<<< HEAD
-  // 피드아이디에 따른 피드 삭제
-  @Delete('delete/:id')
-  async deleteFeedById(@Param('id') id: number): Promise<number> {
-    return this.feedService.deleteFeedByFeedId(id);
-=======
   @Delete('/:id')
   async deleteFeedById(@Param('id') id: number): Promise<Feed> {
     return this.feedService.deleteFeedById(id);
->>>>>>> 26550f0 (feat : highlighter->contents, feed CRUD)
   }
 }
