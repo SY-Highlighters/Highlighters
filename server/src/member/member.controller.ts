@@ -4,6 +4,7 @@ import {
   UseGuards,
   UseInterceptors,
   UseFilters,
+  Get,
 } from '@nestjs/common';
 import { Body, Post } from '@nestjs/common/decorators';
 import { AuthGuard } from '@nestjs/passport';
@@ -12,9 +13,8 @@ import { User } from '@prisma/client';
 import { SuccessInterceptor } from 'src/common/interceptors/success.interceptors';
 import { HttpExceptionFilter } from 'src/common/exceptions/http-exception.filter';
 import { CreateGroupDto } from './dto/group.dto';
-import { UpdateUserDto } from 'src/auth/dto/auth.credential.dto';
 
-@Controller('api/member')
+@Controller('api/group')
 @UseInterceptors(SuccessInterceptor)
 @UseFilters(HttpExceptionFilter)
 @UseGuards(AuthGuard())
@@ -36,8 +36,8 @@ export class MemberController {
   @Post('/join')
   async joinGroup(
     @GetUser() user: User,
-    @Body() updateUserDto: UpdateUserDto,
+    @Body('id') id: number,
   ): Promise<number> {
-    return this.memberService.joinGroup(user.email, updateUserDto);
+    return this.memberService.joinGroup(user.email, id);
   }
 }
