@@ -16,11 +16,20 @@ import AvailableBookmarks from "./components/Bookmarks/AvailableBookmarks";
 // user before login section
 // import GoogleButton from "./GoogleButton";
 // Recoil -> state management
-import { bookmarkState, feedState, logModalVisble } from "./states/atom";
-import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
+import {
+  bookmarkState,
+  feedState,
+  logModalVisble,
+  sighUpCheck,
+} from "./states/atom";
+import {
+  useRecoilState,
+  useRecoilValue,
+  useSetRecoilState,
+  useResetRecoilState,
+} from "recoil";
 import LoginModal from "./LoginModal";
 import { log } from "console";
-import GoogleButtonBack from "./GoogleButtonBack";
 
 function App() {
   const bookmarkOn = useRecoilValue(bookmarkState);
@@ -33,7 +42,7 @@ function App() {
   // const [feeds, setFeeds] = useRecoilState(feedState);
   const setFeeds = useSetRecoilState(feedState);
   const [cookies, setCookie, removeCookie] = useCookies(["logCookie"]);
-  
+
   // 파람형식
   const fetchda = 1;
   // 바디형식
@@ -85,7 +94,7 @@ function App() {
   const loginModalHandler = () => {
     setLoginModalState(!loginModalState);
   };
-  
+
   return (
     <Fragment>
       {/* {bookmarkState && <Cart onClose={hideCartHandler} />} */}
@@ -121,9 +130,8 @@ function App() {
           </div>
           {/* SignUpButton h1 아래로 보내기 */}
           {/* <GoogleOAuthProvider clientId={clientId}> */}
-          <GoogleButtonBack></GoogleButtonBack>
-          {/* {loginModalState && <LoginModal></LoginModal>}
-           */}
+          {/* <GoogleButtonBack></GoogleButtonBack> */}
+          {loginModalState && <LoginModal></LoginModal>}
           {/* </GoogleOAuthProvider> */}
           {/* <SignUpButton></SignUpButton> */}
         </div>

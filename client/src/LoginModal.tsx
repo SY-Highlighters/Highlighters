@@ -1,16 +1,21 @@
 // tailwind login modal
 // https://tailwindcomponents.com/component/login-modal
 // https://tailwindcomponents.com/component/login-modal
-import { useRecoilValue, useSetRecoilState } from "recoil";
+import {
+  useRecoilValue,
+  useSetRecoilState,
+  useRecoilState,
+  useResetRecoilState,
+} from "recoil";
 import { logModalVisble, sighUpCheck } from "./states/atom";
 import SignIn from "./SignIn";
 import SignUp from "./SignUp";
 function LoginModal() {
   const logModalDisable = useSetRecoilState(logModalVisble);
-  const signUp = useRecoilValue(sighUpCheck);
-  console.log(signUp);
+ const setSign = useSetRecoilState(sighUpCheck)
   const closeModal = () => {
     logModalDisable(!logModalVisble);
+    setSign(!sighUpCheck);
   };
 
   return (
@@ -51,7 +56,8 @@ function LoginModal() {
             </svg>
           </button>
           {/* 여기서 부터 컴포넌트 변환 */}
-          {!signUp ? <SignIn /> : <SignUp />}
+          <SignIn />
+          {/* {!signUp ? <SignIn /> : <SignUp />} */}
         </div>
       </div>
     </div>
