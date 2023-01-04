@@ -1,4 +1,5 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
+import { User } from '@prisma/client';
 import { PrismaService } from 'src/repository/prisma.service';
 import { CreateGroupDto } from './dto/group.dto';
 
@@ -32,5 +33,13 @@ export class MemberService {
     }
 
     return update_user.group_id;
+  }
+
+  async findAllMemberInMyGroup(id: number): Promise<User[]> {
+    const members = this.prismaService.user.findMany({
+      where: { group_id: id },
+    });
+
+    return members;
   }
 }
