@@ -9,7 +9,7 @@ import {
   HomeIcon,
 } from "@heroicons/react/24/outline";
 import { useRecoilState, useRecoilValue, useResetRecoilState } from "recoil";
-import { bookmarkState } from "../../states/atom";
+import { bookmarkState, feedState } from "../../states/atom";
 import { useCookies } from "react-cookie";
 import { userInfo } from "../../states/atom";
 const user = {
@@ -37,6 +37,7 @@ const Header: React.FC = () => {
   const [bookmark, setBookmark] = useRecoilState(bookmarkState);
   const [cookies, setCookie, removeCookie] = useCookies(["logCookie"]);
   const userData = useRecoilValue(userInfo);
+  const resetFeeds = useResetRecoilState(feedState);
 
   // const [log, setLog] = useRecoilState(log);
   const handleBookmarkClick = () => {
@@ -45,6 +46,7 @@ const Header: React.FC = () => {
     setBookmark(!bookmark);
   };
   const logout = () => {
+    resetFeeds();
     removeCookie("logCookie");
     // navigate('/');
   };
