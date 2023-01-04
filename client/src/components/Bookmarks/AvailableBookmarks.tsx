@@ -63,22 +63,22 @@ const AvailableBookmarks = () => {
       date={feed.Date}
     />
   ));
-
   return (
-    <div className="h-12 overscroll-auto">
+    <div className="h-12 overscroll-auto basis-2/4">
       {/* 위에 여백 두고 그룹피드 타이틀 만들기 */}
-      <div className="h-10"></div>
       {/* 그룹 피드 타이틀 */}
-      <div className="relative p-6 rounded-3xl -top-5">
-        <h1 className="text-2xl font-bold">북마크</h1>
+      <div className="relative p-3 rounded-3xl">
+        <h1 className="text-2xl antialiased font-bold text-whtie">
+          {" "}
+          북마크
+        </h1>
       </div>
       <div className="">
-        <ul>{feedsList}</ul>
+        <ul className="">{feedsList}</ul>
       </div>
     </div>
   );
 };
-
 export default AvailableBookmarks;
 
 // 흰색 박스
