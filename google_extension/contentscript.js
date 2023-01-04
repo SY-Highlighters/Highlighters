@@ -8,14 +8,50 @@ let src = chrome.runtime.getURL("images/pen.png");
 //   }
 // }
 
+chrome.runtime.onMessage.addListener(function (obj, sender, response) {
+  const { data } = obj;
+  console.log(data);
+  if (data) {
+    data.forEach((element) => {
+      let range = document.createRange();
+      // 시작 노드 복원
+      let startNode = document.evaluate(
+        element.selection.startXPath,
+        document,
+        null,
+        XPathResult.FIRST_ORDERED_NODE_TYPE,
+        null
+      ).singleNodeValue;
+      let startOff = Number(element.selection.startOffset);
+      console.log(startNode);
+      console.log(startOff);
+      // 종료 노드 복원
+      let endNode = document.evaluate(
+        element.selection.endXPath,
+        document,
+        null,
+        XPathResult.FIRST_ORDERED_NODE_TYPE,
+        null
+      ).singleNodeValue;
+      let endOff = Number(element.selection.endOffset);
+
+      // 복원한 시작노드, 종료 노드 기준으로 range 복원
+      range.setStart(startNode, startOff);
+      range.setEnd(endNode, endOff);
+
+      let newNode = document.createElement("span");
+      newNode.style.backgroundColor = "yellow";
+      range.surroundContents(newNode);
+    });
+  }
+});
+
 let penButton = `<input id="btn" type="image" src=${src} height = "50" width="50">`;
 
-let body = document.querySelector("html");
+let body = document.querySelector("body");
 body.innerHTML += penButton;
 let text = document.getElementById("btn");
 text.style.display = "none";
-
-
 
 function highlight() {
   let range = selectionText.getRangeAt(0);
@@ -25,8 +61,6 @@ function highlight() {
   range.surroundContents(newNode);
   text.style.display = "none";
 }
-
-
 
 function makeXPath(node, currentPath) {
   /* this should suffice in HTML documents for selectable nodes, XML with namespaces needs more code */
@@ -70,8 +104,6 @@ function makeXPath(node, currentPath) {
   }
 }
 
-
-
 function getSelect() {
   let sel = "";
   if (document.getSelection) {
@@ -81,8 +113,6 @@ function getSelect() {
   }
   return sel;
 }
-
-
 
 addEventListener("mouseup", function (e) {
   let sel = getSelect();

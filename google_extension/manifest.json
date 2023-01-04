@@ -41,12 +41,5 @@
       "js": ["contentscript.js"],
       "run_at": "document_start"
     }
-  ],
-  "rule_resources": [
-    {
-      "id": "ruleset_1",
-      "enabled": true,
-      "path": "rules.json"
-    }
   ]
 }
