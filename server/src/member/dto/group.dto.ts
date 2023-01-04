@@ -1,17 +1,9 @@
-import { IsNotEmpty } from 'class-validator';
+import { IsEmail, IsNotEmpty } from 'class-validator';
 
 export class CreateGroupDto {
+  @IsEmail()
   user_email: string;
-
-  group_id: number;
 
   @IsNotEmpty()
   name: string;
-}
-
-export class UpdateGroupDto {
-  user_email: string;
-
-  @IsNotEmpty()
-  group_id: number;
 }

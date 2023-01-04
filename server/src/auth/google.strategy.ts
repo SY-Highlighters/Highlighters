@@ -21,17 +21,20 @@ export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
   // google에서 보내주는 'profile' 정보만 로그로 기록
 
   async validate(
-    request: any, accessToken: string, 
-    refreshToken: string, profile, done: VerifyCallback,
+    request: any,
+    accessToken: string,
+    refreshToken: string,
+    profile,
+    done: VerifyCallback,
   ): Promise<any> {
-    const { name, emails, photos } = profile
+    const { name, emails, photos } = profile;
     const user = {
-        email: emails[0].value,
-        firstName: name.givenName,
-        lastName: name.familyName,
-        picture: photos[0].value,
-        accessToken
-    }
-    done(null, user)
+      email: emails[0].value,
+      firstName: name.givenName,
+      lastName: name.familyName,
+      picture: photos[0].value,
+      accessToken,
+    };
+    done(null, user);
   }
 }

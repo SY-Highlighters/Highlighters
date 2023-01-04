@@ -11,7 +11,8 @@ import { GetUser } from 'src/auth/get-user.decorator';
 import { User } from '@prisma/client';
 import { SuccessInterceptor } from 'src/common/interceptors/success.interceptors';
 import { HttpExceptionFilter } from 'src/common/exceptions/http-exception.filter';
-import { CreateGroupDto, UpdateGroupDto } from './dto/group.dto';
+import { CreateGroupDto } from './dto/group.dto';
+import { UpdateUserDto } from 'src/auth/dto/auth.credential.dto';
 
 @Controller('api/member')
 @UseInterceptors(SuccessInterceptor)
@@ -35,10 +36,8 @@ export class MemberController {
   @Post('/join')
   async joinGroup(
     @GetUser() user: User,
-    @Body() updateGroupDto: UpdateGroupDto,
+    @Body() updateUserDto: UpdateUserDto,
   ): Promise<number> {
-    updateGroupDto.user_email = user.email;
-
-    return this.memberService.joinGroup(updateGroupDto);
+    return this.memberService.joinGroup(user.email, updateUserDto);
   }
 }
