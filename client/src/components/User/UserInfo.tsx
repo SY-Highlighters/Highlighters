@@ -3,7 +3,7 @@ import { Fragment } from "react";
 // 더미 유저 정보
 const user = {
   name: "김성태",
-  email: "tom@example.com",
+  email: "@example.com",
   group_name: "정글 5기",
   imageUrl:
     "https://velog.velcdn.com/images/chobae/post/9ef630b0-c0f3-462d-a432-0bbc5a8a6e5f/image.png",
@@ -14,14 +14,14 @@ const UserInfo = () => {
     //   <div>
     //     <div className="h-12"></div>
     //   </div>
-    <div className=" erflow-hidden rounded-2xl">
-      <div className="h-20"/>
+    <div className="w-full bg-white rounded-lg shadow-lg erflow-hidden">
+      <div className="h-14" />
       <div className="relative p-6 rounded-3xl -top-5">
-        <div className="relative flex items-end justify-center -top-14">
-          <img className="h-12 rounded-full w-13" src={user.imageUrl} alt="" />
-          <div className="flex flex-col items-center px-5">
-            <span className="text-xs text-sky-500">정글 5기</span>
-            <span className="font-medium">김성태</span>
+        <div className="relative flex items-end px-3 justify-left -top-5">
+          <img className="rounded-full w-14 h-14" src={user.imageUrl} alt="" />
+          <div className="flex flex-col px-5">
+            <span className="font-bold text-left text-sky-500">정글 5기</span>
+            <span className="text-2xl font-medium text-left">김성태</span>
           </div>
         </div>
       </div>
