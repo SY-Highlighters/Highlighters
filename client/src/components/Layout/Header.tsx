@@ -21,11 +21,11 @@ const user = {
 const navigation: any[] = [];
 // 오른쪽 프로필 메뉴
 const userNavigation = [
-  { name: "즐겨찾기", href: "#" },
-  { name: "설정", href: "#" },
+  { name: "즐겨찾기", href: "" },
+  { name: "설정", href: "" },
   {
     name: "로그아웃",
-    href: "#",
+    href: "",
   },
 ];
 

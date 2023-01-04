@@ -8817,7 +8817,7 @@ let highlightStr = "null";
         elem,
         i = 0;
 
-      className = " " + selector + " ";
+      className = "" + selector + " ";
       while ((elem = this[i++])) {
         if (
           elem.nodeType === 1 &&
