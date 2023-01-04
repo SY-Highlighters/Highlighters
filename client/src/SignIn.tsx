@@ -23,13 +23,21 @@ export default function SignIn() {
   const formSubmitHandler = (event: any) => {
     event.preventDefault();
     console.log(event);
-    logModalDisable(!logModalVisble);   
+    logModalDisable(!logModalVisble);
     // form에서 email, password 받아오기
     const email = event.target[0].value;
     const password = event.target[1].value;
 
+    const host =
+      process.env.NODE_MODE === "develop"
+        ? process.env.NODE_DEV_HOST
+        : process.env.NODE_PRO_HOST;
+
+    const url = host + "/api/auth/signin/";
+    console.log(url);
+
     axios
-      .post("http://localhost:3001/api/auth/signin/", {
+      .post(url, {
         email: email,
         password: password,
       })
@@ -89,9 +97,7 @@ export default function SignIn() {
               Forget Password?
             </a>
             <div className="mt-6">
-              <button
-                className="w-full px-4 py-2 tracking-wide text-white transition-colors duration-200 transform rounded-md bg-sky-700 hover:bg-sky-600 focus:outline-none focus:bg-sky-600"
-              >
+              <button className="w-full px-4 py-2 tracking-wide text-white transition-colors duration-200 transform rounded-md bg-sky-700 hover:bg-sky-600 focus:outline-none focus:bg-sky-600">
                 Login
               </button>
             </div>
