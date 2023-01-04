@@ -15,6 +15,8 @@ body.innerHTML += penButton;
 let text = document.getElementById("btn");
 text.style.display = "none";
 
+
+
 function highlight() {
   let range = selectionText.getRangeAt(0);
   //   postHighlight(range, highlightStr); // highlight post 요청
@@ -23,6 +25,8 @@ function highlight() {
   range.surroundContents(newNode);
   text.style.display = "none";
 }
+
+
 
 function makeXPath(node, currentPath) {
   /* this should suffice in HTML documents for selectable nodes, XML with namespaces needs more code */
@@ -66,6 +70,8 @@ function makeXPath(node, currentPath) {
   }
 }
 
+
+
 function getSelect() {
   let sel = "";
   if (document.getSelection) {
@@ -75,6 +81,8 @@ function getSelect() {
   }
   return sel;
 }
+
+
 
 addEventListener("mouseup", function (e) {
   let sel = getSelect();
