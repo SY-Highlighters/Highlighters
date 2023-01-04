@@ -111,7 +111,6 @@ function App() {
           ) : (
             <AvailableBookmarks></AvailableBookmarks>
           )}
-          <button onClick={logout} className="justify-center bg-black" />
         </div>
       ) : (
         <div className="flex justify-center mt-10">
