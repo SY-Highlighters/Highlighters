@@ -11452,7 +11452,7 @@ function getSelect() {
 
 /* contentscript 시작 */
 
-if (window.location.href != `http://43.200.165.44:3000/`) {
+if (window.location.href != `localhost:3000/`) {
   $(document).ready(onWindowReady);
 
   // 드래그하고 마우스를 떼면 selection 객체 생성
