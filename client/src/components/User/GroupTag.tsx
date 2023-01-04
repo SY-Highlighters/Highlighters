@@ -19,7 +19,7 @@ const GroupTag = () => {
         {/* 태그 공간 -> fix:동적 처리*/}
         <div className="relative items-end">
           <span className="inline-flex mr-2 mt-2 px-3 py-0.5 rounded-full text-sm font-medium bg-sky-100 text-sky-800">
-            #모시깽
+             # 야 너 아직 Highlighters 몰라?
           </span>
           <span className="inline-flex  mr-2 mt-2 px-3 py-0.5 rounded-full text-sm font-medium bg-sky-100 text-sky-800">
             #도커

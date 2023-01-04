@@ -148,7 +148,7 @@ const AvailableFeeds = () => {
     <div className="h-12 overscroll-auto basis-2/4">
       {/* 위에 여백 두고 그룹피드 타이틀 만들기 */}
       {/* 그룹 피드 타이틀 */}
-      <div className="relative p-6 rounded-3xl -top-5">
+      <div className="relative p-3 rounded-3xl">
         <h1 className="text-2xl font-bold">그룹 피드</h1>
       </div>
       <div className="">

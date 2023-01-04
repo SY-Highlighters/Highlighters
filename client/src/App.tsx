@@ -68,7 +68,7 @@ function App() {
        */}
       {/* 로그인 후 메인페이지 */}
 
-      {!cookies.logCookie ? (
+      {cookies.logCookie ? (
         <div className="flex flex-row gap-4 m-8 mx-10 xl:px-40 lg:grid-cols-2 xl:grid-cols-3 sm:grid-cols-1 ">
           <User></User>
           {bookmarkOn ? (
