@@ -11301,7 +11301,7 @@ function onWindowReady() {
 
   getHighlight(window.location.href); // highlight 가져오기
 
-  function highlight() {  
+  function highlight() {
     let range = selectionText.getRangeAt(0);
     postHighlight(range, highlightStr); // highlight post 요청
     let newNode = document.createElement("span");
@@ -11317,7 +11317,7 @@ function onWindowReady() {
   body.innerHTML += penButton;
   $("#btn").hide();
 
-  document.getElementById("btn").addEventListener("click", highlight);  // 드래그하면 상단의 highlight 함수 실행
+  document.getElementById("btn").addEventListener("click", highlight); // 드래그하면 상단의 highlight 함수 실행
 }
 
 function makeXPath(node, currentPath) {
@@ -11375,7 +11375,7 @@ function postHighlight(range, highlightStr) {
     type: "POST",
     url: "http://localhost:3001/api/highlight/",
     headers: {
-      'Authorization': `Bearer ${document.cookie}`,
+      Authorization: `Bearer ${document.cookie}`,
     },
     data: {
       url: range.startContainer.baseURI,
@@ -11396,7 +11396,7 @@ function getHighlight(url) {
     type: "POST",
     url: "http://localhost:3001/api/highlight/feed",
     headers: {
-      'Authorization': `Bearer ${document.cookie}`,
+      Authorization: `Bearer ${document.cookie}`,
     },
     data: {
       url: url,
@@ -11451,37 +11451,40 @@ function getSelect() {
 }
 
 /* contentscript 시작 */
-$(document).ready(onWindowReady);
 
-// 드래그하고 마우스를 떼면 selection 객체 생성
-document.onmouseup = function (e) {
-  let sel = getSelect();
+if (window.location.href != "http://localhost:3000/") {
+  $(document).ready(onWindowReady);
 
-  if (sel.toString() != "" && sel.toString() != highlightStr) {
-    selectionText = sel;
-    highlightStr = sel.toString();
+  // 드래그하고 마우스를 떼면 selection 객체 생성
+  document.onmouseup = function (e) {
+    let sel = getSelect();
 
-    // 드래그한 영역의 위치를 가져온다.
-    let divTop = e.pageY + 10;
-    let divLeft = e.pageX + 10;
+    if (sel.toString() != "" && sel.toString() != highlightStr) {
+      selectionText = sel;
+      highlightStr = sel.toString();
 
-    // 드래그한 영역의 위치에 레이어를 띄운다.
-    // 레이어의 위치를 변경하고 싶으면 위치값을 수정한다.
-    // 레이어가 화면을 벗어나면 안되므로 위치값을 수정한다.
-    if (divLeft + $("#btn").width() > $(document).width())
-      divLeft = $(document).width() - $("#btn").width();
-    if (divTop + $("#btn").height() > $(document).height())
-      divTop = $(document).height() - $("#btn").height();
+      // 드래그한 영역의 위치를 가져온다.
+      let divTop = e.pageY + 10;
+      let divLeft = e.pageX + 10;
 
-    // 레이어 위치를 변경한다.
-    $("#btn")
-      .css({
-        top: divTop,
-        left: divLeft,
-        position: "absolute",
-      })
-      .show();
-  } else {
-    $("#btn").hide();
-  }
-};
+      // 드래그한 영역의 위치에 레이어를 띄운다.
+      // 레이어의 위치를 변경하고 싶으면 위치값을 수정한다.
+      // 레이어가 화면을 벗어나면 안되므로 위치값을 수정한다.
+      if (divLeft + $("#btn").width() > $(document).width())
+        divLeft = $(document).width() - $("#btn").width();
+      if (divTop + $("#btn").height() > $(document).height())
+        divTop = $(document).height() - $("#btn").height();
+
+      // 레이어 위치를 변경한다.
+      $("#btn")
+        .css({
+          top: divTop,
+          left: divLeft,
+          position: "absolute",
+        })
+        .show();
+    } else {
+      $("#btn").hide();
+    }
+  };
+}
