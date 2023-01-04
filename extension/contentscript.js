@@ -11305,7 +11305,7 @@ function onWindowReady() {
     let range = selectionText.getRangeAt(0);
     postHighlight(range, highlightStr); // highlight post 요청
     let newNode = document.createElement("span");
-    newNode.style.backgroundColor = "yellow";
+    newNode.style.backgroundColor = "#fef08a";
     range.surroundContents(newNode);
     $("#btn").hide();
   }
