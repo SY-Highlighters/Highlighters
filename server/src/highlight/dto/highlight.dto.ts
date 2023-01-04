@@ -1,22 +1,28 @@
 import { PartialType } from '@nestjs/swagger';
 import { Prisma } from '@prisma/client';
-import { IsJSON, IsNotEmpty, IsNumber, IsString } from 'class-validator';
+import {
+  IsJSON,
+  IsNotEmpty,
+  IsNumber,
+  IsOptional,
+  IsString,
+} from 'class-validator';
 
 export class CreateHighlightDto {
   @IsString()
+  @IsOptional()
   user_email: string;
 
   @IsNumber()
+  @IsOptional()
   group_id: number;
 
   @IsString()
   url: string;
 
   @IsString()
-  @IsNotEmpty()
   contents: string;
 
-  @IsJSON()
   @IsNotEmpty()
   selection: Prisma.JsonArray;
 }

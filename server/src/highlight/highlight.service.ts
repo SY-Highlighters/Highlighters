@@ -69,7 +69,8 @@ export class HighlightService {
     const find_feed = await this.feedService.findFeedByURL(url);
 
     if (!find_feed) {
-      throw new NotFoundException();
+      // throw new NotFoundException();
+      return null;
     }
 
     const result = await this.prismaService.highlight.findMany({
