@@ -8,14 +8,23 @@ import { useCookies } from "react-cookie";
 export default function SignIn() {
   const [sighch, setSignUp] = useRecoilState(sighUpCheck);
   const [cookies, setCookie, removeCookie] = useCookies(["logCookie"]);
+  const logModalDisable = useSetRecoilState(logModalVisble);
+
+  const closeModal = () => {
+    logModalDisable(!logModalVisble);
+    setSignUp(!sighch);
+  };
 
   const signUpChangeHandler = () => {
     setSignUp(!sighch);
   };
 
   // 폼 데이터 받기
-  const formSubmitHandler = (event: React.FormEvent) => {
+  const formSubmitHandler = (event: any) => {
     event.preventDefault();
+    console.log(event);
+    logModalDisable(!logModalVisble);   
+    // form에서 email, password 받아오기
     const email = event.target[0].value;
     const password = event.target[1].value;
 
@@ -80,7 +89,9 @@ export default function SignIn() {
               Forget Password?
             </a>
             <div className="mt-6">
-              <button className="w-full px-4 py-2 tracking-wide text-white transition-colors duration-200 transform rounded-md bg-sky-700 hover:bg-sky-600 focus:outline-none focus:bg-sky-600">
+              <button
+                className="w-full px-4 py-2 tracking-wide text-white transition-colors duration-200 transform rounded-md bg-sky-700 hover:bg-sky-600 focus:outline-none focus:bg-sky-600"
+              >
                 Login
               </button>
             </div>

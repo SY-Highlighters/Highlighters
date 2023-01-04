@@ -1,9 +1,15 @@
 import { PaperClipIcon } from "@heroicons/react/20/solid";
 import FeedItem from "./FeedItem/FeedItem";
-import { useRecoilState, useRecoilValue } from "recoil";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import { feedState } from "../../states/atom";
+import { useCookies } from "react-cookie";
+import { useEffect } from "react";
+import axios from "axios";
 const AvailableFeeds = () => {
-    const feeds = useRecoilValue(feedState);
+  const feeds = useRecoilValue(feedState);
+  const setFeeds = useSetRecoilState(feedState);
+  const [cookies, setCookie, removeCookie] = useCookies(["logCookie"]);
+
   // nest 서버에서 피드 데이터 받아오기 fix: params -> 피드 타입설정
   // getFeedData(123);
   // async function getFeedData(params: any) {
@@ -69,7 +75,7 @@ const AvailableFeeds = () => {
   //     Date: "2023-01-02 03:12",
   //   },
   // ];
-  
+
   // // 서버에 데이터 보내기
   // const feedadd2 = () => {
   //   axios.post("http://localhost:3000/api/feed", {
@@ -83,6 +89,47 @@ const AvailableFeeds = () => {
   //     Date: "2022-12-30 12:00",
   //   });
   // };
+  // 렌더링된 후 바로 실행
+  useEffect(() => {
+    async function fetchData() {
+      // const response = await fetgch(
+      //   `http://localhost:3001/api/feed/group/${fetchda}`
+      // );
+      // const data = await response.json();
+      // console.log(data);
+      const response = await axios({
+        method: "get",
+        url: `http://localhost:3001/api/feed/group/1`,
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${cookies.logCookie}`,
+        },
+      });
+
+      const data = response.data;
+      console.log(data);
+      feedadd(data);
+    }
+    fetchData();
+  }, []);
+
+  // 피드리스트에 피드아이템 넣기
+  const feedadd = (data: []) => {
+    data.map((item: any) => {
+      const newfeed = {
+        id: item.id,
+        url: item.url,
+        og_image: item.og_image,
+        title: item.og_title,
+        description: item.og_desc,
+        highlight: item.highlight,
+        Date: item.createdAt,
+      };
+      // recoil feeds state에 피드 추가
+      setFeeds((oldFeeds: any) => [...oldFeeds, newfeed]);
+    });
+  };
+
   const feedsList = feeds.map((feed: any) => (
     <FeedItem
       key={feed.id}
@@ -100,9 +147,7 @@ const AvailableFeeds = () => {
       <div className="h-10"></div>
       {/* 그룹 피드 타이틀 */}
       <div className="relative p-6 rounded-3xl -top-5">
-        <h1 className="text-2xl font-bold">
-          그룹 피드
-        </h1>
+        <h1 className="text-2xl font-bold">그룹 피드</h1>
       </div>
       <div className="">
         <ul className="">{feedsList}</ul>

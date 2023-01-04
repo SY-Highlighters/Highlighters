@@ -14,7 +14,7 @@ export default function SignUp() {
                 htmlFor="name"
                 className="block text-sm font-medium text-gray-700 undefined"
               >
-                Name
+                Nickname
               </label>
               <div className="flex flex-col items-start">
                 <input

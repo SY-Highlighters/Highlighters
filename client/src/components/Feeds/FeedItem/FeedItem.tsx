@@ -45,9 +45,6 @@ const FeedItem = (props: any) => {
                 {props.title}
               </h2>
             </a>
-            <p className="max-w-2xl mt-1 text-sm text-gray-500">
-              {props.description}
-            </p>
             {/* <p >
             <span className="text-sm font-medium bg-sky-500"> {props.text}</span> 
           </p> */}
@@ -57,6 +54,24 @@ const FeedItem = (props: any) => {
               <ul>{highlights}</ul>
             </div>
 
+            {/* 노션 북마크처럼 만들기 프로젝트 */}
+            <div className="max-w-lg overflow-hidden rounded-lg shadow-lg w-50 sm:flex">
+              <div className="w-full sm:w-1/3">
+                <img
+                  className="object-cover w-full h-48"
+                  src={props.og_image}
+                  alt="Flower and sky"
+                />
+              </div>
+              <div className="flex-1 px-6 py-4">
+                <h4 className="mb-3 text-xl font-semibold tracking-tight text-gray-800">
+                  {props.title}
+                </h4>
+                <p className="leading-normal text-gray-700">
+                 { props.description}
+                </p>
+              </div>
+            </div>
             {/* 태그 */}
             <div className="flex flex-wrap mt-2">
               <span className="inline-flex items-center px-3 py-0.5 rounded-full text-sm font-medium bg-sky-100 text-sky-800">

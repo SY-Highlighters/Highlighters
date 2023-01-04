@@ -34,63 +34,22 @@ import { log } from "console";
 function App() {
   const bookmarkOn = useRecoilValue(bookmarkState);
   const [loginModalState, setLoginModalState] = useRecoilState(logModalVisble);
+  const setFeeds = useSetRecoilState(feedState);
   const [logged, setLog] = useState(false);
+  const [cookies, setCookie, removeCookie] = useCookies(["logCookie"]);
   // const navigate = useNavigate();
 
   // 로그인 상태를 확인해서 로그인 상태면 전체적으로 뷰 변경
-  const header = logged ? <LoginHeader /> : <Header />;
+  const header = !cookies.logCookie ? <LoginHeader /> : <Header />;
   // const [feeds, setFeeds] = useRecoilState(feedState);
-  const setFeeds = useSetRecoilState(feedState);
-  const [cookies, setCookie, removeCookie] = useCookies(["logCookie"]);
-
+  
   // 파람형식
   const fetchda = 1;
   // 바디형식
   // const fetchda = JSON.stringify({
   //   'group_id': 1
   // })
-
-  // 렌더링된 후 바로 실행
-  useEffect(() => {
-    async function fetchData() {
-      // const response = await fetgch(
-      //   `http://localhost:3001/api/feed/group/${fetchda}`
-      // );
-      // const data = await response.json();
-      // console.log(data);
-      const response = await axios({
-        method: "get",
-        url: `http://localhost:3001/api/feed/group/${fetchda}`,
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${cookies.logCookie}`,
-        },
-      });
-
-      const data = response.data;
-      console.log(data);
-      feedadd(data);
-    }
-    fetchData();
-  }, []);
-
-  // 피드리스트에 피드아이템 넣기
-  const feedadd = (data: []) => {
-    data.map((item: any) => {
-      const newfeed = {
-        id: item.id,
-        url: item.url,
-        og_image: item.og_image,
-        title: item.og_title,
-        description: item.og_desc,
-        highlight: item.highlight,
-        Date: item.createdAt,
-      };
-      // recoil feeds state에 피드 추가
-      setFeeds((oldFeeds: any) => [...oldFeeds, newfeed]);
-    });
-  };
-
+  // useeffect로 데이터 받아오기
   const loginModalHandler = () => {
     setLoginModalState(!loginModalState);
   };

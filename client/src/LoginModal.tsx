@@ -12,7 +12,7 @@ import SignIn from "./SignIn";
 import SignUp from "./SignUp";
 function LoginModal() {
   const logModalDisable = useSetRecoilState(logModalVisble);
- const setSign = useSetRecoilState(sighUpCheck)
+  const setSign = useSetRecoilState(sighUpCheck);
   const closeModal = () => {
     logModalDisable(!logModalVisble);
     setSign(!sighUpCheck);

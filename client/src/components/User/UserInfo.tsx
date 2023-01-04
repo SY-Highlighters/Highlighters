@@ -6,7 +6,7 @@ const user = {
   email: "tom@example.com",
   group_name: "정글 5기",
   imageUrl:
-    "https://velog.velcdn.com/images/chobae/post/6bfebba6-5f10-4e2f-b8ec-12a9b26d1bb0/image.png",
+    "https://velog.velcdn.com/images/chobae/post/9ef630b0-c0f3-462d-a432-0bbc5a8a6e5f/image.png",
 };
 const UserInfo = () => {
   return (

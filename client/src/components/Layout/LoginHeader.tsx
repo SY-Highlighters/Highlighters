@@ -4,17 +4,14 @@ export default function LoginHeader() {
   const [navbarOpen, setNavbarOpen] = React.useState(false);
   return (
     <>
-      <nav className="relative flex flex-wrap items-center justify-between px-2 py-3 mb-3 bg-cyan-300">
+      <nav className="relative flex flex-wrap items-center justify-between px-2 py-3 mb-3 bg-sky-500">
         <div className="container flex flex-wrap items-center justify-between px-4 mx-auto">
           <div className="relative flex justify-between w-full lg:w-auto lg:static lg:block lg:justify-start">
-            <a
-              className="inline-block py-2 mr-4 text-lg font-bold leading-relaxed text-white uppercase whitespace-nowrap"
-              href="#pablo"
-            >
-              <span className="px-3 text-white box-decoration-clone bg-gradient-to-r from-yellow-300 to-lime-500">
+            <div className="flex items-center flex-shrink-0 text-white h-14">
+              <span className="text-xl font-semibold tracking-tight">
                 Highlighters
               </span>
-            </a>
+            </div>
             <button
               className="block px-3 py-1 text-xl leading-none text-white bg-transparent border border-transparent border-solid rounded outline-none cursor-pointer lg:hidden focus:outline-none"
               type="button"
