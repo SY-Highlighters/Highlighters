@@ -1,4 +1,6 @@
 node_modules
 # Keep environment variables out of version control
 .env
+.env.development
+.env.production
 .DS_Store # Mac OS X
