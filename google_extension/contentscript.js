@@ -14,7 +14,6 @@ let body = document.querySelector("html");
 body.innerHTML += penButton;
 let text = document.getElementById("btn");
 text.style.display = "none";
-text.addEventListener("click", highlight);
 
 function highlight() {
   let range = selectionText.getRangeAt(0);
@@ -85,12 +84,15 @@ addEventListener("mouseup", function (e) {
 
     let divTop = e.pageY + 10;
     let divLeft = e.pageX + 10;
+    console.log(e.pageY);
 
     // 레이어 위치를 변경한다.
-    text.style.top = divTop; // + "px";
-    text.style.left = divLeft; // + "px";
-    text.style.position = "sticky";
+    text.style.position = "absolute";
     text.style.display = "block";
+    text.style.zIndex = "9999";
+    text.style.top = divTop + "px";
+    text.style.left = divLeft + "px";
+    text.addEventListener("click", highlight);
   } else {
     text.style.display = "none";
   }
