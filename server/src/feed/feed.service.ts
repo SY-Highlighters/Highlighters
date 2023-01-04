@@ -96,15 +96,18 @@ export class FeedService {
       )
 
       if (user_profile) {
+        // user의 image 혹은 nickname이 없다면 임의의 값 넣기
+        if (user_profile.image == null) {
+          user_profile.image = "https://i.imgur.com/1Q9ZQ9q.png"
+        }
+        if (user_profile.nickname == null) {
+          user_profile.nickname = "No Nickname"
+        }
         const userprofileinfo = {
-          ...user,
           profile_image: user_profile.image,
           profile_nickname: user_profile.nickname,
         };
-        // user image와 nickname이 존재할 경우에만 푸시
-        if(user_profile.image && user_profile.nickname) {
-          usersprofileinfo.push(userprofileinfo);
-        }
+        usersprofileinfo.push(userprofileinfo);
       }
     }
     return usersprofileinfo;
@@ -126,7 +129,6 @@ export class FeedService {
         user.nickname = "No Nickname"
       }
       const myprofileinfo_ = {
-        ...user,
         profile_image: user.image,
         profile_nickname: user.nickname,
       };
