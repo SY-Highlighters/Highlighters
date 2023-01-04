@@ -42,6 +42,7 @@ export class FeedService {
   async findFeedByGroupId(id: number): Promise<Feed[]> {
     const feeds = await this.prismaService.feed.findMany({
       where: { group_id: id },
+      orderBy: { updatedAt: 'desc' },
     });
 
     return feeds;
@@ -51,9 +52,7 @@ export class FeedService {
     const feeds = await this.findFeedByGroupId(id);
 
     const feedswithOg: object[] = [];
-    // http meta data 가져오기
     for (const feed of feeds) {
-      // url이 있으면 메타데이터 가져오기
       const highlights = await this.highlightService.findAllHighlightById(
         feed.id,
       );

@@ -1,12 +1,6 @@
 import { PartialType } from '@nestjs/swagger';
 import { Prisma } from '@prisma/client';
-import {
-  IsJSON,
-  IsNotEmpty,
-  IsNumber,
-  IsOptional,
-  IsString,
-} from 'class-validator';
+import { IsNotEmpty, IsNumber, IsOptional, IsString } from 'class-validator';
 
 export class CreateHighlightDto {
   @IsString()
