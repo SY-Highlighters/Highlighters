@@ -47,19 +47,42 @@ chrome.runtime.onMessage.addListener(function (obj, sender, response) {
 });
 
 let penButton = `<input id="btn" type="image" src=${src} height = "50" width="50">`;
-
 let body = document.querySelector("body");
 body.innerHTML += penButton;
 let text = document.getElementById("btn");
+text.addEventListener("click", highlight);
 text.style.display = "none";
 
 function highlight() {
   let range = selectionText.getRangeAt(0);
-  //   postHighlight(range, highlightStr); // highlight post 요청
+  postHighlight(range, highlightStr); // highlight post 요청
   let newNode = document.createElement("span");
   newNode.style.backgroundColor = "yellow";
   range.surroundContents(newNode);
   text.style.display = "none";
+}
+
+function postHighlight(range, highlightStr) {
+  const rangeobj = {
+    startXPath: makeXPath(range.startContainer),
+    startOffset: range.startOffset,
+    endXPath: makeXPath(range.endContainer),
+    endOffset: range.endOffset,
+  };
+  chrome.runtime.sendMessage(
+    {
+      type: "highlight",
+      data: {
+        url: window.location.href,
+        contents: highlightStr,
+        selection: rangeobj,
+        // Authorization: `Bearer ${document.cookie}`,
+      },
+    },
+    function (response) {
+      console.log(response);
+    }
+  );
 }
 
 function makeXPath(node, currentPath) {
@@ -130,7 +153,6 @@ addEventListener("mouseup", function (e) {
     text.style.zIndex = "9999";
     text.style.top = divTop + "px";
     text.style.left = divLeft + "px";
-    text.addEventListener("click", highlight);
   } else {
     text.style.display = "none";
   }
