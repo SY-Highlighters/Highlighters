@@ -42,7 +42,7 @@ function App() {
   // 로그인 상태를 확인해서 로그인 상태면 전체적으로 뷰 변경
   const header = !cookies.logCookie ? <LoginHeader /> : <Header />;
   // const [feeds, setFeeds] = useRecoilState(feedState);
-  
+
   // 파람형식
   const fetchda = 1;
   // 바디형식
@@ -87,12 +87,7 @@ function App() {
               <p className="text-bold">Login</p>
             </button>
           </div>
-          {/* SignUpButton h1 아래로 보내기 */}
-          {/* <GoogleOAuthProvider clientId={clientId}> */}
-          {/* <GoogleButtonBack></GoogleButtonBack> */}
           {loginModalState && <LoginModal></LoginModal>}
-          {/* </GoogleOAuthProvider> */}
-          {/* <SignUpButton></SignUpButton> */}
         </div>
       )}
       {/* <div className="grid gap-4 xl:px-40 lg:grid-cols-2 xl:grid-cols-3 sm:grid-cols-1">
