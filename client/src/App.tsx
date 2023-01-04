@@ -30,6 +30,7 @@ import {
 } from "recoil";
 import LoginModal from "./LoginModal";
 import { log } from "console";
+import Alert from "./components/Right/Alert";
 
 function App() {
   const bookmarkOn = useRecoilValue(bookmarkState);
@@ -67,14 +68,15 @@ function App() {
        */}
       {/* 로그인 후 메인페이지 */}
 
-      {cookies.logCookie ? (
-        <div className="grid gap-4 xl:px-40 lg:grid-cols-2 xl:grid-cols-3 sm:grid-cols-1">
+      {!cookies.logCookie ? (
+        <div className="flex flex-row gap-4 m-8 mx-10 xl:px-40 lg:grid-cols-2 xl:grid-cols-3 sm:grid-cols-1 ">
           <User></User>
           {bookmarkOn ? (
             <AvailableFeeds></AvailableFeeds>
           ) : (
             <AvailableBookmarks></AvailableBookmarks>
           )}
+          <Alert></Alert>
         </div>
       ) : (
         <div className="flex justify-center mt-10">

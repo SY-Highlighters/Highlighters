@@ -131,20 +131,22 @@ const AvailableFeeds = () => {
   };
 
   const feedsList = feeds.map((feed: any) => (
-    <FeedItem
-      key={feed.id}
-      title={feed.title}
-      description={feed.description}
-      og_image={feed.og_image}
-      url={feed.url}
-      text={feed.highlight}
-      date={feed.Date}
-    />
+    <div>
+      <FeedItem
+        id={feed.id}
+        key={feed.id}
+        title={feed.title}
+        description={feed.description}
+        og_image={feed.og_image}
+        url={feed.url}
+        text={feed.highlight}
+        date={feed.Date}
+      />
+    </div>
   ));
   return (
-    <div className="h-12 overscroll-auto">
+    <div className="h-12 overscroll-auto basis-2/4">
       {/* 위에 여백 두고 그룹피드 타이틀 만들기 */}
-      <div className="h-10"></div>
       {/* 그룹 피드 타이틀 */}
       <div className="relative p-6 rounded-3xl -top-5">
         <h1 className="text-2xl font-bold">그룹 피드</h1>
