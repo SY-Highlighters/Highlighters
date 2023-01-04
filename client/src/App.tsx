@@ -20,7 +20,7 @@ import { bookmarkState, feedState, logModalVisble } from "./states/atom";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import LoginModal from "./LoginModal";
 import { log } from "console";
-
+import GoogleButtonBack from "./GoogleButtonBack";
 
 function App() {
   const bookmarkOn = useRecoilValue(bookmarkState);
@@ -121,8 +121,9 @@ function App() {
           </div>
           {/* SignUpButton h1 아래로 보내기 */}
           {/* <GoogleOAuthProvider clientId={clientId}> */}
-          {/* <GoogleButtonBack></GoogleButtonBack> */}
-          {loginModalState && <LoginModal></LoginModal>}
+          <GoogleButtonBack></GoogleButtonBack>
+          {/* {loginModalState && <LoginModal></LoginModal>}
+           */}
           {/* </GoogleOAuthProvider> */}
           {/* <SignUpButton></SignUpButton> */}
         </div>

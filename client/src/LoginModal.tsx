@@ -8,6 +8,7 @@ import SignUp from "./SignUp";
 function LoginModal() {
   const logModalDisable = useSetRecoilState(logModalVisble);
   const signUp = useRecoilValue(sighUpCheck);
+  console.log(signUp);
   const closeModal = () => {
     logModalDisable(!logModalVisble);
   };

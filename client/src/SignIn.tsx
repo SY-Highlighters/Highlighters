@@ -2,10 +2,10 @@ import { useSetRecoilState } from "recoil";
 import { logModalVisble, sighUpCheck } from "./states/atom";
 
 export default function SignIn() {
-  const signUpChange = useSetRecoilState(sighUpCheck);
+  const setSignUp = useSetRecoilState(sighUpCheck);
   
     const signUpChangeHandler = () => {
-        signUpChange(!sighUpCheck);
+        setSignUp(!sighUpCheck);
     }
   return (
     <div className="w-full p-6 m-auto bg-white rounded-md shadow-md lg:max-w-xl">
