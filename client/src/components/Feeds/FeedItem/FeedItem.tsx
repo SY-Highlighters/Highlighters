@@ -13,19 +13,19 @@ import { Fragment } from "react";
 const FeedItem = (props: any) => {
   // 여러개의 하이라이트를 받아서 하나의 리스트로 만들어준다.
   // 하이라이트별 색상 지정해줘야함. -> 수정해야함
-  let font_color = "text-sky-500";
+  let font_color = "bg-yellow-200";
   // 날짜 파싱
   const date = new Date(props.date);
   const year = date.getFullYear();
   const month = date.getMonth() + 1;
   const day = date.getDate();
-  
-  
-  // if (props.text.length > 1) {
-  //   const highlights = props.text.map((hl: string) => (
-  //     <li className={font_color}>{hl}</li>
-  //   ));
-  // }
+
+  // 하이라이트 파싱
+  const highlights = props.text.map((hl: any) => (
+    <li className="">
+      <span className={font_color}>{hl.contents}</span>
+    </li>
+  ));
 
   return (
     <Fragment>
@@ -52,15 +52,15 @@ const FeedItem = (props: any) => {
             <span className="text-sm font-medium bg-sky-500"> {props.text}</span> 
           </p> */}
             {/* 다수의 하이라이팅 표시 -> 수정해야할듯?*/}
-            {/* 
+
             <div>
               <ul>{highlights}</ul>
-            </div> */}
+            </div>
 
             {/* 태그 */}
             <div className="flex flex-wrap mt-2">
               <span className="inline-flex items-center px-3 py-0.5 rounded-full text-sm font-medium bg-sky-100 text-sky-800">
-                #오늘도 또 야근 사장님 죽어
+                #야 너 아직 Highlighters 몰라?
               </span>
               <span className="inline-flex items-center px-3 py-0.5 rounded-full text-sm font-medium bg-sky-100 text-sky-800">
                 #도커

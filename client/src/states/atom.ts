@@ -17,3 +17,16 @@ export const feedState = atom<any>({
     },
   ],
 });
+
+
+export const logModalVisble = atom<boolean>({
+  key: "logModalVisble",
+  default: false,
+});
+
+
+
+export const sighUpCheck = atom<boolean>({
+  key: "sighUpCheck",
+  default: false,
+});

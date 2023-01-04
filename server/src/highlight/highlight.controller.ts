@@ -11,8 +11,7 @@ import {
 import { AuthGuard } from '@nestjs/passport';
 import { Highlight, User } from '@prisma/client';
 import { GetUser } from 'src/auth/get-user.decorator';
-import { CreateHighlightDto } from './dto/create-highlight.dto';
-import { UpdateHighlightDto } from './dto/update-highlight.dto';
+import { CreateHighlightDto, UpdateHighlightDto } from './dto/highlight.dto';
 import { HighlightService } from './highlight.service';
 
 @Controller('api/highlight')

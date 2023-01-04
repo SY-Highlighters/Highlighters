@@ -14,13 +14,17 @@ import AvailableFeeds from "./components/Feeds/AvailableFeeds";
 import AvailableBookmarks from "./components/Bookmarks/AvailableBookmarks";
 
 // user before login section
-import GoogleButton from "./GoogleButton";
+// import GoogleButton from "./GoogleButton";
 // Recoil -> state management
-import { bookmarkState, feedState } from "./states/atom";
+import { bookmarkState, feedState, logModalVisble } from "./states/atom";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
+import LoginModal from "./LoginModal";
+import { log } from "console";
+
 
 function App() {
   const bookmarkOn = useRecoilValue(bookmarkState);
+  const [loginModalState, setLoginModalState] = useRecoilState(logModalVisble);
   const [logged, setLog] = useState(false);
   // const navigate = useNavigate();
 
@@ -29,7 +33,7 @@ function App() {
   // const [feeds, setFeeds] = useRecoilState(feedState);
   const setFeeds = useSetRecoilState(feedState);
   const [cookies, setCookie, removeCookie] = useCookies(["logCookie"]);
-  console.log(cookies);
+  
   // 파람형식
   const fetchda = 1;
   // 바디형식
@@ -70,20 +74,18 @@ function App() {
         og_image: item.og_image,
         title: item.og_title,
         description: item.og_desc,
-        // highlight: item.highlight,
+        highlight: item.highlight,
         Date: item.createdAt,
       };
-      console.log(newfeed);
       // recoil feeds state에 피드 추가
       setFeeds((oldFeeds: any) => [...oldFeeds, newfeed]);
     });
   };
 
-  const logout = () => {
-    removeCookie("logCookie");
-    // navigate('/');
+  const loginModalHandler = () => {
+    setLoginModalState(!loginModalState);
   };
-
+  
   return (
     <Fragment>
       {/* {bookmarkState && <Cart onClose={hideCartHandler} />} */}
@@ -105,17 +107,23 @@ function App() {
           ) : (
             <AvailableBookmarks></AvailableBookmarks>
           )}
-          <button onClick={logout} className="justify-center bg-black" />
         </div>
       ) : (
         <div className="flex justify-center mt-10">
           <div>
-            <h1 className="text-2xl font-bold">
-              회원가입해서 그룹을 만드세요 !
-            </h1>
+            {/* 회원가입 버튼 */}
+            <button
+              onClick={loginModalHandler}
+              className="w-full h-12 px-6 text-indigo-100 transition-colors duration-150 rounded-lg bg-sky-500 focus:shadow-outline hover:bg-sky-800"
+            >
+              <p className="text-bold">Login</p>
+            </button>
           </div>
           {/* SignUpButton h1 아래로 보내기 */}
-          <GoogleButton></GoogleButton>
+          {/* <GoogleOAuthProvider clientId={clientId}> */}
+          {/* <GoogleButtonBack></GoogleButtonBack> */}
+          {loginModalState && <LoginModal></LoginModal>}
+          {/* </GoogleOAuthProvider> */}
           {/* <SignUpButton></SignUpButton> */}
         </div>
       )}
