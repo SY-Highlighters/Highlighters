@@ -67,7 +67,7 @@ export class FeedService {
           meta.desc = "No Description"
         }
         if(meta.image === undefined) {
-          meta.image = "https://i.imgur.com/1Q9ZQ9q.png"
+          meta.image = "https://img.favpng.com/23/20/7/computer-icons-information-png-favpng-g8DtjAPPNhyaU9EdjHQJRnV97_t.jpg"
         }
         const feedwithOg = {
           ...feed,
@@ -98,7 +98,7 @@ export class FeedService {
       if (user_profile) {
         // user의 image 혹은 nickname이 없다면 임의의 값 넣기
         if (user_profile.image == null) {
-          user_profile.image = "https://i.imgur.com/1Q9ZQ9q.png"
+          user_profile.image = "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a0/Font_Awesome_5_regular_user-circle.svg/1200px-Font_Awesome_5_regular_user-circle.svg.png"
         }
         if (user_profile.nickname == null) {
           user_profile.nickname = "No Nickname"
@@ -123,7 +123,7 @@ export class FeedService {
     if (user) {
       // user의 image 혹은 nickname이 없다면 임의의 값 넣기
       if (user.image == null) {
-        user.image = "https://i.imgur.com/1Q9ZQ9q.png"
+        user.image = "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a0/Font_Awesome_5_regular_user-circle.svg/1200px-Font_Awesome_5_regular_user-circle.svg.png"
       }
       if (user.nickname == null) {
         user.nickname = "No Nickname"
