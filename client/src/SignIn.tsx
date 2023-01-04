@@ -28,16 +28,8 @@ export default function SignIn() {
     const email = event.target[0].value;
     const password = event.target[1].value;
 
-    const host =
-      process.env.NODE_MODE === "develop"
-        ? process.env.NODE_DEV_HOST
-        : process.env.NODE_PRO_HOST;
-
-    const url = host + "/api/auth/signin/";
-    console.log(url);
-
     axios
-      .post(url, {
+      .post("http://localhost:3001/api/auth/signin", {
         email: email,
         password: password,
       })
