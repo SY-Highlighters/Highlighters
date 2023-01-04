@@ -11432,7 +11432,7 @@ function getHighlight(url) {
         range.setEnd(endNode, endOff);
 
         let newNode = document.createElement("span");
-        newNode.style.backgroundColor = "yellow";
+        newNode.style.backgroundColor = "#fef08a";
         range.surroundContents(newNode);
       }
     },
