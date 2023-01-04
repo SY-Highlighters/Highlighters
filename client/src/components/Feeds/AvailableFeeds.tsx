@@ -90,7 +90,7 @@ const AvailableFeeds = () => {
       description={feed.description}
       og_image={feed.og_image}
       url={feed.url}
-      // text={feed.highlight}
+      text={feed.highlight}
       date={feed.Date}
     />
   ));

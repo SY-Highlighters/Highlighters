@@ -3,6 +3,7 @@ import { Fragment, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useCookies } from "react-cookie";
 import axios from "axios";
+import { GoogleLogin, GoogleOAuthProvider } from "@react-oauth/google";
 // Layout
 //  header section
 import Header from "./components/Layout/Header";
@@ -14,11 +15,16 @@ import AvailableFeeds from "./components/Feeds/AvailableFeeds";
 import AvailableBookmarks from "./components/Bookmarks/AvailableBookmarks";
 
 // user before login section
-import GoogleButton from "./GoogleButton";
+// import GoogleButton from "./GoogleButton";
+import GoogleButtonBack from "./GoogleButtonBack";
 // Recoil -> state management
 import { bookmarkState, feedState } from "./states/atom";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
+import GoogleButton from "./GoogleButton";
 
+// clientId
+const clientId =
+  "1051615347268-qio4ne1nai8flq7felb5h0relc1lcp0b.apps.googleusercontent.com";
 function App() {
   const bookmarkOn = useRecoilValue(bookmarkState);
   const [logged, setLog] = useState(false);
@@ -70,7 +76,7 @@ function App() {
         og_image: item.og_image,
         title: item.og_title,
         description: item.og_desc,
-        // highlight: item.highlight,
+        highlight: item.highlight,
         Date: item.createdAt,
       };
       console.log(newfeed);
@@ -115,8 +121,9 @@ function App() {
             </h1>
           </div>
           {/* SignUpButton h1 아래로 보내기 */}
-          <GoogleButton></GoogleButton>
-          {/* <SignUpButton></SignUpButton> */}
+          {/* <GoogleOAuthProvider clientId={clientId}> */}
+          <GoogleButtonBack></GoogleButtonBack>
+          {/* </GoogleOAuthProvider> */};{/* <SignUpButton></SignUpButton> */}
         </div>
       )}
       {/* <div className="grid gap-4 xl:px-40 lg:grid-cols-2 xl:grid-cols-3 sm:grid-cols-1">
