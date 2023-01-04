@@ -3,9 +3,11 @@ import { Fragment } from "react";
 import { useSetRecoilState, useRecoilState } from "recoil";
 import SignUp from "./SignUp";
 import { logModalVisble, sighUpCheck } from "./states/atom";
+import { useCookies } from "react-cookie";
 
 export default function SignIn() {
   const [sighch, setSignUp] = useRecoilState(sighUpCheck);
+  const [cookies, setCookie, removeCookie] = useCookies(["logCookie"]);
 
   const signUpChangeHandler = () => {
     setSignUp(!sighch);
@@ -18,13 +20,27 @@ export default function SignIn() {
     const password = event.target[1].value;
 
     axios
-      .post("http://localhost:3001/api/signin/", {
+      .post("http://localhost:3001/api/auth/signin/", {
         email: email,
         password: password,
       })
       .then(function (response) {
-        console.log(response);
+        console.log(response.data.accessToken);
+        if (response) {
+          axios.defaults.headers.common[
+            "Authorization"
+          ] = `Bearer ${response.data.accessToken}`;
+          handleCookie(response.data.accessToken);
+        } else {
+          alert("로그인 실패");
+        }
       });
+  };
+
+  const handleCookie = (data: any) => {
+    const expireDate = new Date();
+    expireDate.setMinutes(expireDate.getMinutes() + 10);
+    setCookie("logCookie", data, { path: "/", expires: expireDate });
   };
 
   return (
