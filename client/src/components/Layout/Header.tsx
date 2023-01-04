@@ -8,27 +8,24 @@ import {
   BookmarkIcon,
   HomeIcon,
 } from "@heroicons/react/24/outline";
-import { useRecoilState, useResetRecoilState } from "recoil";
-import { bookmarkState } from "../../states/atom";
-
+import { useRecoilState, useRecoilValue, useResetRecoilState } from "recoil";
+import { bookmarkState, feedState } from "../../states/atom";
+import { useCookies } from "react-cookie";
+import { userInfo } from "../../states/atom";
 const user = {
-  name: "Tom Cook",
+  name: "김성태",
   email: "tom@example.com",
   imageUrl:
-    "https://velog.velcdn.com/images/chobae/post/6bfebba6-5f10-4e2f-b8ec-12a9b26d1bb0/image.png",
+    "https://velog.velcdn.com/images/chobae/post/9ef630b0-c0f3-462d-a432-0bbc5a8a6e5f/image.png",
 };
-const navigation = [
-  { name: "Team", href: "#", current: false },
-  { name: "Projects", href: "#", current: false },
-  { name: "Calendar", href: "#", current: false },
-];
+const navigation: any[] = [];
 // 오른쪽 프로필 메뉴
 const userNavigation = [
-  { name: "즐겨찾기", href: "#" },
-  { name: "설정", href: "#" },
+  { name: "즐겨찾기", href: "" },
+  { name: "설정", href: "" },
   {
     name: "로그아웃",
-    href: "https://www.google.com/search?q=link+bookmark&biw=1608&bih=914&sxsrf=ALiCzsZrc39xYQc5hXDvDRwHTCvXh776mw%3A1672323591759&ei=B6KtY6GeKcvu-Qbix7GgDQ&ved=0ahUKEwjhvYbtgp_8AhVLd94KHeJjDNQQ4dUDCA8&uact=5&oq=link+bookmark&gs_lcp=Cgxnd3Mtd2l6LXNlcnAQAzIECAAQRzIECAAQRzIECAAQRzIECAAQRzIECAAQRzIECAAQRzIECAAQRzIECAAQRzIECAAQRzIECAAQRzoKCAAQRxDWBBCwA0oECEEYAEoECEYYAFD3Blj3BmDHB2gCcAJ4AIABAIgBAJIBAJgBAKABAcgBCsABAQ&sclient=gws-wiz-serp",
+    href: "",
   },
 ];
 
@@ -38,11 +35,22 @@ function classNames(...classes: string[]) {
 const Header: React.FC = () => {
   // const [bookmarkClick, setBookmarkClick] = useState(false);
   const [bookmark, setBookmark] = useRecoilState(bookmarkState);
+  const [cookies, setCookie, removeCookie] = useCookies(["logCookie"]);
+  const userData = useRecoilValue(userInfo);
+  const resetFeeds = useResetRecoilState(feedState);
+
+  // const [log, setLog] = useRecoilState(log);
   const handleBookmarkClick = () => {
     console.log("bookmark click");
     console.log(bookmarkState);
     setBookmark(!bookmark);
   };
+  const logout = () => {
+    resetFeeds();
+    removeCookie("logCookie");
+    // navigate('/');
+  };
+
   return (
     <>
       {/*
@@ -153,7 +161,7 @@ const Header: React.FC = () => {
                             <span className="sr-only">Open user menu</span>
                             <img
                               className="w-12 h-12 rounded-full"
-                              src={user.imageUrl}
+                              src={userData.profile_image}
                               alt=""
                             />
                           </Menu.Button>
@@ -178,6 +186,7 @@ const Header: React.FC = () => {
                                       active ? "bg-gray-100" : "",
                                       "block px-4 py-2 text-sm text-gray-700"
                                     )}
+                                    onClick={logout}
                                   >
                                     {item.name}
                                   </a>
@@ -235,7 +244,7 @@ const Header: React.FC = () => {
                     <div className="flex-shrink-0">
                       <img
                         className="w-10 h-10 rounded-full"
-                        src={user.imageUrl}
+                        src={userData.profile_image}
                         alt=""
                       />
                     </div>
@@ -261,6 +270,7 @@ const Header: React.FC = () => {
                         key={item.name}
                         as="a"
                         href={item.href}
+                        onClick={logout}
                         className="block px-3 py-2 text-base font-medium text-gray-400 rounded-md hover:bg-gray-700 hover:text-white"
                       >
                         {item.name}

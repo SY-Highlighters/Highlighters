@@ -9,3 +9,21 @@ export const feedState = atom<any>({
   key: "feedState",
   default: [],
 });
+
+export const logModalVisble = atom<boolean>({
+  key: "logModalVisble",
+  default: false,
+});
+
+export const sighUpCheck = atom<boolean>({
+  key: "sighUpCheck",
+  default: false,
+});
+
+export const userInfo = atom<any>({
+  key: "userInfo",
+  default: {
+    nickname: "",
+    email: "",
+  },
+});

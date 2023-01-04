@@ -20,7 +20,7 @@ const AvailableBookmarks = () => {
       highlight: ["하이라이팅 효과", "하이라이팅 효과", "하이라이팅 효과"],
       Date: "2022-12-31 12:21",
     },
-      {
+    {
       id: "m3",
       title: "피드 이름 3",
       description: "유저 코멘트?",
@@ -52,7 +52,6 @@ const AvailableBookmarks = () => {
       Date: "2023-01-02 03:12",
     },
   ];
-  
 
   const feedsList = DUMMY_Feeds.map((feed) => (
     <BookmarkItem
@@ -64,22 +63,22 @@ const AvailableBookmarks = () => {
       date={feed.Date}
     />
   ));
-
   return (
-    <div className="h-12 overscroll-auto">
+    <div className="h-12 overscroll-auto basis-2/4">
       {/* 위에 여백 두고 그룹피드 타이틀 만들기 */}
-      <div className="h-5"></div>
       {/* 그룹 피드 타이틀 */}
-      <div className="">
-        <h1 className="text-2xl font-bold">북마크</h1>
+      <div className="relative p-3 rounded-3xl">
+        <h1 className="text-2xl antialiased font-bold text-whtie">
+          {" "}
+          북마크
+        </h1>
       </div>
-      <div className="overscroll-auto">
-        <ul>{feedsList}</ul>
+      <div className="">
+        <ul className="">{feedsList}</ul>
       </div>
     </div>
   );
 };
-
 export default AvailableBookmarks;
 
 // 흰색 박스

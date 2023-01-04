@@ -1,5 +1,6 @@
 let selectionText;
 let highlightStr = "null";
+
 /*!
  * jQuery JavaScript Library v3.6.3
  * https://jquery.com/
@@ -8816,7 +8817,7 @@ let highlightStr = "null";
         elem,
         i = 0;
 
-      className = " " + selector + " ";
+      className = "" + selector + " ";
       while ((elem = this[i++])) {
         if (
           elem.nodeType === 1 &&
@@ -11289,70 +11290,201 @@ let highlightStr = "null";
   return jQuery;
 });
 
-//시작
-
+/* 코드시작 */
 function onWindowReady() {
+  // 토큰이 없으면 한번만 리다이렉트
+  // if (localStorage.getItem("token") == null) {
+  //   if (window.location.href != "https://www.naver.com/") {
+  //     window.location.href = "https://www.naver.com/";
+  //   }
+  // }
+
+  getHighlight(window.location.href); // highlight 가져오기
+
   function highlight() {
     let range = selectionText.getRangeAt(0);
-    var newNode = document.createElement("span");
-    newNode.style.backgroundColor = "yellow";
+    postHighlight(range, highlightStr); // highlight post 요청
+    let newNode = document.createElement("span");
+    newNode.style.backgroundColor = "#fef08a";
     range.surroundContents(newNode);
     $("#btn").hide();
   }
-  var penButton = `<input id="btn" type="image" src="https://images.vexels.com/media/users/3/206292/isolated/preview/0a3fddb8fdf07b7c1f42a371d420c3f2-yellow-highlighter-flat.png" 
-    hidden="true" height = "50" width="50">`;
 
-  var body = document.querySelector("html");
+  let penButton = `<input id="btn" type="image" src="https://images.vexels.com/media/users/3/206292/isolated/preview/0a3fddb8fdf07b7c1f42a371d420c3f2-yellow-highlighter-flat.png"
+    height = "50" width="50">`;
+
+  let body = document.querySelector("html");
   body.innerHTML += penButton;
+  $("#btn").hide();
 
-  document.getElementById("btn").addEventListener("click", highlight);
+  document.getElementById("btn").addEventListener("click", highlight); // 드래그하면 상단의 highlight 함수 실행
 }
 
-//하이라이트 처리
+function makeXPath(node, currentPath) {
+  /* this should suffice in HTML documents for selectable nodes, XML with namespaces needs more code */
+  currentPath = currentPath || "";
+  switch (node.nodeType) {
+    case 3:
+    case 4:
+      return makeXPath(
+        node.parentNode,
+        "text()[" +
+          (document.evaluate(
+            "preceding-sibling::text()",
+            node,
+            null,
+            XPathResult.ORDERED_NODE_SNAPSHOT_TYPE,
+            null
+          ).snapshotLength +
+            1) +
+          "]"
+      );
+    case 1:
+      return makeXPath(
+        node.parentNode,
+        node.nodeName +
+          "[" +
+          (document.evaluate(
+            "preceding-sibling::" + node.nodeName,
+            node,
+            null,
+            XPathResult.ORDERED_NODE_SNAPSHOT_TYPE,
+            null
+          ).snapshotLength +
+            1) +
+          "]" +
+          (currentPath ? "/" + currentPath : "")
+      );
+    case 9:
+      return "/" + currentPath;
+    default:
+      return "";
+  }
+}
 
-function selectText() {
-  var sel = "";
+/* 하이라이트 Post */
+function postHighlight(range, highlightStr) {
+  const rangeobj = {
+    startXPath: makeXPath(range.startContainer),
+    startOffset: range.startOffset,
+    endXPath: makeXPath(range.endContainer),
+    endOffset: range.endOffset,
+  };
+
+  $.ajax({
+    type: "POST",
+    url: `http://localhost:3001/api/highlight/`,
+    headers: {
+      Authorization: `Bearer ${document.cookie}`,
+    },
+    data: {
+      url: range.startContainer.baseURI,
+      contents: highlightStr,
+      selection: rangeobj,
+    },
+    success: function (response) {
+      console.log(response);
+    },
+  });
+}
+
+/* 하이라이트 Get */
+function getHighlight(url) {
+  // console.log("get들어옴");
+  // console.log(window.cookie);
+  $.ajax({
+    type: "POST",
+    url: "http://localhost:3001/api/highlight/feed",
+    headers: {
+      Authorization: `Bearer ${document.cookie}`,
+    },
+    data: {
+      url: url,
+    },
+    success: function (response) {
+      console.log(response);
+      for (const highlight of response) {
+        let selection = highlight.selection;
+        let range = document.createRange();
+
+        // 시작 노드 복원
+        let startNode = document.evaluate(
+          selection.startXPath,
+          document,
+          null,
+          XPathResult.FIRST_ORDERED_NODE_TYPE,
+          null
+        ).singleNodeValue;
+        let startOff = Number(selection.startOffset);
+
+        // 종료 노드 복원
+        let endNode = document.evaluate(
+          selection.endXPath,
+          document,
+          null,
+          XPathResult.FIRST_ORDERED_NODE_TYPE,
+          null
+        ).singleNodeValue;
+        let endOff = Number(selection.endOffset);
+
+        // 복원한 시작노드, 종료 노드 기준으로 range 복원
+        range.setStart(startNode, startOff);
+        range.setEnd(endNode, endOff);
+
+        let newNode = document.createElement("span");
+        newNode.style.backgroundColor = "#fef08a";
+        range.surroundContents(newNode);
+      }
+    },
+  });
+}
+
+// select
+function getSelect() {
+  let sel = "";
   if (document.getSelection) {
     sel = document.getSelection();
   } else if (document.selection) {
     sel = document.selection.createRange().text;
   }
-  highlightStr = sel.toString(); //스트링으로 저장
   return sel;
 }
 
-$(document).ready(onWindowReady);
+/* contentscript 시작 */
 
-// 드래그하고 마우스를 떼면 selection 객체 생성
-document.onmouseup = function (e) {
-  let sel = selectText();
+if (window.location.href != `http://localhost:3000/`) {
+  $(document).ready(onWindowReady);
 
-  if (highlightStr != "") {
-    selectionText = sel;
+  // 드래그하고 마우스를 떼면 selection 객체 생성
+  document.onmouseup = function (e) {
+    let sel = getSelect();
 
-    let sWidth = window.innerWidth;
-    let sHeight = window.innerHeight;
-    let oWidth = $("#btn").width();
-    let oHeight = $("#btn").height();
+    if (sel.toString() != "" && sel.toString() != highlightStr) {
+      selectionText = sel;
+      highlightStr = sel.toString();
 
-    let divLeft = e.clientX + 5;
-    let divTop = e.clientY + 5;
+      // 드래그한 영역의 위치를 가져온다.
+      let divTop = e.pageY + 10;
+      let divLeft = e.pageX + 10;
 
-    // 레이어가 화면 크기를 벗어나면 위치를 바꾸어 배치한다.
-    if (divLeft + oWidth > sWidth) divLeft -= oWidth;
-    if (divTop + oHeight > sHeight) divTop -= oHeight;
+      // 드래그한 영역의 위치에 레이어를 띄운다.
+      // 레이어의 위치를 변경하고 싶으면 위치값을 수정한다.
+      // 레이어가 화면을 벗어나면 안되므로 위치값을 수정한다.
+      if (divLeft + $("#btn").width() > $(document).width())
+        divLeft = $(document).width() - $("#btn").width();
+      if (divTop + $("#btn").height() > $(document).height())
+        divTop = $(document).height() - $("#btn").height();
 
-    // 레이어 위치를 바꾸었더니 상단기준점(0,0) 밖으로 벗어난다면 상단기준점(0,0)에 배치하자.
-    if (divLeft < 0) divLeft = 0;
-    if (divTop < 0) divTop = 0;
-    $("#btn")
-      .css({
-        top: divTop,
-        left: divLeft,
-        position: "absolute",
-      })
-      .show();
-  } else {
-    $("#btn").hide();
-  }
-};
+      // 레이어 위치를 변경한다.
+      $("#btn")
+        .css({
+          top: divTop,
+          left: divLeft,
+          position: "absolute",
+        })
+        .show();
+    } else {
+      $("#btn").hide();
+    }
+  };
+}

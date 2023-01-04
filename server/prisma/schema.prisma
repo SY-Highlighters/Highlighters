@@ -1,6 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -10,51 +7,61 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-//User
 model User {
-  id        Int      @id @default(autoincrement())
-  name      String
-  email     String   @unique
-  password  String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  feeds     Feed[]
+  email     String      @id @db.Char(50)
+  group_id  Int?
+  nickname  String?     @db.Char(20)
+  password  String      @db.Char(100)
+  image     String?     @db.Char(100)
+  Feed      Feed[]
+  highlight Highlight[]
+  group     Group?      @relation(fields: [group_id], references: [id])
+
+  @@index([group_id], map: "USER_group_id_fkey")
+  @@map("USER")
 }
 
-// Group
 model Group {
-  id        Int      @id @default(autoincrement())
-  name      String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  feeds     Feed[]
+  id     Int    @id @default(autoincrement())
+  name   String @db.Char(20)
+  Feed   Feed[]
+  member User[]
+
+  @@map("GROUP")
 }
 
-// highlight
-model Highlight {
-  id        Int      @id @default(autoincrement())
-  content   String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  feed      Feed     @relation(fields: [feedId], references: [id])
-  feedId    Int
-}
-
-// Feed
 model Feed {
-  id        Int      @id @default(autoincrement())
-  url       String
-  content   String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @default(now()) @updatedAt
-  user      User     @relation(fields: [userId], references: [id])
-  userId    Int
-  group     Group    @relation(fields: [groupId], references: [id])
-  groupId   Int
-  highlights Highlight[]
+  createdAt    DateTime    @default(now())
+  group_id     Int
+  id           Int         @id @default(autoincrement())
+  updatedAt    DateTime    @default(now()) @updatedAt
+  url          String      @db.Char(100)
+  user_email   String
+  group        Group       @relation(fields: [group_id], references: [id])
+  user         User        @relation(fields: [user_email], references: [email])
+  highlight_id Highlight[]
+
+  @@index([group_id], map: "FEED_group_id_fkey")
+  @@index([user_email], map: "FEED_user_email_fkey")
+  @@map("FEED")
 }
 
-model TestFeed{
+model Highlight {
+  createdAt  DateTime @default(now())
+  feed_id    Int
+  id         Int      @id @default(autoincrement())
+  selection  Json
+  user_email String
+  contents   String
+  feed       Feed     @relation(fields: [feed_id], references: [id], onDelete: Cascade)
+  user       User     @relation(fields: [user_email], references: [email])
+
+  @@index([feed_id], map: "HIGHLIGHT_feed_id_fkey")
+  @@index([user_email], map: "HIGHLIGHT_user_email_fkey")
+  @@map("HIGHLIGHT")
+}
+
+model TestFeed {
   id        Int      @id @default(autoincrement())
   url       String
   content   String?
