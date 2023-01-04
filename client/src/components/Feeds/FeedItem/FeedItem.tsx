@@ -29,7 +29,7 @@ const FeedItem = (props: any) => {
 
   return (
     <li className="py-5">
-      <div className="overflow-hidden bg-white shadow sm:rounded-lg">
+      <div className="overflow-hidden bg-white rounded-lg shadow">
         <div className="flex flex-row-reverse items-center px-3 mt-2 text-sm text-gray-500">
           <CalendarIcon
             className="mr-1.5 h-5 w-5 flex-shrink-0 text-gray-400 "
