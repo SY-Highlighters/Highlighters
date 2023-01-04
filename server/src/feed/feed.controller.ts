@@ -36,6 +36,18 @@ export class FeedController {
     return this.feedService.findGroupFeedWithOg(id);
   }
 
+  // group_id로 찾은 group에 있는 모든 user의 프로필 찾기
+  @Get('/findusers/group/:id')
+  async findUsersProfileByGroupId(@Param('id') id: number): Promise<object[]> {
+    return this.feedService.findUsersProfileByGroupId(id);
+  }
+
+  // 나 자신의 프로필 찾기
+  @Get('/findusers/me')
+  async findMyProfile(@GetUser() user: User): Promise<object> {
+    return this.feedService.findMyProfile(user.email);
+  }
+
   // Id로 Feed 찾은 후 삭제
   @Delete('/delete/:id')
   async deleteFeedById(@Param('id') id: number): Promise<Feed> {

@@ -1,4 +1,4 @@
-import { Feed } from '@prisma/client';
+import { Feed, User } from '@prisma/client';
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/repository/prisma.service';
 import { getUrlMeta } from 'src/util/geturlmeta';
@@ -59,6 +59,16 @@ export class FeedService {
 
       if (feed.url) {
         const meta = await getUrlMeta(feed.url);
+        // 존재하지 않는다면 임의의 값 넣기
+        if(meta.title === undefined) {
+          meta.title = "No Title"
+        }
+        if(meta.desc === undefined) {
+          meta.desc = "No Description"
+        }
+        if(meta.image === undefined) {
+          meta.image = "https://i.imgur.com/1Q9ZQ9q.png"
+        }
         const feedwithOg = {
           ...feed,
           highlight: highlights,
@@ -71,6 +81,58 @@ export class FeedService {
     }
 
     return feedswithOg;
+  }
+
+  // 그룹 내 모든 유저들의 프로필(닉네임, 사진) 찾기
+  async findUsersProfileByGroupId(id: number): Promise<object[]> {
+    const users = await this.prismaService.user.findMany({
+      where: { group_id: id },
+    });
+
+    const usersprofileinfo: object[] = [];
+    for (const user of users) {
+      const user_profile = await this.prismaService.user.findUnique(
+        { where: { email: user.email } },
+      )
+
+      if (user_profile) {
+        const userprofileinfo = {
+          ...user,
+          profile_image: user_profile.image,
+          profile_nickname: user_profile.nickname,
+        };
+        // user image와 nickname이 존재할 경우에만 푸시
+        if(user_profile.image && user_profile.nickname) {
+          usersprofileinfo.push(userprofileinfo);
+        }
+      }
+    }
+    return usersprofileinfo;
+  }
+
+  // 나 자신의 프로필 찾기
+  async findMyProfile(email: string): Promise<object> {
+    const user = await this.prismaService.user.findUnique(
+      { where: { email: email } },
+    )
+
+    let myprofileinfo: object;
+    if (user) {
+      // user의 image 혹은 nickname이 없다면 임의의 값 넣기
+      if (user.image == null) {
+        user.image = "https://i.imgur.com/1Q9ZQ9q.png"
+      }
+      if (user.nickname == null) {
+        user.nickname = "No Nickname"
+      }
+      const myprofileinfo_ = {
+        ...user,
+        profile_image: user.image,
+        profile_nickname: user.nickname,
+      };
+      myprofileinfo = myprofileinfo_;
+    }
+    return myprofileinfo;
   }
 
   async deleteFeedById(id: number): Promise<Feed> {

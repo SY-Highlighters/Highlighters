@@ -12,6 +12,7 @@ model User {
   group_id  Int?
   nickname  String?     @db.Char(20)
   password  String      @db.Char(100)
+  image     String?     @db.Char(100) // 유저 이미지
   Feed      Feed[]
   highlight Highlight[]
   group     Group?      @relation(fields: [group_id], references: [id])
