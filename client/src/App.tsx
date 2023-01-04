@@ -3,7 +3,6 @@ import { Fragment, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useCookies } from "react-cookie";
 import axios from "axios";
-import { GoogleLogin, GoogleOAuthProvider } from "@react-oauth/google";
 // Layout
 //  header section
 import Header from "./components/Layout/Header";
@@ -16,17 +15,16 @@ import AvailableBookmarks from "./components/Bookmarks/AvailableBookmarks";
 
 // user before login section
 // import GoogleButton from "./GoogleButton";
-import GoogleButtonBack from "./GoogleButtonBack";
 // Recoil -> state management
-import { bookmarkState, feedState } from "./states/atom";
+import { bookmarkState, feedState, logModalVisble } from "./states/atom";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
-import GoogleButton from "./GoogleButton";
+import LoginModal from "./LoginModal";
+import { log } from "console";
+import GoogleButtonBack from "./GoogleButtonBack";
 
-// clientId
-const clientId =
-  "1051615347268-qio4ne1nai8flq7felb5h0relc1lcp0b.apps.googleusercontent.com";
 function App() {
   const bookmarkOn = useRecoilValue(bookmarkState);
+  const [loginModalState, setLoginModalState] = useRecoilState(logModalVisble);
   const [logged, setLog] = useState(false);
   // const navigate = useNavigate();
 
@@ -35,7 +33,7 @@ function App() {
   // const [feeds, setFeeds] = useRecoilState(feedState);
   const setFeeds = useSetRecoilState(feedState);
   const [cookies, setCookie, removeCookie] = useCookies(["logCookie"]);
-  console.log(cookies);
+  
   // 파람형식
   const fetchda = 1;
   // 바디형식
@@ -79,17 +77,15 @@ function App() {
         highlight: item.highlight,
         Date: item.createdAt,
       };
-      console.log(newfeed);
       // recoil feeds state에 피드 추가
       setFeeds((oldFeeds: any) => [...oldFeeds, newfeed]);
     });
   };
 
-  const logout = () => {
-    removeCookie("logCookie");
-    // navigate('/');
+  const loginModalHandler = () => {
+    setLoginModalState(!loginModalState);
   };
-
+  
   return (
     <Fragment>
       {/* {bookmarkState && <Cart onClose={hideCartHandler} />} */}
@@ -115,14 +111,21 @@ function App() {
       ) : (
         <div className="flex justify-center mt-10">
           <div>
-            <h1 className="text-2xl font-bold">
-              회원가입해서 그룹을 만드세요 !
-            </h1>
+            {/* 회원가입 버튼 */}
+            <button
+              onClick={loginModalHandler}
+              className="w-full h-12 px-6 text-indigo-100 transition-colors duration-150 rounded-lg bg-sky-500 focus:shadow-outline hover:bg-sky-800"
+            >
+              <p className="text-bold">Login</p>
+            </button>
           </div>
           {/* SignUpButton h1 아래로 보내기 */}
           {/* <GoogleOAuthProvider clientId={clientId}> */}
           <GoogleButtonBack></GoogleButtonBack>
-          {/* </GoogleOAuthProvider> */};{/* <SignUpButton></SignUpButton> */}
+          {/* {loginModalState && <LoginModal></LoginModal>}
+           */}
+          {/* </GoogleOAuthProvider> */}
+          {/* <SignUpButton></SignUpButton> */}
         </div>
       )}
       {/* <div className="grid gap-4 xl:px-40 lg:grid-cols-2 xl:grid-cols-3 sm:grid-cols-1">
