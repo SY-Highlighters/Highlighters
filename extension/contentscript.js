@@ -11310,8 +11310,6 @@ function onWindowReady() {
     $("#btn").hide();
   }
 
-  document.getElementsByTagName("head")[0].innerHTML +=
-    "<meta http-equiv=\"Content-Security-Policy\" content=\"default-src gap://ready file://* *; style-src 'self' http://* https://* 'unsafe-inline'; script-src 'self' http://* https://* 'unsafe-inline' 'unsafe-eval'\">";
   let penButton = `<input id="btn" type="image" src="https://images.vexels.com/media/users/3/206292/isolated/preview/0a3fddb8fdf07b7c1f42a371d420c3f2-yellow-highlighter-flat.png"
     height = "50" width="50">`;
 
