@@ -4,6 +4,7 @@ import {
   UseGuards,
   UseInterceptors,
   UseFilters,
+  Get,
 } from '@nestjs/common';
 import { Body, Post } from '@nestjs/common/decorators';
 import { AuthGuard } from '@nestjs/passport';
@@ -11,9 +12,9 @@ import { GetUser } from 'src/auth/get-user.decorator';
 import { User } from '@prisma/client';
 import { SuccessInterceptor } from 'src/common/interceptors/success.interceptors';
 import { HttpExceptionFilter } from 'src/common/exceptions/http-exception.filter';
-import { CreateGroupDto, UpdateGroupDto } from './dto/group.dto';
+import { CreateGroupDto } from './dto/group.dto';
 
-@Controller('api/member')
+@Controller('api/group')
 @UseInterceptors(SuccessInterceptor)
 @UseFilters(HttpExceptionFilter)
 @UseGuards(AuthGuard())
@@ -35,10 +36,14 @@ export class MemberController {
   @Post('/join')
   async joinGroup(
     @GetUser() user: User,
-    @Body() updateGroupDto: UpdateGroupDto,
+    @Body('id') id: number,
   ): Promise<number> {
-    updateGroupDto.user_email = user.email;
+    return this.memberService.joinGroup(user.email, id);
+  }
 
-    return this.memberService.joinGroup(updateGroupDto);
+  // User가 속한 Group의 모든 member 찾기
+  @Get('/member')
+  async findAllMemberInMyGroup(@GetUser() user: User): Promise<User[]> {
+    return this.memberService.findAllMemberInMyGroup(user.group_id);
   }
 }
