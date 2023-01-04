@@ -11373,7 +11373,7 @@ function postHighlight(range, highlightStr) {
 
   $.ajax({
     type: "POST",
-    url: `http://${process.env.REACT_APP_HOST}:3001/api/highlight/`,
+    url: `http://localhost:3001/api/highlight/`,
     headers: {
       Authorization: `Bearer ${document.cookie}`,
     },
