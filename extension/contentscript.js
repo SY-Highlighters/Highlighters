@@ -11299,9 +11299,9 @@ function onWindowReady() {
   //   }
   // }
 
-  getHighlight(window.location.href);
+  getHighlight(window.location.href); // highlight 가져오기
 
-  function highlight() {
+  function highlight() {  
     let range = selectionText.getRangeAt(0);
     postHighlight(range, highlightStr); // highlight post 요청
     let newNode = document.createElement("span");
@@ -11317,7 +11317,7 @@ function onWindowReady() {
   body.innerHTML += penButton;
   $("#btn").hide();
 
-  document.getElementById("btn").addEventListener("click", highlight);
+  document.getElementById("btn").addEventListener("click", highlight);  // 드래그하면 상단의 highlight 함수 실행
 }
 
 function makeXPath(node, currentPath) {
@@ -11374,11 +11374,13 @@ function postHighlight(range, highlightStr) {
   $.ajax({
     type: "POST",
     url: "http://localhost:3001/api/highlight/",
+    headers: {
+      'Authorization': `Bearer ${document.cookie}`,
+    },
     data: {
       url: range.startContainer.baseURI,
       contents: highlightStr,
       selection: rangeobj,
-      // Authorization: `Bearer ${document.cookie}`,
     },
     success: function (response) {
       console.log(response);
@@ -11393,9 +11395,11 @@ function getHighlight(url) {
   $.ajax({
     type: "POST",
     url: "http://localhost:3001/api/highlight/feed",
+    headers: {
+      'Authorization': `Bearer ${document.cookie}`,
+    },
     data: {
       url: url,
-      // Authorization: `Bearer ${document.cookie}`
     },
     success: function (response) {
       console.log(response);

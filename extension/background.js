@@ -1,6 +1,4 @@
-let color = "#3aa757";
+chrome.tabs.onUpdated.addListener((tabId, tab) => {
+  
+})
 
-chrome.runtime.onInstalled.addListener(() => {
-  chrome.storage.sync.set({ color });
-  console.log("Default background color set to %cgreen", `color: ${color}`);
-});
