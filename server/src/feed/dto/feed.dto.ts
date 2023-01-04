@@ -1,10 +1,12 @@
-import { IsNotEmpty, IsNumber, IsString } from 'class-validator';
+import { IsNotEmpty, IsNumber, IsOptional, IsString } from 'class-validator';
 
 export class CreateFeedDto {
   @IsString()
+  @IsOptional()
   user_email: string;
 
   @IsNumber()
+  @IsOptional()
   group_id: number;
 
   @IsString()
