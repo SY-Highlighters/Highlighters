@@ -17,9 +17,10 @@ const AvailableFeeds = () => {
       // );
       // const data = await response.json();
       // console.log(data);
+
       const response = await axios({
         method: "get",
-        url: `http://localhost:3001/api/feed/group/1`,
+        url: `http://${process.env.REACT_APP_HOST}:3001/api/feed/group/1`,
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${cookies.logCookie}`,
