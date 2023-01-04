@@ -46,7 +46,9 @@ chrome.runtime.onMessage.addListener(function (obj, sender, response) {
   }
 });
 
-let penButton = `<input id="btn" type="image" src=${src} height = "50" width="50">`;
+let penButton = `<input id="btn" type="image" src="${src}" height = "50" width="50">`;
+// let penButton = `<input id="btn" type="image" src="https://images.vexels.com/media/users/3/206292/isolated/preview/0a3fddb8fdf07b7c1f42a371d420c3f2-yellow-highlighter-flat.png"
+// height = "50" width="50">`;
 let body = document.querySelector("body");
 body.innerHTML += penButton;
 let text = document.getElementById("btn");

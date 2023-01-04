@@ -19,3 +19,24 @@ chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
     });
 });
 
+chrome.runtime.onMessage.addListener((obj, sender, response) => {
+  const { type, data } = obj;
+  if (type === "highlight") {
+    fetch("http://localhost:3001/api/highlight", {
+      method: "Post",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        data,
+      }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        chrome.tabs.sendMessage(tabId, { data: data });
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
+  }
+});
