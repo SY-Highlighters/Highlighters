@@ -8,14 +8,22 @@ let src = chrome.runtime.getURL("images/pen.png");
 //   }
 // }
 
-let penButton = `<input id="btn" type="image" src=${src}
-      height = "50" width="50">`;
+let penButton = `<input id="btn" type="image" src=${src} height = "50" width="50">`;
 
 let body = document.querySelector("html");
 body.innerHTML += penButton;
 let text = document.getElementById("btn");
 text.style.display = "none";
-console.log("body");
+text.addEventListener("click", highlight);
+
+function highlight() {
+  let range = selectionText.getRangeAt(0);
+  //   postHighlight(range, highlightStr); // highlight post 요청
+  let newNode = document.createElement("span");
+  newNode.style.backgroundColor = "yellow";
+  range.surroundContents(newNode);
+  text.style.display = "none";
+}
 
 function makeXPath(node, currentPath) {
   /* this should suffice in HTML documents for selectable nodes, XML with namespaces needs more code */
@@ -79,13 +87,11 @@ addEventListener("mouseup", function (e) {
     let divLeft = e.pageX + 10;
 
     // 레이어 위치를 변경한다.
-    let text = document.getElementById("btn");
-    text.style.top = divTop + "px";
-    text.style.left = divLeft + "px";
-    text.style.position = "absolute";
+    text.style.top = divTop; // + "px";
+    text.style.left = divLeft; // + "px";
+    text.style.position = "sticky";
     text.style.display = "block";
   } else {
-    let text = document.getElementById("btn");
     text.style.display = "none";
   }
   console.log("mouse up");
