@@ -42,7 +42,7 @@ function App() {
   // 로그인 상태를 확인해서 로그인 상태면 전체적으로 뷰 변경
   const header = !cookies.logCookie ? <LoginHeader /> : <Header />;
   // const [feeds, setFeeds] = useRecoilState(feedState);
-  
+
   // 파람형식
   const fetchda = 1;
   // 바디형식

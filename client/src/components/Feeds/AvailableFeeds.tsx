@@ -131,15 +131,18 @@ const AvailableFeeds = () => {
   };
 
   const feedsList = feeds.map((feed: any) => (
-    <FeedItem
-      key={feed.id}
-      title={feed.title}
-      description={feed.description}
-      og_image={feed.og_image}
-      url={feed.url}
-      text={feed.highlight}
-      date={feed.Date}
-    />
+    <div>
+      <FeedItem
+        id={feed.id}
+        key={feed.id}
+        title={feed.title}
+        description={feed.description}
+        og_image={feed.og_image}
+        url={feed.url}
+        text={feed.highlight}
+        date={feed.Date}
+      />
+    </div>
   ));
   return (
     <div className="h-12 overscroll-auto">
