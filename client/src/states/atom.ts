@@ -19,3 +19,11 @@ export const sighUpCheck = atom<boolean>({
   key: "sighUpCheck",
   default: false,
 });
+
+export const userInfo = atom<any>({
+  key: "userInfo",
+  default: {
+    nickname: "",
+    email: "",
+  },
+});

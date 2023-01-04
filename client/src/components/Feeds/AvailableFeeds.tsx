@@ -102,7 +102,7 @@ const AvailableFeeds = () => {
         url: `http://localhost:3001/api/feed/group/1`,
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${cookies.logCookie}`,
+          'Authorization': `Bearer ${cookies.logCookie}`,
         },
       });
 
@@ -149,7 +149,7 @@ const AvailableFeeds = () => {
       {/* 위에 여백 두고 그룹피드 타이틀 만들기 */}
       {/* 그룹 피드 타이틀 */}
       <div className="relative p-3 rounded-3xl">
-        <h1 className="text-2xl font-bold">그룹 피드</h1>
+        <h1 className="text-2xl font-bold text-whtie"> 그룹 피드</h1>
       </div>
       <div className="">
         <ul className="">{feedsList}</ul>

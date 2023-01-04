@@ -21,6 +21,7 @@ import {
   feedState,
   logModalVisble,
   sighUpCheck,
+  userInfo,
 } from "./states/atom";
 import {
   useRecoilState,
@@ -35,21 +36,16 @@ import Alert from "./components/Right/Alert";
 function App() {
   const bookmarkOn = useRecoilValue(bookmarkState);
   const [loginModalState, setLoginModalState] = useRecoilState(logModalVisble);
+  const setUserInfo = useSetRecoilState(userInfo);
   const setFeeds = useSetRecoilState(feedState);
   const [logged, setLog] = useState(false);
   const [cookies, setCookie, removeCookie] = useCookies(["logCookie"]);
-  // const navigate = useNavigate();
 
   // 로그인 상태를 확인해서 로그인 상태면 전체적으로 뷰 변경
   const header = !cookies.logCookie ? <LoginHeader /> : <Header />;
-  // const [feeds, setFeeds] = useRecoilState(feedState);
 
-  // 파람형식
-  const fetchda = 1;
-  // 바디형식
-  // const fetchda = JSON.stringify({
-  //   'group_id': 1
-  // })
+
+
   // useeffect로 데이터 받아오기
   const loginModalHandler = () => {
     setLoginModalState(!loginModalState);

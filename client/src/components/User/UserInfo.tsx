@@ -1,5 +1,9 @@
 import { PaperClipIcon } from "@heroicons/react/20/solid";
-import { Fragment } from "react";
+import { userInfo } from "../../states/atom";
+import { Fragment, useEffect } from "react";
+import { useRecoilValue, useRecoilState } from "recoil";
+import axios from "axios";
+import { useCookies } from "react-cookie";
 // 더미 유저 정보
 const user = {
   name: "김성태",
@@ -8,7 +12,28 @@ const user = {
   imageUrl:
     "https://velog.velcdn.com/images/chobae/post/9ef630b0-c0f3-462d-a432-0bbc5a8a6e5f/image.png",
 };
+
 const UserInfo = () => {
+  const [cookies, setCookie, removeCookie] = useCookies(["logCookie"]);
+  const [userData, setUserInfo] = useRecoilState(userInfo);
+
+  console.log(userData);
+  useEffect(() => {
+    async function userData() {
+      const response = await axios({
+        method: "get",
+        url: `http://localhost:3001/api/feed/findusers/me/`,
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${cookies.logCookie}`,
+        },
+      });
+
+      setUserInfo(response.data);
+    }
+    userData();
+  }, []);
+
   return (
     // <div className="grid grid-cols-1">
     //   <div>
@@ -18,10 +43,16 @@ const UserInfo = () => {
       <div className="h-14" />
       <div className="relative p-6 rounded-3xl -top-5">
         <div className="relative flex items-end px-3 justify-left -top-5">
-          <img className="rounded-full w-14 h-14" src={user.imageUrl} alt="" />
+          <img
+            className="rounded-full w-14 h-14"
+            src={userData.profile_image}
+            alt=""
+          />
           <div className="flex flex-col px-5">
             <span className="font-bold text-left text-sky-500">정글 5기</span>
-            <span className="text-2xl font-medium text-left">김성태</span>
+            <span className="text-2xl font-medium text-left">
+              {userData.profile_nickname}
+            </span>
           </div>
         </div>
       </div>

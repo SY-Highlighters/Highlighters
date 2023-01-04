@@ -36,7 +36,7 @@ export default function SignIn() {
         password: password,
       })
       .then(function (response) {
-        console.log(response.data.accessToken);
+        console.log(response);
         if (response) {
           axios.defaults.headers.common[
             "Authorization"

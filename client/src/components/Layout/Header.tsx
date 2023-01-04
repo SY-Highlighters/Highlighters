@@ -8,10 +8,10 @@ import {
   BookmarkIcon,
   HomeIcon,
 } from "@heroicons/react/24/outline";
-import { useRecoilState, useResetRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue, useResetRecoilState } from "recoil";
 import { bookmarkState } from "../../states/atom";
 import { useCookies } from "react-cookie";
-
+import { userInfo } from "../../states/atom";
 const user = {
   name: "김성태",
   email: "tom@example.com",
@@ -36,6 +36,8 @@ const Header: React.FC = () => {
   // const [bookmarkClick, setBookmarkClick] = useState(false);
   const [bookmark, setBookmark] = useRecoilState(bookmarkState);
   const [cookies, setCookie, removeCookie] = useCookies(["logCookie"]);
+  const userData = useRecoilValue(userInfo);
+
   // const [log, setLog] = useRecoilState(log);
   const handleBookmarkClick = () => {
     console.log("bookmark click");
@@ -157,7 +159,7 @@ const Header: React.FC = () => {
                             <span className="sr-only">Open user menu</span>
                             <img
                               className="w-12 h-12 rounded-full"
-                              src={user.imageUrl}
+                              src={userData.profile_image}
                               alt=""
                             />
                           </Menu.Button>
@@ -240,7 +242,7 @@ const Header: React.FC = () => {
                     <div className="flex-shrink-0">
                       <img
                         className="w-10 h-10 rounded-full"
-                        src={user.imageUrl}
+                        src={userData.profile_image}
                         alt=""
                       />
                     </div>

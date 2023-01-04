@@ -74,7 +74,7 @@ const FeedItem = (props: any) => {
           {/* 태그 */}
           <div className="flex flex-wrap mt-2">
             <span className="inline-flex items-center mr-2 px-3 py-0.5 rounded-full text-sm font-medium bg-sky-100 text-sky-800">
-              #야 너 아직 Highlighters 몰라?
+              #너 아직 Highlighters 몰라?
             </span>
             <span className="inline-flex items-center px-3 py-0.5 rounded-full text-sm font-medium bg-sky-100 text-sky-800">
               #도커
