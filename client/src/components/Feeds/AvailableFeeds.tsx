@@ -69,7 +69,7 @@ const AvailableFeeds = () => {
       {/* 위에 여백 두고 그룹피드 타이틀 만들기 */}
       {/* 그룹 피드 타이틀 */}
       <div className="relative p-3 rounded-3xl">
-        <h1 className="text-2xl font-bold text-whtie"> 그룹 피드</h1>
+        <h1 className="text-2xl antialiased font-bold text-whtie"> 그룹 피드</h1>
       </div>
       <div className="">
         <ul className="">{feedsList}</ul>

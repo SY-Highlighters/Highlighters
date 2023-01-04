@@ -12,7 +12,7 @@ const Alert = () => {
       <div className="flex mt-3 ml-3">
         {/* 알림 아이콘 */}
         <BellIcon className="w-7 h-7" />
-        <span className="px-3 text-2xl font-bold">알림</span>
+        <span className="px-3 text-2xl antialiased font-bold">알림</span>
       </div>
       {/* 아래로 긴 카드박스 */}
       <div className="flex flex-col m-5 ">
@@ -35,9 +35,7 @@ const Alert = () => {
             <div className="py-1"></div>
             <div>
               <p className="font-bold">정글 5기 김현진</p>
-              <p className="text-sm">
-                "이것 좀 봐봐!"
-              </p>
+              <p className="text-sm">"이것 좀 봐봐!"</p>
             </div>
           </div>
         </div>
