@@ -53,7 +53,7 @@ model Highlight {
   selection  Json
   user_email String
   contents   String
-  feed       Feed     @relation(fields: [feed_id], references: [id])
+  feed       Feed     @relation(fields: [feed_id], references: [id], onDelete: Cascade)
   user       User     @relation(fields: [user_email], references: [email])
 
   @@index([feed_id], map: "HIGHLIGHT_feed_id_fkey")
