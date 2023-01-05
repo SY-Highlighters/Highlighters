@@ -4,7 +4,7 @@ export default function LoginHeader() {
   const [navbarOpen, setNavbarOpen] = React.useState(false);
   return (
     <>
-      <nav className="relative flex flex-wrap items-center justify-between px-2 py-3 mb-3 bg-sky-500">
+      <nav className="relative flex flex-wrap items-center justify-between px-2 py-3 bg-sky-500">
         <div className="container flex flex-wrap items-center justify-between px-4 mx-auto">
           <div className="relative flex justify-between w-full lg:w-auto lg:static lg:block lg:justify-start">
             <div className="flex items-center flex-shrink-0 text-white h-14">
