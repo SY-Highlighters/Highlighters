@@ -4,3 +4,4 @@ node_modules
 .env.development
 .env.production
 .DS_Store # Mac OS X
+/build

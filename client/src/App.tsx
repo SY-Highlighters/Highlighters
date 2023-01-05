@@ -32,24 +32,15 @@ import {
 import LoginModal from "./LoginModal";
 import { log } from "console";
 import Alert from "./components/Right/Alert";
-
+import Intro from "./Intro";
 function App() {
   const bookmarkOn = useRecoilValue(bookmarkState);
   const [loginModalState, setLoginModalState] = useRecoilState(logModalVisble);
-  const setUserInfo = useSetRecoilState(userInfo);
-  const setFeeds = useSetRecoilState(feedState);
-  const [logged, setLog] = useState(false);
   const [cookies, setCookie, removeCookie] = useCookies(["logCookie"]);
 
   // 로그인 상태를 확인해서 로그인 상태면 전체적으로 뷰 변경
   const header = !cookies.logCookie ? <LoginHeader /> : <Header />;
 
-
-
-  // useeffect로 데이터 받아오기
-  const loginModalHandler = () => {
-    setLoginModalState(!loginModalState);
-  };
 
   return (
     <Fragment>
@@ -75,15 +66,16 @@ function App() {
           <Alert></Alert>
         </div>
       ) : (
-        <div className="flex justify-center mt-10">
+        <div className="">
           <div>
             {/* 회원가입 버튼 */}
-            <button
+            <Intro></Intro>
+            {/* <button
               onClick={loginModalHandler}
               className="w-full h-12 px-6 text-indigo-100 transition-colors duration-150 rounded-lg bg-sky-500 focus:shadow-outline hover:bg-sky-800"
             >
               <p className="text-bold">Login</p>
-            </button>
+            </button> */}
           </div>
           {loginModalState && <LoginModal></LoginModal>}
         </div>
