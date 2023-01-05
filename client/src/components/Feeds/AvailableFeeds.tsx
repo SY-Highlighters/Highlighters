@@ -31,6 +31,7 @@ const AvailableFeeds = () => {
     data.map((item: any) => {
       const newfeed = {
         id: item.id,
+        key: item.id,
         url: item.url,
         og_image: item.og_image,
         title: item.og_title,
@@ -44,7 +45,7 @@ const AvailableFeeds = () => {
   };
 
   const feedsList = feeds.map((feed: any) => (
-    <div>
+    <div key={feed.id}>
       <FeedItem
         id={feed.id}
         key={feed.id}

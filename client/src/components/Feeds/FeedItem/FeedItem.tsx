@@ -16,8 +16,8 @@ const FeedItem = (props: any) => {
   const day = date.getDate();
 
   // 하이라이트 파싱
-  const highlights = props.text.map((hl: any) => (
-    <li className="">
+  const highlights = props.text.map((hl: any, index:number) => (
+    <li className="" key={index}>
       <span className={font_color}>{hl.contents}</span>
     </li>
   ));
