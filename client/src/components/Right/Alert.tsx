@@ -1,10 +1,4 @@
-import {
-  Bars3Icon,
-  BellIcon,
-  XMarkIcon,
-  UserIcon,
-} from "@heroicons/react/24/outline";
-import Card from "../UI/Card";
+import { BellIcon } from "@heroicons/react/24/outline";
 const Alert = () => {
   return (
     <div className="bg-white rounded-lg shadow-lg justify-self-center basis-1/4">

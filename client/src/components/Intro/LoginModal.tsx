@@ -1,13 +1,5 @@
-// tailwind login modal
-// https://tailwindcomponents.com/component/login-modal
-// https://tailwindcomponents.com/component/login-modal
-import {
-  useRecoilValue,
-  useSetRecoilState,
-  useRecoilState,
-  useResetRecoilState,
-} from "recoil";
-import { logModalVisble, sighUpCheck } from "./states/atom";
+import { useSetRecoilState } from "recoil";
+import { logModalVisble, sighUpCheck } from "../../states/atom";
 import SignIn from "./SignIn";
 import SignUp from "./SignUp";
 function LoginModal() {
@@ -65,12 +57,3 @@ function LoginModal() {
 }
 
 export default LoginModal;
-
-// 캔슬
-// <button
-//   onClick={closeModal}
-//   type="button"
-//   className="inline-flex justify-center w-full px-4 py-2 mt-3 text-base font-medium text-gray-700 bg-gray-100 border border-transparent rounded-md shadow-sm hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm"
-// >
-//   Cancel
-// </button>;

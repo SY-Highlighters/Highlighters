@@ -1,12 +1,5 @@
-import { PaperClipIcon } from "@heroicons/react/20/solid";
-import Card from "../UI/Card";
 // 더미 유저 정보
-const user = {
-  name: "김성태",
-  email: "tom@example.com",
-  imageUrl:
-    "https://velog.velcdn.com/images/chobae/post/6bfebba6-5f10-4e2f-b8ec-12a9b26d1bb0/image.png",
-};
+
 const GroupTag = () => {
   return (
     <div className="w-full mt-10 bg-white rounded-lg shadow-lg">

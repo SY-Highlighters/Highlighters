@@ -1,11 +1,9 @@
-import { Fragment, useState } from "react";
+import { Fragment } from "react";
 import { Disclosure, Menu, Transition } from "@headlessui/react";
 import {
   Bars3Icon,
   BellIcon,
   XMarkIcon,
-  UserIcon,
-  BookmarkIcon,
   HomeIcon,
 } from "@heroicons/react/24/outline";
 import { useRecoilState, useRecoilValue, useResetRecoilState } from "recoil";
@@ -33,13 +31,11 @@ function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(" ");
 }
 const Header: React.FC = () => {
-  // const [bookmarkClick, setBookmarkClick] = useState(false);
   const [bookmark, setBookmark] = useRecoilState(bookmarkState);
   const [cookies, setCookie, removeCookie] = useCookies(["logCookie"]);
   const userData = useRecoilValue(userInfo);
   const resetFeeds = useResetRecoilState(feedState);
 
-  // const [log, setLog] = useRecoilState(log);
   const handleBookmarkClick = () => {
     console.log("bookmark click");
     console.log(bookmarkState);
@@ -48,19 +44,10 @@ const Header: React.FC = () => {
   const logout = () => {
     resetFeeds();
     removeCookie("logCookie");
-    // navigate('/');
   };
 
   return (
     <>
-      {/*
-        This example requires updating your template:
-
-        ```
-        <html class="h-full bg-gray-100">
-        <body class="h-full">
-        ```
-      */}
       <div className="min-h-full">
         <Disclosure as="nav" className="bg-sky-500">
           {({ open }) => (
@@ -68,13 +55,6 @@ const Header: React.FC = () => {
               <div className="px-4 mx-auto max-w-7xl sm:px-6 lg:px-8">
                 <div className="flex items-center justify-between h-16">
                   <div className="flex items-center">
-                    {/* <div className="flex-shrink-0">
-                      <img
-                        className="w-8 h-8"
-                        src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=500"
-                        alt="Your Company"
-                      />
-                    </div> */}
                     {/* 네브 타이틀 */}
                     <div className="flex items-center flex-shrink-0 mr-6 text-white">
                       <span className="text-xl font-semibold tracking-tight">
