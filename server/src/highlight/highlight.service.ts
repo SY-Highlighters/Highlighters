@@ -1,8 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from 'src/repository/prisma.service';
 import { Highlight } from '.prisma/client';
-import { CreateHighlightDto } from './dto/create-highlight.dto';
-import { UpdateHighlightDto } from './dto/update-highlight.dto';
+import { CreateHighlightDto, UpdateHighlightDto } from './dto/highlight.dto';
 import { FeedService } from 'src/feed/feed.service';
 import { CreateFeedDto } from 'src/feed/dto/feed.dto';
 import { forwardRef } from '@nestjs/common/utils';
@@ -70,7 +69,8 @@ export class HighlightService {
     const find_feed = await this.feedService.findFeedByURL(url);
 
     if (!find_feed) {
-      throw new NotFoundException();
+      // throw new NotFoundException();
+      return null;
     }
 
     const result = await this.prismaService.highlight.findMany({

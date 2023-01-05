@@ -2,8 +2,9 @@ FROM node:19
 
 WORKDIR /app
 COPY package.json .
-RUN npm install --f
+RUN npm install
+RUN npm install -g serve
 COPY . .
 
-EXPOSE 3000
-CMD ["npm", "start"]
+RUN npm run build
+CMD ["serve", "-s", "build"]

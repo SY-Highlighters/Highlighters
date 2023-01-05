@@ -2,6 +2,9 @@ version: "3"
 
 services:
   nginxproxy:
+    depends_on:
+      - server
+      - client
     image: nginx
     ports:
       - "80:3000"
@@ -14,8 +17,12 @@ services:
     build:
       context: ./server
       dockerfile: Dockerfile
+    restart: always
+    container_name: server
 
   client:
     build:
       context: ./client
       dockerfile: Dockerfile
+    restart: always
+    container_name: client
