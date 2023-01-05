@@ -1,6 +1,5 @@
-import { PaperClipIcon } from "@heroicons/react/20/solid";
 import FeedItem from "./FeedItem/FeedItem";
-import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
+import { useRecoilState } from "recoil";
 import { feedState } from "../../states/atom";
 import { useCookies } from "react-cookie";
 import { useEffect } from "react";
@@ -12,12 +11,6 @@ const AvailableFeeds = () => {
   // 렌더링된 후 바로 실행
   useEffect(() => {
     async function fetchData() {
-      // const response = await fetgch(
-      //   `http://localhost:3001/api/feed/group/${fetchda}`
-      // );
-      // const data = await response.json();
-      // console.log(data);
-
       const response = await axios({
         method: "get",
         url: `http://${process.env.REACT_APP_HOST}:3001/api/feed/group/1`,
@@ -38,6 +31,7 @@ const AvailableFeeds = () => {
     data.map((item: any) => {
       const newfeed = {
         id: item.id,
+        key: item.id,
         url: item.url,
         og_image: item.og_image,
         title: item.og_title,
@@ -51,7 +45,7 @@ const AvailableFeeds = () => {
   };
 
   const feedsList = feeds.map((feed: any) => (
-    <div>
+    <div key={feed.id}>
       <FeedItem
         id={feed.id}
         key={feed.id}
@@ -69,7 +63,7 @@ const AvailableFeeds = () => {
       {/* 위에 여백 두고 그룹피드 타이틀 만들기 */}
       {/* 그룹 피드 타이틀 */}
       <div className="relative p-3 rounded-3xl">
-        <h1 className="text-2xl antialiased font-bold text-whtie"> 그룹 피드</h1>
+        <h1 className="text-2xl antialiased font-bold text-whtie">그룹 피드</h1>
       </div>
       <div className="">
         <ul className="">{feedsList}</ul>

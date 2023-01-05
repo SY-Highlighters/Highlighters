@@ -1,14 +1,9 @@
 import {
-  BriefcaseIcon,
   CalendarIcon,
   CheckIcon,
   ChevronDownIcon,
-  CurrencyDollarIcon,
-  LinkIcon,
-  MapPinIcon,
   PencilIcon,
 } from "@heroicons/react/20/solid";
-import { Fragment } from "react";
 
 const FeedItem = (props: any) => {
   // 여러개의 하이라이트를 받아서 하나의 리스트로 만들어준다.
@@ -21,8 +16,8 @@ const FeedItem = (props: any) => {
   const day = date.getDate();
 
   // 하이라이트 파싱
-  const highlights = props.text.map((hl: any) => (
-    <li className="">
+  const highlights = props.text.map((hl: any, index:number) => (
+    <li className="" key={index}>
       <span className={font_color}>{hl.contents}</span>
     </li>
   ));
@@ -37,17 +32,12 @@ const FeedItem = (props: any) => {
           />
           {`${month}월 ${day}일, ${year}년 `}
         </div>
-        {/* <div className="px-4 py-5 sm:px-6"> */}
         <div className="m-5 sm:px-6">
           <a href={props.url} target="_blank" rel="noreferrer">
             <h2 className="mb-5 text-xl font-bold leading-6 text-gray-900">
               {props.title}
             </h2>
           </a>
-          {/* <p >
-            <span className="text-sm font-medium bg-sky-500"> {props.text}</span> 
-          </p> */}
-          {/* 다수의 하이라이팅 표시 -> 수정해야할듯?*/}
 
           <div className="mb-5 ">
             <ul className="space-y-1.5">{highlights}</ul>
