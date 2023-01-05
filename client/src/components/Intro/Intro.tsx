@@ -1,5 +1,4 @@
-import LoginModal from "./LoginModal";
-import { logModalVisble } from "./states/atom";
+import { logModalVisble } from "../../states/atom";
 import { useRecoilState } from "recoil";
 export default function Intro() {
   const [loginModalState, setLoginModalState] = useRecoilState(logModalVisble);
@@ -15,7 +14,7 @@ export default function Intro() {
           "Highlighters "
         </h1>
         <p className="text-2xl text-gray-400">
-            링크를 공유하고, 관리하고, 북마크하세요.  
+          링크를 공유하고, 관리하고, 북마크하세요.
         </p>
         <button
           onClick={loginModalHandler}

@@ -1,8 +1,6 @@
 // React
-import { Fragment, useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Fragment } from "react";
 import { useCookies } from "react-cookie";
-import axios from "axios";
 // Layout
 //  header section
 import Header from "./components/Layout/Header";
@@ -12,49 +10,28 @@ import User from "./components/User/User";
 // feed & bookmark section
 import AvailableFeeds from "./components/Feeds/AvailableFeeds";
 import AvailableBookmarks from "./components/Bookmarks/AvailableBookmarks";
-
 // user before login section
-// import GoogleButton from "./GoogleButton";
-// Recoil -> state management
-import {
-  bookmarkState,
-  feedState,
-  logModalVisble,
-  sighUpCheck,
-  userInfo,
-} from "./states/atom";
-import {
-  useRecoilState,
-  useRecoilValue,
-  useSetRecoilState,
-  useResetRecoilState,
-} from "recoil";
-import LoginModal from "./LoginModal";
-import { log } from "console";
+import LoginModal from "./components/Intro/LoginModal";
 import Alert from "./components/Right/Alert";
-import Intro from "./Intro";
+import Intro from "./components/Intro/Intro";
+// state management section
+import { useRecoilValue } from "recoil";
+import { bookmarkState, logModalVisble } from "./states/atom";
+
 function App() {
   const bookmarkOn = useRecoilValue(bookmarkState);
-  const [loginModalState, setLoginModalState] = useRecoilState(logModalVisble);
+  const loginModalState = useRecoilValue(logModalVisble);
   const [cookies, setCookie, removeCookie] = useCookies(["logCookie"]);
 
   // 로그인 상태를 확인해서 로그인 상태면 전체적으로 뷰 변경
   const header = !cookies.logCookie ? <LoginHeader /> : <Header />;
 
-
   return (
     <Fragment>
-      {/* {bookmarkState && <Cart onClose={hideCartHandler} />} */}
-      {/* <Header onShowCart={showCartHandler}></Header>
-       */}
+      {/* header section */}
       {header}
-      {/* <HeaderTest></HeaderTest>
-       */}
-      {}
-      {/* <div className="flex justify-evenly">
-       */}
-      {/* 로그인 후 메인페이지 */}
-
+      {/* log section */}
+      {/* loged main section*/}
       {cookies.logCookie ? (
         <div className="flex flex-row gap-4 m-8 mx-10 xl:px-40 lg:grid-cols-2 xl:grid-cols-3 sm:grid-cols-1 ">
           <User></User>
@@ -66,32 +43,15 @@ function App() {
           <Alert></Alert>
         </div>
       ) : (
+        // log section
         <div className="">
           <div>
-            {/* 회원가입 버튼 */}
             <Intro></Intro>
-            {/* <button
-              onClick={loginModalHandler}
-              className="w-full h-12 px-6 text-indigo-100 transition-colors duration-150 rounded-lg bg-sky-500 focus:shadow-outline hover:bg-sky-800"
-            >
-              <p className="text-bold">Login</p>
-            </button> */}
           </div>
+          {/* log modal*/}
           {loginModalState && <LoginModal></LoginModal>}
         </div>
       )}
-      {/* <div className="grid gap-4 xl:px-40 lg:grid-cols-2 xl:grid-cols-3 sm:grid-cols-1">
-        <User></User>
-        {bookmarkOn ? (
-          <AvailableFeeds></AvailableFeeds>
-        ) : (
-          <AvailableBookmarks></AvailableBookmarks>
-        )}
-      </div> */}
-
-      {/* <button onClick={getData} className="bg-black">
-        클릭
-      </button> */}
     </Fragment>
   );
 }

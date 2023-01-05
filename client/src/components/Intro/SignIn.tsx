@@ -2,7 +2,7 @@ import axios from "axios";
 import { Fragment } from "react";
 import { useSetRecoilState, useRecoilState } from "recoil";
 import SignUp from "./SignUp";
-import { logModalVisble, sighUpCheck } from "./states/atom";
+import { logModalVisble, sighUpCheck } from "../../states/atom";
 import { useCookies } from "react-cookie";
 
 export default function SignIn() {
