@@ -28,10 +28,8 @@ export default function SignIn() {
     const email = event.target[0].value;
     const password = event.target[1].value;
 
-    const host_url = `http://${process.env.REACT_APP_HOST}:3001/api/auth/signin`;
-
     axios
-      .post(host_url, {
+      .post(`http://${process.env.REACT_APP_HOST}/api/auth/signin`, {
         email: email,
         password: password,
       })

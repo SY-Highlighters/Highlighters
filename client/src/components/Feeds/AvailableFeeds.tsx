@@ -13,7 +13,7 @@ const AvailableFeeds = () => {
     async function fetchData() {
       const response = await axios({
         method: "get",
-        url: `http://${process.env.REACT_APP_HOST}:3001/api/feed/group/1`,
+        url: `http://${process.env.REACT_APP_HOST}/api/feed/group/1`,
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${cookies.logCookie}`,
