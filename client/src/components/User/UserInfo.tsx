@@ -12,7 +12,7 @@ const UserInfo = () => {
     async function userData() {
       const response = await axios({
         method: "get",
-        url: `http://${process.env.REACT_APP_HOST}/api/feed/findusers/me/`,
+        url: `${process.env.REACT_APP_HOST}/api/feed/findusers/me/`,
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${cookies.logCookie}`,
