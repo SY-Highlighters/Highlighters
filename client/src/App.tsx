@@ -16,16 +16,22 @@ import Alert from "./components/Right/Alert";
 import Intro from "./components/Intro/Intro";
 // state management section
 import { useRecoilValue } from "recoil";
-import { bookmarkState, logModalVisble } from "./states/atom";
+import { bookmarkState, logModalVisble, groupJoinState,userInfo } from "./states/atom";
+import Group from "./components/Group/Group";
 
 function App() {
+  // state
   const bookmarkOn = useRecoilValue(bookmarkState);
+  const userData= useRecoilValue(userInfo);
+  // const groupJoined = userData.groupName;
+
   const loginModalState = useRecoilValue(logModalVisble);
+  // cookie
   const [cookies, setCookie, removeCookie] = useCookies(["logCookie"]);
 
-  // 로그인 상태를 확인해서 로그인 상태면 전체적으로 뷰 변경
+  // state -> view
   const header = !cookies.logCookie ? <LoginHeader /> : <Header />;
-
+  // 
   return (
     <Fragment>
       {/* header section */}
@@ -35,12 +41,12 @@ function App() {
       {cookies.logCookie ? (
         <div className="flex flex-row gap-4 m-8 mx-10 xl:px-40 lg:grid-cols-2 xl:grid-cols-3 sm:grid-cols-1 ">
           <User></User>
-          {bookmarkOn ? (
+          {/* {bookmarkOn ? (
             <AvailableFeeds></AvailableFeeds>
           ) : (
             <AvailableBookmarks></AvailableBookmarks>
           )}
-          <Alert></Alert>
+          <Alert></Alert> */}
         </div>
       ) : (
         // log section

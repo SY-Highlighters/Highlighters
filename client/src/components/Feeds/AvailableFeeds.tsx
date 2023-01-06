@@ -1,19 +1,20 @@
 import FeedItem from "./FeedItem/FeedItem";
-import { useRecoilState } from "recoil";
-import { feedState } from "../../states/atom";
+import { useRecoilState, useRecoilValue } from "recoil";
+import { feedState, userInfo } from "../../states/atom";
 import { useCookies } from "react-cookie";
 import { useEffect } from "react";
 import axios from "axios";
+
 const AvailableFeeds = () => {
   const [feeds, setFeeds] = useRecoilState(feedState);
   const [cookies, setCookie, removeCookie] = useCookies(["logCookie"]);
-
+  const userData = useRecoilValue(userInfo);
   // 렌더링된 후 바로 실행
   useEffect(() => {
     async function fetchData() {
       const response = await axios({
         method: "get",
-        url: `${process.env.REACT_APP_HOST}/api/feed/group/1`,
+        url: `${process.env.REACT_APP_HOST}:3001/api/feed/group/${userData.groupId}`,
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${cookies.logCookie}`,

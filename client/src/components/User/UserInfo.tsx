@@ -7,7 +7,7 @@ import { useCookies } from "react-cookie";
 const UserInfo = () => {
   const [cookies, setCookie, removeCookie] = useCookies(["logCookie"]);
   const [userData, setUserInfo] = useRecoilState(userInfo);
-
+  
   useEffect(() => {
     async function userData() {
       const response = await axios({
@@ -18,7 +18,7 @@ const UserInfo = () => {
           Authorization: `Bearer ${cookies.logCookie}`,
         },
       });
-
+      console.log("유저정보", response.data)
       setUserInfo(response.data);
     }
     userData();
@@ -35,7 +35,8 @@ const UserInfo = () => {
             alt=""
           />
           <div className="flex flex-col px-5">
-            <span className="font-bold text-left text-sky-500">정글 5기</span>
+            {/* <span className="font-bold text-left text-sky-500">정글 5기</span> */}
+            <span className="font-bold text-left text-sky-500">{userData.groupName}</span>
             <span className="text-2xl font-medium text-left">
               {userData.profile_nickname}
             </span>
