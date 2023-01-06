@@ -1,7 +1,6 @@
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   // 웹페이지의 하이라이팅을 디비로 전송
   if (request.greeting === "posthighlight") {
-    console.log("[background] request:" + request.greeting);
     fetch("http://localhost:3001/api/highlight/", {
       method: "POST",
       headers: {
@@ -9,6 +8,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
       },
       body: JSON.stringify(request.data),
     }).then((response) => {
+      console.log
       sendResponse({ farewell: response });
     });
     return true;
