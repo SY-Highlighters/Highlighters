@@ -140,9 +140,10 @@ export class FeedService {
       }
 
       const myprofileinfo_ = {
-        profile_image: user.image,
-        profile_nickname: user.nickname,
-        ...group,
+        userImage: user.image,
+        userNickname: user.nickname,
+        groupName: group?.name,
+        groupId: group?.id,
       };
 
       myprofileinfo = myprofileinfo_;
