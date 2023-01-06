@@ -160,7 +160,7 @@ function getSelect() {
 
 /* contentscript 시작 */
 
-if (window.location.href !== `http://localhost:3000/` && "https://highlighters.site/") {
+if (window.location.href !== `http://localhost:3000/` && window.location.href !== "https://highlighters.site/") {
   window.onload = onWindowReady;
 
   // 드래그하고 마우스를 떼면 selection 객체 생성
