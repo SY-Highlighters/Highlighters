@@ -60,14 +60,15 @@ export class FeedService {
       if (feed.url) {
         const meta = await getUrlMeta(feed.url);
         // 존재하지 않는다면 임의의 값 넣기
-        if(meta.title === undefined) {
-          meta.title = "No Title"
+        if (meta.title === undefined) {
+          meta.title = 'No Title';
         }
-        if(meta.desc === undefined) {
-          meta.desc = "No Description"
+        if (meta.desc === undefined) {
+          meta.desc = 'No Description';
         }
-        if(meta.image === undefined) {
-          meta.image = "https://img.favpng.com/23/20/7/computer-icons-information-png-favpng-g8DtjAPPNhyaU9EdjHQJRnV97_t.jpg"
+        if (meta.image === undefined) {
+          meta.image =
+            'https://img.favpng.com/23/20/7/computer-icons-information-png-favpng-g8DtjAPPNhyaU9EdjHQJRnV97_t.jpg';
         }
         const feedwithOg = {
           ...feed,
@@ -91,17 +92,18 @@ export class FeedService {
 
     const usersprofileinfo: object[] = [];
     for (const user of users) {
-      const user_profile = await this.prismaService.user.findUnique(
-        { where: { email: user.email } },
-      )
+      const user_profile = await this.prismaService.user.findUnique({
+        where: { email: user.email },
+      });
 
       if (user_profile) {
         // user의 image 혹은 nickname이 없다면 임의의 값 넣기
         if (user_profile.image == null) {
-          user_profile.image = "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a0/Font_Awesome_5_regular_user-circle.svg/1200px-Font_Awesome_5_regular_user-circle.svg.png"
+          user_profile.image =
+            'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a0/Font_Awesome_5_regular_user-circle.svg/1200px-Font_Awesome_5_regular_user-circle.svg.png';
         }
         if (user_profile.nickname == null) {
-          user_profile.nickname = "No Nickname"
+          user_profile.nickname = 'No Nickname';
         }
         const userprofileinfo = {
           profile_image: user_profile.image,
@@ -115,23 +117,34 @@ export class FeedService {
 
   // 나 자신의 프로필 찾기
   async findMyProfile(email: string): Promise<object> {
-    const user = await this.prismaService.user.findUnique(
-      { where: { email: email } },
-    )
+    const user = await this.prismaService.user.findUnique({
+      where: { email },
+    });
 
     let myprofileinfo: object;
     if (user) {
       // user의 image 혹은 nickname이 없다면 임의의 값 넣기
       if (user.image == null) {
-        user.image = "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a0/Font_Awesome_5_regular_user-circle.svg/1200px-Font_Awesome_5_regular_user-circle.svg.png"
+        user.image =
+          'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a0/Font_Awesome_5_regular_user-circle.svg/1200px-Font_Awesome_5_regular_user-circle.svg.png';
       }
       if (user.nickname == null) {
-        user.nickname = "No Nickname"
+        user.nickname = 'No Nickname';
       }
+
+      let group = null;
+      if (user.group_id) {
+        group = await this.prismaService.group.findUnique({
+          where: { id: user.group_id },
+        });
+      }
+
       const myprofileinfo_ = {
         profile_image: user.image,
         profile_nickname: user.nickname,
+        ...group,
       };
+
       myprofileinfo = myprofileinfo_;
     }
     return myprofileinfo;
