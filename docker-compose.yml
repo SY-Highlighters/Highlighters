@@ -5,13 +5,15 @@ services:
     depends_on:
       - server
       - client
-    image: nginx
+    image: nginx:alpine
     ports:
-      - "80:3000"
-      - "3001:3001"
+      - "80:80"
+      - "443:3000"
     restart: always
     volumes:
-      - "./nginx.conf:/etc/nginx/nginx.conf"
+      - /etc/letsencrypt:/etc/letsencrypt
+      - ./myweb:/usr/share/nginx/html
+      - ./nginx.conf:/etc/nginx/nginx.conf
 
   server:
     build:
@@ -19,6 +21,10 @@ services:
       dockerfile: Dockerfile
     restart: always
     container_name: server
+    expose:
+      - "3001"
+    volumes:
+      - ./myweb:/usr/share/nginx/html
 
   client:
     build:
@@ -26,3 +32,15 @@ services:
       dockerfile: Dockerfile
     restart: always
     container_name: client
+    volumes:
+      - ./myweb:/usr/share/nginx/html
+
+  # cerbot:
+  #   depends_on:
+  #     - nginxproxy
+  #   image: certbot/certbot
+  #   container_name: cerbot
+  #   volumes:
+  #     - /etc/letsencrypt:/etc/letsencrypt
+  #     - ./myweb:/usr/share/nginx/html
+  #   command: certonly --dry-run --webroot --webroot-path=/usr/share/nginx/html --email siaksiakxgmail.com --agree-tos --no-eff-email --keep-until-expiring -d highlighters.site -d www.highlighters.site
