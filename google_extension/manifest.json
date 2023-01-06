@@ -1,18 +1,19 @@
 {
   "name": "Highlighters",
-  "description": "for jungle",
-  "version": "1.0",
+  "version": "0.2.0",
+  "description": "highlights for group",
+  "permissions": ["storage", "tabs", "scripting", "cookies"],
+  "host_permissions": ["<all_urls>"],
   "manifest_version": 3,
   "background": {
     "service_worker": "background.js"
   },
-  "permissions": [
-    "storage",
-    "tabs",
-    "scripting",
-    "declarativeNetRequest",
-    "declarativeNetRequestWithHostAccess",
-    "declarativeNetRequestFeedback"
+  "content_scripts": [
+    {
+      "matches": ["http://*/*", "https://*/*"],
+      "js": ["contentscript.js"],
+      "run_at": "document_start"
+    }
   ],
   "action": {
     "default_popup": "popup.html",
@@ -33,13 +34,6 @@
     {
       "resources": ["images/pen.png"],
       "matches": ["<all_urls>"]
-    }
-  ],
-  "content_scripts": [
-    {
-      "matches": ["http://*/*", "https://*/*"],
-      "js": ["contentscript.js"],
-      "run_at": "document_start"
     }
   ]
 }
