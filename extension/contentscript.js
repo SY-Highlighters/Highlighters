@@ -108,7 +108,7 @@ function getHighlight(url) {
       data: { url: url },
     },
     (response) => {
-      console.log("gethighlight in cs", response.data);
+      console.log("gethighlight in cs", response);
       for (const highlight of response.data) {
         console.log(highlight);
         let selection = highlight.selection;
