@@ -2,36 +2,38 @@ import React, { Fragment, useState } from "react";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import { groupAddState, groupModalVisble } from "../../states/atom";
 import axios from "axios";
-
+import { useCookies } from "react-cookie";
 export default function GroupAdd() {
   const setGroupModal = useSetRecoilState(groupModalVisble);
   const setGroupAdd = useSetRecoilState(groupAddState);
+  const [cookies, setCookie, removeCookie] = useCookies(["logCookie"]);
+
   // 폼 데이터 받기
-  const formSubmitHandler = (event: any) => {
+  const formSubmitHandler = async (event: any) => {
     event.preventDefault();
-    console.log(event);
+    console.log(event.target[0].value);
 
     // form에서 groupName 받아오기
     const groupName = event.target[0].value;
-    const host_url = `http://${process.env.REACT_APP_HOST}:3001/api/{여기다가 그룹생성 api 넣어주세요}`;
 
-    axios
+    const host_url = `${process.env.REACT_APP_HOST}/api/group/create/`;
+    // 서버에 그룹 생성 요청
+    await axios
       .post(host_url, {
-        groupName: groupName,
+        name: groupName,
       })
       .then(function (response) {
         console.log(response);
         if (response) {
           axios.defaults.headers.common[
             "Authorization"
-          ] = `Bearer ${response.data.accessToken}`;
-          // 잘 전달했을때
-          setGroupModal(!groupModalVisble);
-          setGroupAdd(!groupAddState);
+          ] = `Bearer ${cookies.logCookie}`;
         } else {
-          alert("그룹 생성 실패");
+          alert("그룹 생성 실패!");
         }
       });
+    setGroupModal(!groupModalVisble);
+    setGroupAdd(!groupAddState);
   };
 
   return (

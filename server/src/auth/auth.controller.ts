@@ -1,7 +1,5 @@
-import { Body, Controller, Get, Post, Req, UseGuards } from '@nestjs/common';
-import { AuthGuard } from '@nestjs/passport';
+import { Body, Controller, Post } from '@nestjs/common';
 import { User } from '@prisma/client';
-import { json } from 'stream/consumers';
 import { AuthService } from './auth.service';
 import {
   AuthSigninCredentialsDto,
@@ -42,7 +40,7 @@ export class AuthController {
   @Post('/signin')
   signIn(
     @Body() authSigninCredentialsDto: AuthSigninCredentialsDto,
-  ): Promise<{ accessToken: string }> {
+  ): Promise<object> {
     return this.authService.signIn(authSigninCredentialsDto);
   }
 }

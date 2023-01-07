@@ -20,7 +20,7 @@ export default function GroupJoin() {
     // form에서 참여 코드 받아오기
     const joinCode = event.target[0].value;
 
-    const host_url = `http://${process.env.REACT_APP_HOST}:3001/api/{여기 참여코드 받아오는 api}`;
+    const host_url = `http://${process.env.REACT_APP_HOST}:3001/api/group/join/`;
 
     axios
       .post(host_url, {
