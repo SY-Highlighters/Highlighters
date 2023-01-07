@@ -26,6 +26,7 @@ export const userInfo = atom<any>({
     nickname: "",
     img: "",
     groupName: "",
+    groupId: "",
   },
 });
 // 유저가 그룹이 가입되어있는지 확인하는 state
@@ -33,7 +34,6 @@ export const groupJoinState = atom<boolean>({
   key: "groupJoinState",
   default: false,
 });
-
 
 export const groupAddState = atom<boolean>({
   key: "groupAddState",

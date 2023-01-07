@@ -8,13 +8,16 @@ import axios from "axios";
 const AvailableFeeds = () => {
   const [feeds, setFeeds] = useRecoilState(feedState);
   const [cookies, setCookie, removeCookie] = useCookies(["logCookie"]);
-  const userData = useRecoilValue(userInfo);
-  // 렌더링된 후 바로 실행
+  const [userData, setUserInfo] = useRecoilState(userInfo);
+  
+  const gropuId = userData.groupId;
+  console.log(gropuId);
+  // // 렌더링된 후 바로 실행
   useEffect(() => {
     async function fetchData() {
       const response = await axios({
         method: "get",
-        url: `${process.env.REACT_APP_HOST}:3001/api/feed/group/${userData.groupId}`,
+        url: `${process.env.REACT_APP_HOST}/api/feed/group/${userData.gropuId}`,
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${cookies.logCookie}`,

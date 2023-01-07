@@ -19,8 +19,8 @@ export default function SignIn() {
     setSignUp(!sighch);
   };
 
-  // 폼 데이터 받기
-  const formSubmitHandler = (event: any) => {
+  // 폼 데이터 받기 -> 이건 건들지 않는게 낫겠다.
+  const formSubmitHandler = async (event: any) => {
     event.preventDefault();
     console.log(event);
     logModalDisable(!logModalVisble);
@@ -28,7 +28,7 @@ export default function SignIn() {
     const email = event.target[0].value;
     const password = event.target[1].value;
 
-    axios
+    await axios
       .post(`${process.env.REACT_APP_HOST}/api/auth/signin`, {
         email: email,
         password: password,
