@@ -9,7 +9,12 @@ export class MemberService {
   //그룹 만들고 아이디 받아서 업데이트
   async createGroup(createGroupDto: CreateGroupDto): Promise<number> {
     const { user_email, name } = createGroupDto;
-    const newGroup = await this.prismaService.group.create({ data: { name } });
+    const newGroup = await this.prismaService.group.create({
+      data: {
+        name,
+        group_code: Math.floor(Math.random() * 1000000).toString(16),
+      },
+    });
 
     if (!newGroup) {
       throw new NotFoundException(`Create Group Fail`);
