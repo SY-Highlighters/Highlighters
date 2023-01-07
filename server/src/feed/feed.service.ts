@@ -17,9 +17,14 @@ export class FeedService {
   ) {}
 
   async createFeed(createFeedDto: CreateFeedDto): Promise<Feed> {
-    const { user_email, group_id, url } = createFeedDto;
+    const { user_email, group_id, url, title } = createFeedDto;
     const result = await this.prismaService.feed.create({
-      data: { user_email, group_id, url },
+      data: {
+        user_email,
+        group_id,
+        url,
+        title,
+      },
     });
 
     return result;
