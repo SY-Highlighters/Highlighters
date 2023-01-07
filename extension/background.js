@@ -20,7 +20,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
           sendResponse({ farewell: response });
         });
       }
-      
+
       // 웹페이지의 모든 하이라이트를 가져옴
       else if (request.greeting === "gethighlight") {
         console.log('[background.js] gethighlight request 하기 전', token, request.data);
@@ -39,14 +39,14 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
           .then((data) => {
             console.log("[background.js] gethighlight response data", data);
             sendResponse({ data: data });
-            return true;
+            // return true;
           })
           .catch((error) => console.log("<fetch error>: [background.js] gethighlight error: ", error));
-        console.log('아무거나')
       }
     }
     else {
       console.log('cookie 없음');
     }
   });
+  return true;
 });
