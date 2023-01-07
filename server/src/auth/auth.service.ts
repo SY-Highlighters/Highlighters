@@ -37,7 +37,7 @@ export class AuthService {
   // 로그인
   async signIn(
     authSigninCredentialsDto: AuthSigninCredentialsDto,
-  ): Promise<{ accessToken: string }> {
+  ): Promise<object> {
     const { email, password } = authSigninCredentialsDto;
     const user = await this.prismaService.user.findUnique({
       where: { email: email },
@@ -48,7 +48,7 @@ export class AuthService {
       const payload = { email };
       const accessToken = await this.jwtService.sign(payload);
 
-      return { accessToken };
+      return { ...user, accessToken };
     } else {
       throw new UnauthorizedException('login failed');
     }
