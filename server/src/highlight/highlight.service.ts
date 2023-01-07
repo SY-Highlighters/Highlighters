@@ -39,6 +39,8 @@ export class HighlightService {
         user_email: user_email,
         selection: selection,
         contents: contents,
+        type: 1,
+        color: '#FF0000',
       },
     });
 

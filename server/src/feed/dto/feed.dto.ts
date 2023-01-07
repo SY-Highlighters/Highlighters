@@ -12,4 +12,8 @@ export class CreateFeedDto {
   @IsString()
   @IsNotEmpty()
   url: string;
+
+  @IsString()
+  @IsNotEmpty()
+  title: string;
 }
