@@ -13,8 +13,10 @@ model User {
   nickname  String?     @db.Char(20)
   password  String      @db.Char(100)
   image     String?     @db.Char(100)
+  comment   comment[]
   Feed      Feed[]
   highlight Highlight[]
+  noti      Noti[]
   group     Group?      @relation(fields: [group_id], references: [id])
 
   @@index([group_id], map: "USER_group_id_fkey")
@@ -22,28 +24,56 @@ model User {
 }
 
 model Group {
-  id     Int    @id @default(autoincrement())
-  name   String @db.Char(20)
-  Feed   Feed[]
-  member User[]
+  id         Int    @id @default(autoincrement())
+  name       String @db.Char(20)
+  group_code String @db.Char(100)
+  Feed       Feed[]
+  member     User[]
+  tag        Tag[]  @relation("GroupToTag")
 
   @@map("GROUP")
 }
 
 model Feed {
   createdAt    DateTime    @default(now())
+  title        String      @db.Char(100)
   group_id     Int
   id           Int         @id @default(autoincrement())
   updatedAt    DateTime    @default(now()) @updatedAt
   url          String      @db.Char(100)
   user_email   String
+  comment      comment[]
   group        Group       @relation(fields: [group_id], references: [id])
   user         User        @relation(fields: [user_email], references: [email])
   highlight_id Highlight[]
+  noti         Noti[]
+  tag          Tag[]       @relation("FeedToTag")
 
   @@index([group_id], map: "FEED_group_id_fkey")
   @@index([user_email], map: "FEED_user_email_fkey")
   @@map("FEED")
+}
+
+model comment {
+  id         Int      @id @default(autoincrement())
+  contents   String
+  user_email String
+  feed_id    Int
+  createdAt  DateTime @default(now())
+  feed       Feed     @relation(fields: [feed_id], references: [id], onDelete: Cascade)
+  user       User     @relation(fields: [user_email], references: [email])
+
+  @@index([feed_id], map: "COMMENT_feed_id_fkey")
+  @@index([user_email], map: "COMMENT_user_email_fkey")
+  @@map("COMMENT")
+}
+
+model Tag {
+  tag_name String  @id
+  feed     Feed[]  @relation("FeedToTag")
+  group    Group[] @relation("GroupToTag")
+
+  @@map("TAG")
 }
 
 model Highlight {
@@ -53,6 +83,8 @@ model Highlight {
   selection  Json
   user_email String
   contents   String
+  type       Int
+  color      String   @db.Char(10)
   feed       Feed     @relation(fields: [feed_id], references: [id], onDelete: Cascade)
   user       User     @relation(fields: [user_email], references: [email])
 
@@ -61,10 +93,16 @@ model Highlight {
   @@map("HIGHLIGHT")
 }
 
-model TestFeed {
-  id        Int      @id @default(autoincrement())
-  url       String
-  content   String?
-  group     String
-  createdAt DateTime @default(now())
+model Noti {
+  id       Int     @id @default(autoincrement())
+  contents String
+  isRead   Boolean @default(true)
+  user_id  String
+  feed_id  Int
+  feed     Feed    @relation(fields: [feed_id], references: [id], onDelete: Cascade)
+  user     User    @relation(fields: [user_id], references: [email])
+
+  @@index([feed_id], map: "NOTI_feed_id_fkey")
+  @@index([user_id], map: "NOTI_user_id_fkey")
+  @@map("NOTI")
 }
