@@ -1,5 +1,5 @@
 import { Injectable, HttpException } from '@nestjs/common';
-import { Noti } from '@prisma/client';
+import { Noti, User } from '@prisma/client';
 import { PrismaService } from 'src/repository/prisma.service';
 import { CreateNotiDto } from './dto/noti.dto';
 
@@ -41,4 +41,26 @@ export class NotiService {
 
     return result;
   }
+
+  async deleteNoti(
+    noti_id: number,
+    user_id: string,
+    user: User,
+  ): Promise<null> {
+    if (user.email !== user_id) {
+      throw new HttpException('Forbidden', 403);
+    }
+
+    const result = await this.prismaService.noti.delete({
+      where: { id: noti_id },
+    });
+
+    if (!result) {
+      throw new HttpException('Not Found', 404);
+    }
+
+    return;
+  }
+
+  
 }
