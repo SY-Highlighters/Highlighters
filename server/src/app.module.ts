@@ -9,6 +9,7 @@ import { HighlightModule } from './highlight/highlight.module';
 import { LoggerMiddleware } from './common/middlewares/logger.middleware';
 import { MemberModule } from './member/member.module';
 import { UserModule } from './user/user.module';
+import { NotiModule } from './noti/noti.module';
 
 @Module({
   imports: [
@@ -19,6 +20,7 @@ import { UserModule } from './user/user.module';
     AuthModule,
     MemberModule,
     UserModule,
+    NotiModule,
   ],
   controllers: [AppController],
   providers: [AppService],
