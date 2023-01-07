@@ -3,12 +3,7 @@ let selectionText;
 let highlightStr = "null";
 
 function onWindowReady() {
-  // 토큰이 없으면 한번만 리다이렉트
-  // if (localStorage.getItem("token") == null) {
-  //   if (window.location.href != "https://www.naver.com/") {
-  //     window.location.href = "https://www.naver.com/";
-  //   }
-  // }
+
 
   function highlight() {
     let range = selectionText.getRangeAt(0);
@@ -160,7 +155,10 @@ function getSelect() {
 
 /* contentscript 시작 */
 
-if (window.location.href !== `http://localhost:3000/` && window.location.href !== "https://highlighters.site/") {
+if (
+  window.location.href !== `http://localhost:3000/` &&
+  window.location.href !== "https://highlighters.site/"
+) {
   window.onload = onWindowReady;
 
   // 드래그하고 마우스를 떼면 selection 객체 생성
