@@ -12,7 +12,7 @@ model User {
   group_id  Int?
   nickname  String?     @db.Char(20)
   password  String      @db.Char(100)
-  image     String?     @db.Char(100)
+  image     String
   comment   comment[]
   Feed      Feed[]
   highlight Highlight[]
@@ -96,7 +96,7 @@ model Highlight {
 model Noti {
   id       Int     @id @default(autoincrement())
   contents String
-  isRead   Boolean @default(true)
+  isRead   Boolean @default(false)
   user_id  String
   feed_id  Int
   feed     Feed    @relation(fields: [feed_id], references: [id], onDelete: Cascade)

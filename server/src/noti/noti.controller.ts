@@ -4,8 +4,14 @@ import { AuthGuard } from '@nestjs/passport';
 import { User } from '@prisma/client';
 import { GetUser } from 'src/auth/get-user.decorator';
 import { NotiService } from './noti.service';
+import { CreateNotiDto } from './dto/noti.dto';
+import { UseFilters, UseInterceptors } from '@nestjs/common/decorators';
+import { HttpExceptionFilter } from 'src/common/exceptions/http-exception.filter';
+import { SuccessInterceptor } from 'src/common/interceptors/success.interceptors';
 
 @Controller('api/noti')
+@UseInterceptors(SuccessInterceptor)
+@UseFilters(HttpExceptionFilter)
 @UseGuards(AuthGuard())
 export class NotiController {
   constructor(private readonly notiService: NotiService) {}
@@ -15,9 +21,10 @@ export class NotiController {
   async createNoti(
     @Body() createNotiDto: CreateNotiDto,
     @GetUser() user: User,
-  ): Promise<Noti> {
+  ): Promise<number> {
     createNotiDto.user_email = user.email;
     createNotiDto.group_id = user.group_id;
+    createNotiDto.nickname = user.nickname;
 
     return this.notiService.createNoti(createNotiDto);
   }
