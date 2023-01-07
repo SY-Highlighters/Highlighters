@@ -48,7 +48,20 @@ export class AuthService {
       const payload = { email };
       const accessToken = await this.jwtService.sign(payload);
 
-      return { ...user, accessToken };
+      const userInfo = {
+        ...user,
+        accessToken,
+      };
+
+      if (user.group_id) {
+        const group = await this.prismaService.group.findUnique({
+          where: { id: user.group_id },
+        });
+
+        userInfo['group_name'] = group.name;
+      }
+
+      return userInfo;
     } else {
       throw new UnauthorizedException('login failed');
     }
