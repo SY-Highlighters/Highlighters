@@ -1,10 +1,20 @@
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+  // 쿠키에서 토큰 가져와서 request header에 넣기
+  const token = "";
+  chrome.cookies.get( {name: "logCookie", url: "localhost"}, (cookie) => {
+    console.log('cookie')
+    if (cookie) {
+      token = cookie.value;
+    }
+  });
+
   // 웹페이지의 하이라이팅을 디비로 전송
   if (request.greeting === "posthighlight") {
     fetch("http://localhost:3001/api/highlight/", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
       },
       body: JSON.stringify(request.data),
     }).then((response) => {
@@ -20,6 +30,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
       },
       body: JSON.stringify(request.data),
     })

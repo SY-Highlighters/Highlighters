@@ -3,7 +3,7 @@
   "version": "0.2.0",
   "description": "highlights for group",
   "permissions": ["storage", "tabs", "scripting", "cookies"],
-  "host_permissions": ["<all_urls>"],
+  "host_permissions": ["<all_urls>", "http://localhost/"],
   "manifest_version": 3,
   "background": {
     "service_worker": "background.js"
