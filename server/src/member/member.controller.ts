@@ -4,7 +4,6 @@ import {
   UseGuards,
   UseInterceptors,
   UseFilters,
-  Get,
 } from '@nestjs/common';
 import { Body, Post } from '@nestjs/common/decorators';
 import { AuthGuard } from '@nestjs/passport';
@@ -39,11 +38,5 @@ export class MemberController {
     @Body('id') id: number,
   ): Promise<number> {
     return this.memberService.joinGroup(user.email, id);
-  }
-
-  // User가 속한 Group의 모든 member 찾기
-  @Get('/member')
-  async findAllMemberInMyGroup(@GetUser() user: User): Promise<User[]> {
-    return this.memberService.findAllMemberInMyGroup(user.group_id);
   }
 }

@@ -8,6 +8,7 @@ import { AuthModule } from './auth/auth.module';
 import { HighlightModule } from './highlight/highlight.module';
 import { LoggerMiddleware } from './common/middlewares/logger.middleware';
 import { MemberModule } from './member/member.module';
+import { UserModule } from './user/user.module';
 
 @Module({
   imports: [
@@ -17,6 +18,7 @@ import { MemberModule } from './member/member.module';
     HighlightModule,
     AuthModule,
     MemberModule,
+    UserModule,
   ],
   controllers: [AppController],
   providers: [AppService],

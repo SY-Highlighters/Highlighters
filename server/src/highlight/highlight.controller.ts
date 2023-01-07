@@ -15,7 +15,7 @@ import { CreateHighlightDto, UpdateHighlightDto } from './dto/highlight.dto';
 import { HighlightService } from './highlight.service';
 
 @Controller('api/highlight')
-// @UseGuards(AuthGuard())
+@UseGuards(AuthGuard())
 export class HighlightController {
   constructor(private readonly highlightService: HighlightService) {}
 
@@ -23,13 +23,13 @@ export class HighlightController {
   @Post('/')
   async createHighlight(
     @Body() createHighlightDto: CreateHighlightDto,
-    // @GetUser() user: User,
+    @GetUser() user: User,
   ): Promise<Highlight> {
-    // createHighlightDto.user_email = user.email;
-    // createHighlightDto.group_id = user.group_id;
+    createHighlightDto.user_email = user.email;
+    createHighlightDto.group_id = user.group_id;
 
-    createHighlightDto.user_email = 'siaksiak@jungle.com';
-    createHighlightDto.group_id = 1;
+    // createHighlightDto.user_email = 'siaksiak@jungle.com';
+    // createHighlightDto.group_id = 1;
 
     return this.highlightService.createHighlight(createHighlightDto);
   }

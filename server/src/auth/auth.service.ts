@@ -28,9 +28,12 @@ export class AuthService {
       data: {
         email,
         password: hashedPassword,
+        image:
+          'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a0/Font_Awesome_5_regular_user-circle.svg/1200px-Font_Awesome_5_regular_user-circle.svg.png',
         nickname,
       },
     });
+
     return user;
   }
 

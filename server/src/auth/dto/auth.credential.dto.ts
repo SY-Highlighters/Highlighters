@@ -1,11 +1,4 @@
-import {
-  IsEmail,
-  IsNumber,
-  IsOptional,
-  IsString,
-  MaxLength,
-  MinLength,
-} from 'class-validator';
+import { IsEmail, IsString, MaxLength, MinLength } from 'class-validator';
 
 export class AuthSignupCredentialsDto {
   @IsEmail()
@@ -21,7 +14,6 @@ export class AuthSignupCredentialsDto {
   @IsString()
   @MinLength(4)
   @MaxLength(20)
-  @IsOptional()
   nickname: string;
 }
 
@@ -35,12 +27,4 @@ export class AuthSigninCredentialsDto {
   @MinLength(4)
   @MaxLength(20)
   password: string;
-}
-
-export class UpdateUserDto {
-  @IsString()
-  nickname: string;
-
-  @IsNumber()
-  group_id: number;
 }

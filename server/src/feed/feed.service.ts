@@ -1,4 +1,4 @@
-import { Feed, User } from '@prisma/client';
+import { Feed } from '@prisma/client';
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/repository/prisma.service';
 import { getUrlMeta } from 'src/util/geturlmeta';
@@ -82,73 +82,6 @@ export class FeedService {
     }
 
     return feedswithOg;
-  }
-
-  // 그룹 내 모든 유저들의 프로필(닉네임, 사진) 찾기
-  async findUsersProfileByGroupId(id: number): Promise<object[]> {
-    const users = await this.prismaService.user.findMany({
-      where: { group_id: id },
-    });
-
-    const usersprofileinfo: object[] = [];
-    for (const user of users) {
-      const user_profile = await this.prismaService.user.findUnique({
-        where: { email: user.email },
-      });
-
-      if (user_profile) {
-        // user의 image 혹은 nickname이 없다면 임의의 값 넣기
-        if (user_profile.image == null) {
-          user_profile.image =
-            'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a0/Font_Awesome_5_regular_user-circle.svg/1200px-Font_Awesome_5_regular_user-circle.svg.png';
-        }
-        if (user_profile.nickname == null) {
-          user_profile.nickname = 'No Nickname';
-        }
-        const userprofileinfo = {
-          profile_image: user_profile.image,
-          profile_nickname: user_profile.nickname,
-        };
-        usersprofileinfo.push(userprofileinfo);
-      }
-    }
-    return usersprofileinfo;
-  }
-
-  // 나 자신의 프로필 찾기
-  async findMyProfile(email: string): Promise<object> {
-    const user = await this.prismaService.user.findUnique({
-      where: { email },
-    });
-
-    let myprofileinfo: object;
-    if (user) {
-      // user의 image 혹은 nickname이 없다면 임의의 값 넣기
-      if (user.image == null) {
-        user.image =
-          'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a0/Font_Awesome_5_regular_user-circle.svg/1200px-Font_Awesome_5_regular_user-circle.svg.png';
-      }
-      if (user.nickname == null) {
-        user.nickname = 'No Nickname';
-      }
-
-      let group = null;
-      if (user.group_id) {
-        group = await this.prismaService.group.findUnique({
-          where: { id: user.group_id },
-        });
-      }
-
-      const myprofileinfo_ = {
-        userImage: user.image,
-        userNickname: user.nickname,
-        groupName: group?.name,
-        groupId: group?.id,
-      };
-
-      myprofileinfo = myprofileinfo_;
-    }
-    return myprofileinfo;
   }
 
   async deleteFeedById(id: number): Promise<Feed> {
