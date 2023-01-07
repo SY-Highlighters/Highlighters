@@ -16,7 +16,7 @@ const User = () => {
       console.log("유저 데이터 불러오는중");
       const UserResponse = await axios({
         method: "get",
-        url: `${process.env.REACT_APP_HOST}/api/feed/findusers/me/`,
+        url: `${process.env.REACT_APP_HOST}/api/user/signin`,
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${cookies.logCookie}`,
@@ -24,10 +24,10 @@ const User = () => {
       });
 
       await setUserInfo({
-        nickname: UserResponse.data.userNickname,
-        img: UserResponse.data.userImage,
-        groupName: UserResponse.data.groupName,
-        groupId: UserResponse.data.groupId,
+        nickname: UserResponse.data.nickname,
+        img: UserResponse.data.image,
+        groupName: UserResponse.data.group_name,
+        groupId: UserResponse.data.group_id,
       });
     }
     userDataGet();
