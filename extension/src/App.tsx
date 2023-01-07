@@ -1,9 +1,10 @@
-import Form from "./Form";
+
+import Tabs from "./Tabs";
 function App() {
   return (
     <div className="App">
-      <div className="h-max w-96">
-        <Form></Form>
+      <div className="h-80 w-96">
+        <Tabs></Tabs>
       </div>
     </div>
   );

@@ -4,7 +4,6 @@ let highlightStr = "null";
 
 function onWindowReady() {
 
-
   function highlight() {
     let range = selectionText.getRangeAt(0);
     postHighlight(range, highlightStr); // highlight post 요청
@@ -103,7 +102,7 @@ function getHighlight(url) {
       data: { url: url },
     },
     (response) => {
-      console.log("gethighlight in cs", response);
+      // console.log("gethighlight in cs", response);
       for (const highlight of response.data) {
         console.log(highlight);
         let selection = highlight.selection;
@@ -157,7 +156,8 @@ function getSelect() {
 
 if (
   window.location.href !== `http://localhost:3000/` &&
-  window.location.href !== "https://highlighters.site/"
+  window.location.href !== `https://highlighters.site/` &&
+  window.location.href !== `http://localhost:5555/`
 ) {
   window.onload = onWindowReady;
 

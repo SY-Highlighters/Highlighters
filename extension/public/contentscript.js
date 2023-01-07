@@ -156,8 +156,8 @@ function getSelect() {
 
 if (
   window.location.href !== `http://localhost:3000/` &&
-  window.location.href !== "https://highlighters.site/" &&
-  window.location.href !== "http://localhost:5555/"
+  window.location.href !== `https://highlighters.site/` &&
+  window.location.href !== `http://localhost:5555/`
 ) {
   window.onload = onWindowReady;
 
