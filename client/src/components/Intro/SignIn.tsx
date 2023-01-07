@@ -60,15 +60,15 @@ export default function SignIn() {
     const expireDate = new Date();
     expireDate.setMinutes(expireDate.getMinutes() + 60);
     // set cookie with http version
-    setCookie("logCookie", data, { path: "/", expires: expireDate });
+    // setCookie("logCookie", data, { path: "/", expires: expireDate });
 
-    // // set cookie with https version
-    // setCookie("logCookie", data, { 
-    //   path: "/", 
-    //   expires: expireDate, 
-    //   secure: true, 
-    //   sameSite: "none" 
-    // });
+    // set cookie with https version
+    setCookie("logCookie", data, { 
+      path: "/", 
+      expires: expireDate, 
+      secure: true, 
+      sameSite: "none" 
+    });
     
   };
 
