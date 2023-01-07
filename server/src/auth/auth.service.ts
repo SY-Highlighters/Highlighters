@@ -40,7 +40,7 @@ export class AuthService {
   // 로그인
   async signIn(
     authSigninCredentialsDto: AuthSigninCredentialsDto,
-  ): Promise<{ accessToken: string }> {
+  ): Promise<object> {
     const { email, password } = authSigninCredentialsDto;
     const user = await this.prismaService.user.findUnique({
       where: { email: email },
@@ -51,7 +51,20 @@ export class AuthService {
       const payload = { email };
       const accessToken = await this.jwtService.sign(payload);
 
-      return { accessToken };
+      const userInfo = {
+        ...user,
+        accessToken,
+      };
+
+      if (user.group_id) {
+        const group = await this.prismaService.group.findUnique({
+          where: { id: user.group_id },
+        });
+
+        userInfo['group_name'] = group.name;
+      }
+
+      return userInfo;
     } else {
       throw new UnauthorizedException('login failed');
     }

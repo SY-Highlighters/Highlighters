@@ -141,7 +141,7 @@ const Header: React.FC = () => {
                             <span className="sr-only">Open user menu</span>
                             <img
                               className="w-12 h-12 rounded-full"
-                              src={userData.profile_image}
+                              src={userData.img}
                               alt=""
                             />
                           </Menu.Button>
@@ -224,7 +224,7 @@ const Header: React.FC = () => {
                     <div className="flex-shrink-0">
                       <img
                         className="w-10 h-10 rounded-full"
-                        src={userData.profile_image}
+                        src={userData.img}
                         alt=""
                       />
                     </div>

@@ -2,33 +2,34 @@ import axios from "axios";
 import { Fragment } from "react";
 import { useSetRecoilState, useRecoilState } from "recoil";
 import SignUp from "./SignUp";
-import { logModalVisble, sighUpCheck } from "../../states/atom";
+import { logModalVisble, sighUpCheck, userInfo } from "../../states/atom";
 import { useCookies } from "react-cookie";
 
 export default function SignIn() {
   const [sighch, setSignUp] = useRecoilState(sighUpCheck);
   const [cookies, setCookie, removeCookie] = useCookies(["logCookie"]);
   const logModalDisable = useSetRecoilState(logModalVisble);
+  const setUserInfo = useSetRecoilState(userInfo);
 
   const closeModal = () => {
     logModalDisable(!logModalVisble);
     setSignUp(!sighch);
   };
-
+  // 회원가입으로 컴포넌트 변경 핸들러
   const signUpChangeHandler = () => {
     setSignUp(!sighch);
   };
 
-  // 폼 데이터 받기
-  const formSubmitHandler = (event: any) => {
+  // 폼 데이터 받기 -> 이건 건들지 않는게 낫겠다.
+  const formSubmitHandler = async (event: any) => {
     event.preventDefault();
     console.log(event);
     logModalDisable(!logModalVisble);
     // form에서 email, password 받아오기
     const email = event.target[0].value;
     const password = event.target[1].value;
-
-    axios
+    
+    await axios
       .post(`${process.env.REACT_APP_HOST}/api/auth/signin`, {
         email: email,
         password: password,
@@ -39,7 +40,16 @@ export default function SignIn() {
           axios.defaults.headers.common[
             "Authorization"
           ] = `Bearer ${response.data.accessToken}`;
+          // 유저 데이터 저장
+          setUserInfo({
+            nickname: response.data.nickname,
+            img: response.data.image,
+            groupId: response.data.group_id,
+            groupName: response.data.group_name,
+          });
+          // 쿠키저장
           handleCookie(response.data.accessToken);
+          
         } else {
           alert("로그인 실패");
         }

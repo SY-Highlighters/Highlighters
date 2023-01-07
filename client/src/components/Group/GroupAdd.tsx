@@ -9,15 +9,16 @@ export default function GroupAdd() {
   // 폼 데이터 받기
   const formSubmitHandler = (event: any) => {
     event.preventDefault();
-    console.log(event);
+    console.log(event.target[0].value);
 
     // form에서 groupName 받아오기
-    const groupName = event.target[0].value;
-    const host_url = `http://${process.env.REACT_APP_HOST}:3001/api/{여기다가 그룹생성 api 넣어주세요}`;
+      const groupName = event.target[0].value;
+      
+    const host_url = `${process.env.REACT_APP_HOST}:3001/api/group/create/`;
 
     axios
       .post(host_url, {
-        groupName: groupName,
+        groupName,
       })
       .then(function (response) {
         console.log(response);
@@ -26,6 +27,7 @@ export default function GroupAdd() {
             "Authorization"
           ] = `Bearer ${response.data.accessToken}`;
           // 잘 전달했을때
+          console.log("그룹 생성 성공");
           setGroupModal(!groupModalVisble);
           setGroupAdd(!groupAddState);
         } else {
