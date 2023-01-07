@@ -28,7 +28,7 @@ export default function SignIn() {
     // form에서 email, password 받아오기
     const email = event.target[0].value;
     const password = event.target[1].value;
-    
+
     await axios
       .post(`${process.env.REACT_APP_HOST}/api/auth/signin`, {
         email: email,
@@ -41,15 +41,15 @@ export default function SignIn() {
             "Authorization"
           ] = `Bearer ${response.data.accessToken}`;
           // 유저 데이터 저장
-          setUserInfo({
-            nickname: response.data.nickname,
-            img: response.data.image,
-            groupId: response.data.group_id,
-            groupName: response.data.group_name,
-          });
+          // setUserInfo({
+          //   nickname: response.data.nickname,
+          //   img: response.data.image,
+          //   groupId: response.data.group_id,
+          //   groupName: response.data.group_name,
+          // });
           // 쿠키저장
+          console.log(response.data.accessToken);
           handleCookie(response.data.accessToken);
-          
         } else {
           alert("로그인 실패");
         }
