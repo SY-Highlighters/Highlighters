@@ -12,6 +12,7 @@ import { User } from '@prisma/client';
 import { SuccessInterceptor } from 'src/common/interceptors/success.interceptors';
 import { HttpExceptionFilter } from 'src/common/exceptions/http-exception.filter';
 import { CreateGroupDto } from './dto/group.dto';
+import { group } from 'console';
 
 @Controller('api/group')
 @UseInterceptors(SuccessInterceptor)

@@ -58,8 +58,18 @@ export default function SignIn() {
 
   const handleCookie = (data: any) => {
     const expireDate = new Date();
-    expireDate.setMinutes(expireDate.getMinutes() + 10);
+    expireDate.setMinutes(expireDate.getMinutes() + 60);
+    // set cookie with http version
     setCookie("logCookie", data, { path: "/", expires: expireDate });
+
+    // // set cookie with https version
+    // setCookie("logCookie", data, { 
+    //   path: "/", 
+    //   expires: expireDate, 
+    //   secure: true, 
+    //   sameSite: "none" 
+    // });
+    
   };
 
   return (
