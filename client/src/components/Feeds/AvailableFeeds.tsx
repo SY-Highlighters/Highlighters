@@ -4,20 +4,24 @@ import { feedState, userInfo } from "../../states/atom";
 import { useCookies } from "react-cookie";
 import { useEffect } from "react";
 import axios from "axios";
+import { group } from "console";
 
 const AvailableFeeds = () => {
   const [feeds, setFeeds] = useRecoilState(feedState);
   const [cookies, setCookie, removeCookie] = useCookies(["logCookie"]);
-  const [userData, setUserInfo] = useRecoilState(userInfo);
-  
-  const gropuId = userData.groupId;
-  console.log(gropuId);
+  // const [userData, setUserInfo] = useRecoilState(userInfo); test1 -> 현재 로그인시 유저데이터 받는중
+  const userData = useRecoilValue(userInfo);
+
+  // const gropuId = userData.groupId;
   // // 렌더링된 후 바로 실행
   useEffect(() => {
     async function fetchData() {
+      console.log("유저 피드 불러오는중!");
+      const groupId = userData.groupId;
+      console.log(groupId);
       const response = await axios({
         method: "get",
-        url: `${process.env.REACT_APP_HOST}/api/feed/group/${userData.gropuId}`,
+        url: `${process.env.REACT_APP_HOST}/api/feed/group/${groupId}`,
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${cookies.logCookie}`,
@@ -27,8 +31,8 @@ const AvailableFeeds = () => {
       const data = response.data;
       feedadd(data);
     }
-    fetchData();
-  }, []);
+    if (userData.groupId) fetchData();
+  }, [userData.groupId]);
 
   // 피드리스트에 피드아이템 넣기
   const feedadd = (data: []) => {
