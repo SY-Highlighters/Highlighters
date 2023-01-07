@@ -5,4 +5,4 @@ export class CreateNotiDto {
     group_id: number;
     url: string;
     title: string;
-    
+}
