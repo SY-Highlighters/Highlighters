@@ -5,7 +5,7 @@ import {
   UseInterceptors,
   UseFilters,
 } from '@nestjs/common';
-import { Body, Post } from '@nestjs/common/decorators';
+import { Body, Get, Post } from '@nestjs/common/decorators';
 import { AuthGuard } from '@nestjs/passport';
 import { GetUser } from 'src/auth/get-user.decorator';
 import { User } from '@prisma/client';
@@ -35,8 +35,13 @@ export class MemberController {
   @Post('/join')
   async joinGroup(
     @GetUser() user: User,
-    @Body('id') id: number,
+    @Body('group_code') group_code: string,
   ): Promise<number> {
-    return this.memberService.joinGroup(user.email, id);
+    return this.memberService.joinGroup(user.email, group_code);
+  }
+
+  @Get('/code')
+  async getGroupCode(@GetUser() user: User): Promise<string> {
+    return this.memberService.getGroupCode(user.group_id);
   }
 }

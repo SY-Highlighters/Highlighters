@@ -12,7 +12,9 @@ export class MemberService {
     const newGroup = await this.prismaService.group.create({
       data: {
         name,
-        group_code: Math.floor(Math.random() * 1000000).toString(16),
+        group_code: Math.floor(Math.random() * 10000000000)
+          .toString(16)
+          .padStart(10, '0'),
       },
     });
 
@@ -20,22 +22,42 @@ export class MemberService {
       throw new NotFoundException(`Create Group Fail`);
     }
 
-    const joinGroup = await this.joinGroup(user_email, newGroup.id);
+    const joinGroup = await this.joinGroup(user_email, newGroup.group_code);
 
     return joinGroup;
   }
 
   //그룹 참가
-  async joinGroup(user_email: string, id: number): Promise<number> {
+  async joinGroup(user_email: string, group_code: string): Promise<number> {
+    const group = await this.prismaService.group.findFirst({
+      where: { group_code },
+    });
+
+    if (!group) {
+      throw new NotFoundException(`Wrong Group Code`);
+    }
+
     const update_user = await this.prismaService.user.update({
       where: { email: user_email },
-      data: { group_id: +id },
+      data: { group_id: group.id },
     });
 
     if (!update_user) {
-      throw new NotFoundException(`Join Group Fail`);
+      throw new Error(`Join Group Fail`);
     }
 
     return update_user.group_id;
+  }
+
+  async getGroupCode(group_id: number): Promise<string> {
+    const group = await this.prismaService.group.findUnique({
+      where: { id: group_id },
+    });
+
+    if (!group) {
+      throw new NotFoundException(`Group Not Found`);
+    }
+
+    return group.group_code;
   }
 }
