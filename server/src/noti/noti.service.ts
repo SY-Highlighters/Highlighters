@@ -47,8 +47,11 @@ export class NotiService {
         if (user.email !== deleteNotiDto[i].receiver_id) {
           throw new HttpException('Forbidden', 403);
         }
+        deleteNotiDto[i].noti_id = Number(deleteNotiDto[i].noti_id);
         await this.prismaService.noti.delete({
-          where: { id: deleteNotiDto[i].noti_id },
+          where: {
+            id: deleteNotiDto[i].noti_id,
+          },
         });
       }
       return null;
