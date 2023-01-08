@@ -1,6 +1,7 @@
 import UserInfo from "./UserInfo";
 import Group from "../Group/Group";
 import GroupTag from "./GroupTag";
+import GroupInfo from "../Group/GroupInfo";
 import { useRecoilValue, useSetRecoilState, useRecoilState } from "recoil";
 import { userInfo } from "../../states/atom";
 import axios from "axios";
@@ -22,7 +23,7 @@ const User = () => {
           Authorization: `Bearer ${cookies.logCookie}`,
         },
       });
-
+      console.log(UserResponse.data)
       await setUserInfo({
         nickname: UserResponse.data.nickname,
         img: UserResponse.data.image,
@@ -37,8 +38,11 @@ const User = () => {
     <div className="basis-1/4">
       <aside className="grid grid-col-2">
         <UserInfo></UserInfo>
-        {userData.groupName ? <GroupTag></GroupTag> : <Group></Group>}
-        {/* <GroupTag></GroupTag> */}
+
+        <GroupInfo></GroupInfo>
+        {/* choduo */}
+        {/* {userData.groupName ? <GroupTag></GroupTag> : <Group></Group>} */}
+        <GroupTag></GroupTag>
       </aside>
     </div>
   );

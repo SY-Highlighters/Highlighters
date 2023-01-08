@@ -23,7 +23,7 @@ export default function Group() {
 
   return (
     <div className="flex flex-col justify-end">
-      <button
+      {/* <button
         onClick={handleGroupAdd}
         className="h-12 px-6 mt-5 text-indigo-100 transition-colors duration-150 bg-indigo-500 rounded-md w-1/7 selection:justify-center focus:shadow-outline hover:bg-indigo-800"
       >
@@ -35,7 +35,7 @@ export default function Group() {
         className="h-12 px-6 mt-5 text-indigo-100 transition-colors duration-150 rounded-md bg-rose-300 w-1/7 selection:justify-center focus:shadow-outline hover:bg-rose-500"
       >
         <p className="text-bold">그룹 참여</p>
-      </button>
+      </button> */}
       {groupModal && <GroupModal></GroupModal>}
     </div>
   );

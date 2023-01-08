@@ -7,6 +7,7 @@ import {
 } from "../../states/atom";
 import GroupAdd from "./GroupAdd";
 import GroupJoin from "./GroupJoin";
+import GroupInvite from "./GroupInvite";
 export default function GroupModal() {
   const [groupAdd, setGroupAdd] = useRecoilState(groupAddState);
   const [groupJoin, setGroupJoin] = useRecoilState(groupJoinState);
@@ -26,7 +27,7 @@ export default function GroupModal() {
     >
       <div className="flex items-end justify-center min-h-screen px-4 pt-4 pb-20 text-center sm:block sm:p-0">
         <div
-          className="fixed inset-0 transition-opacity bg-transparent bg-opacity-75"
+          className="fixed inset-0 transition-opacity bg-opacity-75 bg-slate-400"
           aria-hidden="true"
         ></div>
         <span
@@ -57,6 +58,7 @@ export default function GroupModal() {
           {/* 여기서 부터 컴포넌트 변환 */}
           {groupAdd && <GroupAdd />}
           {groupJoin && <GroupJoin />}
+          <GroupInvite></GroupInvite>
           {/* {groupAdd && <GroupJoin />} */}
         </div>
       </div>

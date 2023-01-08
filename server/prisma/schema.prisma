@@ -8,6 +8,7 @@ datasource db {
 }
 
 model User {
+<<<<<<< Updated upstream
   email                       String      @id @db.Char(50)
   group_id                    Int?
   nickname                    String?     @db.Char(20)
@@ -19,6 +20,18 @@ model User {
   NOTI_NOTI_receiver_idToUSER NOTI[]      @relation("NOTI_receiver_idToUSER")
   NOTI_NOTI_sender_idToUSER   NOTI[]      @relation("NOTI_sender_idToUSER")
   group                       Group?      @relation(fields: [group_id], references: [id])
+=======
+  email     String      @id @db.Char(50)
+  group_id  Int?
+  nickname  String?     @db.Char(20)
+  password  String      @db.Char(100)
+  image     String?     @db.Char(100)
+  COMMENT   COMMENT[]
+  Feed      Feed[]
+  highlight Highlight[]
+  NOTI      NOTI[]
+  group     Group?      @relation(fields: [group_id], references: [id])
+>>>>>>> Stashed changes
 
   @@index([group_id], map: "USER_group_id_fkey")
   @@map("USER")
@@ -86,6 +99,7 @@ model COMMENT {
 }
 
 model NOTI {
+<<<<<<< Updated upstream
   id                          Int      @id @default(autoincrement())
   contents                    String
   isRead                      Boolean  @default(false)
@@ -100,6 +114,18 @@ model NOTI {
   @@index([feed_id], map: "NOTI_feed_id_fkey")
   @@index([receiver_id], map: "receiver_id")
   @@index([sender_id], map: "sender_id")
+=======
+  id       Int     @id @default(autoincrement())
+  contents String
+  isRead   Boolean @default(true)
+  user_id  String
+  feed_id  Int
+  FEED     Feed    @relation(fields: [feed_id], references: [id], onDelete: Cascade)
+  USER     User    @relation(fields: [user_id], references: [email])
+
+  @@index([feed_id], map: "NOTI_feed_id_fkey")
+  @@index([user_id], map: "NOTI_user_id_fkey")
+>>>>>>> Stashed changes
 }
 
 model TAG {
