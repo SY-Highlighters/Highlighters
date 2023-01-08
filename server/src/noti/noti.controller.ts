@@ -1,16 +1,10 @@
-import { Noti } from './../../node_modules/.prisma/client/index.d';
 import { Controller, UseGuards, Post, Body } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { User } from '@prisma/client';
 import { GetUser } from 'src/auth/get-user.decorator';
 import { NotiService } from './noti.service';
 import { CreateNotiDto, DeleteNotiDto, ShowNotiDto } from './dto/noti.dto';
-import {
-  Delete,
-  Param,
-  UseFilters,
-  UseInterceptors,
-} from '@nestjs/common/decorators';
+import { Delete, UseFilters, UseInterceptors } from '@nestjs/common/decorators';
 import { HttpExceptionFilter } from 'src/common/exceptions/http-exception.filter';
 import { SuccessInterceptor } from 'src/common/interceptors/success.interceptors';
 
