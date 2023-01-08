@@ -12,7 +12,7 @@ import AvailableFeeds from "./components/Feeds/AvailableFeeds";
 import AvailableBookmarks from "./components/Bookmarks/AvailableBookmarks";
 // user before login section
 import LoginModal from "./components/Intro/LoginModal";
-import Alert from "./components/Right/Alert";
+import Alert from "./components/Right/Noti";
 import Intro from "./components/Intro/Intro";
 // state management section
 import { useRecoilValue } from "recoil";

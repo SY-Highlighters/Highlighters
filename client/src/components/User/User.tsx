@@ -6,6 +6,7 @@ import { userInfo } from "../../states/atom";
 import axios from "axios";
 import { useCookies } from "react-cookie";
 import { useEffect, useState } from "react";
+
 const User = () => {
   // const userdata = useRecoilValue(userInfo);
   const [userData, setUserInfo] = useRecoilState(userInfo);
