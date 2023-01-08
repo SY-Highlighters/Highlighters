@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { User } from '@prisma/client';
 import { PrismaService } from 'src/repository/prisma.service';
 import {
@@ -66,7 +66,7 @@ export class AuthService {
 
       return userInfo;
     } else {
-      throw new Error('login failed');
+      throw new UnauthorizedException('login failed');
     }
   }
 
