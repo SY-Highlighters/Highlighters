@@ -48,31 +48,12 @@ export class BookmarkService {
         where: {
           user_email: user.email,
         },
-        select: {
+        orderBy: { createdAt: 'desc' },
+        include: {
           feed: {
-            select: {
-              id: true,
-              title: true,
-              url: true,
-              createdAt: true,
-              updatedAt: true,
-              highlight: {
-                select: {
-                  id: true,
-                  selection: true,
-                  contents: true,
-                  color: true,
-                  type: true,
-                },
-                orderBy: {
-                  id: 'desc',
-                },
-              },
-              tag: {
-                select: {
-                  tag_name: true,
-                },
-              },
+            include: {
+              highlight: true,
+              tag: true,
             },
           },
         },
