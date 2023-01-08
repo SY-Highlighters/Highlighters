@@ -1,10 +1,6 @@
-import React, { Fragment, useState } from "react";
-import { useRecoilValue, useSetRecoilState } from "recoil";
-import {
-  groupAddState,
-  groupJoinState,
-  groupModalVisble,
-} from "../../states/atom";
+import React, { Fragment } from "react";
+import { useSetRecoilState } from "recoil";
+import { groupJoinState, groupModalVisble } from "../../../states/atom";
 import axios from "axios";
 
 export default function GroupJoin() {

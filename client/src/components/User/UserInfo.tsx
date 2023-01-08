@@ -89,14 +89,14 @@ const UserInfo = () => {
   // };
   return (
     <div className="w-full bg-white rounded-lg shadow-lg erflow-hidden">
-      <div className="h-14" />
+      <div className="h-10" />
       <div className="relative p-6 rounded-3xl -top-5">
-        <div className="relative flex items-end px-3 justify-left -top-5">
+        <div className="relative flex items-end px-3 justify-left -top-1">
           <img className="rounded-full w-14 h-14" src={localUser.img} alt="" />
           <div className="flex flex-col px-5">
             {/* <span className="font-bold text-left text-sky-500">정글 5기</span> */}
             <span className="font-bold text-left text-sky-500">
-              {localUser.groupName ? localUser.groupName: "그룹 없음"}
+              {localUser.groupName ? localUser.groupName : "그룹 없음"}
             </span>
             <span className="text-2xl font-medium text-left">
               {localUser.nickname}
