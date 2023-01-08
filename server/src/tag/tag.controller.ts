@@ -52,5 +52,18 @@ export class TagController {
     return this.tagService.getTag(user);
   }
 
+  // 태그 검색
+  @Get('/search/:tag')
+  async searchTag(
+    @GetUser() user: User,
+    @Param('tag') tag: string,
+  ): Promise<object[]> {
+    return this.tagService.searchTag(tag, user);
+  }
+
   // 피드에서 해당하는 태그 조회
+  @Get('/feed/:id')
+  async getTagByFeedId(@Param('id') id: number): Promise<string[]> {
+    return this.tagService.getTagByFeedId(id);
+  }
 }

@@ -5,7 +5,7 @@ import { AuthModule } from 'src/auth/auth.module';
 
 @Module({
   imports: [AuthModule],
-  providers: [TagService],
   controllers: [TagController],
+  providers: [TagService],
 })
 export class TagModule {}

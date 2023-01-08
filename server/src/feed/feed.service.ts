@@ -48,6 +48,10 @@ export class FeedService {
     const feeds = await this.prismaService.feed.findMany({
       where: { group_id: id },
       orderBy: { updatedAt: 'desc' },
+      include: {
+        highlight: true,
+        tag: true,
+      },
     });
 
     return feeds;
@@ -58,10 +62,6 @@ export class FeedService {
 
     const feedswithOg: object[] = [];
     for (const feed of feeds) {
-      const highlights = await this.highlightService.findAllHighlightById(
-        feed.id,
-      );
-
       if (feed.url) {
         const meta = await getUrlMeta(feed.url);
         // 존재하지 않는다면 임의의 값 넣기
@@ -77,7 +77,6 @@ export class FeedService {
         }
         const feedwithOg = {
           ...feed,
-          highlight: highlights,
           og_title: meta.title,
           og_desc: meta.desc,
           og_image: meta.image,

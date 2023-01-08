@@ -56,7 +56,7 @@ export class BookmarkService {
               url: true,
               createdAt: true,
               updatedAt: true,
-              highlight_id: {
+              highlight: {
                 select: {
                   id: true,
                   selection: true,
