@@ -1,19 +1,12 @@
-import { forwardRef } from '@nestjs/common/utils';
-import { Inject } from '@nestjs/common/decorators';
 import { Injectable, HttpException } from '@nestjs/common';
-import { User, Highlight } from '@prisma/client';
-import { HighlightService } from 'src/highlight/highlight.service';
+import { User } from '@prisma/client';
 import { PrismaService } from 'src/repository/prisma.service';
 import { getUrlMeta } from 'src/util/geturlmeta';
 import { RequestTagDto } from './dto/tag.dto';
 
 @Injectable()
 export class TagService {
-  constructor(
-    private readonly prismaService: PrismaService,
-  ) // @Inject(forwardRef(() => HighlightService))
-  // private readonly highlightService: HighlightService,
-  {}
+  constructor(private readonly prismaService: PrismaService) {}
 
   async createTag(createTagDto: RequestTagDto): Promise<null> {
     const { tag_name, feed_id, group_id } = createTagDto;
