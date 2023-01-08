@@ -71,10 +71,10 @@ export class HighlightService {
   async findAllHighlightInFeed(url: string): Promise<any> {
     const find_feed_test = await this.prismaService.feed.findFirst({
       where: { url },
-      select: { highlight_id: true },
+      select: { highlight: true },
     });
 
-    return find_feed_test.highlight_id;
+    return find_feed_test.highlight;
   }
 
   async updateHighlight(
