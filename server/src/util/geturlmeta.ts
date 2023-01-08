@@ -18,7 +18,8 @@ export function _bodyScrap(url: string) {
     if (!title) {
       title = $('head title').text();
       if (!title) {
-        throw Error('This link has no title');
+        title = 'Untitled';
+        // throw Error('This link has no title');
       }
     }
     // 글이미지
@@ -33,7 +34,8 @@ export function _bodyScrap(url: string) {
         //let urlObj = new URL(url);
         image = _getProtocol(url) + _getHostname(url) + image;
       } else {
-        image = '';
+        image =
+          'https://img.favpng.com/23/20/7/computer-icons-information-png-favpng-g8DtjAPPNhyaU9EdjHQJRnV97_t.jpg';
       }
     }
 
@@ -55,5 +57,6 @@ export async function getUrlMeta(url: string) {
     .then((res) => res.text())
     .then(cheerio.load)
     .then(_bodyScrap(url));
+
   return meta;
 }
