@@ -19,6 +19,9 @@ export class CreateHighlightDto {
 
   @IsNotEmpty()
   selection: Prisma.JsonArray;
+
+  @IsOptional()
+  title: string;
 }
 
 export class UpdateHighlightDto extends PartialType(CreateHighlightDto) {}

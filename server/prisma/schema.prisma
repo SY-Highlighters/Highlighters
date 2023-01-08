@@ -8,30 +8,18 @@ datasource db {
 }
 
 model User {
-<<<<<<< HEAD
-  email     String      @id @db.Char(50)
-  group_id  Int?
-  nickname  String?     @db.Char(20)
-  password  String      @db.Char(100)
-  image     String
-  comment   comment[]
-  Feed      Feed[]
-  highlight Highlight[]
-  noti      Noti[]
-  group     Group?      @relation(fields: [group_id], references: [id])
-=======
   email        String      @id @db.Char(50)
   group_id     Int?
   nickname     String?     @db.Char(20)
   password     String      @db.Char(100)
   image        String
+  BOOKMARK     BOOKMARK[]
   comment      comment[]
   Feed         Feed[]
   highlight    Highlight[]
   receive_noti Noti[]      @relation("receiver")
   send_noti    Noti[]      @relation("sender")
   group        Group?      @relation(fields: [group_id], references: [id])
->>>>>>> noti
 
   @@index([group_id], map: "USER_group_id_fkey")
   @@map("USER")
@@ -56,6 +44,7 @@ model Feed {
   updatedAt    DateTime    @default(now()) @updatedAt
   url          String      @db.Char(100)
   user_email   String
+  BOOKMARK     BOOKMARK[]
   comment      comment[]
   group        Group       @relation(fields: [group_id], references: [id])
   user         User        @relation(fields: [user_email], references: [email])
@@ -123,4 +112,16 @@ model Noti {
   @@index([sender_id], map: "sender_id")
   @@index([receiver_id], map: "receiver_id")
   @@map("NOTI")
+}
+
+model BOOKMARK {
+  id         Int      @id @default(autoincrement())
+  createdAt  DateTime @default(now())
+  feed_id    Int
+  user_email String
+  FEED       Feed     @relation(fields: [feed_id], references: [id], onDelete: Cascade)
+  USER       User     @relation(fields: [user_email], references: [email], onDelete: Cascade)
+
+  @@index([feed_id], map: "BOOKMARK_feed_id_fkey")
+  @@index([user_email], map: "BOOKMARK_user_email_fkey")
 }

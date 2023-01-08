@@ -19,7 +19,7 @@ export class HighlightService {
   async createHighlight(
     createHighlightDto: CreateHighlightDto,
   ): Promise<Highlight> {
-    const { user_email, group_id, url, contents, selection } =
+    const { user_email, group_id, url, contents, selection, title } =
       createHighlightDto;
 
     let find_feed = await this.feedService.findFeedByURL(url);
@@ -29,6 +29,7 @@ export class HighlightService {
       newFeedDto.user_email = user_email;
       newFeedDto.group_id = group_id;
       newFeedDto.url = url;
+      newFeedDto.title = title;
 
       find_feed = await this.feedService.createFeed(newFeedDto);
     }
