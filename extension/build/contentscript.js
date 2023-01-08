@@ -135,7 +135,8 @@ function getHighlight(url) {
 
 function onWindowReady() {
   // 버튼 만들어 놓기
-  let penButton = `<input id="btn_highlighters" type="image" src="https://images.vexels.com/media/users/3/206292/isolated/preview/0a3fddb8fdf07b7c1f42a371d420c3f2-yellow-highlighter-flat.png" height = "40" width="40">`;
+  let penButton = `<input id="btn_highlighters" type="image" src="https://cdn-icons-png.flaticon.com/512/3237/3237124.png"
+  height = "35" width="35">`;
 
   const body = document.querySelector("body");
   body.innerHTML += penButton;
@@ -174,7 +175,7 @@ if (url_check) {
 
       // 드래그한 영역의 위치를 가져온다.
       const direction = sel.anchorOffset - sel.focusOffset < 0;
-      const divTop = direction ? e.pageY + 10 : e.pageY - 40;
+      const divTop = direction ? e.pageY + 10 : e.pageY + 10;
       const divLeft = direction ? e.pageX + 10 : e.pageX - 40;
       button.style.transform = direction ? "rotate(0deg)" : "rotate(180deg)";
 
