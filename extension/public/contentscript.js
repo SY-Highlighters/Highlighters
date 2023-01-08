@@ -135,8 +135,8 @@ function getHighlight(url) {
 
 function onWindowReady() {
   // 버튼 만들어 놓기
-  let penButton = `<input id="btn_highlighters" type="image" src="https://images.vexels.com/media/users/3/206292/isolated/preview/0a3fddb8fdf07b7c1f42a371d420c3f2-yellow-highlighter-flat.png"
-  height = "40" width="40">`;
+  let penButton = `<input id="btn_highlighters" type="image" src="https://cdn-icons-png.flaticon.com/512/3237/3237124.png"
+  height = "35" width="35">`;
 
   const body = document.querySelector("body");
   body.innerHTML += penButton;
