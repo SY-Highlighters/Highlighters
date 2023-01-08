@@ -1,10 +1,6 @@
-import React, { Fragment, useState } from "react";
-import { useRecoilValue, useSetRecoilState } from "recoil";
-import {
-  groupAddState,
-  groupJoinState,
-  groupModalVisble,
-} from "../../states/atom";
+import React, { Fragment } from "react";
+import { useSetRecoilState } from "recoil";
+import { groupJoinState, groupModalVisble } from "../../../states/atom";
 import axios from "axios";
 
 export default function GroupJoin() {
@@ -15,16 +11,15 @@ export default function GroupJoin() {
   const formSubmitHandler = (event: any) => {
     event.preventDefault();
     console.log(event);
-    setGroupModal(!groupModalVisble);
-    setGroupJoin(!groupJoinState);
+
     // form에서 참여 코드 받아오기
     const joinCode = event.target[0].value;
 
-    const host_url = `http://${process.env.REACT_APP_HOST}:3001/api/group/join/`;
+    const host_url = `${process.env.REACT_APP_HOST}/api/group/join/`;
 
     axios
       .post(host_url, {
-        joinCode,
+        group_code: joinCode,
       })
       .then(function (response) {
         console.log(response);
@@ -32,6 +27,10 @@ export default function GroupJoin() {
           axios.defaults.headers.common[
             "Authorization"
           ] = `Bearer ${response.data.accessToken}`;
+          alert("그룹 참여 성공!");
+          setGroupModal(!groupModalVisble);
+          setGroupJoin(!groupJoinState);
+          window.location.reload();
         } else {
           alert("그룹 참여 실패!");
         }

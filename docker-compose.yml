@@ -11,8 +11,8 @@ services:
       - "443:3000"
     restart: always
     volumes:
-      - /etc/letsencrypt:/etc/letsencrypt
-      - ./myweb:/usr/share/nginx/html
+      - ./certbot:/etc/letsencrypt
+      - ./https:/usr/share/nginx/html
       - ./nginx.conf:/etc/nginx/nginx.conf
 
   server:
@@ -24,7 +24,7 @@ services:
     expose:
       - "3001"
     volumes:
-      - ./myweb:/usr/share/nginx/html
+      - ./https:/usr/share/nginx/html
 
   client:
     build:
@@ -33,14 +33,14 @@ services:
     restart: always
     container_name: client
     volumes:
-      - ./myweb:/usr/share/nginx/html
+      - ./https:/usr/share/nginx/html
 
-  # cerbot:
-  #   depends_on:
-  #     - nginxproxy
-  #   image: certbot/certbot
-  #   container_name: cerbot
-  #   volumes:
-  #     - /etc/letsencrypt:/etc/letsencrypt
-  #     - ./myweb:/usr/share/nginx/html
-  #   command: certonly --dry-run --webroot --webroot-path=/usr/share/nginx/html --email siaksiakxgmail.com --agree-tos --no-eff-email --keep-until-expiring -d highlighters.site -d www.highlighters.site
+  cerbot:
+    depends_on:
+      - nginxproxy
+    image: certbot/certbot
+    container_name: cerbot
+    volumes:
+      - ./certbot:/etc/letsencrypt
+      - ./https:/usr/share/nginx/html
+    command: --dry-run certonly --webroot --webroot-path=/usr/share/nginx/html --email siaksiakx@gmail.com --agree-tos --no-eff-email -d highlighters.site -d www.highlighters.site --force-renewal

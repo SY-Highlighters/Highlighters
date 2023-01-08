@@ -10,6 +10,8 @@ import { LoggerMiddleware } from './common/middlewares/logger.middleware';
 import { MemberModule } from './member/member.module';
 import { UserModule } from './user/user.module';
 import { NotiModule } from './noti/noti.module';
+import { TagModule } from './tag/tag.module';
+import { BookmarkModule } from './bookmark/bookmark.module';
 
 @Module({
   imports: [
@@ -21,6 +23,8 @@ import { NotiModule } from './noti/noti.module';
     MemberModule,
     UserModule,
     NotiModule,
+    TagModule,
+    BookmarkModule,
   ],
   controllers: [AppController],
   providers: [AppService],

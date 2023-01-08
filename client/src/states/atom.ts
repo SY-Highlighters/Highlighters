@@ -39,6 +39,10 @@ export const groupAddState = atom<boolean>({
   key: "groupAddState",
   default: false,
 });
+export const groupInviteState = atom<boolean>({
+  key: "groupInviteState",
+  default: false,
+});
 // 그룹 모달창을 띄우는 state
 export const groupModalVisble = atom<boolean>({
   key: "groupModalVisble",

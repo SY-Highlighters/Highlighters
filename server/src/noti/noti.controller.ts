@@ -1,4 +1,4 @@
-import { Controller, UseGuards, Post, Body } from '@nestjs/common';
+import { Controller, UseGuards, Post, Get, Body } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { User } from '@prisma/client';
 import { GetUser } from 'src/auth/get-user.decorator';
@@ -38,13 +38,13 @@ export class NotiController {
   }
 
   // 웹에서의 노티 조회(송신자 포함)
-  @Post('/web')
+  @Get('/web')
   async findNotiWeb(@GetUser() user: User): Promise<ShowNotiDto[]> {
     return this.notiService.findNotiWeb(user);
   }
 
   // 익스텐션에서의 노티 조회(송신자 제외)
-  @Post('/extension')
+  @Get('/extension')
   async findNotiExtension(@GetUser() user: User): Promise<ShowNotiDto[]> {
     return this.notiService.findNotiExtension(user);
   }

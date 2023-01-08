@@ -57,6 +57,19 @@ model Feed {
   @@map("FEED")
 }
 
+model Bookmark {
+  id         Int      @id @default(autoincrement())
+  createdAt  DateTime @default(now())
+  feed_id    Int
+  user_email String
+  feed       Feed     @relation(fields: [feed_id], references: [id], onDelete: Cascade)
+  user       User     @relation(fields: [user_email], references: [email], onDelete: Cascade)
+
+  @@index([feed_id], map: "BOOKMARK_feed_id_fkey")
+  @@index([user_email], map: "BOOKMARK_user_email_fkey")
+  @@map("BOOKMARK")
+}
+
 model comment {
   id         Int      @id @default(autoincrement())
   contents   String
