@@ -74,7 +74,7 @@ function postHighlight(range, highlightStr) {
 
   chrome.runtime.sendMessage(
     {
-      greeting: "posthighlight",
+      greeting: "postHighlight",
       data: {
         url: range.startContainer.baseURI,
         contents: highlightStr,
@@ -90,7 +90,7 @@ function postHighlight(range, highlightStr) {
 function getHighlight(url) {
   chrome.runtime.sendMessage(
     {
-      greeting: "gethighlight",
+      greeting: "getHighlight",
       data: { url },
     },
     (response) => {

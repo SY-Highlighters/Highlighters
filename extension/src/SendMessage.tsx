@@ -13,37 +13,17 @@
   ```
 */
 export default function SendMessage() {
-  // 폼 데이터 받기 -> 이건 건들지 않는게 낫겠다.
   const formSubmitHandler = async (event: any) => {
     event.preventDefault();
-    // form에서 message 받아오기
-    const message = event.target[0].value;
-    // Todo: 밑에 서버에 메세지 만드는 것 구현
-    // await axios
-    //   .post(`localhost:3001/api/auth/signin`, {
-    //     email: email,
-    //     password: password,
-    //   })
-    //   .then(function (response) {
-    //     console.log(response);
-    //     if (response) {
-    //       axios.defaults.headers.common[
-    //         "Authorization"
-    //       ] = `Bearer ${response.data.accessToken}`;
-    //       // 유저 데이터 저장
-    //       // setUserInfo({
-    //       //   nickname: response.data.nickname,
-    //       //   img: response.data.image,
-    //       //   groupId: response.data.group_id,
-    //       //   groupName: response.data.group_name,
-    //       // });
-    //       // 쿠키저장
-    //       console.log(response.data.accessToken);
-    //       handleCookie(response.data.accessToken);
-    //     } else {
-    //       alert("로그인 실패");
-    //     }
-    //   });
+    const contents = event.target[0].value;
+
+    chrome.runtime.sendMessage(
+      {
+        greeting: "postNoti",
+        data: contents
+      },
+      (response) => response.farewell
+    );
   };
 
   return (
