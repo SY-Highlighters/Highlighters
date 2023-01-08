@@ -1,7 +1,12 @@
-const cookie_url = "http://localhost:3000";
-const host_url = "http://localhost:3001";
-// const cookie_url = "https://highlighters.site";
-// const host_url = "https://highlighters.site";
+const is_production = false;
+
+const cookie_url = is_production
+  ? "https://highlighters.site"
+  : "http://localhost:3000";
+
+const host_url = is_production
+  ? "https://highlighters.site"
+  : "http://localhost:3001";
 
 async function getCookieToken() {
   const cookie = await new Promise((resolve) => {
@@ -41,6 +46,7 @@ async function getHighlight(token, request) {
   return data;
 }
 
+// 코드 시작
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   getCookieToken().then((cookie) => {
     const token = cookie?.value;
