@@ -1,4 +1,43 @@
+import axios from "axios";
+import { Fragment } from "react";
+import { useSetRecoilState, useRecoilState } from "recoil";
+import { logModalVisble, sighUpCheck, userInfo } from "../../states/atom";
+import { useCookies } from "react-cookie";
 export default function SignUp() {
+  const [sighch, setSignUp] = useRecoilState(sighUpCheck);
+  // 비밀번호와 비밀 번호 확인 일치 여부
+  // const [passwordCheck, setPasswordCheck] = useState(false);
+  // const [passwordError, setPasswordError] = useState(false);
+
+  // 폼 데이터 받기 -> 이건 건들지 않는게 낫겠다.
+  const formSubmitHandler = async (event: any) => {
+    event.preventDefault();
+    console.log(event);
+    // form에서 email, password 받아오기
+    const nickname = event.target[0].value;
+    const email = event.target[1].value;
+    const password = event.target[2].value;
+    await axios
+      .post(`${process.env.REACT_APP_HOST}/api/auth/signup`, {
+        nickname: nickname,
+        email: email,
+        password: password,
+      })
+      .then(function (response) {
+        console.log(response);
+        if (response) {
+          setSignUp(!sighch);
+          alert("회원가입 성공");
+        } else {
+          alert("회원가입 실패");
+        }
+      });
+  };
+
+  // 회원가입으로 컴포넌트 변경 핸들러
+  const signUpChangeHandler = () => {
+    setSignUp(!sighch);
+  };
   return (
     <div>
       <div className="w-full p-6 m-auto bg-white rounded-md shadow-md lg:max-w-xl">
@@ -8,7 +47,7 @@ export default function SignUp() {
           </a>
         </div>
         <div className="w-full px-6 py-4 mt-6 overflow-hidden bg-white shadow-md sm:max-w-md sm:rounded-lg">
-          <form>
+          <form onSubmit={formSubmitHandler}>
             <div>
               <label
                 htmlFor="name"
@@ -70,12 +109,11 @@ export default function SignUp() {
               </div>
             </div>
             <div className="flex items-center justify-end mt-4">
-              <a
-                className="text-sm text-gray-600 underline hover:text-gray-900"
-                href="#!"
-              >
-                Already registered?
-              </a>
+              <button onClick={signUpChangeHandler}>
+                <p className="text-sm text-gray-600 underline hover:text-gray-900">
+                  Already registered?
+                </p>
+              </button>
               <button
                 type="submit"
                 className="inline-flex items-center px-4 py-2 ml-4 text-xs font-semibold tracking-widest text-white uppercase transition duration-150 ease-in-out border border-transparent rounded-md bg-sky-900 active:bg-sky-900 false"

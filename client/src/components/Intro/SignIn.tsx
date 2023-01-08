@@ -63,13 +63,12 @@ export default function SignIn() {
     // setCookie("logCookie", data, { path: "/", expires: expireDate });
 
     // set cookie with https version
-    setCookie("logCookie", data, { 
-      path: "/", 
-      expires: expireDate, 
-      secure: true, 
-      sameSite: "none" 
+    setCookie("logCookie", data, {
+      path: "/",
+      expires: expireDate,
+      secure: true,
+      sameSite: "none",
     });
-    
   };
 
   return (
@@ -116,7 +115,6 @@ export default function SignIn() {
           </form>
 
           <p className="mt-8 text-xs font-light text-center text-gray-700">
-            {" "}
             Don't have an account?{" "}
             <p
               onClick={signUpChangeHandler}
