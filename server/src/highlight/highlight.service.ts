@@ -70,9 +70,12 @@ export class HighlightService {
     return highlights;
   }
 
-  async findAllHighlightInFeed(url: string): Promise<Highlight[]> {
+  async findAllHighlightInFeed(
+    group_id: number,
+    url: string,
+  ): Promise<Highlight[]> {
     const find_feed = await this.prismaService.feed.findFirst({
-      where: { url },
+      where: { url, group_id },
       select: { highlight: true },
     });
 
