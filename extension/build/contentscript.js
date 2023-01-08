@@ -175,9 +175,9 @@ if (url_check) {
 
       // 드래그한 영역의 위치를 가져온다.
       const direction = sel.anchorOffset - sel.focusOffset < 0;
-      const divTop = direction ? e.pageY + 10 : e.pageY + 10;
+      const divTop = direction ? e.pageY + 10 : e.pageY - 40;
       const divLeft = direction ? e.pageX + 10 : e.pageX - 40;
-      button.style.transform = direction ? "rotate(0deg)" : "rotate(180deg)";
+      button.style.transform = direction ? "rotate(90deg)" : "rotate(270deg)";
 
       // 드래그한 영역의 위치에 레이어를 띄운다.
       // 레이어의 위치를 변경하고 싶으면 위치값을 수정한다.
