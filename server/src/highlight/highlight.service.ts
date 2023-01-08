@@ -68,13 +68,17 @@ export class HighlightService {
     return highlights;
   }
 
-  async findAllHighlightInFeed(url: string): Promise<any> {
-    const find_feed_test = await this.prismaService.feed.findFirst({
+  async findAllHighlightInFeed(url: string): Promise<Highlight[]> {
+    const find_feed = await this.prismaService.feed.findFirst({
       where: { url },
       select: { highlight: true },
     });
 
-    return find_feed_test.highlight;
+    if (!find_feed) {
+      throw new NotFoundException(`Can't find feed with url ${url}`);
+    }
+
+    return find_feed.highlight;
   }
 
   async updateHighlight(

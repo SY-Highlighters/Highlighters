@@ -37,20 +37,20 @@ model Group {
 }
 
 model Feed {
-  createdAt    DateTime    @default(now())
-  title        String      @db.Char(100)
-  group_id     Int
-  id           Int         @id @default(autoincrement())
-  updatedAt    DateTime    @default(now()) @updatedAt
-  url          String      @db.Char(100)
-  user_email   String
-  bookmark     Bookmark[]
-  comment      comment[]
-  group        Group       @relation(fields: [group_id], references: [id])
-  user         User        @relation(fields: [user_email], references: [email])
-  highlight    Highlight[]
-  noti         Noti[]
-  tag          Tag[]       @relation("FeedToTag")
+  createdAt  DateTime    @default(now())
+  title      String      @db.Char(100)
+  group_id   Int
+  id         Int         @id @default(autoincrement())
+  updatedAt  DateTime    @default(now()) @updatedAt
+  url        String      @db.Char(100)
+  user_email String
+  bookmark   Bookmark[]
+  comment    comment[]
+  group      Group       @relation(fields: [group_id], references: [id])
+  user       User        @relation(fields: [user_email], references: [email])
+  highlight  Highlight[]
+  noti       Noti[]
+  tag        Tag[]       @relation("FeedToTag")
 
   @@index([group_id], map: "FEED_group_id_fkey")
   @@index([user_email], map: "FEED_user_email_fkey")
