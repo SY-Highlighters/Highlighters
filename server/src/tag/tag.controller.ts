@@ -1,17 +1,20 @@
+import { Param } from '@nestjs/common/decorators';
 import {
   Body,
+  Get,
   Controller,
   Post,
   UseFilters,
   UseGuards,
   UseInterceptors,
+  Delete,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { User } from '@prisma/client';
 import { GetUser } from 'src/auth/get-user.decorator';
 import { HttpExceptionFilter } from 'src/common/exceptions/http-exception.filter';
 import { SuccessInterceptor } from 'src/common/interceptors/success.interceptors';
-import { CreateTagDto } from './dto/tag.dto';
+import { RequestTagDto } from './dto/tag.dto';
 import { TagService } from './tag.service';
 
 @Controller('/api/tag')
@@ -24,15 +27,31 @@ export class TagController {
   // 태그 생성
   @Post('/create')
   async createTag(
-    @Body() createTagDto: CreateTagDto,
+    @Body() requestTagDto: RequestTagDto,
     @GetUser() user: User,
   ): Promise<null> {
-    createTagDto.group_id = user.group_id;
+    requestTagDto.group_id = user.group_id;
 
-    return this.tagService.createTag(createTagDto);
+    return this.tagService.createTag(requestTagDto);
   }
 
   // 태그 삭제
+  @Delete('/delete')
+  async deleteTag(
+    @Body() requestTagDto: RequestTagDto,
+    @GetUser() user: User,
+  ): Promise<null> {
+    requestTagDto.group_id = user.group_id;
 
-  // 태그 조회(웹)
+    return this.tagService.deleteTag(requestTagDto);
+  }
+
+  // // 태그 조회(웹)
+  // @Get('/:tag_name')
+  // async findTagWeb(
+  //   @Param('tag_name') tag_name: string,
+  //   @GetUser() user: User,
+  // ): Promise<null> {
+  //   return this.tagService.getTag(tag_name, user);
+  // }
 }
