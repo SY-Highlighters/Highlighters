@@ -28,6 +28,8 @@ export default function GroupAdd() {
           axios.defaults.headers.common[
             "Authorization"
           ] = `Bearer ${cookies.logCookie}`;
+          alert("그룹 생성 성공!");
+          window.location.reload();
         } else {
           alert("그룹 생성 실패!");
         }

@@ -10,7 +10,6 @@ const User = () => {
   // const userdata = useRecoilValue(userInfo);
   const [userData, setUserInfo] = useRecoilState(userInfo);
   const [cookies, setCookie, removeCookie] = useCookies(["logCookie"]);
-  // const [localUser, setLocalUser] = useState(userData);
   useEffect(() => {
     async function userDataGet() {
       console.log("유저 데이터 불러오는중");
@@ -31,7 +30,7 @@ const User = () => {
       });
     }
     userDataGet();
-  }, [userData]);
+  }, []);
   //Todo: 후에 유저정보가 변경되었을때 useEffect함수가 작동해서 다시 유저정보를 리로드해야함
   return (
     <div className="basis-1/4">
