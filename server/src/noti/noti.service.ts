@@ -1,5 +1,5 @@
 import { Injectable, HttpException } from '@nestjs/common';
-import { Noti, User } from '@prisma/client';
+import { User } from '@prisma/client';
 import { PrismaService } from 'src/repository/prisma.service';
 import { CreateNotiDto, DeleteNotiDto, ShowNotiDto } from './dto/noti.dto';
 
