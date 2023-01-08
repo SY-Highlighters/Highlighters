@@ -1,7 +1,7 @@
 import { Injectable, HttpException } from '@nestjs/common';
 import { Noti, User } from '@prisma/client';
 import { PrismaService } from 'src/repository/prisma.service';
-import { CreateNotiDto, ShowNotiDto } from './dto/noti.dto';
+import { CreateNotiDto, DeleteNotiDto, ShowNotiDto } from './dto/noti.dto';
 
 @Injectable()
 export class NotiService {
@@ -26,7 +26,8 @@ export class NotiService {
         await this.prismaService.noti.create({
           data: {
             contents: contents,
-            user_id: users.member[i].email,
+            receiver_id: users.member[i].email,
+            sender_id: user_email,
             feed_id: feed_id.id,
           },
         });
@@ -40,46 +41,46 @@ export class NotiService {
     return result;
   }
 
-  async deleteNoti(
-    noti_id: number,
-    user_id: string,
-    user: User,
-  ): Promise<null> {
-    if (user.email !== user_id) {
-      throw new HttpException('Forbidden', 403);
+  async deleteNoti(deleteNotiDto: DeleteNotiDto[], user: User): Promise<null> {
+    try {
+      for (let i = 0; i < deleteNotiDto.length; i++) {
+        if (user.email !== deleteNotiDto[i].receiver_id) {
+          throw new HttpException('Forbidden', 403);
+        }
+        await this.prismaService.noti.delete({
+          where: { id: deleteNotiDto[i].noti_id },
+        });
+      }
+      return null;
+    } catch (e) {
+      console.log(e);
+      throw new HttpException('Internal Server Error', 500);
     }
-
-    const result = await this.prismaService.noti.delete({
-      where: { id: noti_id },
-    });
-
-    if (!result) {
-      throw new HttpException('Not Found', 404);
-    }
-
-    return;
   }
 
   async findNotiWeb(user: User): Promise<ShowNotiDto[]> {
     const noties = await this.prismaService.noti.findMany({
-      where: { user_id: user.email },
+      where: { receiver_id: user.email },
       orderBy: { createdAt: 'desc' },
     });
     const result: ShowNotiDto[] = [];
     try {
       for (let i = 0; i < noties.length; i++) {
         const sender = await this.prismaService.user.findUnique({
-          where: { email: noties[i].user_id },
+          where: { email: noties[i].sender_id },
           select: { nickname: true },
         });
         const feed = await this.prismaService.feed.findUnique({
           where: { id: noties[i].feed_id },
           select: { title: true, url: true },
         });
+        await this.prismaService.noti.update({
+          where: { id: noties[i].id },
+          data: { isRead: true },
+        });
         result.push({
           id: noties[i].id,
           contents: noties[i].contents,
-          user_id: noties[i].user_id,
           nickname: sender.nickname,
           feed_id: noties[i].feed_id,
           title: feed.title,
@@ -97,15 +98,15 @@ export class NotiService {
 
   async findNotiExtension(user: User): Promise<ShowNotiDto[]> {
     const noties = await this.prismaService.noti.findMany({
-      where: { user_id: user.email, isRead: false },
+      where: { receiver_id: user.email, isRead: false },
       orderBy: { createdAt: 'desc' },
     });
     const result: ShowNotiDto[] = [];
     try {
       for (let i = 0; i < noties.length; i++) {
-        if (user.email === noties[i].user_id) continue;
+        if (user.email === noties[i].sender_id) continue;
         const sender = await this.prismaService.user.findUnique({
-          where: { email: noties[i].user_id },
+          where: { email: noties[i].sender_id },
           select: { nickname: true },
         });
         const feed = await this.prismaService.feed.findUnique({
@@ -119,7 +120,6 @@ export class NotiService {
         result.push({
           id: noties[i].id,
           contents: noties[i].contents,
-          user_id: noties[i].user_id,
           nickname: sender.nickname,
           feed_id: noties[i].feed_id,
           title: feed.title,

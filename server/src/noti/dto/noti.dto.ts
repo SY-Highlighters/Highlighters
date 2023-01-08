@@ -11,10 +11,14 @@ export class CreateNotiDto {
 export class ShowNotiDto {
   id: number;
   contents: string;
-  user_id: string;
   nickname: string;
   feed_id: number;
   title: string;
   url: string;
   createdAt: Date;
+}
+
+export class DeleteNotiDto {
+  noti_id: number;
+  receiver_id: string;
 }

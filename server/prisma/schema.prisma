@@ -8,16 +8,17 @@ datasource db {
 }
 
 model User {
-  email     String      @id @db.Char(50)
-  group_id  Int?
-  nickname  String?     @db.Char(20)
-  password  String      @db.Char(100)
-  image     String
-  comment   comment[]
-  Feed      Feed[]
-  highlight Highlight[]
-  noti      Noti[]
-  group     Group?      @relation(fields: [group_id], references: [id])
+  email        String      @id @db.Char(50)
+  group_id     Int?
+  nickname     String?     @db.Char(20)
+  password     String      @db.Char(100)
+  image        String
+  comment      comment[]
+  Feed         Feed[]
+  highlight    Highlight[]
+  receive_noti Noti[]      @relation("receiver")
+  send_noti    Noti[]      @relation("sender")
+  group        Group?      @relation(fields: [group_id], references: [id])
 
   @@index([group_id], map: "USER_group_id_fkey")
   @@map("USER")
@@ -94,16 +95,19 @@ model Highlight {
 }
 
 model Noti {
-  id        Int      @id @default(autoincrement())
-  contents  String
-  isRead    Boolean  @default(false)
-  user_id   String
-  feed_id   Int
-  createdAt DateTime @default(now())
-  feed      Feed     @relation(fields: [feed_id], references: [id], onDelete: Cascade)
-  user      User     @relation(fields: [user_id], references: [email])
+  id          Int      @id @default(autoincrement())
+  contents    String
+  isRead      Boolean  @default(false)
+  feed_id     Int
+  createdAt   DateTime @default(now())
+  receiver_id String
+  sender_id   String
+  feed        Feed     @relation(fields: [feed_id], references: [id], onDelete: Cascade)
+  receiver    User     @relation("receiver", fields: [receiver_id], references: [email])
+  sender      User     @relation("sender", fields: [sender_id], references: [email])
 
   @@index([feed_id], map: "NOTI_feed_id_fkey")
-  @@index([user_id], map: "NOTI_user_id_fkey")
+  @@index([sender_id], map: "sender_id")
+  @@index([receiver_id], map: "receiver_id")
   @@map("NOTI")
 }

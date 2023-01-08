@@ -4,7 +4,7 @@ import { AuthGuard } from '@nestjs/passport';
 import { User } from '@prisma/client';
 import { GetUser } from 'src/auth/get-user.decorator';
 import { NotiService } from './noti.service';
-import { CreateNotiDto, ShowNotiDto } from './dto/noti.dto';
+import { CreateNotiDto, DeleteNotiDto, ShowNotiDto } from './dto/noti.dto';
 import {
   Delete,
   Param,
@@ -35,13 +35,12 @@ export class NotiController {
   }
 
   // 노티 삭제
-  @Delete('/delete/:noti_id/:user_id')
+  @Delete('/delete')
   async deleteNoti(
-    @Param('noti_id') noti_id: number,
-    @Param('user_id') user_id: string,
+    @Body() deleteNotiDto: DeleteNotiDto[],
     @GetUser() user: User,
   ): Promise<null> {
-    return this.notiService.deleteNoti(noti_id, user_id, user);
+    return this.notiService.deleteNoti(deleteNotiDto, user);
   }
 
   // 웹에서의 노티 조회(송신자 포함)
@@ -55,8 +54,4 @@ export class NotiController {
   async findNotiExtension(@GetUser() user: User): Promise<ShowNotiDto[]> {
     return this.notiService.findNotiExtension(user);
   }
-
-  // 노티 모두 읽음 처리
-
-  // 노티 읽음 처리
 }
