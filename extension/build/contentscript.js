@@ -1,6 +1,7 @@
 /* 코드시작 */
 let selectionText;
 let highlightStr = "null";
+const highlightColor = "#E9D5FF";
 
 function highlight() {
   // 드래그한 부분의 위치 정보
@@ -11,7 +12,7 @@ function highlight() {
 
   // 하이라이팅
   const newNode = document.createElement("span");
-  newNode.style.backgroundColor = "#fef08a";
+  newNode.style.backgroundColor = highlightColor;
   range.surroundContents(newNode);
 
   // 버튼 숨기기
@@ -126,7 +127,7 @@ function getHighlight(url) {
         range.setEnd(endNode, endOff);
 
         const newNode = document.createElement("span");
-        newNode.style.backgroundColor = "#fef08a";
+        newNode.style.backgroundColor = highlightColor;
         range.surroundContents(newNode);
       }
     }
