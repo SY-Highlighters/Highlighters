@@ -39,7 +39,6 @@ model Group {
 model Feed {
   createdAt    DateTime    @default(now())
   title        String      @db.Char(100)
-  title        String      @db.Char(100)
   group_id     Int
   id           Int         @id @default(autoincrement())
   updatedAt    DateTime    @default(now()) @updatedAt
@@ -100,8 +99,6 @@ model Highlight {
   selection  Json
   user_email String
   contents   String
-  type       Int
-  color      String   @db.Char(10)
   type       Int
   color      String   @db.Char(10)
   feed       Feed     @relation(fields: [feed_id], references: [id], onDelete: Cascade)
