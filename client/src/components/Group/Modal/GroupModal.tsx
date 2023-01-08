@@ -1,21 +1,23 @@
 import { useSetRecoilState, useRecoilValue, useRecoilState } from "recoil";
 import {
   groupModalVisble,
-  sighUpCheck,
   groupAddState,
   groupJoinState,
-} from "../../states/atom";
+  groupInviteState,
+} from "../../../states/atom";
 import GroupAdd from "./GroupAdd";
 import GroupJoin from "./GroupJoin";
 import GroupInvite from "./GroupInvite";
 export default function GroupModal() {
   const [groupAdd, setGroupAdd] = useRecoilState(groupAddState);
   const [groupJoin, setGroupJoin] = useRecoilState(groupJoinState);
+  const [groupInvite, setGroupInvite] = useRecoilState(groupInviteState);
   const setGroupModal = useSetRecoilState(groupModalVisble);
   const closeModal = () => {
     setGroupModal(!groupModalVisble);
     setGroupAdd(false);
     setGroupJoin(false);
+    setGroupInvite(false);
   };
 
   return (
@@ -58,8 +60,7 @@ export default function GroupModal() {
           {/* 여기서 부터 컴포넌트 변환 */}
           {groupAdd && <GroupAdd />}
           {groupJoin && <GroupJoin />}
-          <GroupInvite></GroupInvite>
-          {/* {groupAdd && <GroupJoin />} */}
+          {groupInvite && <GroupInvite></GroupInvite>}
         </div>
       </div>
     </div>

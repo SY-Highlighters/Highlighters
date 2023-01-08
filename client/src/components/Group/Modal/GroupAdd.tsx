@@ -1,6 +1,6 @@
-import React, { Fragment, useState } from "react";
-import { useRecoilValue, useSetRecoilState } from "recoil";
-import { groupAddState, groupModalVisble } from "../../states/atom";
+import React, { Fragment } from "react";
+import { useSetRecoilState } from "recoil";
+import { groupAddState, groupModalVisble } from "../../../states/atom";
 import axios from "axios";
 import { useCookies } from "react-cookie";
 export default function GroupAdd() {
