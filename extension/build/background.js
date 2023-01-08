@@ -1,5 +1,7 @@
 const cookie_url = "http://localhost:3000";
 const host_url = "http://localhost:3001";
+// const cookie_url = "https://highlighters.site";
+// const host_url = "https://highlighters.site";
 
 async function getCookieToken() {
   const cookie = await new Promise((resolve) => {
@@ -47,14 +49,14 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     if (request.greeting === "posthighlight") {
       postHighlight(token, request.data)
         .then((data) => sendResponse({ data }))
-        .catch((error) => console.log(error));
+        .catch((error) => console.log(`fetch 실패: ${error}`));
     }
 
     // 웹페이지의 모든 하이라이트를 가져옴
     else if (request.greeting === "gethighlight") {
       getHighlight(token, request.data)
         .then((data) => sendResponse({ data }))
-        .catch((error) => console.log(error));
+        .catch((error) => console.log(`fetch 실패: ${error}`));
     }
   });
 
