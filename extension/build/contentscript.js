@@ -1,7 +1,8 @@
 /* 코드시작 */
+const highlightColor = "#E9D5FF";
+
 let selectionText;
 let highlightStr = "null";
-const highlightColor = "#E9D5FF";
 
 function highlight() {
   // 드래그한 부분의 위치 정보

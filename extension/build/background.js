@@ -1,4 +1,4 @@
-const is_production = false;
+const is_production = true;
 
 const cookie_url = is_production
   ? "https://highlighters.site"
@@ -46,6 +46,21 @@ async function getHighlight(token, request) {
   return data;
 }
 
+function createNotification(title, msg) {
+  chrome.notifications.create(
+    title,
+    {
+      type: "basic",
+      iconUrl: "https://cdn-icons-png.flaticon.com/512/3237/3237124.png",
+      title: title,
+      message: msg,
+    },
+    (notificationId) => {
+      console.log(notificationId);
+    }
+  );
+}
+
 // 코드 시작
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   getCookieToken().then((cookie) => {
@@ -54,7 +69,10 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     // 웹페이지의 하이라이팅을 디비로 전송
     if (request.greeting === "posthighlight") {
       postHighlight(token, request.data)
-        .then((data) => sendResponse({ data }))
+        .then((data) => {
+          sendResponse({ data });
+          createNotification("postHighlight", "하이라이트가 저장되었습니다.");
+        })
         .catch((error) => console.log(`fetch 실패: ${error}`));
     }
 
