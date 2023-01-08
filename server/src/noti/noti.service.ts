@@ -23,16 +23,14 @@ export class NotiService {
     let result = 0;
     try {
       for (let i = 0; i < users.member.length; i++) {
-        if (users.member[i].email !== user_email) {
-          await this.prismaService.noti.create({
-            data: {
-              contents: contents,
-              user_id: users.member[i].email,
-              feed_id: feed_id.id,
-            },
-          });
-          result += 1;
-        }
+        await this.prismaService.noti.create({
+          data: {
+            contents: contents,
+            user_id: users.member[i].email,
+            feed_id: feed_id.id,
+          },
+        });
+        result += 1;
       }
     } catch (e) {
       console.log(e);
@@ -62,18 +60,9 @@ export class NotiService {
     return;
   }
 
-  async findNotiWeb(user: User): Promise<Noti[]> {
-    const result = await this.prismaService.noti.findMany({
-      where: { user_id: user.email },
-      orderBy: { createdAt: 'desc' },
-    });
-
-    return result;
-  }
-
-  async findNotiExtension(user: User): Promise<ShowNotiDto[]> {
+  async findNotiWeb(user: User): Promise<ShowNotiDto[]> {
     const noties = await this.prismaService.noti.findMany({
-      where: { user_id: user.email, isRead: false },
+      where: { user_id: user.email },
       orderBy: { createdAt: 'desc' },
     });
     const result: ShowNotiDto[] = [];
@@ -86,6 +75,46 @@ export class NotiService {
         const feed = await this.prismaService.feed.findUnique({
           where: { id: noties[i].feed_id },
           select: { title: true, url: true },
+        });
+        result.push({
+          id: noties[i].id,
+          contents: noties[i].contents,
+          user_id: noties[i].user_id,
+          nickname: sender.nickname,
+          feed_id: noties[i].feed_id,
+          title: feed.title,
+          url: feed.url,
+          createdAt: noties[i].createdAt,
+        });
+      }
+    } catch (e) {
+      console.log(e);
+      throw new HttpException('Internal Server Error', 500);
+    }
+
+    return result;
+  }
+
+  async findNotiExtension(user: User): Promise<ShowNotiDto[]> {
+    const noties = await this.prismaService.noti.findMany({
+      where: { user_id: user.email, isRead: false },
+      orderBy: { createdAt: 'desc' },
+    });
+    const result: ShowNotiDto[] = [];
+    try {
+      for (let i = 0; i < noties.length; i++) {
+        if (user.email === noties[i].user_id) continue;
+        const sender = await this.prismaService.user.findUnique({
+          where: { email: noties[i].user_id },
+          select: { nickname: true },
+        });
+        const feed = await this.prismaService.feed.findUnique({
+          where: { id: noties[i].feed_id },
+          select: { title: true, url: true },
+        });
+        await this.prismaService.noti.update({
+          where: { id: noties[i].id },
+          data: { isRead: true },
         });
         result.push({
           id: noties[i].id,

@@ -4,7 +4,7 @@ import { AuthGuard } from '@nestjs/passport';
 import { User } from '@prisma/client';
 import { GetUser } from 'src/auth/get-user.decorator';
 import { NotiService } from './noti.service';
-import { CreateNotiDto } from './dto/noti.dto';
+import { CreateNotiDto, ShowNotiDto } from './dto/noti.dto';
 import {
   Delete,
   Param,
@@ -46,13 +46,13 @@ export class NotiController {
 
   // 웹에서의 노티 조회(송신자 포함)
   @Post('/web')
-  async findNotiWeb(@GetUser() user: User): Promise<Noti[]> {
+  async findNotiWeb(@GetUser() user: User): Promise<ShowNotiDto[]> {
     return this.notiService.findNotiWeb(user);
   }
 
   // 익스텐션에서의 노티 조회(송신자 제외)
   @Post('/extension')
-  async findNotiExtension(@GetUser() user: User): Promise<Noti[]> {
+  async findNotiExtension(@GetUser() user: User): Promise<ShowNotiDto[]> {
     return this.notiService.findNotiExtension(user);
   }
 
