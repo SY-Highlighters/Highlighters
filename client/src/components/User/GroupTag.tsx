@@ -11,9 +11,11 @@ const GroupTag = () => {
         </div>
         {/* 태그 공간 -> fix:동적 처리*/}
         <div className="relative items-end">
-          <span className="inline-flex mr-2 mt-2 px-3 py-0.5 rounded-full text-sm font-medium bg-sky-100 text-sky-800">
-            # 너 아직 Highlighters 몰라?
-          </span>
+          <button>
+            <span className="inline-flex mr-2 mt-2 px-3 py-0.5 rounded-full text-sm font-medium bg-sky-100 text-sky-800  hover:bg-sky-200">
+              # 너 아직 Highlighters 몰라?
+            </span>
+          </button>
           <span className="inline-flex  mr-2 mt-2 px-3 py-0.5 rounded-full text-sm font-medium bg-sky-100 text-sky-800">
             #도커
           </span>
@@ -47,7 +49,7 @@ export default GroupTag;
     <div className="col-span-2"></div>
     {/* 태그 공간 -> fix:동적 처리*/}
     <div className="col-span-3">
-      <span className="inline-flex px-3 py-0.5 rounded-full text-sm font-medium bg-sky-100 text-sky-800">
+      <span className="inline-flex px-3 py-0.5 rounded-full text-sm font-medium bg-sky-100 text-sky-800 hover:bg-sky-200">
         #모시깽
       </span>
       <span className="inline-flex  px-3 py-0.5 rounded-full text-sm font-medium bg-sky-100 text-sky-800">
