@@ -1,4 +1,5 @@
 import { Injectable, HttpException } from '@nestjs/common';
+import { User } from '@prisma/client';
 import { PrismaService } from 'src/repository/prisma.service';
 import { RequestTagDto } from './dto/tag.dto';
 
@@ -58,5 +59,31 @@ export class TagService {
     }
 
     return null;
+  }
+
+  async getTag(user: User): Promise<string[]> {
+    const tags = await this.prismaService.tag.findMany({
+      where: {
+        group: {
+          some: {
+            id: user.group_id,
+          },
+        },
+      },
+    });
+    return tags.map((tag) => tag.tag_name);
+  }
+
+  async getTagByFeedId(feed_id: number): Promise<string[]> {
+    const tags = await this.prismaService.tag.findMany({
+      where: {
+        feed: {
+          some: {
+            id: feed_id,
+          },
+        },
+      },
+    });
+    return tags.map((tag) => tag.tag_name);
   }
 }

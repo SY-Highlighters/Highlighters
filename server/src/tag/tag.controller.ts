@@ -46,12 +46,11 @@ export class TagController {
     return this.tagService.deleteTag(requestTagDto);
   }
 
-  // // 태그 조회(웹)
-  // @Get('/:tag_name')
-  // async findTagWeb(
-  //   @Param('tag_name') tag_name: string,
-  //   @GetUser() user: User,
-  // ): Promise<null> {
-  //   return this.tagService.getTag(tag_name, user);
-  // }
+  // 웹에서 그룹 내 모든 태그 조회
+  @Get('/web')
+  async findTagWeb(@GetUser() user: User): Promise<string[]> {
+    return this.tagService.getTag(user);
+  }
+
+  // 피드에서 해당하는 태그 조회
 }
