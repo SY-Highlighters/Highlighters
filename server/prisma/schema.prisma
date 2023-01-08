@@ -94,13 +94,14 @@ model Highlight {
 }
 
 model Noti {
-  id       Int     @id @default(autoincrement())
-  contents String
-  isRead   Boolean @default(false)
-  user_id  String
-  feed_id  Int
-  feed     Feed    @relation(fields: [feed_id], references: [id], onDelete: Cascade)
-  user     User    @relation(fields: [user_id], references: [email])
+  id        Int      @id @default(autoincrement())
+  contents  String
+  isRead    Boolean  @default(false)
+  user_id   String
+  feed_id   Int
+  createdAt DateTime @default(now())
+  feed      Feed     @relation(fields: [feed_id], references: [id], onDelete: Cascade)
+  user      User     @relation(fields: [user_id], references: [email])
 
   @@index([feed_id], map: "NOTI_feed_id_fkey")
   @@index([user_id], map: "NOTI_user_id_fkey")

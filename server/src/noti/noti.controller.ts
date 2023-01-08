@@ -45,8 +45,16 @@ export class NotiController {
   }
 
   // 웹에서의 노티 조회(송신자 포함)
+  @Post('/web')
+  async findNotiWeb(@GetUser() user: User): Promise<Noti[]> {
+    return this.notiService.findNotiWeb(user);
+  }
 
   // 익스텐션에서의 노티 조회(송신자 제외)
+  @Post('/extension')
+  async findNotiExtension(@GetUser() user: User): Promise<Noti[]> {
+    return this.notiService.findNotiExtension(user);
+  }
 
   // 노티 모두 읽음 처리
 

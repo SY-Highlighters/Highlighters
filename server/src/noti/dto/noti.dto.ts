@@ -7,3 +7,14 @@ export class CreateNotiDto {
   contents: string;
   url: string;
 }
+
+export class ShowNotiDto {
+  id: number;
+  contents: string;
+  user_id: string;
+  nickname: string;
+  feed_id: number;
+  title: string;
+  url: string;
+  createdAt: Date;
+}
