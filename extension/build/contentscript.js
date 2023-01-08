@@ -133,57 +133,50 @@ function getHighlight(url) {
   );
 }
 
-// select
-function getSelect() {
-  let sel = "";
-
-  if (document.getSelection) {
-    sel = document.getSelection();
-  } else if (document.selection) {
-    sel = document.selection.createRange().text;
-  }
-
-  return sel;
-}
-
 function onWindowReady() {
   // 버튼 만들어 놓기
   let penButton = `<input id="btn_highlighters" type="image" src="https://images.vexels.com/media/users/3/206292/isolated/preview/0a3fddb8fdf07b7c1f42a371d420c3f2-yellow-highlighter-flat.png"
-  height = "50" width="50">`;
+  height = "40" width="40">`;
 
   const body = document.querySelector("body");
   body.innerHTML += penButton;
 
   const button = document.getElementById("btn_highlighters");
   button.style.display = "none";
-
   button.addEventListener("click", highlight);
 
   // 하이라이트 가져오기
   getHighlight(window.location.href);
 }
 
-/* contentscript 시작 */
-if (
+const url_check =
   window.location.href !== `http://localhost:3000/` &&
   window.location.href !== `https://highlighters.site/` &&
-  window.location.href !== `http://localhost:5555/`
-) {
+  window.location.href !== `http://localhost:5555/`;
+
+/* contentscript 시작 */
+if (url_check) {
   window.onload = onWindowReady;
 
   // 드래그하고 마우스를 떼면 selection 객체 생성
   document.onmouseup = function (e) {
-    // let sel = getSelect();
     const sel = document.getSelection();
-    // sel.toString() !== "" && sel.toString() !== highlightStr
+    const button = document.getElementById("btn_highlighters");
 
-    if (sel.toString() !== "") {
+    console.log(sel);
+
+    if (sel.isCollapsed) {
+      button.style.display = "none";
+      return;
+    } //
+    else {
       selectionText = sel;
       highlightStr = sel.toString();
 
       // 드래그한 영역의 위치를 가져온다.
-      let divTop = e.pageY + 10;
-      let divLeft = e.pageX + 10;
+      const direction = sel.anchorOffset - sel.focusOffset < 0;
+      const divTop = direction ? e.pageY + 10 : e.pageY - 40;
+      const divLeft = direction ? e.pageX + 10 : e.pageX - 40;
 
       // 드래그한 영역의 위치에 레이어를 띄운다.
       // 레이어의 위치를 변경하고 싶으면 위치값을 수정한다.
@@ -195,9 +188,7 @@ if (
       button.style.left = divLeft + "px";
       button.style.position = "absolute";
       button.style.display = "block";
+      button.style.zIndex = "9999";
     }
   };
-} else {
-  let button = document.getElementById("btn_highlighters");
-  button.style.display = "none";
 }
