@@ -48,7 +48,7 @@ model Feed {
   comment      comment[]
   group        Group       @relation(fields: [group_id], references: [id])
   user         User        @relation(fields: [user_email], references: [email])
-  highlight_id Highlight[]
+  highlight    Highlight[]
   noti         Noti[]
   tag          Tag[]       @relation("FeedToTag")
 
