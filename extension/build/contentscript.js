@@ -135,8 +135,7 @@ function getHighlight(url) {
 
 function onWindowReady() {
   // 버튼 만들어 놓기
-  let penButton = `<input id="btn_highlighters" type="image" src="https://images.vexels.com/media/users/3/206292/isolated/preview/0a3fddb8fdf07b7c1f42a371d420c3f2-yellow-highlighter-flat.png"
-  height = "40" width="40">`;
+  let penButton = `<input id="btn_highlighters" type="image" src="https://images.vexels.com/media/users/3/206292/isolated/preview/0a3fddb8fdf07b7c1f42a371d420c3f2-yellow-highlighter-flat.png" height = "40" width="40">`;
 
   const body = document.querySelector("body");
   body.innerHTML += penButton;
@@ -160,10 +159,8 @@ if (url_check) {
 
   // 드래그하고 마우스를 떼면 selection 객체 생성
   document.onmouseup = function (e) {
-    const sel = document.getSelection();
     const button = document.getElementById("btn_highlighters");
-
-    console.log(sel);
+    const sel = document.getSelection();
 
     if (sel.isCollapsed) {
       button.style.display = "none";
@@ -173,17 +170,20 @@ if (url_check) {
       selectionText = sel;
       highlightStr = sel.toString();
 
+      console.log(button);
+
       // 드래그한 영역의 위치를 가져온다.
       const direction = sel.anchorOffset - sel.focusOffset < 0;
       const divTop = direction ? e.pageY + 10 : e.pageY - 40;
       const divLeft = direction ? e.pageX + 10 : e.pageX - 40;
+      button.style.transform = direction ? "rotate(0deg)" : "rotate(180deg)";
 
       // 드래그한 영역의 위치에 레이어를 띄운다.
       // 레이어의 위치를 변경하고 싶으면 위치값을 수정한다.
       // 레이어가 화면을 벗어나면 안되므로 위치값을 수정한다.
 
       // 레이어 위치를 변경한다.
-      let button = document.getElementById("btn_highlighters");
+      // let button = document.getElementById("btn_highlighters");
       button.style.top = divTop + "px";
       button.style.left = divLeft + "px";
       button.style.position = "absolute";

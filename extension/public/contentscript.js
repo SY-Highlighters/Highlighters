@@ -135,13 +135,13 @@ function getHighlight(url) {
 
 function onWindowReady() {
   // 버튼 만들어 놓기
-  let penButton = `<input id="btn_highlighters" type="image" src="https://images.vexels.com/media/users/3/206292/isolated/preview/0a3fddb8fdf07b7c1f42a371d420c3f2-yellow-highlighter-flat.png"
-  height = "40" width="40">`;
+  let penButton = `<input id="btn_highlighters" type="image" src="https://images.vexels.com/media/users/3/206292/isolated/preview/0a3fddb8fdf07b7c1f42a371d420c3f2-yellow-highlighter-flat.png" height = "40" width="40">`;
 
   const body = document.querySelector("body");
   body.innerHTML += penButton;
 
   const button = document.getElementById("btn_highlighters");
+  button.style.transform = "rotate(90deg)";
   button.style.display = "none";
   button.addEventListener("click", highlight);
 

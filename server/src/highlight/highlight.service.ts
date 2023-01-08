@@ -22,7 +22,9 @@ export class HighlightService {
     const { user_email, group_id, url, contents, selection, title } =
       createHighlightDto;
 
-    let find_feed = await this.feedService.findFeedByURL(url);
+    let find_feed = await this.prismaService.feed.findFirst({
+      where: { url, group_id },
+    });
 
     if (!find_feed) {
       const newFeedDto = new CreateFeedDto();
