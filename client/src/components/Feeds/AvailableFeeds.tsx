@@ -16,9 +16,7 @@ const AvailableFeeds = () => {
   // // 렌더링된 후 바로 실행
   useEffect(() => {
     async function fetchData() {
-      console.log("유저 피드 불러오는중!");
       const groupId = userData.groupId;
-      console.log(groupId);
       const response = await axios({
         method: "get",
         url: `${process.env.REACT_APP_HOST}/api/feed/group/${groupId}`,

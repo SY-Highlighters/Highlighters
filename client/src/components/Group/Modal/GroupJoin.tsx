@@ -2,7 +2,19 @@ import React, { Fragment } from "react";
 import { useSetRecoilState } from "recoil";
 import { groupJoinState, groupModalVisble } from "../../../states/atom";
 import axios from "axios";
+import Swal from "sweetalert2";
 
+const Toast = Swal.mixin({
+  toast: true,
+  position: "top-end",
+  showConfirmButton: false,
+  timer: 3000,
+  timerProgressBar: true,
+  didOpen: (toast) => {
+    toast.addEventListener("mouseenter", Swal.stopTimer);
+    toast.addEventListener("mouseleave", Swal.resumeTimer);
+  },
+});
 export default function GroupJoin() {
   const setGroupJoin = useSetRecoilState(groupJoinState);
   const setGroupModal = useSetRecoilState(groupModalVisble);
@@ -10,7 +22,6 @@ export default function GroupJoin() {
   // 폼 데이터 받기
   const formSubmitHandler = (event: any) => {
     event.preventDefault();
-    console.log(event);
 
     // form에서 참여 코드 받아오기
     const joinCode = event.target[0].value;
@@ -22,14 +33,17 @@ export default function GroupJoin() {
         group_code: joinCode,
       })
       .then(function (response) {
-        console.log(response);
         if (response) {
           axios.defaults.headers.common[
             "Authorization"
           ] = `Bearer ${response.data.accessToken}`;
-          alert("그룹 참여 성공!");
           setGroupModal(!groupModalVisble);
           setGroupJoin(!groupJoinState);
+          Toast.fire({
+            icon: "success",
+            title: "그룹에 참가하였습니다!",
+          });
+
           window.location.reload();
         } else {
           alert("그룹 참여 실패!");

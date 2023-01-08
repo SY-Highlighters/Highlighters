@@ -4,18 +4,31 @@ import App from "./App";
 import { RecoilRoot } from "recoil";
 import axios from "axios";
 import { CookiesProvider } from "react-cookie";
+import { QueryClient, QueryClientProvider, QueryCache } from "react-query";
 axios.defaults.baseURL = `${process.env.REACT_APP_HOST}`;
 axios.defaults.withCredentials = true;
+const queryClient = new QueryClient({
+  queryCache: new QueryCache({
+    onError: (error, query) => {
+      console.log("onError", error);
+    },
+    onSuccess: (data) => {
+      console.log("onSuccess", data);
+    },
+  }),
+});
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
 );
 root.render(
   // <React.StrictMode>
-  <RecoilRoot>
-    <CookiesProvider>
-      <App />
-    </CookiesProvider>
-  </RecoilRoot>
+  <CookiesProvider>
+    <RecoilRoot>
+      <QueryClientProvider client={queryClient}>
+        <App />
+      </QueryClientProvider>
+    </RecoilRoot>
+  </CookiesProvider>
   // </React.StrictMode>
 );
 

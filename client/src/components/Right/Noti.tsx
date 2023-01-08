@@ -10,7 +10,6 @@ export default function Noti() {
   const [notiData, setNotiData] = useState<NotiData[]>([]);
   useEffect(() => {
     async function notiGet() {
-      console.log("노티 불러오는중");
       const res = await axios({
         method: "get",
         url: host_url,
@@ -19,7 +18,6 @@ export default function Noti() {
           Authorization: `Bearer ${cookies.logCookie}`,
         },
       });
-      console.log(res.data);
       notiAdd(res.data.data);
     }
     notiGet();
@@ -27,12 +25,12 @@ export default function Noti() {
 
   // 피드리스트에 피드아이템 넣기
   const notiAdd = (data: any) => {
-    console.log(data);
     data.map((item: any) => {
       const newNoti = {
         id: item.id,
         message: item.contents,
         title: item.title,
+        url: item.url,
         sender: item.nickname,
       };
       // // NotiList에 NotiItem 추가

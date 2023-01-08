@@ -3,6 +3,8 @@ import { useSetRecoilState } from "recoil";
 import { groupAddState, groupModalVisble } from "../../../states/atom";
 import axios from "axios";
 import { useCookies } from "react-cookie";
+import Swal from "sweetalert2";
+
 export default function GroupAdd() {
   const setGroupModal = useSetRecoilState(groupModalVisble);
   const setGroupAdd = useSetRecoilState(groupAddState);
@@ -11,7 +13,6 @@ export default function GroupAdd() {
   // 폼 데이터 받기
   const formSubmitHandler = async (event: any) => {
     event.preventDefault();
-    console.log(event.target[0].value);
 
     // form에서 groupName 받아오기
     const groupName = event.target[0].value;
@@ -23,13 +24,19 @@ export default function GroupAdd() {
         name: groupName,
       })
       .then(function (response) {
-        console.log(response);
         if (response) {
           axios.defaults.headers.common[
             "Authorization"
           ] = `Bearer ${cookies.logCookie}`;
-          alert("그룹 생성 성공!");
-          window.location.reload();
+          Swal.fire({
+            icon: "success",
+            title: "그룹 생성 성공!",
+            text: "그룹 생성에 성공했습니다.",
+          });
+          // 2초 후 리로드
+          setTimeout(() => {
+            window.location.reload();
+          }, 2000);
         } else {
           alert("그룹 생성 실패!");
         }

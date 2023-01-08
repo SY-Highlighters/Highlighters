@@ -1,9 +1,10 @@
 import axios from "axios";
 import { Fragment } from "react";
-import { useSetRecoilState, useRecoilState } from "recoil";
+import { useSetRecoilState, useRecoilState, constSelector } from "recoil";
 import SignUp from "./SignUp";
 import { logModalVisble, sighUpCheck, userInfo } from "../../states/atom";
 import { useCookies } from "react-cookie";
+import Swal from "sweetalert2";
 
 export default function SignIn() {
   const [sighch, setSignUp] = useRecoilState(sighUpCheck);
@@ -24,7 +25,6 @@ export default function SignIn() {
   const formSubmitHandler = async (event: any) => {
     event.preventDefault();
     console.log(event);
-    logModalDisable(!logModalVisble);
     // form에서 email, password 받아오기
     const email = event.target[0].value;
     const password = event.target[1].value;
@@ -48,11 +48,18 @@ export default function SignIn() {
           //   groupName: response.data.group_name,
           // });
           // 쿠키저장
-          console.log(response.data.accessToken);
+
           handleCookie(response.data.accessToken);
-        } else {
-          alert("로그인 실패");
         }
+      })
+      .catch((error) => {
+        console.log(error);
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: "이메일 또는 비밀번호가 일치하지 않습니다.",
+          confirmButtonColor: "#0ea5e9",
+        });
       });
   };
 
