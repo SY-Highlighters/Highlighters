@@ -35,12 +35,12 @@ services:
     volumes:
       - ./https:/usr/share/nginx/html
 
-  cerbot:
-    depends_on:
-      - nginxproxy
-    image: certbot/certbot
-    container_name: cerbot
-    volumes:
-      - ./certbot:/etc/letsencrypt
-      - ./https:/usr/share/nginx/html
-    command: --dry-run certonly --webroot --webroot-path=/usr/share/nginx/html --email siaksiakx@gmail.com --agree-tos --no-eff-email -d highlighters.site -d www.highlighters.site --force-renewal
+  # cerbot:
+  #   depends_on:
+  #     - nginxproxy
+  #   image: certbot/certbot
+  #   container_name: cerbot
+  #   volumes:
+  #     - ./certbot:/etc/letsencrypt
+  #     - ./https:/usr/share/nginx/html
+  #   command: --dry-run certonly --webroot --webroot-path=/usr/share/nginx/html --email siaksiakx@gmail.com --agree-tos --no-eff-email -d highlighters.site -d www.highlighters.site --force-renewal
