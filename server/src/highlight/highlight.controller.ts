@@ -42,8 +42,7 @@ export class HighlightController {
 
   // URL로 찾은 Feed에 있는 모든 highlight 찾기
   @Post('/feed')
-  async findHighlightAll(@Body('url') url: string): Promise<Highlight[]> {
-    console.log(url);
+  async findHighlightAll(@Body('url') url: string): Promise<any> {
     return this.highlightService.findAllHighlightInFeed(url);
   }
 
