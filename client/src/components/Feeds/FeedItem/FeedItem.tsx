@@ -23,13 +23,12 @@ const FeedItem = (props: any) => {
     </li>
   ));
 
-  // // 태그 파싱
-  // const tags = props.tag.map((tag: any, index: number) => (
-  //   <li key={index}>
-  //     <span>{tag.tag.tag_name}</span>
-  //     {/* <TagItem content={tag.tag_name}></TagItem>; */}
-  //   </li>
-  // ));
+  // 태그 파싱
+  const tags = props.tag.map((tagItem: any, index: number) => (
+    <li key={index}>
+      <TagItem content={tagItem.tag_name}></TagItem>
+    </li>
+  ));
 
   return (
     <li className="py-5">
@@ -44,7 +43,7 @@ const FeedItem = (props: any) => {
         <div className="m-5 sm:px-6">
           <a href={props.url} target="_blank" rel="noreferrer">
             <h2 className="mb-5 text-xl font-bold leading-6 text-gray-900">
-              {props.title}
+              {/* {props.title} */}
             </h2>
           </a>
 
@@ -53,7 +52,7 @@ const FeedItem = (props: any) => {
           </div>
 
           {/* 노션 북마크처럼 만들기 프로젝트 */}
-          <div className="max-w-lg mb-3 overflow-hidden rounded-lg shadow-lg w-50 sm:flex">
+          {/* <div className="max-w-lg mb-3 overflow-hidden rounded-lg shadow-lg w-50 sm:flex">
             <div className="w-full sm:w-1/3">
               <img
                 className="object-cover w-full h-48"
@@ -69,10 +68,10 @@ const FeedItem = (props: any) => {
                 {props.description}
               </p>
             </div>
-          </div>
+          </div> */}
           {/* 태그 */}
           <div className="flex flex-wrap mt-2">
-            {/* <ul>{tags}</ul> */}
+            {tags}
             {/* <span className="inline-flex items-center mr-2 px-3 py-0.5 rounded-full text-sm font-medium bg-sky-100 text-sky-800">
               #너 아직 Highlighters 몰라?
             </span>
