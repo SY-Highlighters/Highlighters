@@ -49,6 +49,21 @@ async function getHighlight(token, request) {
   return data;
 }
 
+function createNotification(title, msg) {
+  chrome.notifications.create(
+    title,
+    {
+      type: "basic",
+      iconUrl: "https://cdn-icons-png.flaticon.com/512/3237/3237124.png",
+      title: title,
+      message: msg,
+    },
+    (notificationId) => {
+      console.log(notificationId);
+    }
+  );
+}
+
 async function postNoti(token, request) {
   const noti = {
     url: currentUrl,
