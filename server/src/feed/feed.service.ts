@@ -63,14 +63,25 @@ export class FeedService {
     const feedswithOg: object[] = [];
     for (const feed of feeds) {
       if (feed.url) {
-        const meta = await getUrlMeta(feed.url);
-        const feedwithOg = {
-          ...feed,
-          og_title: meta.title,
-          og_desc: meta.desc,
-          og_image: meta.image,
-        };
-        feedswithOg.push(feedwithOg);
+        try {
+          const meta = await getUrlMeta(feed.url);
+          const feedwithOg = {
+            ...feed,
+            og_title: meta.title,
+            og_desc: meta.desc,
+            og_image: meta.image,
+          };
+          feedswithOg.push(feedwithOg);
+        } catch (e) {
+          const feedwithOg = {
+            ...feed,
+            og_title: 'Untitled',
+            og_desc:
+              'https://img.favpng.com/23/20/7/computer-icons-information-png-favpng-g8DtjAPPNhyaU9EdjHQJRnV97_t.jpg',
+            og_image: '',
+          };
+          feedswithOg.push(feedwithOg);
+        }
       }
     }
 

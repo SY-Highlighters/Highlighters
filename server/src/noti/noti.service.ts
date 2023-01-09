@@ -99,10 +99,10 @@ export class NotiService {
     try {
       for (let i = 0; i < noties.length; i++) {
         if (user.email === noties[i].sender_id) continue;
-        await this.prismaService.noti.update({
-          where: { id: noties[i].id },
-          data: { isRead: true },
-        });
+        // await this.prismaService.noti.update({
+        //   where: { id: noties[i].id },
+        //   data: { isRead: true },
+        // });
         result.push({
           id: noties[i].id,
           contents: noties[i].contents,
