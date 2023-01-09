@@ -28,10 +28,11 @@ export default function Noti() {
     data.map((item: any) => {
       const newNoti = {
         id: item.id,
-        message: item.contents,
+        contents: item.contents,
+        nickname: item.nickname,
+        feed_id: item.feed_id,
         title: item.title,
         url: item.url,
-        sender: item.nickname,
       };
       // // NotiList에 NotiItem 추가
       setNotiData((prev) => [...prev, newNoti]);
@@ -39,7 +40,11 @@ export default function Noti() {
   };
   const notiList = notiData.map((noti: any) => (
     <div key={noti.id}>
-      <NotiItem message={noti.message} sender={noti.sender} />
+      <NotiItem
+        sender={noti.nickname}
+        title={noti.title}
+        contents={noti.contents}
+      />
     </div>
   ));
   return (
