@@ -4,7 +4,6 @@ import { feedState, userInfo } from "../../states/atom";
 import { useCookies } from "react-cookie";
 import { useEffect } from "react";
 import axios from "axios";
-import { group } from "console";
 
 const AvailableFeeds = () => {
   const [feeds, setFeeds] = useRecoilState(feedState);
@@ -16,9 +15,7 @@ const AvailableFeeds = () => {
   // // 렌더링된 후 바로 실행
   useEffect(() => {
     async function fetchData() {
-      console.log("유저 피드 불러오는중!");
       const groupId = userData.groupId;
-      console.log(groupId);
       const response = await axios({
         method: "get",
         url: `${process.env.REACT_APP_HOST}/api/feed/group/${groupId}`,
@@ -29,6 +26,8 @@ const AvailableFeeds = () => {
       });
 
       const data = response.data;
+      console.log(data);
+      // console.log(data.data[0].id);
       feedadd(data);
     }
     if (userData.groupId) fetchData();
@@ -46,6 +45,7 @@ const AvailableFeeds = () => {
         description: item.og_desc,
         highlight: item.highlight,
         Date: item.createdAt,
+        // tag: item.tag,
       };
       // recoil feeds state에 피드 추가
       setFeeds((oldFeeds: any) => [...oldFeeds, newfeed]);
@@ -61,8 +61,9 @@ const AvailableFeeds = () => {
         description={feed.description}
         og_image={feed.og_image}
         url={feed.url}
-        text={feed.highlight}
+        highlight={feed.highlight}
         date={feed.Date}
+        // tag={feed.tag}
       />
     </div>
   ));

@@ -10,31 +10,29 @@ export class NotiService {
   async createNoti(createNotiDto: CreateNotiDto): Promise<number> {
     const { user_email, group_id, nickname, contents, url } = createNotiDto;
 
-    const feed_id = await this.prismaService.feed.findFirst({
+    const feed_ = await this.prismaService.feed.findFirst({
       where: { group_id: group_id, url: url },
-      select: { id: true },
-    });
-
-    const users = await this.prismaService.group.findUnique({
-      where: { id: group_id },
-      select: { member: { select: { email: true } } },
+      include: {
+        group: {
+          include: { member: { select: { email: true } } },
+        },
+      },
     });
 
     let result = 0;
     try {
-      for (let i = 0; i < users.member.length; i++) {
+      for (let i = 0; i < feed_.group.member.length; i++) {
         await this.prismaService.noti.create({
           data: {
             contents: contents,
-            receiver_id: users.member[i].email,
+            receiver_id: feed_.group.member[i].email,
             sender_id: user_email,
-            feed_id: feed_id.id,
+            feed_id: feed_.id,
           },
         });
         result += 1;
       }
     } catch (e) {
-      console.log(e);
       throw new HttpException('Internal Server Error', 500);
     }
 
@@ -65,34 +63,26 @@ export class NotiService {
     const noties = await this.prismaService.noti.findMany({
       where: { receiver_id: user.email },
       orderBy: { createdAt: 'desc' },
+      include: { feed: true, sender: true },
     });
     const result: ShowNotiDto[] = [];
     try {
       for (let i = 0; i < noties.length; i++) {
-        const sender = await this.prismaService.user.findUnique({
-          where: { email: noties[i].sender_id },
-          select: { nickname: true },
-        });
-        const feed = await this.prismaService.feed.findUnique({
-          where: { id: noties[i].feed_id },
-          select: { title: true, url: true },
-        });
-        await this.prismaService.noti.update({
-          where: { id: noties[i].id },
-          data: { isRead: true },
-        });
+        // await this.prismaService.noti.update({
+        //   where: { id: noties[i].id },
+        //   data: { isRead: true },
+        // });
         result.push({
           id: noties[i].id,
           contents: noties[i].contents,
-          nickname: sender.nickname,
+          nickname: noties[i].sender.nickname,
           feed_id: noties[i].feed_id,
-          title: feed.title,
-          url: feed.url,
+          title: noties[i].feed.title,
+          url: noties[i].feed.url,
           createdAt: noties[i].createdAt,
         });
       }
     } catch (e) {
-      console.log(e);
       throw new HttpException('Internal Server Error', 500);
     }
 
@@ -101,37 +91,29 @@ export class NotiService {
 
   async findNotiExtension(user: User): Promise<ShowNotiDto[]> {
     const noties = await this.prismaService.noti.findMany({
-      where: { receiver_id: user.email, isRead: false },
+      where: { receiver_id: user.email },
       orderBy: { createdAt: 'desc' },
+      include: { feed: true, sender: true },
     });
     const result: ShowNotiDto[] = [];
     try {
       for (let i = 0; i < noties.length; i++) {
-        if (user.email === noties[i].sender_id) continue;
-        const sender = await this.prismaService.user.findUnique({
-          where: { email: noties[i].sender_id },
-          select: { nickname: true },
-        });
-        const feed = await this.prismaService.feed.findUnique({
-          where: { id: noties[i].feed_id },
-          select: { title: true, url: true },
-        });
-        await this.prismaService.noti.update({
-          where: { id: noties[i].id },
-          data: { isRead: true },
-        });
+        // if (user.email === noties[i].sender_id) continue;
+        // await this.prismaService.noti.update({
+        //   where: { id: noties[i].id },
+        //   data: { isRead: true },
+        // });
         result.push({
           id: noties[i].id,
           contents: noties[i].contents,
-          nickname: sender.nickname,
+          nickname: noties[i].sender.nickname,
           feed_id: noties[i].feed_id,
-          title: feed.title,
-          url: feed.url,
+          title: noties[i].feed.title,
+          url: noties[i].feed.url,
           createdAt: noties[i].createdAt,
         });
       }
     } catch (e) {
-      console.log(e);
       throw new HttpException('Internal Server Error', 500);
     }
 
