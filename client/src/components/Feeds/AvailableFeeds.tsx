@@ -4,7 +4,6 @@ import { feedState, userInfo } from "../../states/atom";
 import { useCookies } from "react-cookie";
 import { useEffect } from "react";
 import axios from "axios";
-import { group } from "console";
 
 const AvailableFeeds = () => {
   const [feeds, setFeeds] = useRecoilState(feedState);
@@ -28,6 +27,7 @@ const AvailableFeeds = () => {
 
       const data = response.data;
       console.log(data);
+      // console.log(data.data[0].id);
       feedadd(data);
     }
     if (userData.groupId) fetchData();
@@ -45,6 +45,7 @@ const AvailableFeeds = () => {
         description: item.og_desc,
         highlight: item.highlight,
         Date: item.createdAt,
+        // tag: item.tag,
       };
       // recoil feeds state에 피드 추가
       setFeeds((oldFeeds: any) => [...oldFeeds, newfeed]);
@@ -62,7 +63,7 @@ const AvailableFeeds = () => {
         url={feed.url}
         highlight={feed.highlight}
         date={feed.Date}
-        tag={feed.tag}
+        // tag={feed.tag}
       />
     </div>
   ));

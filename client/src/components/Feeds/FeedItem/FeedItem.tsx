@@ -4,6 +4,7 @@ import {
   ChevronDownIcon,
   PencilIcon,
 } from "@heroicons/react/20/solid";
+import { TagItem } from "../../Tags/TagItem/TagItem";
 
 const FeedItem = (props: any) => {
   // 여러개의 하이라이트를 받아서 하나의 리스트로 만들어준다.
@@ -24,8 +25,9 @@ const FeedItem = (props: any) => {
 
   // // 태그 파싱
   // const tags = props.tag.map((tag: any, index: number) => (
-  //   <li className="" key={index}>
-  //     <span className={font_color}>{hl.contents}</span>
+  //   <li key={index}>
+  //     <span>{tag.tag.tag_name}</span>
+  //     {/* <TagItem content={tag.tag_name}></TagItem>; */}
   //   </li>
   // ));
 
@@ -70,12 +72,13 @@ const FeedItem = (props: any) => {
           </div>
           {/* 태그 */}
           <div className="flex flex-wrap mt-2">
-            <span className="inline-flex items-center mr-2 px-3 py-0.5 rounded-full text-sm font-medium bg-sky-100 text-sky-800">
+            {/* <ul>{tags}</ul> */}
+            {/* <span className="inline-flex items-center mr-2 px-3 py-0.5 rounded-full text-sm font-medium bg-sky-100 text-sky-800">
               #너 아직 Highlighters 몰라?
             </span>
             <span className="inline-flex items-center px-3 py-0.5 rounded-full text-sm font-medium bg-sky-100 text-sky-800">
               #도커
-            </span>
+            </span> */}
           </div>
 
           {/* 댓글 기능 */}
