@@ -1,4 +1,4 @@
-const is_production = false;
+const is_production = true;
 
 const cookie_url = is_production
   ? "https://highlighters.site"
@@ -47,6 +47,21 @@ async function getHighlight(token, request) {
   });
   const data = await response.json();
   return data;
+}
+
+function createNotification(title, msg) {
+  chrome.notifications.create(
+    title,
+    {
+      type: "basic",
+      iconUrl: "https://cdn-icons-png.flaticon.com/512/3237/3237124.png",
+      title: title,
+      message: msg,
+    },
+    (notificationId) => {
+      console.log(notificationId);
+    }
+  );
 }
 
 async function postNoti(token, request) {
