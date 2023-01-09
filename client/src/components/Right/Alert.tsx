@@ -1,47 +1,9 @@
-import { MegaphoneIcon, XMarkIcon } from "@heroicons/react/24/outline";
-import axios from "axios";
-import { useEffect, useState } from "react";
-import { useCookies } from "react-cookie";
-import NotiItem from "./NotiItem/NotiItem";
-import { NotiData } from "../../models/notiData";
-const host_url = `${process.env.REACT_APP_HOST}/api/noti/web`;
-export default function Noti() {
-  const [cookies, setCookie, removeCookie] = useCookies(["logCookie"]);
-  const [notiData, setNotiData] = useState<NotiData[]>([]);
-  useEffect(() => {
-    async function notiGet() {
-      const res = await axios({
-        method: "get",
-        url: host_url,
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${cookies.logCookie}`,
-        },
-      });
-      notiAdd(res.data.data);
-    }
-    notiGet();
-  }, []);
-
-  // 피드리스트에 피드아이템 넣기
-  const notiAdd = (data: any) => {
-    data.map((item: any) => {
-      const newNoti = {
-        id: item.id,
-        message: item.contents,
-        title: item.title,
-        url: item.url,
-        sender: item.nickname,
-      };
-      // // NotiList에 NotiItem 추가
-      setNotiData((prev) => [...prev, newNoti]);
-    });
-  };
-  const notiList = notiData.map((noti: any) => (
-    <div key={noti.id}>
-      <NotiItem message={noti.message} sender={noti.sender} />
-    </div>
-  ));
+import {
+  BellIcon,
+  MegaphoneIcon,
+  XMarkIcon,
+} from "@heroicons/react/24/outline";
+const Alert = () => {
   return (
     <div className="bg-white rounded-lg shadow-lg justify-self-center basis-1/4">
       <div className="rounded-lg bg-sky-500">
@@ -75,9 +37,31 @@ export default function Noti() {
       {/* 아래로 긴 카드박스 */}
       <div className="flex flex-col m-5 ">
         {/* 카드박스 내용 */}
-        <ul>{notiList}</ul>
         {/* 카드박스 내용 1 */}
+        <div className="px-4 py-3 border-t-4 rounded-lg rounded-b shadow-md text-sky-900 bg-sky-100 border-sky-500">
+          <div className="flex">
+            <div className="py-1"></div>
+            <div>
+              <p className="font-bold">정글 5기 조성배</p>
+              <p className="text-sm">
+                2022-12-31 12:28 에 정글 5기에 가입하였습니다.
+              </p>
+            </div>
+          </div>
+        </div>
+        {/* 카드박스 내용 2 */}
+        <div className="px-4 py-3 mt-3 border-t-4 rounded-lg rounded-b shadow-md text-sky-900 bg-sky-100 border-sky-500">
+          <div className="flex">
+            <div className="py-1"></div>
+            <div>
+              <p className="font-bold">정글 5기 김현진</p>
+              <p className="text-sm">"이것 좀 봐봐!"</p>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );
-}
+};
+
+export default Alert;

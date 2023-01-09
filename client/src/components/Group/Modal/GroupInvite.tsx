@@ -4,6 +4,8 @@ import { groupModalVisble, groupInviteState } from "../../../states/atom";
 import axios from "axios";
 import { useCookies } from "react-cookie";
 import { ClipboardDocumentCheckIcon } from "@heroicons/react/24/outline";
+import Swal from "sweetalert2";
+
 export default function GroupInvite() {
   const setGroupModal = useSetRecoilState(groupModalVisble);
   const setGroupInvite = useSetRecoilState(groupInviteState);
@@ -12,10 +14,15 @@ export default function GroupInvite() {
   const [code, setCode] = useState("");
   const handleCopyClipBoard = async (text: string) => {
     try {
-      console.log("여긴 눌렀을떄", text);
 
       await navigator.clipboard.writeText(text);
-      alert("클립보드에 복사되었습니다.");
+      Swal.fire({
+        icon: "success",
+        title: "복사되었습니다.",
+        showConfirmButton: false,
+        timer: 1500,
+      });
+
       setGroupModal(!groupModalVisble);
       setGroupInvite(!groupInviteState);
     } catch (error) {
@@ -33,7 +40,6 @@ export default function GroupInvite() {
           Authorization: `Bearer ${cookies.logCookie}`,
         },
       });
-      console.log(response.data.data);
       setCode(response.data.data);
     }
     codeGet();

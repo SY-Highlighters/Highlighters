@@ -6,14 +6,13 @@ import { userInfo } from "../../states/atom";
 import axios from "axios";
 import { useCookies } from "react-cookie";
 import { useEffect, useState } from "react";
-
+import { useQuery } from "react-query";
 const User = () => {
   // const userdata = useRecoilValue(userInfo);
   const [userData, setUserInfo] = useRecoilState(userInfo);
   const [cookies, setCookie, removeCookie] = useCookies(["logCookie"]);
   useEffect(() => {
     async function userDataGet() {
-      console.log("유저 데이터 불러오는중");
       const UserResponse = await axios({
         method: "get",
         url: `${process.env.REACT_APP_HOST}/api/user/signin`,
@@ -22,7 +21,6 @@ const User = () => {
           Authorization: `Bearer ${cookies.logCookie}`,
         },
       });
-      console.log(UserResponse.data);
       await setUserInfo({
         nickname: UserResponse.data.nickname,
         img: UserResponse.data.image,
@@ -32,6 +30,36 @@ const User = () => {
     }
     userDataGet();
   }, []);
+
+  // react-query 적용
+  // const { data, isLoading, isError } = useQuery("user", async () => {
+  //   const response = await axios({
+  //     method: "get",
+  //     url: `${process.env.REACT_APP_HOST}/api/user/signin`,
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //       Authorization: `Bearer ${cookies.logCookie}`,
+  //     },
+  //   });
+  //   return response.data;
+  // });
+  // if (isLoading) {
+  //   console.log("유저 정보 로딩중");
+  // }
+  // if (isError) {
+  //   console.log("유저 정보 로딩 실패");
+  // }
+  // if (data) {
+  //   console.log("유저 정보 로딩 성공");
+  //   console.log(data);
+  //   setUserInfo({
+  //     nickname: data.nickname,
+  //     img: data.image,
+  //     groupName: data.group_name,
+  //     groupId: data.group_id,
+  //   });
+  // }
+
   //Todo: 후에 유저정보가 변경되었을때 useEffect함수가 작동해서 다시 유저정보를 리로드해야함
   return (
     <div className="basis-1/4">
@@ -45,3 +73,9 @@ const User = () => {
 };
 
 export default User;
+// function useQuery(
+//   arg0: string,
+//   arg1: () => Promise<any>
+// ): { data: any; isLoading: any; isError: any } {
+//   throw new Error("Function not implemented.");
+// }
