@@ -9,7 +9,7 @@ export const tagState = atom<String>({
   key: "tagState",
   default: "",
 });
-// 태크 전환 state
+// 태그 전환 state
 export const feedViewState = atom<boolean>({
   key: "feedViewState",
   default: true,
@@ -21,7 +21,7 @@ export const feedState = atom<any>({
 });
 //  태그를 저장하는 state
 export const tagListState = atom<any>({
-  key: "tagList3State",
+  key: "tagListState",
   default: [],
 });
 // 로그인 모달창을 띄우는 state
@@ -62,4 +62,14 @@ export const groupInviteState = atom<boolean>({
 export const groupModalVisble = atom<boolean>({
   key: "groupModalVisble",
   default: false,
+});
+// 태그 편집 모달창을 띄우는 state
+export const tagModalVisble = atom<boolean>({
+  key: "tagModalVisble",
+  default: false,
+});
+
+export const feedTagList = atom<any>({
+  key: "feedTagList",
+  default: [],
 });

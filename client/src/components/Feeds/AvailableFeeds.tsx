@@ -1,6 +1,6 @@
 import FeedItem from "./FeedItem/FeedItem";
 import { useRecoilState, useRecoilValue } from "recoil";
-import { feedState, userInfo } from "../../states/atom";
+import { feedState, userInfo, tagModalVisble } from "../../states/atom";
 import { useCookies } from "react-cookie";
 import { useEffect } from "react";
 import axios from "axios";
@@ -9,13 +9,14 @@ import {
   MegaphoneIcon,
   XMarkIcon,
 } from "@heroicons/react/24/outline";
-
+import { TagEditModal } from "../Tags/TagEditModal";
 const AvailableFeeds = () => {
   const [feeds, setFeeds] = useRecoilState(feedState);
   const [cookies, setCookie, removeCookie] = useCookies(["logCookie"]);
+  const [tagModal, setTagModal] = useRecoilState(tagModalVisble);
+
   // const [userData, setUserInfo] = useRecoilState(userInfo); test1 -> 현재 로그인시 유저데이터 받는중
   const userData = useRecoilValue(userInfo);
-
   // const gropuId = userData.groupId;
   // // 렌더링된 후 바로 실행
   useEffect(() => {
@@ -102,6 +103,7 @@ const AvailableFeeds = () => {
       <div className="">
         <ul className="">{feedsList}</ul>
       </div>
+      {tagModal && <TagEditModal></TagEditModal>}
     </div>
   );
 };

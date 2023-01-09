@@ -4,6 +4,8 @@ import {
   ChevronDownIcon,
   PencilIcon,
 } from "@heroicons/react/20/solid";
+import { HashtagIcon } from "@heroicons/react/24/outline";
+import { TagEdit } from "../../Tags/TagEdit";
 import { TagItem } from "../../Tags/TagItem/TagItem";
 
 const FeedItem = (props: any) => {
@@ -70,15 +72,19 @@ const FeedItem = (props: any) => {
             </div>
           </div>
           {/* 태그 */}
+          {/* 태그 추가 버튼 */}
           <div className="flex flex-wrap mt-2">{tags}</div>
 
           {/* 댓글 기능 */}
-          <div className="flex flex-row-reverse items-center px-3 mt-2 text-sm text-gray-500">
+          <div className="flex items-center mt-2 text-sm text-gray-500">
+            <TagEdit key={props.id} tag={props.tag}></TagEdit>
             {/* 즐겨찾기 */}
-            <CheckIcon
-              className="mr-1.5 h-5 w-5 flex-shrink-0 text-gray-400 hover:text-sky-500"
-              aria-hidden="true"
-            />
+            {/* <div>
+              <CheckIcon
+                className="mr-1.5 h-5 w-5 flex-shrink-0 text-gray-400 hover:text-sky-500"
+                aria-hidden="true"
+              />
+            </div>
             즐겨찾기
             {/* 댓글 */}
             <PencilIcon
