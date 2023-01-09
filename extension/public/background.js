@@ -9,6 +9,7 @@ const host_url = is_production
   : "http://localhost:3001";
 
 let currentUrl;
+let feedExist;
 
 async function getCookieToken() {
   const cookie = await new Promise((resolve) => {
@@ -44,6 +45,13 @@ async function getHighlight(token, request) {
     body: JSON.stringify(request),
   });
   const data = await response.json();
+
+  if (data.success === false) {
+    feedExist = false
+  }
+  else feedExist = true;
+  console.log("[getHighlight] feedExist set:", feedExist);
+
   return data;
 }
 
@@ -133,6 +141,11 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
         getNoti(token)
           .then((data) => sendResponse({ data }))
           .catch((error) => console.log(`fetch 실패: ${error}`));
+        break;
+      
+      case "getFeed":
+        console.log("[getFeed] feedExist:", feedExist);
+        sendResponse(feedExist);
         break;
 
       default:
