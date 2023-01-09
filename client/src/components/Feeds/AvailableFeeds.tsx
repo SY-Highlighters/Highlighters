@@ -27,6 +27,7 @@ const AvailableFeeds = () => {
       });
 
       const data = response.data;
+      console.log(data);
       feedadd(data);
     }
     if (userData.groupId) fetchData();
@@ -59,8 +60,9 @@ const AvailableFeeds = () => {
         description={feed.description}
         og_image={feed.og_image}
         url={feed.url}
-        text={feed.highlight}
+        highlight={feed.highlight}
         date={feed.Date}
+        tag={feed.tag}
       />
     </div>
   ));

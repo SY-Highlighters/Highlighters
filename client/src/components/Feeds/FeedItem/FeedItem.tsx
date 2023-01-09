@@ -8,7 +8,7 @@ import {
 const FeedItem = (props: any) => {
   // 여러개의 하이라이트를 받아서 하나의 리스트로 만들어준다.
   // 하이라이트별 색상 지정해줘야함. -> 수정해야함
-  let font_color = "bg-yellow-200";
+  let font_color = "bg-purple-200";
   // 날짜 파싱
   const date = new Date(props.date);
   const year = date.getFullYear();
@@ -16,11 +16,18 @@ const FeedItem = (props: any) => {
   const day = date.getDate();
 
   // 하이라이트 파싱
-  const highlights = props.text.map((hl: any, index:number) => (
+  const highlights = props.highlight.map((hl: any, index: number) => (
     <li className="" key={index}>
       <span className={font_color}>{hl.contents}</span>
     </li>
   ));
+
+  // // 태그 파싱
+  // const tags = props.tag.map((tag: any, index: number) => (
+  //   <li className="" key={index}>
+  //     <span className={font_color}>{hl.contents}</span>
+  //   </li>
+  // ));
 
   return (
     <li className="py-5">
