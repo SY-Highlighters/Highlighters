@@ -73,3 +73,7 @@ export const feedTagList = atom<any>({
   key: "feedTagList",
   default: [],
 });
+export const groupTagList = atom<any>({
+  key: "groupTagList",
+  default: [],
+});
