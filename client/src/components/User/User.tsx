@@ -1,6 +1,7 @@
 import UserInfo from "./UserInfo";
 import Group from "../Group/Group";
 import GroupTag from "./GroupTag";
+import GroupInfo from "../Group/GroupInfo";
 import { useRecoilValue, useSetRecoilState, useRecoilState } from "recoil";
 import { userInfo } from "../../states/atom";
 import axios from "axios";
