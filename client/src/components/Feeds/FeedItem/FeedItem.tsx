@@ -33,7 +33,7 @@ const FeedItem = (props: any) => {
   return (
     <li className="py-5">
       <div className="overflow-hidden bg-white rounded-lg shadow-lg">
-        <div className="flex flex-row-reverse items-center px-3 mt-2 text-sm text-gray-500">
+        <div className="flex flex-row-reverse items-center px-3 mt-3 text-sm text-gray-500">
           <CalendarIcon
             className="mr-1.5 h-5 w-5 flex-shrink-0 text-gray-400 "
             aria-hidden="true"
@@ -42,7 +42,7 @@ const FeedItem = (props: any) => {
         </div>
         <div className="m-5 sm:px-6">
           <a href={props.url} target="_blank" rel="noreferrer">
-            <h2 className="mb-5 text-xl font-bold leading-6 text-gray-900">
+            <h2 className="mb-5 text-xl font-bold leading-6 text-gray-900 hover:text-gray-600">
               {props.title}
             </h2>
           </a>

@@ -52,14 +52,14 @@ export default function Noti() {
       <div className="rounded-lg bg-sky-500">
         <div className="px-3 py-3 mx-auto rounded-lg max-w-7xl sm:px-6 lg:px-8">
           <div className="flex flex-wrap items-center justify-between ">
-            <div className="flex items-center flex-1 w-0 ">
-              <span className="flex p-2 rounded-lg bg-sky-800">
+            <div className="flex items-center flex-1 w-0 -ml-2">
+              <span className="flex mr-3 rounded-lg bg-sky-500">
                 <MegaphoneIcon
                   className="w-6 h-6 text-white"
                   aria-hidden="true"
                 />
               </span>
-              <p className="ml-3 font-medium text-white truncate ">
+              <p className="text-xl font-bold text-white truncate ">
                 <span className="md:hidden">알림</span>
                 <span className="hidden md:inline">알림</span>
               </p>
