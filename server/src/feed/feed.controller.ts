@@ -33,7 +33,7 @@ export class FeedController {
   @Get('/group/:id')
   async findFeedByGroupId(@Param('id') id: number): Promise<object[]> {
     // console.log()
-    return this.feedService.findGroupFeedWithOg(id);
+    return this.feedService.findFeedByGroupId(id);
   }
 
   // Id로 Feed 찾은 후 삭제
