@@ -4,6 +4,11 @@ import { feedState, userInfo } from "../../states/atom";
 import { useCookies } from "react-cookie";
 import { useEffect } from "react";
 import axios from "axios";
+import {
+  DocumentIcon,
+  MegaphoneIcon,
+  XMarkIcon,
+} from "@heroicons/react/24/outline";
 
 const AvailableFeeds = () => {
   const [feeds, setFeeds] = useRecoilState(feedState);
@@ -70,10 +75,30 @@ const AvailableFeeds = () => {
   return (
     <div className="h-12 overscroll-auto basis-2/4">
       {/* 위에 여백 두고 그룹피드 타이틀 만들기 */}
-      {/* 그룹 피드 타이틀 */}
-      <div className="relative p-3 rounded-3xl">
+      {/* 그룹 피드 타이틀 ver1*/}
+      {/* <div className="relative p-3 rounded-3xl">
         <h1 className="text-2xl antialiased font-bold text-whtie">그룹 피드</h1>
+      </div> */}
+      {/* 그룹 피드 타이틀 ver2 */}
+      <div className="rounded-lg bg-sky-500">
+        <div className="px-3 py-3 mx-auto rounded-lg max-w-7xl sm:px-6 lg:px-8">
+          <div className="flex flex-wrap items-center justify-between ">
+            <div className="flex items-center flex-1 w-0 ">
+              <span className="flex p-2 mr-1 -ml-3 rounded-lg bg-sky-500">
+                <DocumentIcon
+                  className="w-6 h-6 text-white"
+                  aria-hidden="true"
+                />
+              </span>
+              <p className="text-xl font-bold text-white truncate ">
+                <span className="md:hidden">그룹 피드</span>
+                <span className="hidden md:inline">그룹 피드</span>
+              </p>
+            </div>
+          </div>
+        </div>
       </div>
+      {/* feedslist section */}
       <div className="">
         <ul className="">{feedsList}</ul>
       </div>
