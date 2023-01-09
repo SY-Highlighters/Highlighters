@@ -21,8 +21,6 @@ async function getCookieToken() {
 }
 
 async function postHighlight(token, request) {
-  console.log("[background.js] postHighlight", token, request);
-
   const response = await fetch(`${host_url}/api/highlight`, {
     method: "POST",
     headers: {
@@ -47,21 +45,6 @@ async function getHighlight(token, request) {
   });
   const data = await response.json();
   return data;
-}
-
-function createNotification(title, msg) {
-  chrome.notifications.create(
-    title,
-    {
-      type: "basic",
-      iconUrl: "https://cdn-icons-png.flaticon.com/512/3237/3237124.png",
-      title: title,
-      message: msg,
-    },
-    (notificationId) => {
-      console.log(notificationId);
-    }
-  );
 }
 
 async function postNoti(token, request) {
@@ -96,25 +79,51 @@ async function getNoti(token) {
   return data;
 }
 
-/* 코드 시작 */
-chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
-  getCookieToken().then((cookie) => {
-    const token = cookie?.value;
+function createPush(id, title, msg) {
+  chrome.notifications.create(
+    id,
+    {
+      type: "basic",
+      iconUrl: "https://cdn-icons-png.flaticon.com/512/3237/3237124.png",
+      title: title,
+      message: msg,
+    },
+    (notificationId) => {
+      console.log(notificationId);
+    }
+  );
+}
 
+/* 코드 시작 */
+const jwt_token = getCookieToken().then((cookie) => cookie?.value);
+
+chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+  jwt_token.then((token) => {
     switch (request.greeting) {
-      case "postHighlight": // 웹페이지의 하이라이팅을 디비로 전송
+      // 웹페이지의 하이라이팅을 디비로 전송
+      case "postHighlight":
         postHighlight(token, request.data)
-          .then((data) => sendResponse({ data }))
+          .then((data) => {
+            sendResponse({ data });
+            console.log(data);
+            createPush(
+              `${request.greeting}: ${data.id}`,
+              `${String(data.contents).substring(0, 30)}...`,
+              "하이라이트가 저장되었습니다"
+            );
+          })
           .catch((error) => console.log(`fetch 실패: ${error}`));
         break;
 
-      case "getHighlight": // 웹페이지의 모든 하이라이트를 가져옴
+      // 웹페이지의 모든 하이라이트를 가져옴
+      case "getHighlight":
         getHighlight(token, request.data)
           .then((data) => sendResponse({ data }))
           .catch((error) => console.log(`fetch 실패: ${error}`));
         break;
 
-      case "postNoti": // 노티 생성
+      // 노티 생성
+      case "postNoti":
         postNoti(token, request.data)
           .then((data) => sendResponse({ data }))
           .catch((error) => console.log(`fetch 실패: ${error}`));
@@ -130,20 +139,6 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
         console.log(request, sender);
         break;
     }
-
-    // 웹페이지의 하이라이팅을 디비로 전송
-    // if (request.greeting === "posthighlight") {
-    //   postHighlight(token, request.data)
-    //     .then((data) => sendResponse({ data }))
-    //     .catch((error) => console.log(`fetch 실패: ${error}`));
-    // }
-
-    // // 웹페이지의 모든 하이라이트를 가져옴
-    // else if (request.greeting === "gethighlight") {
-    //   getHighlight(token, request.data)
-    //     .then((data) => sendResponse({ data }))
-    //     .catch((error) => console.log(`fetch 실패: ${error}`));
-    // }
   });
 
   return true;

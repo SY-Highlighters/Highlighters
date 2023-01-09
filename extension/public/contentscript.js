@@ -173,8 +173,6 @@ if (url_check) {
       selectionText = sel;
       highlightStr = sel.toString();
 
-      console.log(button);
-
       // 드래그한 영역의 위치를 가져온다.
       const direction = sel.anchorOffset - sel.focusOffset < 0;
       const divTop = direction ? e.pageY + 10 : e.pageY - 40;
