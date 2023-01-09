@@ -14,7 +14,7 @@ model User {
   password     String      @db.Char(100)
   image        String
   bookmark     Bookmark[]
-  comment      comment[]
+  comment      Comment[]
   Feed         Feed[]
   highlight    Highlight[]
   receive_noti Noti[]      @relation("receiver")
@@ -45,7 +45,7 @@ model Feed {
   url        String      @db.Char(100)
   user_email String
   bookmark   Bookmark[]
-  comment    comment[]
+  comment    Comment[]
   group      Group       @relation(fields: [group_id], references: [id])
   user       User        @relation(fields: [user_email], references: [email])
   highlight  Highlight[]
@@ -70,7 +70,7 @@ model Bookmark {
   @@map("BOOKMARK")
 }
 
-model comment {
+model Comment {
   id         Int      @id @default(autoincrement())
   contents   String
   user_email String

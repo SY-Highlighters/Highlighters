@@ -13,6 +13,7 @@ import { NotiModule } from './noti/noti.module';
 import { TagModule } from './tag/tag.module';
 import { BookmarkModule } from './bookmark/bookmark.module';
 import { CalendarModule } from './calendar/calendar.module';
+import { CommentModule } from './comment/comment.module';
 
 @Module({
   imports: [
@@ -27,6 +28,7 @@ import { CalendarModule } from './calendar/calendar.module';
     TagModule,
     BookmarkModule,
     CalendarModule,
+    CommentModule,
   ],
   controllers: [AppController],
   providers: [AppService],
