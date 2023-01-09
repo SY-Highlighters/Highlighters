@@ -76,9 +76,9 @@ export class FeedService {
           const feedwithOg = {
             ...feed,
             og_title: 'Untitled',
-            og_desc:
+            og_desc: '',
+            og_image:
               'https://img.favpng.com/23/20/7/computer-icons-information-png-favpng-g8DtjAPPNhyaU9EdjHQJRnV97_t.jpg',
-            og_image: '',
           };
           feedswithOg.push(feedwithOg);
         }
