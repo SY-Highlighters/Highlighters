@@ -90,7 +90,7 @@ const AvailableFeeds = () => {
                   aria-hidden="true"
                 />
               </span>
-              <p className="text-xl font-bold text-white truncate ">
+              <p className="text-xl font-bold text-white truncate">
                 <span className="md:hidden">그룹 피드</span>
                 <span className="hidden md:inline">그룹 피드</span>
               </p>

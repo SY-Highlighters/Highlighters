@@ -60,16 +60,16 @@ function App() {
         <div className="flex flex-row gap-4 m-8 mx-10 xl:px-40 lg:grid-cols-2 xl:grid-cols-3 sm:grid-cols-1 ">
           <User></User>
           {/* {localUser.groupName && logedMain*/}
-          {localUser.groupName && groupFeedOn && (
+          {/* {localUser.groupName && groupFeedOn && (
             <AvailableFeeds></AvailableFeeds>
-          )}
-          {localUser.groupName && !bookmarkOn && (
+          )} */}
+          {/* {localUser.groupName && !bookmarkOn && (
             <AvailableBookmarks></AvailableBookmarks>
-          )}
-          {localUser.groupName && tagOn && <AvailableTags></AvailableTags>}
+          )} */}
+          {/* {localUser.groupName && tagOn && <AvailableTags></AvailableTags>} */}
 
           {/* {logedMain} */}
-          {localUser.groupName && <Alert></Alert>}
+          {/* {localUser.groupName && <Alert></Alert>} */}
         </div>
       ) : (
         // log section

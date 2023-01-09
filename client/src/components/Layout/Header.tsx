@@ -49,7 +49,7 @@ const Header: React.FC = () => {
   return (
     <>
       <div className="min-h-full">
-        <Disclosure as="nav" className="bg-sky-500">
+        <Disclosure as="nav" className="bg-sky-600">
           {({ open }) => (
             <>
               <div className="px-4 mx-auto max-w-7xl sm:px-6 lg:px-8">
@@ -90,7 +90,7 @@ const Header: React.FC = () => {
                       <input
                         id="search"
                         name="search"
-                        className="block w-full py-2 pl-8 pr-3 text-sm text-white placeholder-gray-500 border border-transparent rounded-md bg-sky-500 focus:outline-none focus:placeholder-gray-400 focus:bg-white focus:text-gray-900 focus:border-white focus:ring-0 sm:text-sm"
+                        className="block w-full py-2 pl-8 pr-3 text-sm text-white placeholder-gray-500 border border-transparent rounded-md bg-sky-600 focus:outline-none focus:placeholder-gray-400 focus:bg-white focus:text-gray-900 focus:border-white focus:ring-0 sm:text-sm"
                         placeholder="Search"
                         type="search"
                       />
@@ -137,7 +137,7 @@ const Header: React.FC = () => {
                       {/* Profile dropdown */}
                       <Menu as="div" className="relative ml-3">
                         <div>
-                          <Menu.Button className="flex items-center max-w-xs text-sm bg-gray-800 rounded-full focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
+                          <Menu.Button className="flex items-center max-w-xs text-sm bg-white rounded-full focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
                             <span className="sr-only">Open user menu</span>
                             <img
                               className="w-12 h-12 rounded-full"
