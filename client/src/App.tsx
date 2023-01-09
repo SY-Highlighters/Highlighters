@@ -10,16 +10,26 @@ import User from "./components/User/User";
 // feed & bookmark section
 import AvailableFeeds from "./components/Feeds/AvailableFeeds";
 import AvailableBookmarks from "./components/Bookmarks/AvailableBookmarks";
+import AvailableTags from "./components/Tags/AvailableTags";
 // user before login section
 import LoginModal from "./components/Intro/LoginModal";
 import Alert from "./components/Right/Noti";
 import Intro from "./components/Intro/Intro";
 // state management section
 import { useRecoilValue } from "recoil";
-import { bookmarkState, logModalVisble, userInfo } from "./states/atom";
+import {
+  bookmarkState,
+  logModalVisble,
+  tagState,
+  userInfo,
+  feedViewState,
+} from "./states/atom";
 import { useEffect, useState } from "react";
 function App() {
+  const tagOn = useRecoilValue(tagState);
   const bookmarkOn = useRecoilValue(bookmarkState);
+  const groupFeedOn = useRecoilValue(feedViewState);
+
   const loginModalState = useRecoilValue(logModalVisble);
   const [cookies, setCookie, removeCookie] = useCookies(["logCookie"]);
   // 유저정보의 변화가 있을때만 리렌더링
@@ -31,11 +41,14 @@ function App() {
   // const userData = useRecoilValue(userInfo);
   // 로그인 상태를 확인해서 로그인 상태면 전체적으로 뷰 변경
   const header = !cookies.logCookie ? <LoginHeader /> : <Header />;
-  const logedMain = bookmarkOn ? (
-    <AvailableFeeds></AvailableFeeds>
-  ) : (
-    <AvailableBookmarks></AvailableBookmarks>
-  );
+  // // const logedMain = bookmarkOn ? (
+  // //   <AvailableFeeds></AvailableFeeds>
+  // // ) : (
+  // //   <AvailableBookmarks></AvailableBookmarks>
+  // // );
+  // (bookmarkOn && <AvailableFeeds></AvailableFeeds>)(
+  //   !bookmarkOn && <AvailableTags></AvailableTags>
+  // );
 
   return (
     <Fragment>
@@ -46,7 +59,15 @@ function App() {
       {cookies.logCookie ? (
         <div className="flex flex-row gap-4 m-8 mx-10 xl:px-40 lg:grid-cols-2 xl:grid-cols-3 sm:grid-cols-1 ">
           <User></User>
-          {localUser.groupName && logedMain}
+          {/* {localUser.groupName && logedMain*/}
+          {localUser.groupName && groupFeedOn && (
+            <AvailableFeeds></AvailableFeeds>
+          )}
+          {localUser.groupName && !bookmarkOn && (
+            <AvailableBookmarks></AvailableBookmarks>
+          )}
+          {localUser.groupName && tagOn && <AvailableTags></AvailableTags>}
+
           {/* {logedMain} */}
           {localUser.groupName && <Alert></Alert>}
         </div>

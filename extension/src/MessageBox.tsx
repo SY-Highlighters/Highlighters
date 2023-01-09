@@ -1,3 +1,4 @@
+/* global chrome */
 import { useEffect, useState } from "react";
 import Noti from "./Noti";
 import NotiData from "./models/notiData";

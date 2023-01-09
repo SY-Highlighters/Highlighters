@@ -4,9 +4,24 @@ export const bookmarkState = atom<boolean>({
   key: "bookmarkState",
   default: true,
 });
+// 태크 전환 state
+export const tagState = atom<String>({
+  key: "tagState",
+  default: "",
+});
+// 태크 전환 state
+export const feedViewState = atom<boolean>({
+  key: "feedViewState",
+  default: true,
+});
 //  피드를 저장하는 state
 export const feedState = atom<any>({
   key: "feedState",
+  default: [],
+});
+//  태그를 저장하는 state
+export const tagListState = atom<any>({
+  key: "tagList3State",
   default: [],
 });
 // 로그인 모달창을 띄우는 state
