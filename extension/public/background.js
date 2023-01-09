@@ -1,4 +1,4 @@
-const is_production = true;
+const is_production = false;
 
 const cookie_url = is_production
   ? "https://highlighters.site"
