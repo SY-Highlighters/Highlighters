@@ -98,7 +98,7 @@ export class NotiService {
     const result: ShowNotiDto[] = [];
     try {
       for (let i = 0; i < noties.length; i++) {
-        if (user.email === noties[i].sender_id) continue;
+        // if (user.email === noties[i].sender_id) continue;
         // await this.prismaService.noti.update({
         //   where: { id: noties[i].id },
         //   data: { isRead: true },
