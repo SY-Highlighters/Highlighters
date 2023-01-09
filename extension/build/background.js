@@ -34,6 +34,7 @@ async function postHighlight(token, request) {
   return data;
 }
 
+// 반드시 fetch가 먼저 실행되고나서 feedExist를 업데이트해야 함
 async function getHighlight(token, request) {
   currentUrl = request.url;
   const response = await fetch(`${host_url}/api/highlight/feed`, {
@@ -155,4 +156,24 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   });
 
   return true;
+});
+
+// when a chrome tab is changed, set currentUrl to the changed tab's url and if a changed tab has feed, make feedExist true, if a changed tab doesn't have feed, make feedExist false
+chrome.tabs.onActivated.addListener(function (activeInfo) { // 탭이 변경되면
+  chrome.tabs.get(activeInfo.tabId, function (tab) {
+    currentUrl = tab.url; // currentUrl 업데이트
+    console.log('[onActivated] currentUrl:', currentUrl)
+    // getHighlight를 통해 feed가 있는지 확인
+    jwt_token.then((token) => {
+      getHighlight(token, {url: currentUrl})
+        .then((data) => {
+          if (data.success === false) {
+            feedExist = false
+          }
+          else feedExist = true;
+          console.log("[onActivated] feedExist set:", feedExist);
+        })
+        .catch((error) => console.log(`fetch 실패: ${error}`));
+    });
+  });
 });
