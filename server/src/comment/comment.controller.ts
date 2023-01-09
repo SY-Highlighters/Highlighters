@@ -23,4 +23,17 @@ export class CommentController {
 
     return this.commentService.createComment(createCommentDto);
   }
+
+  // feed의 모든 Comment 가져오기
+  @Post('/get:feed_id')
+  async getComments(@Param('feed_id') feed_id: number): Promise<Comment[]> {
+    return this.commentService.getComments(feed_id);
+  }
+
+  // Comment 삭제
+  @Post('/delete:id')
+  async deleteComment(@Param('id') id: number): Promise<Comment> {
+    return this.commentService.deleteComment(id);
+  }
+
 }

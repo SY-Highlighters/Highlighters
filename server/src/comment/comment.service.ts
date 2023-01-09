@@ -20,4 +20,20 @@ export class CommentService {
 
     return result;
   }
+
+  async getComments(feed_id: number): Promise<Comment[]> {
+    const result = await this.prismaService.comment.findMany({
+      where: { feed_id: feed_id },
+    });
+
+    return result;
+  }
+
+  async deleteComment(id: number): Promise<Comment> {
+    const result = await this.prismaService.comment.delete({
+      where: { id: id },
+    });
+
+    return result;
+  }
 }
