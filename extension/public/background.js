@@ -77,11 +77,9 @@ async function getNoti(token) {
     },
   });
   const data = await response.json();
+  console.log(data);
   return data;
 }
-
-
-
 
 /* 코드 시작 */
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
@@ -106,7 +104,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
           .then((data) => sendResponse({ data }))
           .catch((error) => console.log(`fetch 실패: ${error}`));
         break;
-      
+
       case "getNoti":
         getNoti(token)
           .then((data) => sendResponse({ data }))

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import Noti from "./Noti";
-
+import NotiData from "./models/notiData";
 let notiData: any[];
 const dummy_noti = [
   {
@@ -17,31 +17,43 @@ const dummy_noti = [
   },
 ];
 export default function MessageBox() {
-  // const [message, setMessage] = useState([]);
-  // useEffect(() => {
-  //   console.log("messagebox 렌더링");
-  //   async function getNotiAsync() {
-  //     let response = await chrome.runtime.sendMessage({
-  //       greeting: "getNoti",
-  //     });
-  //     const data = response.data;
-  //     messageadd(data);
-  //   }
-  //   getNotiAsync();
-  // }, []);
+  const [notis, setNoti] = useState<NotiData[]>([]);
+  useEffect(() => {
+    console.log("messagebox 렌더링");
+    async function getNotiAsync() {
+      let response = await chrome.runtime.sendMessage({
+        greeting: "getNoti",
+      });
+      const data = response.data;
+      console.log(data);
+      messageadd(data.data);
+    }
+    getNotiAsync();
+  }, []);
 
-  // console.log(notiData);
-  // const messageadd = (data: []) => {
-  //   data.map((item: any) => {
-  //     const newMessage = {
-  //       message: item.
-  //     };
-  //     // recoil feeds state에 피드 추가
-  //     setMessage((oldFeeds: any) => [...oldFeeds, newMessage]);
-  //   });
-  // };
-  const notiList = dummy_noti.map((noti) => (
-    <Noti name={noti.name} message={noti.message}></Noti>
+  const messageadd = (data: []) => {
+    data.map((item: any) => {
+      const newNoti = {
+        id: item.id,
+        contents: item.contents,
+        nickname: item.nickname,
+        feed_id: item.feed_id,
+        title: item.title,
+        url: item.url,
+      };
+      setNoti((oldNotis: any) => [...oldNotis, newNoti]);
+
+      // recoil feeds state에 피드 추가
+    });
+  };
+
+  // {id: 48, contents: '아아아ㅏㄱ', nickname: '일짱예린', feed_id: 40, title: 'SW사관학교 정글 | SW 사관학교 정글 5기를 위한 웹사이트', …}
+  const notiList = notis.map((noti) => (
+    <Noti
+      sender={noti.nickname}
+      title={noti.title}
+      contents={noti.contents}
+    ></Noti>
   ));
   return (
     <div className="mx-3">
