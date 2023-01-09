@@ -68,10 +68,10 @@ export class NotiService {
     const result: ShowNotiDto[] = [];
     try {
       for (let i = 0; i < noties.length; i++) {
-        await this.prismaService.noti.update({
-          where: { id: noties[i].id },
-          data: { isRead: true },
-        });
+        // await this.prismaService.noti.update({
+        //   where: { id: noties[i].id },
+        //   data: { isRead: true },
+        // });
         result.push({
           id: noties[i].id,
           contents: noties[i].contents,
@@ -91,7 +91,7 @@ export class NotiService {
 
   async findNotiExtension(user: User): Promise<ShowNotiDto[]> {
     const noties = await this.prismaService.noti.findMany({
-      where: { receiver_id: user.email, isRead: false },
+      where: { receiver_id: user.email },
       orderBy: { createdAt: 'desc' },
       include: { feed: true, sender: true },
     });
