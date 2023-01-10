@@ -12,7 +12,7 @@ import { useEffect } from "react";
 import axios from "axios";
 
 const AvailableTags = () => {
-  const [tagFeedList, setTagFeedList] = useRecoilState(tagFeedListState);
+  const [tagFeedList, setTagFeedList] = useRecoilState(feedsTagListState);
   const [cookies, setCookie, removeCookie] = useCookies(["logCookie"]);
   const tagName = useRecoilValue(tagNameState);
   const userData = useRecoilValue(userInfoState);
@@ -52,7 +52,7 @@ const AvailableTags = () => {
     });
   };
 
-  const tagsList = tagFeedLi.map((feed: any, index: number) => (
+  const tagsList = tagFeedList.map((feed: any, index: number) => (
     <div key={feed.id}>
       <FeedItem
         id={feed.id}

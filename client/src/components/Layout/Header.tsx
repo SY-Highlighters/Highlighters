@@ -12,7 +12,7 @@ import {
   useResetRecoilState,
   useSetRecoilState,
 } from "recoil";
-import { groupFeedListState, mainSectionState } from "../../states/atom";
+import { mainSectionState } from "../../states/atom";
 import { useCookies } from "react-cookie";
 import { userInfoState } from "../../states/atom";
 const user = {

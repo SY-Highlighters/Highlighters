@@ -3,7 +3,6 @@ import { useEffect, useMemo, useState } from "react";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import axios from "axios";
 import { useCookies } from "react-cookie";
-import { groupFeedListState } from "../../states/atom";
 import { useQueryClient } from "react-query";
 import { useQuery } from "react-query";
 
