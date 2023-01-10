@@ -82,7 +82,14 @@ function postHighlight(range, highlightStr) {
         title: document.title,
       },
     },
-    (response) => response.farewell
+    (response) => {
+      if (response.data.statusCode === 401) {
+        console.log(
+          "unauthorized error status code: ",
+          response.data.statusCode
+        );
+      }
+    }
   );
 }
 
@@ -99,7 +106,6 @@ function getHighlight(url) {
       if (data.success === false) {
         throw new Error(`[${data.statusCode}] ${data.message}`);
       }
-    
 
       for (const highlight of data) {
         const selection = highlight.selection;
