@@ -17,14 +17,10 @@ export class TagService {
       await this.prismaService.tag.create({
         data: {
           tag_name: tag_name,
+          group_id: user.group_id,
           feed: {
             connect: {
               id: feed_id,
-            },
-          },
-          group: {
-            connect: {
-              id: user.group_id,
             },
           },
         },
@@ -72,11 +68,12 @@ export class TagService {
     return tags.map((tag) => tag.tag_name);
   }
 
-  async deleteTagWeb(tag_id: number, user: User): Promise<null> {
+  async deleteTagWeb(tag_name: string, user: User): Promise<null> {
     try {
-      await this.prismaService.tag.delete({
+      await this.prismaService.tag.deleteMany({
         where: {
-          id: tag_id,
+          tag_name: tag_name,
+          group_id: user.group_id,
         },
       });
       return null;
