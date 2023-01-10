@@ -1,22 +1,10 @@
+/* global chrome */
 import { useEffect, useState } from "react";
 import Noti from "./Noti";
 import NotiData from "./models/notiData";
 let notiData: any[];
-const dummy_noti = [
-  {
-    name: "김현진",
-    message: "이거 보라니깐",
-  },
-  {
-    name: "박예린",
-    message: "이제 점심 먹을게요",
-  },
-  {
-    name: "김성태",
-    message: "이거 먹자",
-  },
-];
-export default function MessageBox() {
+
+export default function NotiBox() {
   const [notis, setNoti] = useState<NotiData[]>([]);
   useEffect(() => {
     console.log("messagebox 렌더링");
@@ -42,8 +30,6 @@ export default function MessageBox() {
         url: item.url,
       };
       setNoti((oldNotis: any) => [...oldNotis, newNoti]);
-
-      // recoil feeds state에 피드 추가
     });
   };
 

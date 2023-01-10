@@ -6,10 +6,15 @@ import {
   XMarkIcon,
   HomeIcon,
 } from "@heroicons/react/24/outline";
-import { useRecoilState, useRecoilValue, useResetRecoilState } from "recoil";
-import { bookmarkState, feedState } from "../../states/atom";
+import {
+  useRecoilState,
+  useRecoilValue,
+  useResetRecoilState,
+  useSetRecoilState,
+} from "recoil";
+import { groupFeedListState, mainSectionState } from "../../states/atom";
 import { useCookies } from "react-cookie";
-import { userInfo } from "../../states/atom";
+import { userInfoState } from "../../states/atom";
 const user = {
   name: "김성태",
   email: "tom@example.com",
@@ -31,15 +36,21 @@ function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(" ");
 }
 const Header: React.FC = () => {
-  const [bookmark, setBookmark] = useRecoilState(bookmarkState);
+  // const [bookmark, setBookmark] = useRecoilState(bookmarkState);
+  const [mainSectionNum, setMainSectionNum] = useRecoilState(mainSectionState);
+
   const [cookies, setCookie, removeCookie] = useCookies(["logCookie"]);
-  const userData = useRecoilValue(userInfo);
-  const resetFeeds = useResetRecoilState(feedState);
+  const userData = useRecoilValue(userInfoState);
+  const resetFeeds = useResetRecoilState(groupFeedListState);
 
   const handleBookmarkClick = () => {
     console.log("bookmark click");
-    console.log(bookmarkState);
-    setBookmark(!bookmark);
+    // setBookmark(!bookmark);
+    if (mainSectionNum === 1) {
+      setMainSectionNum(0);
+    } else {
+      setMainSectionNum(1);
+    }
   };
   const logout = () => {
     resetFeeds();
@@ -49,7 +60,7 @@ const Header: React.FC = () => {
   return (
     <>
       <div className="min-h-full">
-        <Disclosure as="nav" className="bg-sky-500">
+        <Disclosure as="nav" className="bg-sky-600">
           {({ open }) => (
             <>
               <div className="px-4 mx-auto max-w-7xl sm:px-6 lg:px-8">
@@ -90,7 +101,7 @@ const Header: React.FC = () => {
                       <input
                         id="search"
                         name="search"
-                        className="block w-full py-2 pl-8 pr-3 text-sm text-white placeholder-gray-500 border border-transparent rounded-md bg-sky-500 focus:outline-none focus:placeholder-gray-400 focus:bg-white focus:text-gray-900 focus:border-white focus:ring-0 sm:text-sm"
+                        className="block w-full py-2 pl-8 pr-3 text-sm text-white placeholder-gray-500 border border-transparent rounded-md bg-sky-600 focus:outline-none focus:placeholder-gray-400 focus:bg-white focus:text-gray-900 focus:border-white focus:ring-0 sm:text-sm"
                         placeholder="Search"
                         type="search"
                       />
@@ -101,7 +112,7 @@ const Header: React.FC = () => {
                   <div className="hidden md:block">
                     <div className="flex items-center ml-4 md:ml-6">
                       {/* 홈버튼 or 북마크 버튼  */}
-                      {!bookmark ? (
+                      {mainSectionNum === 1 ? (
                         <button
                           onClick={handleBookmarkClick}
                           type="button"
@@ -137,7 +148,7 @@ const Header: React.FC = () => {
                       {/* Profile dropdown */}
                       <Menu as="div" className="relative ml-3">
                         <div>
-                          <Menu.Button className="flex items-center max-w-xs text-sm bg-gray-800 rounded-full focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
+                          <Menu.Button className="flex items-center max-w-xs text-sm bg-white rounded-full focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
                             <span className="sr-only">Open user menu</span>
                             <img
                               className="w-12 h-12 rounded-full"

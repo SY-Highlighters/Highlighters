@@ -82,8 +82,12 @@ function postHighlight(range, highlightStr) {
         title: document.title,
       },
     },
-    (response) => response.farewell
-  );
+    (response) => {
+      if (response.data.statusCode === 401) {
+        console.log('unauthorized error status code: ', response.data.statusCode);
+      }
+    }
+  ); 
 }
 
 /* 하이라이트 Get */
@@ -95,9 +99,11 @@ function getHighlight(url) {
     },
     (response) => {
       const data = response.data;
+      console.log(data);
       if (data.success === false) {
         throw new Error(`[${data.statusCode}] ${data.message}`);
       }
+    
 
       for (const highlight of data) {
         const selection = highlight.selection;
@@ -172,8 +178,6 @@ if (url_check) {
     else {
       selectionText = sel;
       highlightStr = sel.toString();
-
-      console.log(button);
 
       // 드래그한 영역의 위치를 가져온다.
       const direction = sel.anchorOffset - sel.focusOffset < 0;

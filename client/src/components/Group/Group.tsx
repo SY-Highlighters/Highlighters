@@ -4,7 +4,7 @@ import {
   groupAddState,
   groupJoinState,
   groupModalVisble,
-  userInfo,
+  userInfoState,
 } from "../../states/atom";
 // import GroupJoined from "./GroupJoined";
 import GroupModal from "./Modal/GroupModal";
@@ -13,7 +13,7 @@ import GroupNotJoined from "./GroupNotJoined";
 const GroupJoined = React.lazy(async () => import("./GroupJoined"));
 export default function Group() {
   const [groupModal, setGroupModal] = useRecoilState(groupModalVisble);
-  const userData = useRecoilValue(userInfo);
+  const userData = useRecoilValue(userInfoState);
   const [localUser, setLocalUser] = useState(userData);
 
   useEffect(() => {

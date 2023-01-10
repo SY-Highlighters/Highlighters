@@ -14,6 +14,7 @@ import { TagModule } from './tag/tag.module';
 import { BookmarkModule } from './bookmark/bookmark.module';
 import { CalendarModule } from './calendar/calendar.module';
 import { ElasticsearchService } from './repository/connection';
+import { CommentModule } from './comment/comment.module';
 
 @Module({
   imports: [
@@ -28,6 +29,7 @@ import { ElasticsearchService } from './repository/connection';
     TagModule,
     BookmarkModule,
     CalendarModule,
+    CommentModule,
   ],
   controllers: [AppController],
   providers: [AppService, ElasticsearchService],
