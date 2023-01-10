@@ -14,8 +14,9 @@ import { User } from '@prisma/client';
 import { GetUser } from 'src/auth/get-user.decorator';
 import { HttpExceptionFilter } from 'src/common/exceptions/http-exception.filter';
 import { SuccessInterceptor } from 'src/common/interceptors/success.interceptors';
-import { RequestTagDto } from './dto/tag.dto';
+import { RequestTagCreateDto, RequestTagDeleteDto } from './dto/tag.dto';
 import { TagService } from './tag.service';
+import { ApiOperation, ApiResponse } from '@nestjs/swagger';
 
 @Controller('/api/tag')
 @UseInterceptors(SuccessInterceptor)
@@ -25,25 +26,25 @@ export class TagController {
   constructor(private readonly tagService: TagService) {}
 
   // 태그 생성
+  @ApiResponse({ status: 200, description: 'success', type: null })
+  @ApiOperation({ summary: '태그 생성' })
   @Post('/create')
   async createTag(
-    @Body() requestTagDto: RequestTagDto,
+    @Body() requestTagCreateDto: RequestTagCreateDto,
     @GetUser() user: User,
   ): Promise<null> {
-    requestTagDto.group_id = user.group_id;
-
-    return this.tagService.createTag(requestTagDto);
+    return this.tagService.createTag(requestTagCreateDto, user);
   }
 
   // 태그 삭제
+  @ApiResponse({ status: 200, description: 'success', type: null })
+  @ApiOperation({ summary: '태그 삭제' })
   @Delete('/delete')
   async deleteTag(
-    @Body() requestTagDto: RequestTagDto,
+    @Body() requestTagDeleteDto: RequestTagDeleteDto,
     @GetUser() user: User,
   ): Promise<null> {
-    requestTagDto.group_id = user.group_id;
-
-    return this.tagService.deleteTag(requestTagDto);
+    return this.tagService.deleteTag(requestTagDeleteDto, user);
   }
 
   // 웹에서 그룹 내 모든 태그 조회

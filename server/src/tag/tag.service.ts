@@ -2,14 +2,17 @@ import { Injectable, HttpException } from '@nestjs/common';
 import { User } from '@prisma/client';
 import { PrismaService } from 'src/repository/prisma.service';
 import { getUrlMeta } from 'src/util/geturlmeta';
-import { RequestTagDto } from './dto/tag.dto';
+import { RequestTagCreateDto, RequestTagDeleteDto } from './dto/tag.dto';
 
 @Injectable()
 export class TagService {
   constructor(private readonly prismaService: PrismaService) {}
 
-  async createTag(createTagDto: RequestTagDto): Promise<null> {
-    const { tag_name, feed_id, group_id } = createTagDto;
+  async createTag(
+    createTagDeleteDto: RequestTagCreateDto,
+    user: User,
+  ): Promise<null> {
+    const { tag_name, feed_id } = createTagDeleteDto;
     try {
       await this.prismaService.tag.create({
         data: {
@@ -21,7 +24,7 @@ export class TagService {
           },
           group: {
             connect: {
-              id: group_id,
+              id: user.group_id,
             },
           },
         },
@@ -34,22 +37,20 @@ export class TagService {
     return null;
   }
 
-  async deleteTag(requestTagDto: RequestTagDto): Promise<null> {
-    const { tag_name, feed_id, group_id } = requestTagDto;
+  async deleteTag(
+    requestTagDeleteDto: RequestTagDeleteDto,
+    user: User,
+  ): Promise<null> {
+    const { tag_id, feed_id } = requestTagDeleteDto;
     try {
       await this.prismaService.tag.update({
         where: {
-          tag_name: tag_name,
+          id: tag_id,
         },
         data: {
           feed: {
             disconnect: {
               id: feed_id,
-            },
-          },
-          group: {
-            disconnect: {
-              id: group_id,
             },
           },
         },
@@ -65,11 +66,7 @@ export class TagService {
   async getTag(user: User): Promise<string[]> {
     const tags = await this.prismaService.tag.findMany({
       where: {
-        group: {
-          some: {
-            id: user.group_id,
-          },
-        },
+        group_id: user.group_id,
       },
     });
     return tags.map((tag) => tag.tag_name);

@@ -39,6 +39,7 @@ export class HighlightService {
     const result = await this.prismaService.highlight.create({
       data: {
         feed_id: find_feed.id,
+        group_id: group_id,
         user_email: user_email,
         selection: selection,
         contents: contents,
