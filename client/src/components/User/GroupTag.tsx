@@ -1,6 +1,47 @@
-// 더미 유저 정보
-
+import FeedItem from "../Feeds/FeedItem/FeedItem";
+import { useRecoilState, useRecoilValue } from "recoil";
+import { groupTagList } from "../../states/atom";
+import { useCookies } from "react-cookie";
+import { useEffect } from "react";
+import axios from "axios";
+import { TagItem } from "../Tags/TagItem/TagItem";
 const GroupTag = () => {
+  const [grouptagList, setGroupTagList] = useRecoilState(groupTagList);
+  const [cookies, setCookie, removeCookie] = useCookies(["logCookie"]);
+  useEffect(() => {
+    async function fetchData() {
+      const response = await axios({
+        method: "get",
+        url: `${process.env.REACT_APP_HOST}/api/tag/web`,
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${cookies.logCookie}`,
+        },
+      });
+
+      const data = response.data;
+      console.log(data);
+      tagAdd(data.data);
+    }
+    fetchData();
+  }, []);
+
+  // 피드리스트에 피드아이템 넣기
+  const tagAdd = (data: []) => {
+    data.map((item: any) => {
+      const newTag = {
+        tag_name: item,
+      };
+      // recoil feeds state에 피드 추가
+      setGroupTagList((oldTags: any) => [...oldTags, newTag]);
+    });
+  };
+
+  const tagsList = grouptagList.map((tag: any) => (
+    <span>
+      <TagItem content={tag.tag_name} />
+    </span>
+  ));
   return (
     <div className="w-full mt-10 bg-white rounded-lg shadow-lg">
       <div className="" />
@@ -10,60 +51,10 @@ const GroupTag = () => {
           <div className="flex flex-col items-center px-5"></div>
         </div>
         {/* 태그 공간 -> fix:동적 처리*/}
-        <div className="relative items-end">
-          <button>
-            <span className="inline-flex mr-2 mt-2 px-3 py-0.5 rounded-full text-sm font-medium bg-sky-100 text-sky-800  hover:bg-sky-200">
-              # 너 아직 Highlighters 몰라?
-            </span>
-          </button>
-          <span className="inline-flex  mr-2 mt-2 px-3 py-0.5 rounded-full text-sm font-medium bg-sky-100 text-sky-800">
-            #도커
-          </span>
-          <span className="inline-flex  mr-2 mt-2 px-3 py-0.5 rounded-full text-sm font-medium bg-sky-100 text-sky-800">
-            #rest
-          </span>
-          <span className="inline-flex  mr-2 mt-2 px-3 py-0.5 rounded-full text-sm font-medium bg-sky-100 text-sky-800">
-            #컴퓨터
-          </span>
-        </div>
+        <div className="relative items-end mb-3">{tagsList}</div>
       </div>
     </div>
   );
 };
 
 export default GroupTag;
-<div className="h-40">
-  <div>
-    <div className="h-40"></div>
-  </div>
-
-  {/* 타이틀 */}
-  <div className="">
-    <div className=""></div>
-    <div className="px-8">
-      <h2 className="font-bold text-1xl">Tag</h2>
-    </div>
-  </div>
-
-  <div className="grid grid-cols-5">
-    <div className="col-span-2"></div>
-    {/* 태그 공간 -> fix:동적 처리*/}
-    <div className="col-span-3">
-      <span className="inline-flex px-3 py-0.5 rounded-full text-sm font-medium bg-sky-100 text-sky-800 hover:bg-sky-200">
-        #모시깽
-      </span>
-      <span className="inline-flex  px-3 py-0.5 rounded-full text-sm font-medium bg-sky-100 text-sky-800">
-        #도커
-      </span>
-      <span className="inline-flex  px-3 py-0.5 rounded-full text-sm font-medium bg-sky-100 text-sky-800">
-        #rest
-      </span>
-      <span className="inline-flex  px-3 py-0.5 rounded-full text-sm font-medium bg-sky-100 text-sky-800">
-        #컴퓨터
-      </span>
-      <span className="inline-flex  px-3 py-0.5 rounded-full text-sm font-medium bg-sky-100 text-sky-800">
-        #컴퓨터
-      </span>
-    </div>
-  </div>
-</div>;

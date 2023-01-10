@@ -13,6 +13,7 @@ export function TagEditModal(props: any) {
   const closeModal = () => {
     setTagModal(!tagModalVisble);
   };
+  console.log("태그 모달", tagList);
   // const [userData, setUserInfo] = useRecoilState(userInfo); test1 -> 현재 로그인시 유저데이터 받는중
 
   // const gropuId = userData.groupId;
@@ -21,7 +22,6 @@ export function TagEditModal(props: any) {
   //   const tagLists = props.tag.map((tagItem: any) => (
   //     <TagEditItem tagName={tagItem.tag_name} />
   //   ));
-  console.log("여기는 태그모달임", props.tag);
   const tagLists = tagList.map((tagItem: any) => (
     <TagEditItem tagName={tagItem.tag_name} />
   ));

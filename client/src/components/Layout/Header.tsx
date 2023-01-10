@@ -6,8 +6,13 @@ import {
   XMarkIcon,
   HomeIcon,
 } from "@heroicons/react/24/outline";
-import { useRecoilState, useRecoilValue, useResetRecoilState } from "recoil";
-import { bookmarkState, feedState } from "../../states/atom";
+import {
+  useRecoilState,
+  useRecoilValue,
+  useResetRecoilState,
+  useSetRecoilState,
+} from "recoil";
+import { bookmarkState, feedState, mainSectionState } from "../../states/atom";
 import { useCookies } from "react-cookie";
 import { userInfo } from "../../states/atom";
 const user = {
@@ -31,7 +36,9 @@ function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(" ");
 }
 const Header: React.FC = () => {
-  const [bookmark, setBookmark] = useRecoilState(bookmarkState);
+  // const [bookmark, setBookmark] = useRecoilState(bookmarkState);
+  const [mainSectionNum, setMainSectionNum] = useRecoilState(mainSectionState);
+
   const [cookies, setCookie, removeCookie] = useCookies(["logCookie"]);
   const userData = useRecoilValue(userInfo);
   const resetFeeds = useResetRecoilState(feedState);
@@ -39,7 +46,12 @@ const Header: React.FC = () => {
   const handleBookmarkClick = () => {
     console.log("bookmark click");
     console.log(bookmarkState);
-    setBookmark(!bookmark);
+    // setBookmark(!bookmark);
+    if (mainSectionNum === 1) {
+      setMainSectionNum(0);
+    } else {
+      setMainSectionNum(1);
+    }
   };
   const logout = () => {
     resetFeeds();
@@ -101,7 +113,7 @@ const Header: React.FC = () => {
                   <div className="hidden md:block">
                     <div className="flex items-center ml-4 md:ml-6">
                       {/* 홈버튼 or 북마크 버튼  */}
-                      {!bookmark ? (
+                      {mainSectionNum === 1 ? (
                         <button
                           onClick={handleBookmarkClick}
                           type="button"
