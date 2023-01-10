@@ -1,23 +1,38 @@
 import { useSetRecoilState, useRecoilState, useRecoilValue } from "recoil";
-import { tagModalVisble, sighUpCheck } from "../../states/atom";
+import {
+  tagModalVisble,
+  sighUpCheck,
+  currentFeedIdState,
+} from "../../states/atom";
 import {
   tagNameState,
   tagsInFeedState,
   userInfoState,
 } from "../../states/atom";
 import { useCookies } from "react-cookie";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
 import { TagEditItem } from "./TagItem/TagEditItem";
+import { ArrowRightCircleIcon } from "@heroicons/react/24/outline";
+import Swal from "sweetalert2";
+
 export function TagEditModal(props: any) {
+  const [cookies, setCookie, removeCookie] = useCookies(["logCookie"]);
+  const [inputValue, setInputValue] = useState("");
   const setTagModal = useSetRecoilState(tagModalVisble);
   const tagName = useRecoilValue(tagNameState);
+  const currentFeedId = useRecoilValue(currentFeedIdState);
   // 그룹 태그 리스트 전역
   const [tagList, setTagList] = useRecoilState(tagsInFeedState);
+
+  const handleChange = (e: any) => {
+    console.log(e.target.value);
+    setInputValue(e.target.value);
+  };
+
   const closeModal = () => {
     setTagModal(!tagModalVisble);
   };
-  console.log("태그 모달", tagList);
   // const [userData, setUserInfo] = useRecoilState(userInfo); test1 -> 현재 로그인시 유저데이터 받는중
 
   // const gropuId = userData.groupId;
@@ -26,8 +41,39 @@ export function TagEditModal(props: any) {
   //   const tagLists = props.tag.map((tagItem: any) => (
   //     <TagEditItem tagName={tagItem.tag_name} />
   //   ));
+
+  const tagAddHandler = async () => {
+    const host_url = `${process.env.REACT_APP_HOST}/api/tag/create`;
+    console.log(inputValue, currentFeedId);
+    // 서버에 그룹 생성 요청
+    await axios
+      .post(
+        host_url,
+        {
+          tag_name: inputValue,
+          feed_id: currentFeedId,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${cookies.logCookie}`,
+          },
+        }
+      )
+      .then(function (response) {
+        if (response) {
+          Swal.fire({
+            icon: "success",
+            title: "태그 생성 성공!",
+            text: "태그 생성에 성공했습니다.",
+          });
+        } else {
+          alert("태그 생성 실패!");
+        }
+      });
+  };
+
   const tagLists = tagList.map((tagItem: any) => (
-    <TagEditItem tagName={tagItem.tag_name} />
+    <TagEditItem tagName={tagItem.tag_name} feedId={currentFeedId} tagId={tagItem.tag_id} />
   ));
 
   return (
@@ -77,13 +123,25 @@ export function TagEditModal(props: any) {
             {/* 태그 생성 */}
             <div className="flex flex-wrap mt-5">
               <div className="w-full px-2">
-                <input
-                  //   onMouseOver={}
-                  type="text"
-                  className="w-full px-4 py-2 text-gray-700 bg-white border border-gray-300 rounded-lg focus:outline-none focus:border-gray-400"
-                  placeholder="태그를 입력하세요"
-                />
+                {/* 입력창 안에 화살표 버튼 넣기 */}
+                <div className="flex flex-row items-center justify-between w-full px-4 py-2 text-gray-700 bg-white border border-gray-300 rounded-lg focus:outline-none focus:border-gray-400">
+                  <input
+                    onChange={handleChange}
+                    type="text"
+                    className="w-full px-4 py-2 text-gray-700 bg-white border border-gray-300 rounded-lg focus:outline-none focus:border-gray-400"
+                    placeholder="태그를 입력하세요"
+                  />
+                  <div>
+                    <button onClick={tagAddHandler} className="">
+                      <ArrowRightCircleIcon
+                        className="flex-shrink-0 mt-2 ml-3 text-gray-400 w-7 h-7 hover:text-sky-500"
+                        aria-hidden="true"
+                      />
+                    </button>
+                  </div>
+                </div>
               </div>
+              <button className=""></button>
             </div>
           </div>
         </div>
