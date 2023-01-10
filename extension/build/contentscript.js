@@ -82,8 +82,12 @@ function postHighlight(range, highlightStr) {
         title: document.title,
       },
     },
-    (response) => response.farewell
-  );
+    (response) => {
+      if (response.data.statusCode === 401) {
+        console.log('unauthorized error status code: ', response.data.statusCode);
+      }
+    }
+  ); 
 }
 
 /* 하이라이트 Get */
