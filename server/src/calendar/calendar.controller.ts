@@ -16,7 +16,7 @@ import { User } from '@prisma/client';
 @Controller('api/calendar')
 @UseInterceptors(SuccessInterceptor)
 @UseFilters(HttpExceptionFilter)
-@UseGuards(AuthGuard())
+@UseGuards(AuthGuard('jwt'))
 export class CalendarController {
   constructor(private readonly calendarService: CalendarService) {}
 

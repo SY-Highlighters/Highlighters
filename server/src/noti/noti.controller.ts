@@ -11,7 +11,7 @@ import { SuccessInterceptor } from 'src/common/interceptors/success.interceptors
 @Controller('api/noti')
 @UseInterceptors(SuccessInterceptor)
 @UseFilters(HttpExceptionFilter)
-@UseGuards(AuthGuard())
+@UseGuards(AuthGuard('jwt'))
 export class NotiController {
   constructor(private readonly notiService: NotiService) {}
 

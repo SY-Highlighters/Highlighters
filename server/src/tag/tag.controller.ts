@@ -20,7 +20,7 @@ import { TagService } from './tag.service';
 @Controller('/api/tag')
 @UseInterceptors(SuccessInterceptor)
 @UseFilters(HttpExceptionFilter)
-@UseGuards(AuthGuard())
+@UseGuards(AuthGuard('jwt'))
 export class TagController {
   constructor(private readonly tagService: TagService) {}
 

@@ -7,7 +7,7 @@ import { CreateCommentDto } from './dto/comment.dto';
 import { Comment } from '.prisma/client';
 
 @Controller('comment')
-@UseGuards(AuthGuard())
+@UseGuards(AuthGuard('jwt'))
 export class CommentController {
   constructor(private readonly commentService: CommentService) {}
 
@@ -35,5 +35,4 @@ export class CommentController {
   async deleteComment(@Param('id') id: number): Promise<Comment> {
     return this.commentService.deleteComment(id);
   }
-
 }

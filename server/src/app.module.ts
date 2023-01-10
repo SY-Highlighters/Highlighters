@@ -15,6 +15,7 @@ import { BookmarkModule } from './bookmark/bookmark.module';
 import { CalendarModule } from './calendar/calendar.module';
 import { ElasticsearchService } from './repository/connection';
 import { CommentModule } from './comment/comment.module';
+import { SearchModule } from './search/search.module';
 
 @Module({
   imports: [
@@ -30,6 +31,7 @@ import { CommentModule } from './comment/comment.module';
     BookmarkModule,
     CalendarModule,
     CommentModule,
+    SearchModule,
   ],
   controllers: [AppController],
   providers: [AppService, ElasticsearchService],
