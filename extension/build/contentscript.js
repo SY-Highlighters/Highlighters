@@ -97,8 +97,7 @@ function showLoginModal() {
 
   const body = document.querySelector("body");
 
-  // 로그인 모달 띄우기
-  // 모달 만들어 놓기
+  // 모달 만들어서 띄우기
   let loginModal = `<div id="modal" class="modal-overlay">
         <div id="modal-window">
             <div id="modal-title">
@@ -143,7 +142,6 @@ function highlightDone(range) {
 
 /* 하이라이트 Post */
 async function postHighlight(range, highlightStr) {
-  console.log("posthighlight");
 
   const rangeobj = {
     startXPath: makeXPath(range.startContainer),
@@ -258,7 +256,7 @@ if (url_check) {
     const button = document.getElementById("btn_highlighters");
     const sel = document.getSelection();
 
-    if (sel.isCollapsed) {
+    if (sel.isCollapsed || sel.toString() === highlightStr) {
       button.style.display = "none";
       return;
     } //

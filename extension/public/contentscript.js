@@ -256,7 +256,7 @@ if (url_check) {
     const button = document.getElementById("btn_highlighters");
     const sel = document.getSelection();
 
-    if (sel.isCollapsed) {
+    if (sel.isCollapsed || sel.toString() === highlightStr) {
       button.style.display = "none";
       return;
     } //

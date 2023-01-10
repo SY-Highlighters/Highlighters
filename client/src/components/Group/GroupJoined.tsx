@@ -7,7 +7,7 @@ import {
   userInfoState,
 } from "../../states/atom";
 import GroupModal from "./Modal/GroupModal";
-export default function GroupJoined() {
+export default function GroupJoined(props: any) {
   const [groupAdd, setGroupAdd] = useRecoilState(groupAddState);
   const [groupJoin, setGroupJoin] = useRecoilState(groupJoinState);
   const [groupInvite, setGroupInvite] = useRecoilState(groupInviteState);
@@ -25,7 +25,7 @@ export default function GroupJoined() {
           <p className="text-sm text-gray-600">그룹명</p>
           <div className="relative flex items-end ml-1">
             <h3 className="text-2xl antialiased font-bold">
-              {userData.groupName}
+              {props.userGroup}
             </h3>
           </div>
         </div>
