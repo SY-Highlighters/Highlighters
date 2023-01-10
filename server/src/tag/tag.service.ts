@@ -72,6 +72,20 @@ export class TagService {
     return tags.map((tag) => tag.tag_name);
   }
 
+  async deleteTagWeb(tag_id: number, user: User): Promise<null> {
+    try {
+      await this.prismaService.tag.delete({
+        where: {
+          id: tag_id,
+        },
+      });
+      return null;
+    } catch (e) {
+      console.log(e);
+      throw new HttpException('Internal Server Error', 500);
+    }
+  }
+
   async searchTag(tag_id: number, user: User): Promise<object[]> {
     const feeds = await this.prismaService.feed.findMany({
       where: {
