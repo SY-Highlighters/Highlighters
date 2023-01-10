@@ -4,21 +4,48 @@ const highlightColor = "#E9D5FF";
 let selectionText;
 let highlightStr = "null";
 
-function highlight() {
-  // 드래그한 부분의 위치 정보
+const modalOverlay = `width: 100%;
+            height: 100%;
+            position: absolute;
+            left: 0;
+            top: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: rgba(0, 0, 0, 0.25);
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+            backdrop-filter: blur(1.5px);
+            -webkit-backdrop-filter: blur(1.5px);
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            z-index: 2147483647`;
+
+const modalWindow = `background: rgba( 69, 139, 197, 0.70 );
+            box-shadow: 0 8px 32px 0 rgba( 31, 38, 135, 0.37 );
+            backdrop-filter: blur( 13.5px );
+            -webkit-backdrop-filter: blur( 13.5px );
+            border-radius: 10px;
+            border: 1px solid rgba( 255, 255, 255, 0.18 );
+            width: 400px;
+            height: 500px;
+            position: relative;
+            top: -100px;
+            padding: 10px;`;
+
+const modalTitle = `padding-left: 10px;
+            display: inline;
+            text-shadow: 1px 1px 2px gray;
+            color: white;`;
+
+const modalContent = `margin-top: 20px;
+            padding: 0px 10px;
+            text-shadow: 1px 1px 2px gray;
+            color: white;`;
+
+async function highlight() {
   const range = selectionText.getRangeAt(0);
-
-  // postHighlight 요청
   postHighlight(range, highlightStr);
-
-  // 하이라이팅
-  const newNode = document.createElement("span");
-  newNode.style.backgroundColor = highlightColor;
-  range.surroundContents(newNode);
-
-  // 버튼 숨기기
-  const button = document.getElementById("btn_highlighters");
-  button.style.display = "none";
 }
 
 function makeXPath(node, currentPath) {
@@ -63,8 +90,61 @@ function makeXPath(node, currentPath) {
   }
 }
 
+function showLoginModal() {
+  // 펜 버튼 숨기기
+  const button = document.getElementById("btn_highlighters");
+  button.style.display = "none";
+
+  const body = document.querySelector("body");
+
+  // 로그인 모달 띄우기
+  // 모달 만들어 놓기
+  let loginModal = `<div id="modal" class="modal-overlay">
+        <div id="modal-window">
+            <div id="modal-title">
+                <h2 display: inline>로그인하세요</h2>
+            </div>
+            <div id="modal-close-area">X</div>
+            <div id="modal-content">
+                아이디<input type="text"><br>
+                패스워드<input type="password"><br>
+                <a id="modal-button"><br>
+            </div>
+        </div>
+    </div>`;
+
+  body.innerHTML += loginModal;
+
+  const modal = document.getElementById("modal");
+  modal.style.cssText = modalOverlay;
+
+  const modal_window = document.getElementById("modal-window");
+  modal_window.cssText = modalWindow;
+
+  const modal_title = document.getElementById("modal-title");
+  modal_title.cssText = modalTitle;
+
+  const modal_content = document.getElementById("modal-content");
+  modal_content.cssText = modalContent;
+
+  body.style.overflowX = "hidden";
+  body.style.overflowY = "hidden";
+}
+
+function highlightDone(range) {
+  const newNode = document.createElement("span");
+  newNode.style.backgroundColor = highlightColor;
+  range.surroundContents(newNode);
+
+  // 펜 버튼 숨기기
+  const button = document.getElementById("btn_highlighters");
+  button.style.display = "none";
+}
+
 /* 하이라이트 Post */
-function postHighlight(range, highlightStr) {
+async function postHighlight(range, highlightStr) {
+  console.log("posthighlight");
+
   const rangeobj = {
     startXPath: makeXPath(range.startContainer),
     startOffset: range.startOffset,
@@ -84,10 +164,17 @@ function postHighlight(range, highlightStr) {
     },
     (response) => {
       if (response.data.statusCode === 401) {
-        console.log('unauthorized error status code: ', response.data.statusCode);
+        console.log(
+          "unauthorized error status code: ",
+          response.data.statusCode
+        );
+        showLoginModal();
+      } else {
+        console.log("highlight success");
+        highlightDone(range);
       }
     }
-  ); 
+  );
 }
 
 /* 하이라이트 Get */
@@ -103,7 +190,6 @@ function getHighlight(url) {
       if (data.success === false) {
         throw new Error(`[${data.statusCode}] ${data.message}`);
       }
-    
 
       for (const highlight of data) {
         const selection = highlight.selection;
@@ -143,10 +229,11 @@ function getHighlight(url) {
 
 function onWindowReady() {
   // 버튼 만들어 놓기
+  const body = document.querySelector("body");
+
   let penButton = `<input id="btn_highlighters" type="image" src="https://cdn-icons-png.flaticon.com/512/3237/3237124.png"
   height = "35" width="35">`;
 
-  const body = document.querySelector("body");
   body.innerHTML += penButton;
 
   const button = document.getElementById("btn_highlighters");
@@ -195,7 +282,7 @@ if (url_check) {
       button.style.left = divLeft + "px";
       button.style.position = "absolute";
       button.style.display = "block";
-      button.style.zIndex = "9999";
+      button.style.zIndex = "2147483647";
     }
   };
 }
