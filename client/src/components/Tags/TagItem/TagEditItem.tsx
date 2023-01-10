@@ -1,10 +1,4 @@
-import { useSetRecoilState } from "recoil";
-import { feedViewState, tagState } from "../../../states/atom";
-
 export function TagEditItem(props: any) {
-  const setTagOn = useSetRecoilState(tagState);
-  const setView = useSetRecoilState(feedViewState);
-
   const tagEditHandler = () => {};
   return (
     <span className="inline-flex items-center mr-2 px-3 py-0.5 rounded-full text-sm font-medium bg-sky-100 text-sky-800 hover:bg-sky-300">

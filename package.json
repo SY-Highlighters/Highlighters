@@ -1,5 +1,8 @@
 {
   "devDependencies": {
     "@types/chrome": "^0.0.206"
+  },
+  "dependencies": {
+    "@nestjs/elasticsearch": "^9.0.0"
   }
 }

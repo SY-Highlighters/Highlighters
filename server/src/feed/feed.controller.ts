@@ -7,7 +7,7 @@ import { CreateFeedDto } from './dto/feed.dto';
 import { GetUser } from 'src/auth/get-user.decorator';
 
 @Controller('api/feed')
-@UseGuards(AuthGuard())
+@UseGuards(AuthGuard('jwt'))
 export class FeedController {
   constructor(private readonly feedService: FeedService) {}
 

@@ -11,7 +11,7 @@ import { RequestBookmarkDto } from './dto/bookmark.dto';
 @Controller('api/bookmark')
 @UseInterceptors(SuccessInterceptor)
 @UseFilters(HttpExceptionFilter)
-@UseGuards(AuthGuard())
+@UseGuards(AuthGuard('jwt'))
 export class BookmarkController {
   constructor(private readonly bookmarkService: BookmarkService) {}
 

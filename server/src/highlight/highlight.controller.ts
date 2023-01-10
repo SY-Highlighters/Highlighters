@@ -15,7 +15,7 @@ import { CreateHighlightDto, UpdateHighlightDto } from './dto/highlight.dto';
 import { HighlightService } from './highlight.service';
 
 @Controller('api/highlight')
-@UseGuards(AuthGuard())
+@UseGuards(AuthGuard('jwt'))
 export class HighlightController {
   constructor(private readonly highlightService: HighlightService) {}
 

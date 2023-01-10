@@ -1,12 +1,13 @@
 import { useSetRecoilState } from "recoil";
-import { feedViewState, tagState } from "../../../states/atom";
+import { tagNameState, mainSectionState } from "../../../states/atom";
 
 export function TagItem(props: any) {
-  const setTagOn = useSetRecoilState(tagState);
-  const setView = useSetRecoilState(feedViewState);
+  const setTagOn = useSetRecoilState(tagNameState);
+  const setMainSectionNum = useSetRecoilState(mainSectionState);
+
   const tagClickHandler = () => {
     console.log("tag clicked");
-    setView(!feedViewState);
+    setMainSectionNum(2);
     setTagOn(props.content);
   };
   return (

@@ -1,7 +1,7 @@
 import axios from "axios";
 import { Fragment } from "react";
 import { useSetRecoilState, useRecoilState } from "recoil";
-import { logModalVisble, sighUpCheck, userInfo } from "../../states/atom";
+import { logModalVisble, sighUpCheck, userInfoState } from "../../states/atom";
 import { useCookies } from "react-cookie";
 import Swal from "sweetalert2";
 
@@ -30,7 +30,11 @@ export default function SignUp() {
         if (response) {
           setSignUp(!sighch);
           // alert("회원가입 성공");
-          Swal.fire("회원가입 성공!", "지금 바로 피드를 공유하세요!", "success");
+          Swal.fire(
+            "회원가입 성공!",
+            "지금 바로 피드를 공유하세요!",
+            "success"
+          );
         } else {
           alert("회원가입 실패");
         }

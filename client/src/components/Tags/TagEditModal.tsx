@@ -1,18 +1,23 @@
 import { useSetRecoilState, useRecoilState, useRecoilValue } from "recoil";
 import { tagModalVisble, sighUpCheck } from "../../states/atom";
-import { tagState, tagListState, userInfo } from "../../states/atom";
+import {
+  tagNameState,
+  tagsInFeedState,
+  userInfoState,
+} from "../../states/atom";
 import { useCookies } from "react-cookie";
 import { useEffect } from "react";
 import axios from "axios";
 import { TagEditItem } from "./TagItem/TagEditItem";
 export function TagEditModal(props: any) {
   const setTagModal = useSetRecoilState(tagModalVisble);
-  const tagName = useRecoilValue(tagState);
+  const tagName = useRecoilValue(tagNameState);
   // 그룹 태그 리스트 전역
-  const [tagList, setTagList] = useRecoilState(tagListState);
+  const [tagList, setTagList] = useRecoilState(tagsInFeedState);
   const closeModal = () => {
     setTagModal(!tagModalVisble);
   };
+  console.log("태그 모달", tagList);
   // const [userData, setUserInfo] = useRecoilState(userInfo); test1 -> 현재 로그인시 유저데이터 받는중
 
   // const gropuId = userData.groupId;
@@ -21,7 +26,6 @@ export function TagEditModal(props: any) {
   //   const tagLists = props.tag.map((tagItem: any) => (
   //     <TagEditItem tagName={tagItem.tag_name} />
   //   ));
-  console.log("여기는 태그모달임", props.tag);
   const tagLists = tagList.map((tagItem: any) => (
     <TagEditItem tagName={tagItem.tag_name} />
   ));

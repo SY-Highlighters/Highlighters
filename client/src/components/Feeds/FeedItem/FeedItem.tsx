@@ -4,7 +4,12 @@ import {
   ChevronDownIcon,
   PencilIcon,
 } from "@heroicons/react/20/solid";
-import { HashtagIcon } from "@heroicons/react/24/outline";
+import {
+  ArrowRightCircleIcon,
+  ChevronRightIcon,
+  ForwardIcon,
+  HashtagIcon,
+} from "@heroicons/react/24/outline";
 import { TagEdit } from "../../Tags/TagEdit";
 import { TagItem } from "../../Tags/TagItem/TagItem";
 
@@ -77,7 +82,7 @@ const FeedItem = (props: any) => {
 
           {/* 댓글 기능 */}
           <div className="flex items-center mt-2 text-sm text-gray-500">
-            <TagEdit key={props.id} tag={props.tag}></TagEdit>
+            <TagEdit key={props.key} tag={props.tag}></TagEdit>
             {/* 즐겨찾기 */}
             {/* <div>
               <CheckIcon
@@ -87,15 +92,29 @@ const FeedItem = (props: any) => {
             </div>
             즐겨찾기
             {/* 댓글 */}
-            <PencilIcon
-              className="mr-1.5 h-5 w-5 flex-shrink-0 text-gray-400 "
-              aria-hidden="true"
-            />
-            <ChevronDownIcon
-              className="mr-1.5 h-5 w-5 flex-shrink-0 text-gray-400 "
-              aria-hidden="true"
-            />
-            댓글 9
+            <div>
+              <ChevronDownIcon
+                className="mr-1.5 h-5 w-5 flex-shrink-0 text-gray-400 "
+                aria-hidden="true"
+              />
+              {/* ChevronDownIcon 클릭시 댓글창  */}
+              {/* */}
+            </div>
+          </div>
+          {/*  */}
+          <div className="flex flex-col">
+            <div className="flex flex-row">
+              <img className="rounded-full w-14 h-14" alt="" />
+              <input
+                className="h-10 px-3 text-base text-gray-700 placeholder-gray-600 border rounded-lg w-80 focus:shadow-outline"
+                type="text"
+                placeholder="댓글을 입력하세요"
+              />
+              <ArrowRightCircleIcon
+                className="mr-1.5 h-5 w-5 flex-shrink-0 text-gray-400 -ml-5"
+                aria-hidden="true"
+              />
+            </div>
           </div>
         </div>
       </div>

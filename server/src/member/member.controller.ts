@@ -16,7 +16,7 @@ import { CreateGroupDto } from './dto/group.dto';
 @Controller('api/group')
 @UseInterceptors(SuccessInterceptor)
 @UseFilters(HttpExceptionFilter)
-@UseGuards(AuthGuard())
+@UseGuards(AuthGuard('jwt'))
 export class MemberController {
   constructor(private readonly memberService: MemberService) {}
 
