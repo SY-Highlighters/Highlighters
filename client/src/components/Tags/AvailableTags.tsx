@@ -1,29 +1,22 @@
 import FeedItem from "../Feeds/FeedItem/FeedItem";
 import { useRecoilState, useRecoilValue, useResetRecoilState } from "recoil";
 import {
-  groupFeedListState,
-  feedTagListState,
-  tagModalVisble,
+  feedsInGroupState,
+  tagsInFeedState,
   tagNameState,
   userInfoState,
-  tagFeedList,
+  feedsTagListState,
 } from "../../states/atom";
 import { useCookies } from "react-cookie";
 import { useEffect } from "react";
 import axios from "axios";
 
 const AvailableTags = () => {
-  const [tagFeedLi, setTagFeedLi] = useRecoilState(tagFeedList);
-  const [tagList, setTagList] = useRecoilState(feedTagListState);
+  const [tagFeedList, setTagFeedList] = useRecoilState(tagFeedListState);
   const [cookies, setCookie, removeCookie] = useCookies(["logCookie"]);
   const tagName = useRecoilValue(tagNameState);
-  // const [userData, setUserInfo] = useRecoilState(userInfo); test1 -> 현재 로그인시 유저데이터 받는중
   const userData = useRecoilValue(userInfoState);
-  const tagModal = useResetRecoilState(tagModalVisble);
-  // const tagModal = useResetRecoilState(tagModalVisble);
 
-  // const gropuId = userData.groupId;
-  // // 렌더링된 후 바로 실행
   useEffect(() => {
     async function fetchData() {
       const response = await axios({
@@ -37,13 +30,11 @@ const AvailableTags = () => {
 
       const data = response.data;
       console.log(data);
-      // console.log(data[0].id);
       tagAdd(data.data);
     }
     fetchData();
   }, [userData.groupId]);
 
-  // 피드리스트에 피드아이템 넣기
   const tagAdd = (data: []) => {
     data.map((item: any) => {
       const newTag = {
@@ -57,8 +48,7 @@ const AvailableTags = () => {
         Date: item.createdAt,
         tag: item.tag,
       };
-      // recoil feeds state에 피드 추가
-      setTagFeedLi((oldTags: any) => [...oldTags, newTag]);
+      setTagFeedList((oldTags: any) => [...oldTags, newTag]);
     });
   };
 
@@ -79,8 +69,6 @@ const AvailableTags = () => {
   ));
   return (
     <div className="h-12 overscroll-auto basis-2/4">
-      {/* 위에 여백 두고 그룹피드 타이틀 만들기 */}
-      {/* 그룹 피드 타이틀 */}
       <div className="relative p-3 rounded-3xl">
         <h1 className="text-2xl antialiased font-bold text-whtie">
           <span className="inline-flex items-center mr-2 px-3 py-0.5 rounded-full text-xl font-bold bg-sky-100 text-sky-800">

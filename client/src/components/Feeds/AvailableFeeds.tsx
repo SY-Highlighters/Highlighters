@@ -1,7 +1,7 @@
 import FeedItem from "./FeedItem/FeedItem";
 import { useRecoilState, useRecoilValue } from "recoil";
 import {
-  groupFeedListState,
+  feedsInGroupState,
   userInfoState,
   tagModalVisble,
 } from "../../states/atom";
@@ -11,7 +11,7 @@ import axios from "axios";
 import { DocumentIcon, MegaphoneIcon } from "@heroicons/react/24/outline";
 import { TagEditModal } from "../Tags/TagEditModal";
 const AvailableFeeds = () => {
-  const [feeds, setFeeds] = useRecoilState(groupFeedListState);
+  const [feeds, setFeeds] = useRecoilState(feedsInGroupState);
   const [cookies, setCookie, removeCookie] = useCookies(["logCookie"]);
   const [tagModal, setTagModal] = useRecoilState(tagModalVisble);
   // const [userData, setUserInfo] = useRecoilState(userInfo); test1 -> 현재 로그인시 유저데이터 받는중

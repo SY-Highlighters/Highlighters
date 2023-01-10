@@ -7,27 +7,27 @@ export const tagNameState = atom<String>({
   default: "",
 });
 
-// 피드 태그 리스트
-export const feedTagListState = atom<any>({
-  key: "feedTagListState",
+// 피드의 태그 리스트
+export const tagsInFeedState = atom<any>({
+  key: "tagsInFeedState",
   default: [],
 });
 
-// 그룹 태그 리스트
-export const groupTagListState = atom<any>({
-  key: "groupTagListState",
+// 그룹의 전체 태그 리스트
+export const tagsInGroupState = atom<any>({
+  key: "tagsInGroupState",
   default: [],
 });
 
 /* 피드 */
 //  그룹 피드 리스트
-export const groupFeedListState = atom<any>({
-  key: "groupFeedListState",
+export const feedsInGroupState = atom<any>({
+  key: "feedsInGroupState",
   default: [],
 });
-// 태그에 해당하는 피드 리스트
-export const tagFeedList = atom<any>({
-  key: "TagFeedList",
+// 태그에 해당하는 피드 리스트 => 버리자
+export const feedsTagListState = atom<any>({
+  key: "feedsTagListState",
   default: [],
 });
 

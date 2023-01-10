@@ -2,7 +2,7 @@ import { useSetRecoilState, useRecoilState, useRecoilValue } from "recoil";
 import { tagModalVisble, sighUpCheck } from "../../states/atom";
 import {
   tagNameState,
-  feedTagListState,
+  tagsInFeedState,
   userInfoState,
 } from "../../states/atom";
 import { useCookies } from "react-cookie";
@@ -13,7 +13,7 @@ export function TagEditModal(props: any) {
   const setTagModal = useSetRecoilState(tagModalVisble);
   const tagName = useRecoilValue(tagNameState);
   // 그룹 태그 리스트 전역
-  const [tagList, setTagList] = useRecoilState(feedTagListState);
+  const [tagList, setTagList] = useRecoilState(tagsInFeedState);
   const closeModal = () => {
     setTagModal(!tagModalVisble);
   };
