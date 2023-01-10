@@ -99,7 +99,6 @@ function getHighlight(url) {
       if (data.success === false) {
         throw new Error(`[${data.statusCode}] ${data.message}`);
       }
-    
 
       for (const highlight of data) {
         const selection = highlight.selection;
