@@ -41,7 +41,7 @@ const Header: React.FC = () => {
 
   const [cookies, setCookie, removeCookie] = useCookies(["logCookie"]);
   const userData = useRecoilValue(userInfoState);
-  const resetFeeds = useResetRecoilState(groupFeedListState);
+  // const resetFeeds = useResetRecoilState(groupFeedListState);
 
   const handleBookmarkClick = () => {
     console.log("bookmark click");
@@ -53,7 +53,7 @@ const Header: React.FC = () => {
     }
   };
   const logout = () => {
-    resetFeeds();
+    // resetFeeds();
     removeCookie("logCookie");
   };
 
