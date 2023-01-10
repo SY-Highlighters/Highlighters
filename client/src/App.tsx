@@ -25,6 +25,7 @@ import {
   feedViewState,
 } from "./states/atom";
 import { useEffect, useState } from "react";
+import { Main } from "./components/Main/Main";
 function App() {
   const tagOn = useRecoilValue(tagState);
   const bookmarkOn = useRecoilValue(bookmarkState);
@@ -57,20 +58,7 @@ function App() {
       {/* log section */}
       {/* loged main section*/}
       {cookies.logCookie ? (
-        <div className="flex flex-row gap-4 m-8 mx-10 xl:px-40 lg:grid-cols-2 xl:grid-cols-3 sm:grid-cols-1 ">
-          <User></User>
-          {/* {localUser.groupName && logedMain*/}
-          {localUser.groupName && groupFeedOn && (
-            <AvailableFeeds></AvailableFeeds>
-          )}
-          {localUser.groupName && !bookmarkOn && (
-            <AvailableBookmarks></AvailableBookmarks>
-          )}
-          {localUser.groupName && tagOn && <AvailableTags></AvailableTags>}
-
-          {/* {logedMain} */}
-          {localUser.groupName && <Alert></Alert>}
-        </div>
+        <Main></Main>
       ) : (
         // log section
         <div className="">

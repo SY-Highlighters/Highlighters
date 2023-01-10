@@ -77,3 +77,12 @@ export const groupTagList = atom<any>({
   key: "groupTagList",
   default: [],
 });
+
+export const mainSectionState = atom<number>({
+  key: "mainSectionState",
+  default: 0,
+});
+export const tagFeedList = atom<any>({
+  key: "TagFeedList",
+  default: [],
+});

@@ -1,22 +1,31 @@
 import FeedItem from "../Feeds/FeedItem/FeedItem";
-import { useRecoilState, useRecoilValue } from "recoil";
-import { feedState, tagListState, tagState, userInfo } from "../../states/atom";
+import { useRecoilState, useRecoilValue, useResetRecoilState } from "recoil";
+import {
+  feedState,
+  tagListState,
+  tagModalVisble,
+  tagState,
+  userInfo,
+  tagFeedList,
+} from "../../states/atom";
 import { useCookies } from "react-cookie";
 import { useEffect } from "react";
 import axios from "axios";
 
 const AvailableTags = () => {
+  const [tagFeedLi, setTagFeedLi] = useRecoilState(tagFeedList);
   const [tagList, setTagList] = useRecoilState(tagListState);
   const [cookies, setCookie, removeCookie] = useCookies(["logCookie"]);
   const tagName = useRecoilValue(tagState);
   // const [userData, setUserInfo] = useRecoilState(userInfo); test1 -> 현재 로그인시 유저데이터 받는중
   const userData = useRecoilValue(userInfo);
+  const tagModal = useResetRecoilState(tagModalVisble);
+  // const tagModal = useResetRecoilState(tagModalVisble);
 
   // const gropuId = userData.groupId;
   // // 렌더링된 후 바로 실행
   useEffect(() => {
     async function fetchData() {
-      const groupId = userData.groupId;
       const response = await axios({
         method: "get",
         url: `${process.env.REACT_APP_HOST}/api/tag/search/${tagName}`,
@@ -49,15 +58,15 @@ const AvailableTags = () => {
         tag: item.tag,
       };
       // recoil feeds state에 피드 추가
-      setTagList((oldTags: any) => [...oldTags, newTag]);
+      setTagFeedLi((oldTags: any) => [...oldTags, newTag]);
     });
   };
 
-  const tagsList = tagList.map((feed: any) => (
+  const tagsList = tagFeedLi.map((feed: any, index: number) => (
     <div key={feed.id}>
       <FeedItem
         id={feed.id}
-        key={feed.id}
+        key={feed.id + index}
         title={feed.title}
         description={feed.description}
         og_image={feed.og_image}
