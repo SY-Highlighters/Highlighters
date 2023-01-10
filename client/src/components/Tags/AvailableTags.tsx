@@ -1,11 +1,11 @@
 import FeedItem from "../Feeds/FeedItem/FeedItem";
 import { useRecoilState, useRecoilValue, useResetRecoilState } from "recoil";
 import {
-  feedState,
-  tagListState,
+  groupFeedListState,
+  feedTagListState,
   tagModalVisble,
-  tagState,
-  userInfo,
+  tagNameState,
+  userInfoState,
   tagFeedList,
 } from "../../states/atom";
 import { useCookies } from "react-cookie";
@@ -14,11 +14,11 @@ import axios from "axios";
 
 const AvailableTags = () => {
   const [tagFeedLi, setTagFeedLi] = useRecoilState(tagFeedList);
-  const [tagList, setTagList] = useRecoilState(tagListState);
+  const [tagList, setTagList] = useRecoilState(feedTagListState);
   const [cookies, setCookie, removeCookie] = useCookies(["logCookie"]);
-  const tagName = useRecoilValue(tagState);
+  const tagName = useRecoilValue(tagNameState);
   // const [userData, setUserInfo] = useRecoilState(userInfo); test1 -> 현재 로그인시 유저데이터 받는중
-  const userData = useRecoilValue(userInfo);
+  const userData = useRecoilValue(userInfoState);
   const tagModal = useResetRecoilState(tagModalVisble);
   // const tagModal = useResetRecoilState(tagModalVisble);
 

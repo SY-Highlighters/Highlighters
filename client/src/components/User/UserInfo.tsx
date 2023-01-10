@@ -1,9 +1,9 @@
-import { userInfo } from "../../states/atom";
+import { userInfoState } from "../../states/atom";
 import { useEffect, useMemo, useState } from "react";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import axios from "axios";
 import { useCookies } from "react-cookie";
-import { feedState } from "../../states/atom";
+import { groupFeedListState } from "../../states/atom";
 import { useQueryClient } from "react-query";
 import { useQuery } from "react-query";
 
@@ -12,7 +12,7 @@ const UserInfo = () => {
   // const setFeeds = useSetRecoilState(feedState);
   // const [userData, setUserInfo] = useRecoilState(userInfo);
   // 유저정보의 변화가 있을때만 리렌더링
-  const user = useRecoilValue(userInfo);
+  const user = useRecoilValue(userInfoState);
   // const queryClient = useQueryClient();
   // const user = queryClient.getQueryData("user");
   // const [user, setUserInfo] = useRecoilState(userInfo);
@@ -20,10 +20,7 @@ const UserInfo = () => {
   // const setUserData = useSetRecoilState(userInfo);
   // console.log(userData);
   // const [userData, setUserInfo] = useRecoilState(userInfo);
-  
 
-
-  
   // react-query 사용 시 server state
   // const {
   //   data: user,

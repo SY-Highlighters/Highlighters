@@ -1,12 +1,12 @@
 import FeedItem from "../Feeds/FeedItem/FeedItem";
 import { useRecoilState, useRecoilValue } from "recoil";
-import { groupTagList } from "../../states/atom";
+import { groupTagListState } from "../../states/atom";
 import { useCookies } from "react-cookie";
 import { useEffect } from "react";
 import axios from "axios";
 import { TagItem } from "../Tags/TagItem/TagItem";
 const GroupTag = () => {
-  const [grouptagList, setGroupTagList] = useRecoilState(groupTagList);
+  const [grouptagList, setGroupTagList] = useRecoilState(groupTagListState);
   const [cookies, setCookie, removeCookie] = useCookies(["logCookie"]);
   useEffect(() => {
     async function fetchData() {

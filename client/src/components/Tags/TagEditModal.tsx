@@ -1,15 +1,19 @@
 import { useSetRecoilState, useRecoilState, useRecoilValue } from "recoil";
 import { tagModalVisble, sighUpCheck } from "../../states/atom";
-import { tagState, tagListState, userInfo } from "../../states/atom";
+import {
+  tagNameState,
+  feedTagListState,
+  userInfoState,
+} from "../../states/atom";
 import { useCookies } from "react-cookie";
 import { useEffect } from "react";
 import axios from "axios";
 import { TagEditItem } from "./TagItem/TagEditItem";
 export function TagEditModal(props: any) {
   const setTagModal = useSetRecoilState(tagModalVisble);
-  const tagName = useRecoilValue(tagState);
+  const tagName = useRecoilValue(tagNameState);
   // 그룹 태그 리스트 전역
-  const [tagList, setTagList] = useRecoilState(tagListState);
+  const [tagList, setTagList] = useRecoilState(feedTagListState);
   const closeModal = () => {
     setTagModal(!tagModalVisble);
   };

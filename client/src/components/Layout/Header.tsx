@@ -12,9 +12,9 @@ import {
   useResetRecoilState,
   useSetRecoilState,
 } from "recoil";
-import { bookmarkState, feedState, mainSectionState } from "../../states/atom";
+import { groupFeedListState, mainSectionState } from "../../states/atom";
 import { useCookies } from "react-cookie";
-import { userInfo } from "../../states/atom";
+import { userInfoState } from "../../states/atom";
 const user = {
   name: "김성태",
   email: "tom@example.com",
@@ -40,12 +40,11 @@ const Header: React.FC = () => {
   const [mainSectionNum, setMainSectionNum] = useRecoilState(mainSectionState);
 
   const [cookies, setCookie, removeCookie] = useCookies(["logCookie"]);
-  const userData = useRecoilValue(userInfo);
-  const resetFeeds = useResetRecoilState(feedState);
+  const userData = useRecoilValue(userInfoState);
+  const resetFeeds = useResetRecoilState(groupFeedListState);
 
   const handleBookmarkClick = () => {
     console.log("bookmark click");
-    console.log(bookmarkState);
     // setBookmark(!bookmark);
     if (mainSectionNum === 1) {
       setMainSectionNum(0);

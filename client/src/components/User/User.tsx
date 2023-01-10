@@ -2,7 +2,7 @@ import UserInfo from "./UserInfo";
 import Group from "../Group/Group";
 import GroupTag from "./GroupTag";
 import { useRecoilValue, useSetRecoilState, useRecoilState } from "recoil";
-import { userInfo } from "../../states/atom";
+import { userInfoState } from "../../states/atom";
 import axios from "axios";
 import { useCookies } from "react-cookie";
 import { useEffect, useState } from "react";
@@ -10,7 +10,7 @@ import { useQuery } from "react-query";
 import { UserIcon } from "@heroicons/react/24/outline";
 const User = () => {
   // const userdata = useRecoilValue(userInfo);
-  const [userData, setUserInfo] = useRecoilState(userInfo);
+  const [userData, setUserInfo] = useRecoilState(userInfoState);
   const [cookies, setCookie, removeCookie] = useCookies(["logCookie"]);
   // useEffect(() => {
   //   async function userDataGet() {

@@ -5,14 +5,18 @@ import AvailableFeeds from "../Feeds/AvailableFeeds";
 import AvailableTags from "../Tags/AvailableTags";
 import { TagEditModal } from "../Tags/TagEditModal";
 import { useEffect, useState } from "react";
-import { mainSectionState, userInfo, tagModalVisble } from "../../states/atom";
+import {
+  mainSectionState,
+  userInfoState,
+  tagModalVisble,
+} from "../../states/atom";
 import Noti from "../Right/Noti";
 import User from "../User/User";
 export function Main() {
   const mainSectionNum = useRecoilValue(mainSectionState);
   const [tagModal, setTagModal] = useRecoilState(tagModalVisble);
 
-  const userData = useRecoilValue(userInfo);
+  const userData = useRecoilValue(userInfoState);
   const [localUser, setLocalUser] = useState(userData);
 
   const MainSection = (setionNum: number) => {

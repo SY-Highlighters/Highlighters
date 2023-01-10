@@ -1,26 +1,21 @@
 import FeedItem from "./FeedItem/FeedItem";
+import { useRecoilState, useRecoilValue } from "recoil";
 import {
-  useRecoilState,
-  useRecoilValue,
-  useResetRecoilState,
-  useSetRecoilState,
-} from "recoil";
-import { feedState, userInfo, tagModalVisble } from "../../states/atom";
+  groupFeedListState,
+  userInfoState,
+  tagModalVisble,
+} from "../../states/atom";
 import { useCookies } from "react-cookie";
 import { useEffect } from "react";
 import axios from "axios";
-import {
-  DocumentIcon,
-  MegaphoneIcon,
-  XMarkIcon,
-} from "@heroicons/react/24/outline";
+import { DocumentIcon, MegaphoneIcon } from "@heroicons/react/24/outline";
 import { TagEditModal } from "../Tags/TagEditModal";
 const AvailableFeeds = () => {
-  const [feeds, setFeeds] = useRecoilState(feedState);
+  const [feeds, setFeeds] = useRecoilState(groupFeedListState);
   const [cookies, setCookie, removeCookie] = useCookies(["logCookie"]);
   const [tagModal, setTagModal] = useRecoilState(tagModalVisble);
   // const [userData, setUserInfo] = useRecoilState(userInfo); test1 -> 현재 로그인시 유저데이터 받는중
-  const userData = useRecoilValue(userInfo);
+  const userData = useRecoilValue(userInfoState);
   // const gropuId = userData.groupId;
   // // 렌더링된 후 바로 실행
   useEffect(() => {

@@ -1,10 +1,14 @@
 import { HashtagIcon } from "@heroicons/react/24/outline";
 import { useSetRecoilState, useRecoilState, useRecoilValue } from "recoil";
 import { TagEditModal } from "./TagEditModal";
-import { feedState, tagListState, tagModalVisble } from "../../states/atom";
+import {
+  groupFeedListState,
+  feedTagListState,
+  tagModalVisble,
+} from "../../states/atom";
 
 export function TagEdit(props: any) {
-  const setTagList = useSetRecoilState(tagListState);
+  const setTagList = useSetRecoilState(feedTagListState);
   const [tagModal, setTagModal] = useRecoilState(tagModalVisble);
 
   const tagEditHandler = () => {
