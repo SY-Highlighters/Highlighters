@@ -26,12 +26,13 @@ model User {
 }
 
 model Group {
-  id         Int    @id @default(autoincrement())
-  name       String @db.Char(20)
-  group_code String @db.Char(100)
+  id         Int         @id @default(autoincrement())
+  name       String      @db.Char(20)
+  group_code String      @db.Char(100)
   Feed       Feed[]
+  highlight  Highlight[]
+  tag        Tag[]       @relation("GroupToTag")
   member     User[]
-  tag        Tag[]  @relation("GroupToTag")
 
   @@map("GROUP")
 }
@@ -85,10 +86,13 @@ model Comment {
 }
 
 model Tag {
-  tag_name String  @id
-  feed     Feed[]  @relation("FeedToTag")
-  group    Group[] @relation("GroupToTag")
+  id       Int    @id @default(autoincrement())
+  tag_name String @db.Char(20)
+  group_id Int
+  group    Group  @relation("GroupToTag", fields: [group_id], references: [id])
+  feed     Feed[] @relation("FeedToTag")
 
+  @@index([group_id], map: "TAG_group_id_fkey")
   @@map("TAG")
 }
 
@@ -101,11 +105,14 @@ model Highlight {
   contents   String
   type       Int
   color      String   @db.Char(10)
+  group_id   Int
   feed       Feed     @relation(fields: [feed_id], references: [id], onDelete: Cascade)
+  group      Group    @relation(fields: [group_id], references: [id])
   user       User     @relation(fields: [user_email], references: [email])
 
   @@index([feed_id], map: "HIGHLIGHT_feed_id_fkey")
   @@index([user_email], map: "HIGHLIGHT_user_email_fkey")
+  @@index([group_id], map: "HIGHLIGHT_group_id_fkey")
   @@map("HIGHLIGHT")
 }
 
