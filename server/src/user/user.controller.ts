@@ -5,7 +5,7 @@ import { GetUser } from 'src/auth/get-user.decorator';
 import { UserService } from './user.service';
 
 @Controller('api/user')
-@UseGuards(AuthGuard())
+@UseGuards(AuthGuard('jwt'))
 export class UserController {
   constructor(private userService: UserService) {}
 

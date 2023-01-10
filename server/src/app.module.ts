@@ -13,7 +13,9 @@ import { NotiModule } from './noti/noti.module';
 import { TagModule } from './tag/tag.module';
 import { BookmarkModule } from './bookmark/bookmark.module';
 import { CalendarModule } from './calendar/calendar.module';
+import { ElasticsearchService } from './repository/connection';
 import { CommentModule } from './comment/comment.module';
+import { SearchModule } from './search/search.module';
 
 @Module({
   imports: [
@@ -29,9 +31,10 @@ import { CommentModule } from './comment/comment.module';
     BookmarkModule,
     CalendarModule,
     CommentModule,
+    SearchModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, ElasticsearchService],
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
