@@ -72,14 +72,14 @@ export class TagService {
     return tags.map((tag) => tag.tag_name);
   }
 
-  async searchTag(tag: string, user: User): Promise<object[]> {
+  async searchTag(tag_id: number, user: User): Promise<object[]> {
     const feeds = await this.prismaService.feed.findMany({
       where: {
         group_id: user.group_id,
         tag: {
           some: {
-            tag_name: {
-              contains: tag,
+            id: {
+              equals: tag_id,
             },
           },
         },
