@@ -13,6 +13,7 @@ import { NotiModule } from './noti/noti.module';
 import { TagModule } from './tag/tag.module';
 import { BookmarkModule } from './bookmark/bookmark.module';
 import { CalendarModule } from './calendar/calendar.module';
+import { ElasticsearchService } from './repository/connection';
 
 @Module({
   imports: [
@@ -29,7 +30,7 @@ import { CalendarModule } from './calendar/calendar.module';
     CalendarModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, ElasticsearchService],
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
