@@ -13,6 +13,7 @@ model User {
   nickname     String?     @db.Char(20)
   password     String      @db.Char(100)
   image        String
+  new_noti     Boolean     @default(false)
   bookmark     Bookmark[]
   comment      Comment[]
   Feed         Feed[]
