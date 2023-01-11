@@ -3,26 +3,15 @@ import CreateFeed from "./CreateFeed";
 import SendNoti from "./SendNoti";
 import NotiBox from "./NotiBox";
 
-export default function Tabs() {
+export default function Tabs(props: any) {
   const [activeTabIndex, setActiveTabIndex] = useState(0);
-  const [feedExist, setFeedExist] = useState(false);
 
-  useEffect(() => {
-    async function getFeed() {
-      let response = await chrome.runtime.sendMessage({
-        greeting: "getFeed",
-      });
-      const data = response.data;
-      if (data.id > 0) {
-        setFeedExist(true);
-      }
-    }
-    getFeed();
-  }, []);
+  //   const [feedExist, setFeedExist] = useState(-1); // -1: loading, 0: feednotexsit, 1: feedexist
 
+  const feedExist = props.feedExist;
   const tabsData = [
     {
-      label: feedExist ? "알림 생성하기" : "피드 생성하기",
+      label: feedExist ? "알림 보내기" : "피드 생성하기",
       content: feedExist ? <SendNoti></SendNoti> : <CreateFeed></CreateFeed>,
     },
     {

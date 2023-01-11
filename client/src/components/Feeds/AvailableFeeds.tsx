@@ -48,7 +48,7 @@ const AvailableFeeds = () => {
           Authorization: `Bearer ${cookies.logCookie}`,
         },
       });
-      return response.data;
+      return response.data.data;
     },
     {
       enabled: groupId !== undefined,

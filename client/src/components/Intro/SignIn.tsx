@@ -65,7 +65,7 @@ export default function SignIn() {
 
   const handleCookie = (data: any) => {
     const expireDate = new Date();
-    expireDate.setMinutes(expireDate.getMinutes() + 60);
+    expireDate.setMinutes(expireDate.getMinutes() + 360);
     // set cookie with http version
     // setCookie("logCookie", data, { path: "/", expires: expireDate });
 
