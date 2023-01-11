@@ -1,10 +1,13 @@
 import { ArrowRightCircleIcon } from "@heroicons/react/24/outline";
 import { useEffect, useState } from "react";
 import { TagItem } from "../components/TagItem";
+import { useSetRecoilState, useRecoilState } from "recoil";
+import { tagsInFeedState } from "../states/atom";
 import TagData from "../models/tag";
 
 export default function CreateFeed() {
-  const [tags, setTags] = useState<TagData[]>([]);
+  const [groupTags, setGroupTags] = useState<TagData[]>([]);
+  const [feedTags, setFeedTags] = useRecoilState(tagsInFeedState);
 
   useEffect(() => {
     async function getTagAsync() {
@@ -13,22 +16,22 @@ export default function CreateFeed() {
       });
       const data = response.data.data;
       console.log("CreateFeed: ", data);
-      tagAdd(data);
+      groupTagAdd(data);
     }
     getTagAsync();
   }, []);
 
-  const tagAdd = (data: []) => {
+  const groupTagAdd = (data: []) => {
     data.map((item: any) => {
       const newTag = {
         tag_id: item.id,
         tag_name: item.tag_name,
       };
-      setTags((oldTags: any) => [...oldTags, newTag]);
+      setGroupTags((oldTags: any) => [...oldTags, newTag]);
     });
   };
 
-  const tagList = tags.map((tag) => (
+  const groupTagList = groupTags.map((tag) => (
     <span>
       <TagItem id={tag.tag_id} name={tag.tag_name}></TagItem>
     </span>
@@ -51,6 +54,13 @@ export default function CreateFeed() {
             <h1 className="my-2 text-base font-semibold text-left text-sky-500 ">
               태그 추가
             </h1>
+            <div>
+              {feedTags.map((tag: any) => (
+                <span>
+                  <TagItem id={tag.tag_id} name={tag.tag_name}></TagItem>
+                </span>
+              ))}
+            </div>
             <div className="items-center w-full px-3 py-2 text-gray-700 bg-white border border-gray-300 rounded-lg focus:outline-none focus:border-gray-400">
               <div className="flex flex-row">
                 <div className="w-full">
@@ -67,7 +77,7 @@ export default function CreateFeed() {
                   />
                 </button>
               </div>
-              <div>{tagList}</div>
+              <div>{groupTagList}</div>
             </div>
           </div>
           <div className="bg-gray-50 px-4 py-2 text-right">
