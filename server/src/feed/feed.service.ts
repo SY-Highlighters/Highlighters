@@ -96,11 +96,15 @@ export class FeedService {
     return result;
   }
 
-  async findFeedByUrl(url: string, user: User): Promise<Feed> {
+  async findFeedByUrl(url: JSON, user: User): Promise<Feed | null> {
+    const url_ = url['url'];
     const result = await this.prismaService.feed.findFirst({
-      where: { url: url, user_email: user.email },
+      where: {
+        url: url_,
+        group_id: user.group_id,
+      },
+      // where: { url: url_, group_id: user.group_id },
     });
-
     return result;
   }
 }

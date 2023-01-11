@@ -16,7 +16,7 @@ const AvailableTags = () => {
   // const [feedsTagList, setFeedsTagList] = useState([]);
   const [cookies, setCookie, removeCookie] = useCookies(["logCookie"]);
   const clickedTag = useRecoilValue(clickedTagState);
-
+  console.log("여기는 태그에 대한 피드야", clickedTag);
   // useEffect(() => {
   //   async function fetchData() {
   //     const response = await axios({

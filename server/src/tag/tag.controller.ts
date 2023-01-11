@@ -69,12 +69,12 @@ export class TagController {
   // 태그에 따라 피드 검색
   @ApiResponse({ status: 200, description: 'success', type: [Object] })
   @ApiOperation({ summary: '태그에 따라 피드 검색' })
-  @Get('/search/:tag')
+  @Get('/search/:tag_name')
   async searchTag(
     @GetUser() user: User,
-    @Param('tag_id') tag_id: number,
+    @Param('tag_name') tag_name: string,
   ): Promise<object[]> {
-    return this.tagService.searchTag(tag_id, user);
+    return this.tagService.searchTag(tag_name, user);
   }
 
   // 피드에 해당하는 태그 조회

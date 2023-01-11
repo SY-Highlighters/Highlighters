@@ -68,7 +68,11 @@ export class TagService {
       where: {
         group_id: user.group_id,
       },
-      distinct: ['id', 'tag_name'],
+      distinct: ['tag_name'],
+      select: {
+        id: true,
+        tag_name: true,
+      },
     });
     return tags;
   }
@@ -87,15 +91,13 @@ export class TagService {
     }
   }
 
-  async searchTag(tag_id: number, user: User): Promise<object[]> {
+  async searchTag(tag_name: string, user: User): Promise<object[]> {
     const feeds = await this.prismaService.feed.findMany({
       where: {
         group_id: user.group_id,
         tag: {
           some: {
-            id: {
-              equals: tag_id,
-            },
+            tag_name: tag_name,
           },
         },
       },
