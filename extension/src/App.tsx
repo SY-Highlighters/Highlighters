@@ -1,10 +1,10 @@
 
-import Tabs from "./tabs/Tabs";
+import Popups from "./Popups";
 function App() {
   return (
     <div className="App">
       <div className="h-80 w-96">
-        <Tabs></Tabs>
+        <Popups></Popups>
       </div>
     </div>
   );
