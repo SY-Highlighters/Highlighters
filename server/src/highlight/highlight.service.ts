@@ -28,6 +28,7 @@ export class HighlightService {
       title,
       image,
       description,
+      color,
     } = createHighlightDto;
 
     let find_feed = await this.prismaService.feed.findFirst({
@@ -54,7 +55,7 @@ export class HighlightService {
         selection: selection,
         contents: contents,
         type: 1,
-        color: '#FF0000',
+        color: color,
       },
     });
 
