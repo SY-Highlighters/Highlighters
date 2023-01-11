@@ -97,7 +97,7 @@ export class NotiService {
     const noties = await this.prismaService.noti.findMany({
       where: {
         receiver_id: user.email,
-        sender_id: { not: user.email },
+        // sender_id: { not: user.email },
         isRead: false,
       },
       orderBy: { createdAt: 'desc' },

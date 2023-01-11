@@ -46,9 +46,11 @@ model Feed {
   updatedAt  DateTime    @default(now()) @updatedAt
   url        String      @db.Char(100)
   user_email String
+  og_id      Int
   bookmark   Bookmark[]
   comment    Comment[]
   group      Group       @relation(fields: [group_id], references: [id])
+  og         Og          @relation("FeedToOg", fields: [og_id], references: [id])
   user       User        @relation(fields: [user_email], references: [email])
   highlight  Highlight[]
   noti       Noti[]
@@ -56,7 +58,18 @@ model Feed {
 
   @@index([group_id], map: "FEED_group_id_fkey")
   @@index([user_email], map: "FEED_user_email_fkey")
+  @@index([og_id], map: "FEED_og_id_fkey")
   @@map("FEED")
+}
+
+model Og {
+  id          Int    @id @default(autoincrement())
+  title       String
+  image       String
+  description String
+  feed        Feed[] @relation("FeedToOg")
+
+  @@map("OG")
 }
 
 model Bookmark {
