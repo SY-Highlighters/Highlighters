@@ -8,9 +8,6 @@ const host_url = is_production
   ? "https://highlighters.site"
   : "http://localhost:3001";
 
-let feedExist;
-let currentUrl;
-
 async function getCookieToken() {
   const cookie = await new Promise((resolve) => {
     chrome.cookies.get({ name: "logCookie", url: cookie_url }, (cookie) =>
@@ -34,7 +31,6 @@ async function postHighlight(token, request) {
   return data;
 }
 
-// 반드시 fetch가 먼저 실행되고나서 feedExist를 업데이트해야 함
 async function getHighlight(token, request) {
   const response = await fetch(`${host_url}/api/highlight/feed`, {
     method: "POST",
@@ -44,39 +40,28 @@ async function getHighlight(token, request) {
     },
     body: JSON.stringify(request),
   });
+
   const data = await response.json();
-
-  // if (data.success === false) {
-  //   feedExist = false;
-  // } else feedExist = true;
-  // console.log("[getHighlight] feedExist set:", feedExist);
-
   return data;
 }
 
-async function postNoti(token, request) {
-  chrome.tabs.query({ active: true, currentWindow: true });
-  chrome.tabs.query({ active: true, currentWindow: true }, (pages) => {
-    chrome.tabs.sendMessage(pages[0].id, { greeting: "getCurUrl" }, (r) => {
-      const currentUrl = r;
-      const noti = {
-        url: currentUrl,
-        contents: request,
-      };
-      console.log(noti);
+async function postNoti(token, contents, url) {
+  const noti = {
+    url: url,
+    contents: contents,
+  };
+  // console.log(noti);
 
-      const response = fetch(`${host_url}/api/noti/create`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify(noti),
-      });
-      const data = response.json();
-      return data;
-    });
+  const response = fetch(`${host_url}/api/noti/create`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify(noti),
   });
+  const data = response.json();
+  return data;
 }
 
 async function getNoti(token) {
@@ -88,12 +73,12 @@ async function getNoti(token) {
     },
   });
   const data = await response.json();
-  console.log(data);
+  console.log("bs getNoti", data);
   return data;
 }
 
 async function getFeed(token, url) {
-  const response = await fetch(`${host_url}/api/feed/url`, {
+  const response = await fetch(`${host_url}/api/feed/feed_url`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -101,6 +86,7 @@ async function getFeed(token, url) {
     },
     body: JSON.stringify(url),
   });
+
   const data = await response.json();
   return data;
 }
@@ -128,6 +114,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     switch (request.greeting) {
       // 웹페이지의 하이라이팅을 디비로 전송
       case "postHighlight":
+        console.log("bs: posthighlighåt");
         postHighlight(token, request.data)
           .then((data) => {
             sendResponse({ data });
@@ -148,30 +135,45 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
           .catch((error) => console.log(`fetch 실패: ${error}`));
         break;
 
-      // 노티 생성
+      // 현재 탭의 url에 대한 노티 생성
       case "postNoti":
-        postNoti(token, request.data)
-          .then((data) => sendResponse({ data }))
-          .catch((error) => console.log(`fetch 실패: ${error}`));
+        console.log("bs: postNoti");
+        chrome.windows.getCurrent(function (win) {
+          chrome.tabs.query(
+            { windowId: win.id, active: true },
+            function (tabs) {
+              if (tabs.length !== "undefined" && tabs.length === 1) {
+                const currentURL = tabs[0].url;
+                postNoti(token, request.data, currentURL)
+                  .then((data) => sendResponse({ data }))
+                  .catch((error) => console.log(`fetch 실패: ${error}`));
+              }
+            }
+          );
+        });
+
         break;
 
+      // 유저가 받은 노티 리스트 요청
       case "getNoti":
         getNoti(token)
           .then((data) => sendResponse({ data }))
           .catch((error) => console.log(`fetch 실패: ${error}`));
         break;
 
+      // 현재 탭의 url에 대한 피드 정보 요청
       case "getFeed":
         chrome.windows.getCurrent(function (win) {
           chrome.tabs.query(
             { windowId: win.id, active: true },
             function (tabs) {
-              if (tabs.length !== "undefined" && tabs.length === 1)
-                var currentURL = tabs[0].url;
-              console.log(currentURL);
-              getFeed(token, currentURL)
-                .then((data) => sendResponse({ data }))
-                .catch((error) => console.log(`fetch 실패: ${error}`));
+              if (tabs.length !== "undefined" && tabs.length === 1) {
+                const currentURL = tabs[0].url;
+                console.log("bs, getFeed:", currentURL);
+                getFeed(token, { url: currentURL })
+                  .then((data) => sendResponse({ data }))
+                  .catch((error) => console.log(`fetch 실패: ${error}`));
+              }
             }
           );
         });

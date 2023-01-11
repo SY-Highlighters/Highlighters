@@ -12,9 +12,10 @@ export default function Tabs() {
       let response = await chrome.runtime.sendMessage({
         greeting: "getFeed",
       });
-      const data = response;
-      console.log(data);
-      setFeedExist(data);
+      const data = response.data;
+      if (data.id > 0) {
+        setFeedExist(true);
+      }
     }
     getFeed();
   }, []);

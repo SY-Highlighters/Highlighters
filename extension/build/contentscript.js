@@ -148,6 +148,8 @@ async function postHighlight(range, highlightStr) {
     endOffset: range.endOffset,
   };
 
+  console.log("contentscript: posthighlight");
+
   chrome.runtime.sendMessage(
     {
       greeting: "postHighlight",
@@ -283,17 +285,17 @@ if (url_check) {
   };
 }
 
-chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
-  switch (request.greeting) {
-    // 웹페이지의 하이라이팅을 디비로 전송
-    case "getCurUrl":
-      console.log(document.location.href);
-      sendResponse(document.location.href);
-      break;
+// chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+//   switch (request.greeting) {
+//     // 웹페이지의 하이라이팅을 디비로 전송
+//     case "getCurUrl":
+//       console.log(document.location.href);
+//       sendResponse(document.location.href);
+//       break;
 
-    default:
-      console.log(request, sender);
-      break;
-  }
-  return true;
-});
+//     default:
+//       console.log(request, sender);
+//       break;
+//   }
+//   return true;
+// });
