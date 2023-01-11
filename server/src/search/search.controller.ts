@@ -1,3 +1,4 @@
+import { ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { GetUser } from './../auth/get-user.decorator';
 import {
   Controller,
@@ -20,6 +21,13 @@ import { User } from '@prisma/client';
 export class SearchController {
   constructor(private readonly searchService: SearchService) {}
 
+  // 검색바 조회
+  @ApiResponse({
+    status: 200,
+    description: 'success',
+    type: '피드, 하이라이트, 태그',
+  })
+  @ApiOperation({ summary: '검색바 조회' })
   @Get('bar/:word')
   async find(
     @GetUser() user: User,
