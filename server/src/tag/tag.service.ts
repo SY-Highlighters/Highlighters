@@ -95,11 +95,15 @@ export class TagService {
     const feeds = await this.prismaService.feed.findMany({
       where: {
         group_id: user.group_id,
+        // tag: {
+        //   some: {
+        //     id: {
+        //       equals: tag_id,
+        //     },
+        //   },
         tag: {
-          some: {
-            id: {
-              equals: tag_id,
-            },
+          every: {
+            id: tag_id,
           },
         },
       },
@@ -109,6 +113,7 @@ export class TagService {
         tag: true,
       },
     });
+    console.log(feeds);
     const feedswithOg: object[] = [];
     for (const feed of feeds) {
       if (feed.url) {

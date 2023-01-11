@@ -69,7 +69,7 @@ export class TagController {
   // 태그에 따라 피드 검색
   @ApiResponse({ status: 200, description: 'success', type: [Object] })
   @ApiOperation({ summary: '태그에 따라 피드 검색' })
-  @Get('/search/:tag')
+  @Get('/search/:tag_id')
   async searchTag(
     @GetUser() user: User,
     @Param('tag_id') tag_id: number,
