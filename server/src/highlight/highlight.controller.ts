@@ -6,15 +6,21 @@ import {
   Param,
   Patch,
   Post,
+  UseFilters,
   UseGuards,
+  UseInterceptors,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { Highlight, User } from '@prisma/client';
 import { GetUser } from 'src/auth/get-user.decorator';
+import { HttpExceptionFilter } from 'src/common/exceptions/http-exception.filter';
+import { SuccessInterceptor } from 'src/common/interceptors/success.interceptors';
 import { CreateHighlightDto, UpdateHighlightDto } from './dto/highlight.dto';
 import { HighlightService } from './highlight.service';
 
 @Controller('api/highlight')
+@UseInterceptors(SuccessInterceptor)
+@UseFilters(HttpExceptionFilter)
 @UseGuards(AuthGuard('jwt'))
 export class HighlightController {
   constructor(private readonly highlightService: HighlightService) {}

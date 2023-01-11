@@ -146,10 +146,9 @@ chrome.alarms.onAlarm.addListener(async (alarm) => {
     const check = await isNewNotiCreate(token);
 
     if (check.data) {
-      createPush("newNoti", "새로운 알림이 있습니다.", "확인해보세요!");
-
-      const succ = await changeNewNotiInUser(token);
-      console.log(succ);
+      await chrome.action.setBadgeText({ text: "new" });
+      await chrome.action.setBadgeBackgroundColor({ color: "#0000FF" });
+      await changeNewNotiInUser(token);
     }
   }
 });
