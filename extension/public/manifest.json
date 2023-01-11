@@ -13,10 +13,17 @@
     "tabs",
     "cookies",
     "notifications",
-    "alarms"
+    "alarms",
+    "action"
   ],
   "host_permissions": ["<all_urls>", "http://localhost/"],
   "action": {
+    "default_icon": {
+      "16": "images/pen.png",
+      "24": "images/pen.png",
+      "32": "images/pen.png"
+    },
+
     "default_popup": "index.html"
   },
   "content_scripts": [
