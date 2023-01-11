@@ -1,10 +1,20 @@
-// [TODO] onclick 이벤트 추가하기 -> 서버에 요청 보내기
+// // [TODO] onclick 이벤트 추가하기 -> 서버에 요청 보내기
+// async function getNotiAsync() {
+//   let response = await chrome.runtime.sendMessage({
+//     greeting: "isRead",
+    
+
+//   });
+
+// }
+
 
 export default function Noti(props: any) {
   return (
     <li
       id={props.id}
       className="px-4 py-3 mt-3 border-t-4 rounded-lg rounded-b shadow-md bg-sky-100 border-sky-500 hover:bg-sky-600"
+      // onClick={()}
     >
       <div className="flex">
         <div className="py-1"></div>

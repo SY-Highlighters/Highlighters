@@ -150,6 +150,7 @@ async function postHighlight(range, highlightStr) {
 
   console.log("contentscript: posthighlight");
 
+
   chrome.runtime.sendMessage(
     {
       greeting: "postHighlight",
@@ -243,6 +244,7 @@ function onWindowReady() {
   button.addEventListener("click", highlight);
 
   // 하이라이트 가져오기
+  console.log(window.location.href);
   getHighlight(window.location.href);
 }
 

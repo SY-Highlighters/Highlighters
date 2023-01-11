@@ -16,6 +16,7 @@ export default function Popups() {
       let response = await chrome.runtime.sendMessage({
         greeting: "getFeed",
       });
+      console.log(response);
       const result = response.data.data;
       console.log(result);
       setFeed(result);
