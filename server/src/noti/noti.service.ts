@@ -30,6 +30,10 @@ export class NotiService {
             feed_id: feed_.id,
           },
         });
+        await this.prismaService.user.update({
+          where: { email: feed_.group.member[i].email },
+          data: { new_noti: true },
+        });
         result += 1;
       }
     } catch (e) {
