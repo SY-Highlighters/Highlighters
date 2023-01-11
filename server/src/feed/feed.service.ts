@@ -64,6 +64,9 @@ export class FeedService {
             image: true,
           },
         },
+        comment: {
+          orderBy: { createdAt: 'desc' },
+        },
       },
     });
 
