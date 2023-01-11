@@ -6,7 +6,6 @@ import NotiData from "../models/notiData";
 export default function NotiBox() {
   const [notis, setNoti] = useState<NotiData[]>([]);
   useEffect(() => {
-    console.log("messagebox 렌더링");
     async function getNotiAsync() {
       let response = await chrome.runtime.sendMessage({
         greeting: "getNoti",
@@ -43,7 +42,7 @@ export default function NotiBox() {
     ></Noti>
   ));
   return (
-    <div className="mx-3">
+    <div className="mx-3 mb-3">
       <ul>{notiList}</ul>
     </div>
   );

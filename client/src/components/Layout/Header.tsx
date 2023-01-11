@@ -15,6 +15,8 @@ import {
 import { mainSectionState } from "../../states/atom";
 import { useCookies } from "react-cookie";
 import { userInfoState } from "../../states/atom";
+import axios from "axios";
+import { useQuery } from "react-query";
 const user = {
   name: "김성태",
   email: "tom@example.com",
@@ -40,9 +42,44 @@ const Header: React.FC = () => {
   const [mainSectionNum, setMainSectionNum] = useRecoilState(mainSectionState);
 
   const [cookies, setCookie, removeCookie] = useCookies(["logCookie"]);
-  const userData = useRecoilValue(userInfoState);
   // const resetFeeds = useResetRecoilState(groupFeedListState);
-
+  // react-query 사용 시 server state
+  const {
+    data: user,
+    isSuccess,
+    isLoading,
+    error,
+  } = useQuery(
+    ["user"],
+    async () => {
+      try {
+        const res = await axios.get(
+          `${process.env.REACT_APP_HOST}/api/user/signin`,
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${cookies.logCookie}`,
+            },
+          }
+        );
+        console.log(res.data);
+        return res.data;
+      } catch (err) {
+        console.error(err);
+      }
+    },
+    {
+      // cacheTime: 60 * 60 * 1000,
+      // 1시간동안 캐시를 사용한다.
+      cacheTime: 60 * 60 * 1000,
+      staleTime: 2 * 60 * 60 * 1000,
+      // Refetch the data when the component mounts, including when the page is refreshed
+      refetchOnMount: false,
+      // Do not refetch the data when the window gains focus
+      refetchOnWindowFocus: false,
+      // 쿠키가 준비되었을때 쿼리를 실행한다.
+    }
+  );
   const handleBookmarkClick = () => {
     console.log("bookmark click");
     // setBookmark(!bookmark);
@@ -152,7 +189,11 @@ const Header: React.FC = () => {
                             <span className="sr-only">Open user menu</span>
                             <img
                               className="w-12 h-12 rounded-full"
-                              src={userData.img}
+                              src={
+                                isSuccess && user.image
+                                  ? user.image
+                                  : "https://via.placeholder.com/150"
+                              }
                               alt=""
                             />
                           </Menu.Button>
@@ -235,16 +276,20 @@ const Header: React.FC = () => {
                     <div className="flex-shrink-0">
                       <img
                         className="w-10 h-10 rounded-full"
-                        src={userData.img}
+                        src={
+                          isSuccess && user.image
+                            ? user.image
+                            : "https://via.placeholder.com/150"
+                        }
                         alt=""
                       />
                     </div>
                     <div className="ml-3">
                       <div className="text-base font-medium leading-none text-white">
-                        {user.name}
+                        {/* {user.nickname} */}
                       </div>
                       <div className="text-sm font-medium leading-none text-gray-400">
-                        {user.email}
+                        {/* {user.email} */}
                       </div>
                     </div>
                     <button

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import CreateFeed from "./CreateFeed";
 import SendNoti from "./SendNoti";
 import NotiBox from "./NotiBox";
@@ -6,9 +6,7 @@ import NotiBox from "./NotiBox";
 export default function Tabs(props: any) {
   const [activeTabIndex, setActiveTabIndex] = useState(0);
 
-  //   const [feedExist, setFeedExist] = useState(-1); // -1: loading, 0: feednotexsit, 1: feedexist
-    
-    
+  // console.log(props.feed);
 
   const feedExist = props.feed != null ? true : false;
   const tabsData = [
@@ -25,7 +23,7 @@ export default function Tabs(props: any) {
   return (
     <div>
       <div className="flex space-x-5 border-b ml-3">
-              {/* Loop through tab data and render button for each. */}
+        {/* Loop through tab data and render button for each. */}
 
         <button
           key={0}

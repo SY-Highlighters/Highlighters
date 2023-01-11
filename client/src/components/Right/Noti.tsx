@@ -18,6 +18,7 @@ export default function Noti() {
           Authorization: `Bearer ${cookies.logCookie}`,
         },
       });
+      console.log(res.data.data);
       notiAdd(res.data.data);
     }
     notiGet();
@@ -44,6 +45,7 @@ export default function Noti() {
         sender={noti.nickname}
         title={noti.title}
         contents={noti.contents}
+        url={noti.url}
       />
     </div>
   ));

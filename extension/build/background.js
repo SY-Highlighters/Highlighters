@@ -78,6 +78,7 @@ async function getNoti(token) {
 }
 
 async function getFeed(token, url) {
+  console.log(url);
   const response = await fetch(`${host_url}/api/feed/feed_url`, {
     method: "POST",
     headers: {
@@ -86,6 +87,8 @@ async function getFeed(token, url) {
     },
     body: JSON.stringify(url),
   });
+
+  console.log(response);
 
   const data = await response.json();
   return data;
@@ -214,7 +217,6 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
             function (tabs) {
               if (tabs.length !== "undefined" && tabs.length === 1) {
                 const currentURL = tabs[0].url;
-                console.log("bs, getFeed:", currentURL);
                 getFeed(token, { url: currentURL })
                   .then((data) => sendResponse({ data }))
                   .catch((error) => console.log(`fetch 실패: ${error}`));

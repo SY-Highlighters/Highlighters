@@ -6,7 +6,7 @@ import { useEffect } from "react";
 import axios from "axios";
 import { TagItem } from "../Tags/TagItem/TagItem";
 import { useQuery } from "react-query";
-const GroupTag = () => {
+const GroupTag = (props: any) => {
   const [grouptagList, setGroupTagList] = useRecoilState(feedsTagListState);
   const [cookies, setCookie, removeCookie] = useCookies(["logCookie"]);
 
@@ -81,11 +81,15 @@ const GroupTag = () => {
   //   </span>
   // ));
   return (
-    <div className="w-full mt-10 bg-white rounded-lg shadow-lg">
+    <div
+      className={
+        props.onCss ? props.onCss : "w-full mt-10 bg-white rounded-lg shadow-lg"
+      }
+    >
       <div className="" />
       <div className="relative p-6 rounded-3xl -top-5">
         <div className="relative flex items-end">
-          <h3 className="mt-5 text-2xl antialiased font-bold ">﹟태그</h3>
+          <h3 className="mt-5 text-xl antialiased font-bold ">그룹 태그</h3>
           <div className="flex flex-col items-center px-5"></div>
         </div>
         {/* 태그 공간 -> fix:동적 처리*/}
@@ -95,7 +99,11 @@ const GroupTag = () => {
             tagList &&
             tagList.map((tag: any) => (
               <span key={tag.id}>
-                <TagItem name={tag.tag_name} id={tag.id} />
+                <TagItem
+                  name={tag.tag_name}
+                  id={tag.id}
+                  onFunc={props.onFunc}
+                />
               </span>
             ))}
         </div>
