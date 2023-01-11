@@ -64,6 +64,7 @@ export class TagService {
       where: {
         group_id: user.group_id,
       },
+      distinct: ['tag_name'],
     });
     return tags.map((tag) => tag.tag_name);
   }
