@@ -34,7 +34,6 @@ async function postHighlight(token, request) {
   return data;
 }
 
-// 반드시 fetch가 먼저 실행되고나서 feedExist를 업데이트해야 함
 async function getHighlight(token, request) {
   const response = await fetch(`${host_url}/api/highlight/feed`, {
     method: "POST",
@@ -120,8 +119,37 @@ function createPush(id, title, msg) {
   );
 }
 
+async function checkNewNoti(token) {
+  const response = await fetch(`${host_url}/api/noti/check`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+  });
+  const data = await response.json();
+  return data;
+}
+
 /* 코드 시작 */
 const jwt_token = getCookieToken().then((cookie) => cookie?.value);
+
+chrome.alarms.create("checkNoti", {
+  periodInMinutes: 1 / 6,
+  when: Date.now(),
+});
+
+chrome.alarms.onAlarm.addListener((alarm) => {
+  if (alarm.name === "checkNoti") {
+    jwt_token.then((token) => {
+      checkNewNoti(token).then((is_changed) => {
+        if (is_changed) {
+          console.log("새로운 알림이 있습니다");
+        }
+      });
+    });
+  }
+});
 
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   jwt_token.then((token) => {

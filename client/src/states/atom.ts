@@ -30,10 +30,6 @@ export const feedsTagListState = atom<any>({
   key: "feedsTagListState",
   default: [],
 });
-export const currentFeedIdState = atom<number>({
-  key: "currentFeedIdState",
-  default: 0,
-});
 
 /* 로그인 */
 // 로그인 모달창을 띄우는 state

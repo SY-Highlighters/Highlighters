@@ -82,7 +82,7 @@ const FeedItem = (props: any) => {
 
           {/* 댓글 기능 */}
           <div className="flex items-center mt-2 text-sm text-gray-500">
-            <TagEdit key={props.key} tag={props.tag} feed_id={props.id}></TagEdit>
+            <TagEdit key={props.key} tag={props.tag}></TagEdit>
             {/* 즐겨찾기 */}
             {/* <div>
               <CheckIcon

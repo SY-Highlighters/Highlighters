@@ -1,3 +1,4 @@
+import { ApiResponse, ApiOperation } from '@nestjs/swagger';
 import { FeedService } from './feed.service';
 import { Controller, Get, Post, Delete } from '@nestjs/common';
 import { Feed, User } from '@prisma/client';
@@ -40,5 +41,16 @@ export class FeedController {
   @Delete('/delete/:id')
   async deleteFeedById(@Param('id') id: number): Promise<Feed> {
     return this.feedService.deleteFeedById(id);
+  }
+
+  // URL로 Feed 찾기
+  @ApiResponse({ status: 200, description: 'success', type: 'Feed' })
+  @ApiOperation({ summary: 'URL로 Feed 찾기' })
+  @Post('/url/:url')
+  async findFeedByUrl(
+    @Body('url') url: string,
+    @GetUser() user: User,
+  ): Promise<Feed> {
+    return this.feedService.findFeedByUrl(url, user);
   }
 }
