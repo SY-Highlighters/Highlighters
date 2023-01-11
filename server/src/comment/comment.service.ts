@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/repository/prisma.service';
-import { CreateCommentDto } from './dto/comment.dto';
+import { CreateCommentDto, ShowCommentDto } from './dto/comment.dto';
 import { Comment } from '.prisma/client';
 
 @Injectable()
@@ -21,11 +21,30 @@ export class CommentService {
     return result;
   }
 
-  async getComments(feed_id: number): Promise<Comment[]> {
-    const result = await this.prismaService.comment.findMany({
+  async getComments(feed_id: number): Promise<ShowCommentDto[]> {
+    const comments = await this.prismaService.comment.findMany({
       where: { feed_id: feed_id },
     });
-
+    // add user nickname, user image and comment created_at
+    const result: ShowCommentDto[] = [];
+    try {
+      for (const comment of comments) {
+        const user = await this.prismaService.user.findUnique({
+          where: { email: comment.user_email },
+        });
+        const showCommentDto: ShowCommentDto = {
+          id: comment.id,
+          contents: comment.contents,
+          nickname: user.nickname,
+          profile_image: user.image,
+          createdAt: comment.createdAt,
+        };
+        result.push(showCommentDto);
+      }
+    } catch (e) {
+      console.log(e);
+      return [];
+    }
     return result;
   }
 

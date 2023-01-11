@@ -16,3 +16,11 @@ export class CreateCommentDto {
   @IsString()
   contents: string;
 }
+
+export class ShowCommentDto {
+  id: number;
+  contents: string;
+  nickname: string;
+  profile_image: string;
+  createdAt: Date;
+}

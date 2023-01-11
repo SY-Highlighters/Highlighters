@@ -41,7 +41,7 @@ export class CommentController {
 
   // feed의 모든 Comment 가져오기
   @Get('/get/:feed_id')
-  async getComments(@Param('feed_id') feed_id: number): Promise<Comment[]> {
+  async getComments(@Param('feed_id') feed_id: number): Promise<ShowCommentDto[]> {
     return this.commentService.getComments(feed_id);
   }
 
