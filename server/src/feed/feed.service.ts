@@ -1,4 +1,4 @@
-import { Feed } from '@prisma/client';
+import { Feed, User } from '@prisma/client';
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/repository/prisma.service';
 import { getUrlMeta } from 'src/util/geturlmeta';
@@ -91,6 +91,14 @@ export class FeedService {
   async deleteFeedById(id: number): Promise<Feed> {
     const result = await this.prismaService.feed.delete({
       where: { id },
+    });
+
+    return result;
+  }
+
+  async findFeedByUrl(url: string, user: User): Promise<Feed> {
+    const result = await this.prismaService.feed.findFirst({
+      where: { url: url, user_email: user.email },
     });
 
     return result;
