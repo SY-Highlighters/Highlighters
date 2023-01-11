@@ -94,8 +94,8 @@ const GroupTag = () => {
           {isSuccess &&
             tagList &&
             tagList.map((tag: any) => (
-              <span>
-                <TagItem name={tag.tag_name} id={tag.tag_id} />
+              <span key={tag.id}>
+                <TagItem name={tag.tag_name} id={tag.id} />
               </span>
             ))}
         </div>

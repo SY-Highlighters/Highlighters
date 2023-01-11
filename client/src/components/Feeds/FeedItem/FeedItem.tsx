@@ -33,12 +33,12 @@ const FeedItem = (props: any) => {
   // 태그 파싱
   const tags = props.tag.map((tagItem: any, index: number) => (
     <li key={index}>
-      <TagItem name={tagItem.tag_name} id={tagItem.tag_id}></TagItem>
+      <TagItem name={tagItem.tag_name} tag_id={tagItem.id}></TagItem>
     </li>
   ));
 
   return (
-    <li className="py-5">
+    // <li className="py-5">
       <div className="overflow-hidden bg-white rounded-lg shadow-lg">
         <div className="flex flex-row-reverse items-center px-3 mt-3 text-sm text-gray-500">
           <CalendarIcon
@@ -83,7 +83,7 @@ const FeedItem = (props: any) => {
           {/* 댓글 기능 */}
           <div className="flex items-center mt-2 text-sm text-gray-500">
             <TagEdit
-              key={props.key}
+              // key={props.key}
               tag={props.tag}
               feed_id={props.id}
             ></TagEdit>
@@ -97,10 +97,12 @@ const FeedItem = (props: any) => {
             즐겨찾기
             {/* 댓글 */}
             <div>
-              <ChevronDownIcon
-                className="mr-1.5 h-5 w-5 flex-shrink-0 text-gray-400 "
-                aria-hidden="true"
-              />
+              <button>
+                <ChevronDownIcon
+                  className="mr-1.5 h-5 w-5 flex-shrink-0 text-gray-400 "
+                  aria-hidden="true"
+                />
+              </button>
               {/* ChevronDownIcon 클릭시 댓글창  */}
               {/* */}
             </div>
@@ -122,7 +124,7 @@ const FeedItem = (props: any) => {
           </div>
         </div>
       </div>
-    </li>
+    // </li>
   );
 };
 
