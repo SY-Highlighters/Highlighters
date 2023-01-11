@@ -40,7 +40,7 @@ const AvailableTags = () => {
     async () => {
       const response = await axios({
         method: "get",
-        url: `${process.env.REACT_APP_HOST}/api/tag/search/${clickedTag.tag_id}`,
+        url: `${process.env.REACT_APP_HOST}/api/tag/search/${clickedTag.tag_name}`,
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${cookies.logCookie}`,
@@ -49,7 +49,7 @@ const AvailableTags = () => {
       return response.data;
     },
     {
-      enabled: clickedTag.tag_id !== undefined,
+      enabled: clickedTag.tag_name !== undefined,
     }
   );
   // const tagAdd = (data: []) => {
