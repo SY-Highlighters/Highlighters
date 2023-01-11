@@ -103,7 +103,6 @@ export class FeedService {
         url: url_,
         group_id: user.group_id,
       },
-      // where: { url: url_, group_id: user.group_id },
     });
     return result;
   }
