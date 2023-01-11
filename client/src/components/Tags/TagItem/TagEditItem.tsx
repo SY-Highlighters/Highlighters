@@ -1,5 +1,23 @@
+import axios from "axios";
+import { useCookies } from "react-cookie";
 export function TagEditItem(props: any) {
-  const tagEditHandler = () => {};
+  const [cookies, setCookie, removeCookie] = useCookies(["logCookie"]);
+  // Todo : 태그 삭제 기능
+  const tagEditHandler = async () => {
+    console.log(props.tagId, props.feedId);
+    const host_url = `${process.env.REACT_APP_HOST}/api/tag/delete`;
+    // 서버에 태그 삭제 요청
+    await axios.delete(host_url, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${cookies.logCookie}`,
+      },
+      data: {
+        tag_id: props.tagId,
+        feed_id: props.feedId,
+      },
+    });
+  };
   return (
     <span className="inline-flex items-center mr-2 px-3 py-0.5 rounded-full text-sm font-medium bg-sky-100 text-sky-800 hover:bg-sky-300">
       #{props.tagName}

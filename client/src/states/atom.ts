@@ -1,10 +1,13 @@
 import { atom } from "recoil";
 
 /* 태그 */
-// 태그 클릭시 해당 태그 이름
-export const tagNameState = atom<String>({
-  key: "tagNameState",
-  default: "",
+// 태그 클릭시 해당 태그 Id
+export const clickedTagState = atom<any>({
+  key: "clickedTagState",
+  default: {
+    tag_id: 0,
+    tag_name: "",
+  },
 });
 
 // 피드의 태그 리스트
@@ -91,6 +94,12 @@ export const userInfoState = atom<any>({
     groupId: "",
   },
 });
+
+export const currentFeedIdState = atom<number>({
+  key: "currentFeedIdState",
+  default: 0,
+});
+
 /// 쓰레기장
 // // 북마크 전환 state
 // export const bookmarkState = atom<boolean>({

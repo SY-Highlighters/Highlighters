@@ -3,81 +3,116 @@ import { useRecoilState, useRecoilValue, useResetRecoilState } from "recoil";
 import {
   feedsInGroupState,
   tagsInFeedState,
-  tagNameState,
+  clickedTagState,
   userInfoState,
   feedsTagListState,
 } from "../../states/atom";
 import { useCookies } from "react-cookie";
-import { useEffect } from "react";
+// import { useEffect, useState } from "react";
 import axios from "axios";
-
+import { useQuery } from "react-query";
 const AvailableTags = () => {
-  const [tagFeedList, setTagFeedList] = useRecoilState(feedsTagListState);
+  // const [tagFeedList, setTagFeedList] = useRecoilState(feedsTagListState);
+  // const [feedsTagList, setFeedsTagList] = useState([]);
   const [cookies, setCookie, removeCookie] = useCookies(["logCookie"]);
-  const tagName = useRecoilValue(tagNameState);
-  const userData = useRecoilValue(userInfoState);
+  const clickedTag = useRecoilValue(clickedTagState);
 
-  useEffect(() => {
-    async function fetchData() {
+  // useEffect(() => {
+  //   async function fetchData() {
+  //     const response = await axios({
+  //       method: "get",
+  //       url: `${process.env.REACT_APP_HOST}/api/tag/search/${clickedTag.tag_id}`,
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //         Authorization: `Bearer ${cookies.logCookie}`,
+  //       },
+  //     });
+
+  //     const data = response.data;
+  //     console.log(data);
+  //     tagAdd(data.data);
+  //   }
+  //   fetchData();
+  // }, []);
+
+  const { data: feedsInTag, isSuccess } = useQuery(
+    "feedsInTag",
+    async () => {
       const response = await axios({
         method: "get",
-        url: `${process.env.REACT_APP_HOST}/api/tag/search/${tagName}`,
+        url: `${process.env.REACT_APP_HOST}/api/tag/search/${clickedTag.tag_id}`,
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${cookies.logCookie}`,
         },
       });
-
-      const data = response.data;
-      console.log(data);
-      tagAdd(data.data);
+      return response.data;
+    },
+    {
+      enabled: clickedTag.tag_id !== undefined,
     }
-    fetchData();
-  }, [userData.groupId]);
+  );
+  // const tagAdd = (data: []) => {
+  //   data.map((item: any) => {
+  //     const newTag = {
+  //       id: item.id,
+  //       key: item.id,
+  //       url: item.url,
+  //       og_image: item.og_image,
+  //       title: item.og_title,
+  //       description: item.og_desc,
+  //       highlight: item.highlight,
+  //       Date: item.createdAt,
+  //       tag: item.tag,
+  //     };
+  //     setFeedsTagList((oldTags: any) => [...oldTags, newTag]);
+  //   });
+  // };
 
-  const tagAdd = (data: []) => {
-    data.map((item: any) => {
-      const newTag = {
-        id: item.id,
-        key: item.id,
-        url: item.url,
-        og_image: item.og_image,
-        title: item.og_title,
-        description: item.og_desc,
-        highlight: item.highlight,
-        Date: item.createdAt,
-        tag: item.tag,
-      };
-      setTagFeedList((oldTags: any) => [...oldTags, newTag]);
-    });
-  };
-
-  const tagsList = tagFeedList.map((feed: any, index: number) => (
-    <div key={feed.id}>
-      <FeedItem
-        id={feed.id}
-        key={feed.id + index}
-        title={feed.title}
-        description={feed.description}
-        og_image={feed.og_image}
-        url={feed.url}
-        highlight={feed.highlight}
-        date={feed.Date}
-        tag={feed.tag}
-      />
-    </div>
-  ));
+  // const tagsList = feedsTagList.map((feed: any, index: number) => (
+  //   <div key={feed.id}>
+  //     <FeedItem
+  //       id={feed.id}
+  //       key={feed.id + index}
+  //       title={feed.title}
+  //       description={feed.description}
+  //       og_image={feed.og_image}
+  //       url={feed.url}
+  //       highlight={feed.highlight}
+  //       date={feed.Date}
+  //       tag={feed.tag}
+  //     />
+  //   </div>
+  // ));
   return (
     <div className="h-12 overscroll-auto basis-2/4">
       <div className="relative p-3 rounded-3xl">
         <h1 className="text-2xl antialiased font-bold text-whtie">
           <span className="inline-flex items-center mr-2 px-3 py-0.5 rounded-full text-xl font-bold bg-sky-100 text-sky-800">
-            # {tagName}
+            # {clickedTag.tag_name}
           </span>
         </h1>
       </div>
       <div className="">
-        <ul className="">{tagsList}</ul>
+        <ul className="">
+          {isSuccess &&
+            feedsInTag &&
+            feedsInTag.map((feed: any) => (
+              <div key={feed.id}>
+                <FeedItem
+                  id={feed.id}
+                  key={feed.id}
+                  title={feed.title}
+                  description={feed.og_desc}
+                  og_image={feed.og_image}
+                  url={feed.url}
+                  highlight={feed.highlight}
+                  date={feed.createdAt}
+                  tag={feed.tag}
+                />
+              </div>
+            ))}
+        </ul>
       </div>
     </div>
   );
