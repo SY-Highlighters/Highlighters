@@ -1,6 +1,39 @@
 import { ArrowRightCircleIcon } from "@heroicons/react/24/outline";
+import { useEffect, useState } from "react";
+import { TagItem } from "../components/TagItem";
+import TagData from "../models/tag";
 
 export default function CreateFeed() {
+  const [tags, setTags] = useState<TagData[]>([]);
+
+  useEffect(() => {
+    async function getTagAsync() {
+      let response = await chrome.runtime.sendMessage({
+        greeting: "getGroupTags",
+      });
+      const data = response.data.data;
+      console.log("CreateFeed: ", data);
+      tagAdd(data);
+    }
+    getTagAsync();
+  }, []);
+
+  const tagAdd = (data: []) => {
+    data.map((item: any) => {
+      const newTag = {
+        tag_id: item.id,
+        tag_name: item.tag_name,
+      };
+      setTags((oldTags: any) => [...oldTags, newTag]);
+    });
+  };
+
+  const tagList = tags.map((tag) => (
+    <span>
+      <TagItem id={tag.tag_id} name={tag.tag_name}></TagItem>
+    </span>
+  ));
+
   return (
     <div>
       <div className="px-4"></div>
@@ -16,7 +49,7 @@ export default function CreateFeed() {
               placeholder=" 제목을 입력하세요"
             />
             <h1 className="my-2 text-base font-semibold text-left text-sky-500 ">
-              태그
+              태그 추가
             </h1>
             <div className="items-center w-full px-3 py-2 text-gray-700 bg-white border border-gray-300 rounded-lg focus:outline-none focus:border-gray-400">
               <div className="flex flex-row">
@@ -34,18 +67,7 @@ export default function CreateFeed() {
                   />
                 </button>
               </div>
-              <div className="w-full">
-                <select
-                  id="country"
-                  name="country"
-                  autoComplete="country-name"
-                  className="mt-1 w-full block rounded-md border border-gray-300 bg-white py-2 px-3 shadow-sm focus:border-sky-500 focus:outline-none focus:ring-sky-500 sm:text-sm"
-                >
-                  <option>미분류</option>
-                  <option>수소차</option>
-                  <option>전기차</option>
-                </select>
-              </div>
+              <div>{tagList}</div>
             </div>
           </div>
           <div className="bg-gray-50 px-4 py-2 text-right">

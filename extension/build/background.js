@@ -18,19 +18,6 @@ async function getCookieToken() {
   return cookie;
 }
 
-async function postHighlight(token, request) {
-  const response = await fetch(`${host_url}/api/highlight`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`,
-    },
-    body: JSON.stringify(request),
-  });
-  const data = await response.json();
-  return data;
-}
-
 async function getHighlight(token, request) {
   const response = await fetch(`${host_url}/api/highlight/feed`, {
     method: "POST",
@@ -42,25 +29,6 @@ async function getHighlight(token, request) {
   });
 
   const data = await response.json();
-  return data;
-}
-
-async function postNoti(token, contents, url) {
-  const noti = {
-    url: url,
-    contents: contents,
-  };
-  // console.log(noti);
-
-  const response = fetch(`${host_url}/api/noti/create`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`,
-    },
-    body: JSON.stringify(noti),
-  });
-  const data = response.json();
   return data;
 }
 
@@ -78,7 +46,6 @@ async function getNoti(token) {
 }
 
 async function getFeed(token, url) {
-  console.log(url);
   const response = await fetch(`${host_url}/api/feed/feed_url`, {
     method: "POST",
     headers: {
@@ -87,10 +54,49 @@ async function getFeed(token, url) {
     },
     body: JSON.stringify(url),
   });
-
-  console.log(response);
-
   const data = await response.json();
+  return data;
+}
+
+async function getGroupTags(token) {
+  const response = await fetch(`${host_url}/api/tag/web`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+  });
+  const data = await response.json();
+  return data;
+}
+
+async function postHighlight(token, request) {
+  const response = await fetch(`${host_url}/api/highlight`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify(request),
+  });
+  const data = await response.json();
+  return data;
+}
+
+async function postNoti(token, contents, url) {
+  const noti = {
+    url: url,
+    contents: contents,
+  };
+  const response = fetch(`${host_url}/api/noti/create`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify(noti),
+  });
+  const data = response.json();
   return data;
 }
 
@@ -198,7 +204,6 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
             }
           );
         });
-
         break;
 
       // 유저가 받은 노티 리스트 요청
@@ -224,6 +229,13 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
             }
           );
         });
+        break;
+
+      // 그룹의 태그 리스트 요청
+      case "getGroupTags":
+        getGroupTags(token)
+          .then((data) => sendResponse({ data }))
+          .catch((error) => console.log(`fetch 실패: ${error}`));
         break;
 
       default:
