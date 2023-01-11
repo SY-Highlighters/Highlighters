@@ -107,7 +107,6 @@ export class TagService {
         tag: true,
       },
     });
-    console.log(feeds);
     const feedswithOg: object[] = [];
     for (const feed of feeds) {
       if (feed.url) {
