@@ -13,7 +13,7 @@ import { AuthGuard } from '@nestjs/passport';
 import { User } from '@prisma/client';
 import { GetUser } from 'src/auth/get-user.decorator';
 import { CommentService } from './comment.service';
-import { CreateCommentDto } from './dto/comment.dto';
+import { CreateCommentDto, ShowCommentDto } from './dto/comment.dto';
 import { Comment } from '.prisma/client';
 import { SuccessInterceptor } from 'src/common/interceptors/success.interceptors';
 import { HttpExceptionFilter } from 'src/common/exceptions/http-exception.filter';
@@ -41,7 +41,9 @@ export class CommentController {
 
   // feed의 모든 Comment 가져오기
   @Get('/get/:feed_id')
-  async getComments(@Param('feed_id') feed_id: number): Promise<ShowCommentDto[]> {
+  async getComments(
+    @Param('feed_id') feed_id: number,
+  ): Promise<ShowCommentDto[]> {
     return this.commentService.getComments(feed_id);
   }
 
