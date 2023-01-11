@@ -123,4 +123,16 @@ export class NotiService {
 
     return result;
   }
+
+  async readNoti(noti_id: number): Promise<null> {
+    try {
+      await this.prismaService.noti.update({
+        where: { id: noti_id },
+        data: { isRead: true },
+      });
+    } catch (e) {
+      throw new HttpException('Internal Server Error', 500);
+    }
+    return null;
+  }
 }
