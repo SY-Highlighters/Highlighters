@@ -47,9 +47,8 @@ async function getHighlight(token, request) {
   const data = await response.json();
 
   if (data.success === false) {
-    feedExist = false
-  }
-  else feedExist = true;
+    feedExist = false;
+  } else feedExist = true;
   console.log("[getHighlight] feedExist set:", feedExist);
 
   return data;
@@ -102,8 +101,37 @@ function createPush(id, title, msg) {
   );
 }
 
+async function checkNewNoti(token) {
+  const response = await fetch(`${host_url}/api/noti/check`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+  });
+  const data = await response.json();
+  return data;
+}
+
 /* 코드 시작 */
 const jwt_token = getCookieToken().then((cookie) => cookie?.value);
+
+chrome.alarms.create("checkNoti", {
+  periodInMinutes: 1 / 6,
+  when: Date.now(),
+});
+
+chrome.alarms.onAlarm.addListener((alarm) => {
+  if (alarm.name === "checkNoti") {
+    jwt_token.then((token) => {
+      checkNewNoti(token).then((is_changed) => {
+        if (is_changed) {
+          console.log("새로운 알림이 있습니다");
+        }
+      });
+    });
+  }
+});
 
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   jwt_token.then((token) => {
@@ -142,7 +170,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
           .then((data) => sendResponse({ data }))
           .catch((error) => console.log(`fetch 실패: ${error}`));
         break;
-      
+
       case "getFeed":
         console.log("[getFeed] feedExist:", feedExist);
         sendResponse(feedExist);

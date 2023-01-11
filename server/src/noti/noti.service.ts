@@ -119,4 +119,8 @@ export class NotiService {
 
     return result;
   }
+
+  async checkNewNoti(): Promise<boolean> {
+    return true;
+  }
 }

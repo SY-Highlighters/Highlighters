@@ -48,4 +48,9 @@ export class NotiController {
   async findNotiExtension(@GetUser() user: User): Promise<ShowNotiDto[]> {
     return this.notiService.findNotiExtension(user);
   }
+
+  @Get('/check')
+  async checkNewNoti(): Promise<boolean> {
+    return this.notiService.checkNewNoti();
+  }
 }
