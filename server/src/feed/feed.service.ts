@@ -59,33 +59,33 @@ export class FeedService {
 
   async findGroupFeedWithOg(id: number): Promise<object[]> {
     const feeds = await this.findFeedByGroupId(id);
+    return feeds;
+    // const feedswithOg: object[] = [];
+    // for (const feed of feeds) {
+    //   if (feed.url) {
+    //     try {
+    //       const meta = await getUrlMeta(feed.url);
+    //       const feedwithOg = {
+    //         ...feed,
+    //         og_title: meta.title,
+    //         og_desc: meta.desc,
+    //         og_image: meta.image,
+    //       };
+    //       feedswithOg.push(feedwithOg);
+    //     } catch (e) {
+    //       const feedwithOg = {
+    //         ...feed,
+    //         og_title: 'Untitled',
+    //         og_desc: '',
+    //         og_image:
+    //           'https://img.favpng.com/23/20/7/computer-icons-information-png-favpng-g8DtjAPPNhyaU9EdjHQJRnV97_t.jpg',
+    //       };
+    //       feedswithOg.push(feedwithOg);
+    //     }
+    //   }
+    // }
 
-    const feedswithOg: object[] = [];
-    for (const feed of feeds) {
-      if (feed.url) {
-        try {
-          const meta = await getUrlMeta(feed.url);
-          const feedwithOg = {
-            ...feed,
-            og_title: meta.title,
-            og_desc: meta.desc,
-            og_image: meta.image,
-          };
-          feedswithOg.push(feedwithOg);
-        } catch (e) {
-          const feedwithOg = {
-            ...feed,
-            og_title: 'Untitled',
-            og_desc: '',
-            og_image:
-              'https://img.favpng.com/23/20/7/computer-icons-information-png-favpng-g8DtjAPPNhyaU9EdjHQJRnV97_t.jpg',
-          };
-          feedswithOg.push(feedwithOg);
-        }
-      }
-    }
-
-    return feedswithOg;
+    // return feedswithOg;
   }
 
   async deleteFeedById(id: number): Promise<Feed> {

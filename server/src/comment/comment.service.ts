@@ -8,7 +8,7 @@ export class CommentService {
   constructor(private readonly prismaService: PrismaService) {}
 
   async createComment(createCommentDto: CreateCommentDto): Promise<Comment> {
-    const { user_email, feed_id, contents } = createCommentDto;
+    const { user_email, contents, feed_id } = createCommentDto;
 
     const result = await this.prismaService.comment.create({
       data: {
@@ -29,9 +29,9 @@ export class CommentService {
     return result;
   }
 
-  async deleteComment(id: number): Promise<Comment> {
+  async deleteComment(comment_id: number): Promise<Comment> {
     const result = await this.prismaService.comment.delete({
-      where: { id: id },
+      where: { id: comment_id },
     });
 
     return result;
