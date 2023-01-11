@@ -150,7 +150,6 @@ async function postHighlight(range, highlightStr) {
 
   console.log("contentscript: posthighlight");
 
-
   chrome.runtime.sendMessage(
     {
       greeting: "postHighlight",
@@ -162,6 +161,7 @@ async function postHighlight(range, highlightStr) {
         image: document.querySelector("meta[property='og:image']").content,
         description: document.querySelector("meta[property='og:description']")
           .content,
+        color: highlightColor,
       },
     },
     (response) => {

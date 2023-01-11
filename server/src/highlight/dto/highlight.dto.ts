@@ -26,6 +26,8 @@ export class CreateHighlightDto {
   image: string;
 
   description: string;
+
+  color: string;
 }
 
 export class UpdateHighlightDto extends PartialType(CreateHighlightDto) {}
