@@ -15,16 +15,16 @@ export class FeedController {
   // URL로 Feed 찾기
   @ApiResponse({ status: 200, description: 'success', type: 'Feed' })
   @ApiOperation({ summary: 'URL로 Feed 찾기' })
-  @Post('/url')
+  @Post('/feed_url')
   async findFeedByUrl(
-    @Body('url') url: string,
+    @Body('feed_url') feed_url: string,
     @GetUser() user: User,
   ): Promise<Feed> {
-    return this.feedService.findFeedByUrl(url, user);
+    return this.feedService.findFeedByUrl(feed_url, user);
   }
 
   // 새로운 Feed 생성
-  @Post('/')
+  @Post('/create')
   async createFeed(
     @Body() createFeedDto: CreateFeedDto,
     @GetUser() user: User,
