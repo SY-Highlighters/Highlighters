@@ -1,6 +1,7 @@
 import { Injectable, HttpException } from '@nestjs/common';
 import { User } from '@prisma/client';
 import { PrismaService } from 'src/repository/prisma.service';
+import { getUrlMeta } from 'src/util/geturlmeta';
 import { RequestBookmarkDto } from './dto/bookmark.dto';
 
 @Injectable()
@@ -44,7 +45,7 @@ export class BookmarkService {
 
   async getBookmark(user: User): Promise<object[]> {
     try {
-      const bookmark = await this.prismaService.bookmark.findMany({
+      const bookmarks = await this.prismaService.bookmark.findMany({
         where: {
           user_email: user.email,
         },
@@ -58,8 +59,31 @@ export class BookmarkService {
           },
         },
       });
-
-      return bookmark;
+      const feedswithOg: object[] = [];
+      for (const bookmark of bookmarks) {
+        if (bookmark.feed.url) {
+          const meta = await getUrlMeta(bookmark.feed.url);
+          // 존재하지 않는다면 임의의 값 넣기
+          if (meta.title === undefined) {
+            meta.title = 'No Title';
+          }
+          if (meta.desc === undefined) {
+            meta.desc = 'No Description';
+          }
+          if (meta.image === undefined) {
+            meta.image =
+              'https://img.favpng.com/23/20/7/computer-icons-information-png-favpng-g8DtjAPPNhyaU9EdjHQJRnV97_t.jpg';
+          }
+          const feedwithOg = {
+            ...bookmark,
+            og_title: meta.title,
+            og_desc: meta.desc,
+            og_image: meta.image,
+          };
+          feedswithOg.push(feedwithOg);
+        }
+      }
+      return feedswithOg;
     } catch (e) {
       console.log(e);
       throw new HttpException('Internal Server Error', 500);

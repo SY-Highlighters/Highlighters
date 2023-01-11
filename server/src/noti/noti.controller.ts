@@ -1,3 +1,4 @@
+import { ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { Controller, UseGuards, Post, Get, Body } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { User } from '@prisma/client';
@@ -16,6 +17,8 @@ export class NotiController {
   constructor(private readonly notiService: NotiService) {}
 
   // 노티 생성
+  @ApiResponse({ status: 200, description: 'success', type: Number })
+  @ApiOperation({ summary: '노티 생성' })
   @Post('/create')
   async createNoti(
     @Body() createNotiDto: CreateNotiDto,
@@ -28,7 +31,9 @@ export class NotiController {
     return this.notiService.createNoti(createNotiDto);
   }
 
-  // 노티 삭제
+  // 노티 리스트를 받아 삭제
+  @ApiResponse({ status: 200, description: 'success', type: null })
+  @ApiOperation({ summary: '노티 리스트를 받아 삭제' })
   @Delete('/delete')
   async deleteNoti(
     @Body() deleteNotiDto: DeleteNotiDto[],
@@ -37,13 +42,19 @@ export class NotiController {
     return this.notiService.deleteNoti(deleteNotiDto, user);
   }
 
-  // 웹에서의 노티 조회(송신자 포함)
+  // 웹에서의 노티 조회(송신자, isread true 포함)
+  @ApiResponse({ status: 200, description: 'success', type: ShowNotiDto })
+  @ApiOperation({ summary: '웹에서의 노티 조회(송신자, isread true 포함)' })
   @Get('/web')
   async findNotiWeb(@GetUser() user: User): Promise<ShowNotiDto[]> {
     return this.notiService.findNotiWeb(user);
   }
 
-  // 익스텐션에서의 노티 조회(송신자 제외)
+  // 익스텐션에서의 노티 조회(송신자, isread true 제외)
+  @ApiResponse({ status: 200, description: 'success', type: ShowNotiDto })
+  @ApiOperation({
+    summary: '익스텐션에서의 노티 조회(송신자, isread true 제외)',
+  })
   @Get('/extension')
   async findNotiExtension(@GetUser() user: User): Promise<ShowNotiDto[]> {
     return this.notiService.findNotiExtension(user);
@@ -52,5 +63,13 @@ export class NotiController {
   @Get('/check')
   async checkNewNoti(): Promise<boolean> {
     return this.notiService.checkNewNoti();
+  }
+
+  // 노티 읽음 처리
+  @ApiResponse({ status: 200, description: 'success', type: null })
+  @ApiOperation({ summary: '노티 읽음 처리' })
+  @Post('/read')
+  async readNoti(@Body() noti_id: number): Promise<null> {
+    return this.notiService.readNoti(noti_id);
   }
 }

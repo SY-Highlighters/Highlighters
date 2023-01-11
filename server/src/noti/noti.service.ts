@@ -91,7 +91,11 @@ export class NotiService {
 
   async findNotiExtension(user: User): Promise<ShowNotiDto[]> {
     const noties = await this.prismaService.noti.findMany({
-      where: { receiver_id: user.email },
+      where: {
+        receiver_id: user.email,
+        sender_id: { not: user.email },
+        isRead: false,
+      },
       orderBy: { createdAt: 'desc' },
       include: { feed: true, sender: true },
     });
@@ -122,5 +126,17 @@ export class NotiService {
 
   async checkNewNoti(): Promise<boolean> {
     return true;
+  }
+
+  async readNoti(noti_id: number): Promise<null> {
+    try {
+      await this.prismaService.noti.update({
+        where: { id: noti_id },
+        data: { isRead: true },
+      });
+    } catch (e) {
+      throw new HttpException('Internal Server Error', 500);
+    }
+    return null;
   }
 }
