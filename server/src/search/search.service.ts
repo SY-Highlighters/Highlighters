@@ -43,6 +43,11 @@ export class SearchService {
                 nickname: word,
               },
             },
+            {
+              match: {
+                title: word,
+              },
+            },
           ],
         },
       },
