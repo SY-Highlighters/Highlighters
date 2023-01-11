@@ -91,7 +91,11 @@ export class NotiService {
 
   async findNotiExtension(user: User): Promise<ShowNotiDto[]> {
     const noties = await this.prismaService.noti.findMany({
-      where: { receiver_id: user.email },
+      where: {
+        receiver_id: user.email,
+        sender_id: { not: user.email },
+        isRead: false,
+      },
       orderBy: { createdAt: 'desc' },
       include: { feed: true, sender: true },
     });
