@@ -48,6 +48,7 @@ const AvailableFeeds = () => {
           Authorization: `Bearer ${cookies.logCookie}`,
         },
       });
+      console.log(response.data.data);
       return response.data.data;
     },
     {
@@ -129,8 +130,8 @@ const AvailableFeeds = () => {
                   id={feed.id}
                   key={feed.id}
                   title={feed.title}
-                  description={feed.og_desc}
-                  og_image={feed.og_image}
+                  description={feed.og.description}
+                  og_image={feed.og.image}
                   url={feed.url}
                   highlight={feed.highlight}
                   date={feed.createdAt}

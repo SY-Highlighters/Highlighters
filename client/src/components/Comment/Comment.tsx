@@ -51,10 +51,10 @@ export function Comment() {
   return (
     <div>
       <CommentInput></CommentInput>
-      <ul>
+      {/* <ul>
         {isSuccess &&
           commentList.map((commentItem: any) => <CommentItem></CommentItem>)}
-      </ul>
+      </ul> */}
     </div>
   );
 }
