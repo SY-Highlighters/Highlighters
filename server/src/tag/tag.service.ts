@@ -68,7 +68,11 @@ export class TagService {
       where: {
         group_id: user.group_id,
       },
-      distinct: ['id', 'tag_name'],
+      distinct: ['tag_name'],
+      select: {
+        id: true,
+        tag_name: true,
+      },
     });
     return tags;
   }
