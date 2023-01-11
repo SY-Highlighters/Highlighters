@@ -128,10 +128,6 @@ export class NotiService {
     return result;
   }
 
-  async checkNewNoti(): Promise<boolean> {
-    return true;
-  }
-
   async readNoti(noti_id: number): Promise<null> {
     try {
       await this.prismaService.noti.update({
@@ -144,7 +140,7 @@ export class NotiService {
     return null;
   }
 
-  async checkNoti(user: User): Promise<boolean> {
+  async checkNewNoti(user: User): Promise<boolean> {
     try {
       await this.prismaService.user.update({
         where: { email: user.email },
