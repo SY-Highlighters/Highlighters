@@ -12,8 +12,7 @@
     "scripting",
     "tabs",
     "cookies",
-    "notifications",
-    "alarms"
+    "notifications"
   ],
   "host_permissions": ["<all_urls>", "http://localhost/"],
   "action": {
