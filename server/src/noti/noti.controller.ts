@@ -5,7 +5,12 @@ import { User } from '@prisma/client';
 import { GetUser } from 'src/auth/get-user.decorator';
 import { NotiService } from './noti.service';
 import { CreateNotiDto, DeleteNotiDto, ShowNotiDto } from './dto/noti.dto';
-import { Delete, UseFilters, UseInterceptors } from '@nestjs/common/decorators';
+import {
+  Delete,
+  Put,
+  UseFilters,
+  UseInterceptors,
+} from '@nestjs/common/decorators';
 import { HttpExceptionFilter } from 'src/common/exceptions/http-exception.filter';
 import { SuccessInterceptor } from 'src/common/interceptors/success.interceptors';
 
@@ -74,5 +79,10 @@ export class NotiController {
   @Get('/check')
   async checkNewNoti(@GetUser() user: User): Promise<boolean> {
     return this.notiService.checkNewNoti(user);
+  }
+
+  @Get('/push')
+  async pushNoti(@GetUser() user: User): Promise<boolean> {
+    return user.new_noti;
   }
 }

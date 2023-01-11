@@ -119,7 +119,19 @@ function createPush(id, title, msg) {
   );
 }
 
-async function checkNewNoti(token) {
+async function isNewNotiCreate(token) {
+  const response = await fetch(`${host_url}/api/noti/push`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+  });
+  const data = await response.json();
+  return data;
+}
+
+async function changeNewNotiInUser(token) {
   const response = await fetch(`${host_url}/api/noti/check`, {
     method: "GET",
     headers: {
@@ -139,15 +151,19 @@ chrome.alarms.create("checkNoti", {
   when: Date.now(),
 });
 
-chrome.alarms.onAlarm.addListener((alarm) => {
+chrome.alarms.onAlarm.addListener(async (alarm) => {
   if (alarm.name === "checkNoti") {
-    jwt_token.then((token) => {
-      checkNewNoti(token).then((is_changed) => {
-        if (is_changed) {
-          console.log("새로운 알림이 있습니다");
-        }
-      });
-    });
+    const cookie = await getCookieToken();
+    const token = cookie?.value;
+
+    const check = await isNewNotiCreate(token);
+
+    if (check.data) {
+      createPush("newNoti", "새로운 알림이 있습니다.", "확인해보세요!");
+
+      const succ = await changeNewNotiInUser(token);
+      console.log(succ);
+    }
   }
 });
 
