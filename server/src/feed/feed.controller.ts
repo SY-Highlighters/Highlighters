@@ -12,6 +12,17 @@ import { GetUser } from 'src/auth/get-user.decorator';
 export class FeedController {
   constructor(private readonly feedService: FeedService) {}
 
+  // URL로 Feed 찾기
+  @ApiResponse({ status: 200, description: 'success', type: 'Feed' })
+  @ApiOperation({ summary: 'URL로 Feed 찾기' })
+  @Post('/url')
+  async findFeedByUrl(
+    @Body('url') url: string,
+    @GetUser() user: User,
+  ): Promise<Feed> {
+    return this.feedService.findFeedByUrl(url, user);
+  }
+
   // 새로운 Feed 생성
   @Post('/')
   async createFeed(
@@ -41,16 +52,5 @@ export class FeedController {
   @Delete('/delete/:id')
   async deleteFeedById(@Param('id') id: number): Promise<Feed> {
     return this.feedService.deleteFeedById(id);
-  }
-
-  // URL로 Feed 찾기
-  @ApiResponse({ status: 200, description: 'success', type: 'Feed' })
-  @ApiOperation({ summary: 'URL로 Feed 찾기' })
-  @Post('/url')
-  async findFeedByUrl(
-    @Body('url') url: string,
-    @GetUser() user: User,
-  ): Promise<Feed> {
-    return this.feedService.findFeedByUrl(url, user);
   }
 }
