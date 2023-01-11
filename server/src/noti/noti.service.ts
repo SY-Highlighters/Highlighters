@@ -139,4 +139,16 @@ export class NotiService {
     }
     return null;
   }
+
+  async checkNoti(user: User): Promise<boolean> {
+    try {
+      await this.prismaService.user.update({
+        where: { email: user.email },
+        data: { new_noti: false },
+      });
+      return true;
+    } catch (e) {
+      throw new HttpException('Internal Server Error', 500);
+    }
+  }
 }

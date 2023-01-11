@@ -68,5 +68,11 @@ export class NotiController {
     return this.notiService.readNoti(noti_id);
   }
 
-
+  // 노티 체크(빨간불)
+  @ApiResponse({ status: 200, description: 'success', type: Boolean })
+  @ApiOperation({ summary: '노티 체크(빨간불)' })
+  @Get('/check')
+  async checkNoti(@GetUser() user: User): Promise<boolean> {
+    return this.notiService.checkNoti(user);
+  }
 }
