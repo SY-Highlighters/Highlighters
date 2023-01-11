@@ -7,8 +7,10 @@ export default function Tabs(props: any) {
   const [activeTabIndex, setActiveTabIndex] = useState(0);
 
   //   const [feedExist, setFeedExist] = useState(-1); // -1: loading, 0: feednotexsit, 1: feedexist
+    
+    
 
-  const feedExist = props.feedExist;
+  const feedExist = props.feed != null ? true : false;
   const tabsData = [
     {
       label: feedExist ? "알림 보내기" : "피드 생성하기",
@@ -23,7 +25,8 @@ export default function Tabs(props: any) {
   return (
     <div>
       <div className="flex space-x-5 border-b ml-3">
-        {/* Loop through tab data and render button for each. */}
+              {/* Loop through tab data and render button for each. */}
+
         <button
           key={0}
           className={`py-3 border-b-4 transition-colors duration-300 ${

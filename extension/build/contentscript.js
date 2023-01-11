@@ -187,12 +187,13 @@ function getHighlight(url) {
     },
     (response) => {
       const data = response.data;
-      console.log(data);
+
+      // console.log(data.data);
       if (data.success === false) {
         throw new Error(`[${data.statusCode}] ${data.message}`);
       }
 
-      for (const highlight of data) {
+      for (const highlight of data.data) {
         const selection = highlight.selection;
         const range = document.createRange();
 

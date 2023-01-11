@@ -7,8 +7,9 @@ import Tabs from "./tabs/Tabs";
 export default function Popups() {
   // const [activeTabIndex, setActiveTabIndex] = useState(0);
   const [loadComplete, setLoadComplete] = useState(false);
+  const [feed, setFeed] = useState(null);
   // let feedExist = true;
-  const [feedExist, setFeedExist] = useState(0);
+  // const [feedExist, setFeedExist] = useState(0);
 
   useEffect(() => {
     async function getFeed() {
@@ -16,12 +17,12 @@ export default function Popups() {
         greeting: "getFeed",
       });
       const result = response.data.data;
-      const exist = result !== null ? 1 : 0;
-      setFeedExist(exist);
+      console.log(result);
+      setFeed(result);
       setLoadComplete(true);
     }
     getFeed();
   }, []);
 
-  return <div>{loadComplete ? <Tabs feedExist={feedExist}></Tabs> : null}</div>;
+  return <div>{loadComplete ? <Tabs feed={feed}></Tabs> : null}</div>;
 }
