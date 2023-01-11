@@ -158,6 +158,9 @@ async function postHighlight(range, highlightStr) {
         contents: highlightStr,
         selection: rangeobj,
         title: document.title,
+        image: document.querySelector("meta[property='og:image']").content,
+        description: document.querySelector("meta[property='og:description']")
+          .content,
       },
     },
     (response) => {
