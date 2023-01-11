@@ -24,6 +24,7 @@ export class FeedService {
         group_id,
         url,
         title,
+        og_id: 0,
       },
     });
 
