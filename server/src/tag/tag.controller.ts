@@ -48,10 +48,10 @@ export class TagController {
   }
 
   // 웹 배너에서 그룹 내 모든 태그 조회
-  @ApiResponse({ status: 200, description: 'success', type: [String] })
+  @ApiResponse({ status: 200, description: 'success', type: '태그 이름, id' })
   @ApiOperation({ summary: '웹 배너에서 그룹 내 모든 태그 조회' })
   @Get('/web')
-  async findTagWeb(@GetUser() user: User): Promise<string[]> {
+  async findTagWeb(@GetUser() user: User): Promise<object[]> {
     return this.tagService.getTag(user);
   }
 

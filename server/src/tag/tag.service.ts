@@ -59,14 +59,14 @@ export class TagService {
     return null;
   }
 
-  async getTag(user: User): Promise<string[]> {
+  async getTag(user: User): Promise<object[]> {
     const tags = await this.prismaService.tag.findMany({
       where: {
         group_id: user.group_id,
       },
-      distinct: ['tag_name'],
+      distinct: ['id', 'tag_name'],
     });
-    return tags.map((tag) => tag.tag_name);
+    return tags;
   }
 
   async deleteTagWeb(tag_name: string, user: User): Promise<null> {

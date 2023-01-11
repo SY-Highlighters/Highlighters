@@ -67,4 +67,6 @@ export class NotiController {
   async readNoti(@Body() noti_id: number): Promise<null> {
     return this.notiService.readNoti(noti_id);
   }
+
+
 }
