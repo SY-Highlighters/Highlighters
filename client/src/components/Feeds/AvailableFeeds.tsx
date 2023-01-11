@@ -119,12 +119,12 @@ const AvailableFeeds = () => {
         </div>
       </div>
       {/* feedslist section */}
-      <div className="">
+      <div className="mt-5">
         <ul className="">
           {isSuccess &&
             feedsInGroup &&
             feedsInGroup.map((feed: any) => (
-              <div key={feed.id}>
+              <div key={feed.id} className="mb-4">
                 <FeedItem
                   id={feed.id}
                   key={feed.id}
