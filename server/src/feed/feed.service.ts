@@ -50,14 +50,6 @@ export class FeedService {
     });
   }
 
-  async findFeedByURL(url: string): Promise<Feed> {
-    const result = await this.prismaService.feed.findFirst({
-      where: { url: url },
-    });
-
-    return result;
-  }
-
   async findFeedByGroupId(id: number): Promise<Feed[]> {
     const feeds = await this.prismaService.feed.findMany({
       where: { group_id: id },
@@ -65,6 +57,7 @@ export class FeedService {
       include: {
         highlight: true,
         tag: true,
+        og: true,
       },
     });
 
@@ -73,7 +66,6 @@ export class FeedService {
 
   async findGroupFeedWithOg(id: number): Promise<object[]> {
     const feeds = await this.findFeedByGroupId(id);
-    return feeds;
     // const feedswithOg: object[] = [];
     // for (const feed of feeds) {
     //   if (feed.url) {
@@ -99,7 +91,7 @@ export class FeedService {
     //   }
     // }
 
-    // return feedswithOg;
+    return feeds;
   }
 
   async deleteFeedById(id: number): Promise<Feed> {
