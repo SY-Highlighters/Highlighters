@@ -3,28 +3,41 @@ import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/repository/prisma.service';
 import { getUrlMeta } from 'src/util/geturlmeta';
 import { CreateFeedDto } from './dto/feed.dto';
-import { HighlightService } from 'src/highlight/highlight.service';
-import { Inject } from '@nestjs/common/decorators';
-import { forwardRef } from '@nestjs/common/utils';
 
 @Injectable()
 export class FeedService {
-  constructor(
-    private readonly prismaService: PrismaService,
-
-    @Inject(forwardRef(() => HighlightService))
-    private readonly highlightService: HighlightService,
-  ) {}
+  constructor(private readonly prismaService: PrismaService) {}
 
   async createFeed(createFeedDto: CreateFeedDto): Promise<Feed> {
-    const { user_email, group_id, url, title } = createFeedDto;
+    const { user_email, group_id, url, title, image, description } =
+      createFeedDto;
+    const iscreate = await this.prismaService.og.findFirst({
+      where: {
+        feed: {
+          some: {
+            url: url,
+            group_id: group_id,
+          },
+        },
+      },
+    });
+    let makecreate = null;
+    if (!iscreate) {
+      makecreate = await this.prismaService.og.create({
+        data: {
+          title: title,
+          image: image,
+          description: description,
+        },
+      });
+    }
     const result = await this.prismaService.feed.create({
       data: {
         user_email,
         group_id,
         url,
         title,
-        og_id: 0,
+        og_id: iscreate ? iscreate.id : makecreate.id,
       },
     });
 
