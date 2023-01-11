@@ -16,6 +16,7 @@ import { CalendarModule } from './calendar/calendar.module';
 import { ElasticsearchService } from './repository/connection';
 import { CommentModule } from './comment/comment.module';
 import { SearchModule } from './search/search.module';
+import { ApmModule } from 'nestjs-elastic-apm';
 
 @Module({
   imports: [
@@ -32,6 +33,7 @@ import { SearchModule } from './search/search.module';
     CalendarModule,
     CommentModule,
     SearchModule,
+    ApmModule.register(),
   ],
   controllers: [AppController],
   providers: [AppService, ElasticsearchService],

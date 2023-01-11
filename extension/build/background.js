@@ -146,9 +146,9 @@ chrome.alarms.onAlarm.addListener(async (alarm) => {
     const check = await isNewNotiCreate(token);
 
     if (check.data) {
-      await chrome.action.setBadgeText({ text: "new" });
-      await chrome.action.setBadgeBackgroundColor({ color: "#0000FF" });
-      await changeNewNotiInUser(token);
+      chrome.action.setBadgeText({ text: "new" });
+      chrome.action.setBadgeBackgroundColor({ color: "#0000FF" });
+      changeNewNotiInUser(token);
     }
   }
 });
@@ -200,6 +200,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
 
       // 유저가 받은 노티 리스트 요청
       case "getNoti":
+        chrome.action.setBadgeText({ text: "" });
         getNoti(token)
           .then((data) => sendResponse({ data }))
           .catch((error) => console.log(`fetch 실패: ${error}`));
