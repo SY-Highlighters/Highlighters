@@ -10,7 +10,7 @@ import {
   Delete,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
-import { User } from '@prisma/client';
+import { User, Tag } from '@prisma/client';
 import { GetUser } from 'src/auth/get-user.decorator';
 import { HttpExceptionFilter } from 'src/common/exceptions/http-exception.filter';
 import { SuccessInterceptor } from 'src/common/interceptors/success.interceptors';
@@ -32,7 +32,7 @@ export class TagController {
   async createTag(
     @Body() requestTagCreateDto: RequestTagCreateDto,
     @GetUser() user: User,
-  ): Promise<null> {
+  ): Promise<Tag> {
     return this.tagService.createTag(requestTagCreateDto, user);
   }
 

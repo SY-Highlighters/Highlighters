@@ -5,21 +5,23 @@ import {
   PencilIcon,
 } from "@heroicons/react/20/solid";
 import {
+  AcademicCapIcon,
   ArrowRightCircleIcon,
   ChatBubbleBottomCenterIcon,
   ChevronRightIcon,
   ForwardIcon,
   HashtagIcon,
 } from "@heroicons/react/24/outline";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Comment } from "../../Comment/Comment";
 import { TagEdit } from "../../Tags/TagEdit";
 import { TagItem } from "../../Tags/TagItem/TagItem";
-import { currentFeedIdState } from "../../../states/atom";
-import { useSetRecoilState } from "recoil";
+import { currentFeedIdState, tagModalVisble } from "../../../states/atom";
+import { useRecoilValue, useSetRecoilState } from "recoil";
 const FeedItem = (props: any) => {
   const [commentIsClicked, setCommentIsClicked] = useState(false);
   const setCurrentFeedId = useSetRecoilState(currentFeedIdState);
+  const tagModal = useRecoilValue(tagModalVisble);
 
   // 여러개의 하이라이트를 받아서 하나의 리스트로 만들어준다.
   // 하이라이트별 색상 지정해줘야함. -> 수정해야함
@@ -50,15 +52,30 @@ const FeedItem = (props: any) => {
     }
     setCommentIsClicked(!commentIsClicked);
   }
+  // useEffect(() => {
+  //   console.log("FeedItem.tsx");
+  // }, [tagModal]);
   return (
     // <li className="py-5">
     <div className="overflow-hidden bg-white rounded-lg shadow-lg">
-      <div className="flex flex-row-reverse items-center px-3 mt-3 text-sm text-gray-500">
-        <CalendarIcon
-          className="mr-1.5 h-5 w-5 flex-shrink-0 text-gray-400 "
-          aria-hidden="true"
-        />
-        {`${month}월 ${day}일, ${year}년 `}
+      <div className="flex justify-between">
+        <div className="flex flex-row items-center px-3 mt-3 text-sm text-gray-500 ">
+          <CalendarIcon
+            className="mr-1.5 h-5 w-5 flex-shrink-0 text-gray-400 "
+            aria-hidden="true"
+          />
+          {`${month}월 ${day}일, ${year}년 `}
+        </div>
+        <div className="flex flex-row items-center px-3 mt-3 mr-1 text-sm text-gray-500 ">
+          <div className="text-xs">{props.writer}</div>
+          <div>
+            <img
+              className="object-cover w-5 h-5 ml-1"
+              src={props.writerImg}
+              alt="Flower and sky"
+            />
+          </div>
+        </div>
       </div>
       <div className="m-5 sm:px-6">
         <a href={props.url} target="_blank" rel="noreferrer">
@@ -119,7 +136,7 @@ const FeedItem = (props: any) => {
           </button>
         </div>
         {/* 숨김 코멘트창 */}
-        {commentIsClicked && <Comment></Comment>} 
+        {commentIsClicked && <Comment></Comment>}
       </div>
     </div>
     // </li>

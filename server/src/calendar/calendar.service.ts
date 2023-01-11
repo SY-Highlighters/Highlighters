@@ -23,6 +23,7 @@ export class CalendarService {
         user: {
           select: {
             nickname: true,
+            image: true,
           },
         },
       },

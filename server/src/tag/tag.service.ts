@@ -1,5 +1,5 @@
 import { Injectable, HttpException } from '@nestjs/common';
-import { User } from '@prisma/client';
+import { Tag, User } from '@prisma/client';
 import { PrismaService } from 'src/repository/prisma.service';
 import { getUrlMeta } from 'src/util/geturlmeta';
 import { RequestTagCreateDto, RequestTagDeleteDto } from './dto/tag.dto';
@@ -11,10 +11,10 @@ export class TagService {
   async createTag(
     createTagDeleteDto: RequestTagCreateDto,
     user: User,
-  ): Promise<null> {
+  ): Promise<Tag> {
     const { tag_name, feed_id } = createTagDeleteDto;
     try {
-      await this.prismaService.tag.create({
+      const tag = await this.prismaService.tag.create({
         data: {
           tag_name: tag_name,
           feed: {
@@ -29,12 +29,12 @@ export class TagService {
           },
         },
       });
+      return tag;
     } catch (e) {
       console.log(e);
       throw new HttpException('Internal Server Error', 500);
     }
 
-    return null;
   }
 
   async deleteTag(
@@ -109,6 +109,7 @@ export class TagService {
         user: {
           select: {
             nickname: true,
+            image: true,
           },
         },
       },

@@ -34,27 +34,29 @@ export function Comment() {
           Authorization: `Bearer ${cookies.logCookie}`,
         },
       });
-      return response.data;
+      return response.data.data;
     },
     {
       enabled: currentFeedId !== undefined,
     }
   );
 
-  //   const commentList = tagList.map((tagItem: any) => (
-  //     <TagEditItem
-  //       tagName={tagItem.tag_name}
-  //       feedId={currentFeedId}
-  //       tagId={tagItem.tag_id}
-  //     />
-  //   ));
+  useEffect(() => {}, [commentList]);
+
   return (
     <div>
       <CommentInput></CommentInput>
-      {/* <ul>
+      <ul>
         {isSuccess &&
-          commentList.map((commentItem: any) => <CommentItem></CommentItem>)}
-      </ul> */}
+          commentList.map((commentItem: any) => (
+            <CommentItem
+              key={commentItem.id}
+              content={commentItem.contents}
+              nickname={commentItem.nickname}
+              date={commentItem.createdAt}
+            ></CommentItem>
+          ))}
+      </ul>
     </div>
   );
 }

@@ -61,6 +61,7 @@ export class FeedService {
         user: {
           select: {
             nickname: true,
+            image: true,
           },
         },
       },

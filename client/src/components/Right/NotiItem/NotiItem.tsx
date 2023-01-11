@@ -5,9 +5,13 @@ export default function NotiItem(props: any) {
         <div className="flex">
           <div className="py-1"></div>
           <div>
-            <p className="text-sm font-bold text-sky-900">From. {props.sender}</p>
-            <p className="text-xs font-bold text-gray-800">{props.title}</p>
-            <p className="text-xs text-gray-700">{props.contents}</p>
+            <a href={props.url} target="_blank" rel="noreferrer">
+              <p className="text-sm font-bold text-sky-900">
+                From. {props.sender}
+              </p>
+              <p className="text-xs font-bold text-gray-800">{props.title}</p>
+              <p className="text-xs text-gray-700">{props.contents}</p>
+            </a>
           </div>
         </div>
       </div>

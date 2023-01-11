@@ -136,6 +136,8 @@ const AvailableFeeds = () => {
                   highlight={feed.highlight}
                   date={feed.createdAt}
                   tag={feed.tag}
+                  writer={feed.user.nickname}
+                  writerImg={feed.user.image}
                 />
               </div>
             ))}
