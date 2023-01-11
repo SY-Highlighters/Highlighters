@@ -2,12 +2,22 @@ import { ApiResponse, ApiOperation } from '@nestjs/swagger';
 import { FeedService } from './feed.service';
 import { Controller, Get, Post, Delete } from '@nestjs/common';
 import { Feed, User } from '@prisma/client';
-import { Body, Param, UseGuards } from '@nestjs/common/decorators';
+import {
+  Body,
+  Param,
+  UseFilters,
+  UseGuards,
+  UseInterceptors,
+} from '@nestjs/common/decorators';
 import { AuthGuard } from '@nestjs/passport';
 import { CreateFeedDto } from './dto/feed.dto';
 import { GetUser } from 'src/auth/get-user.decorator';
+import { SuccessInterceptor } from 'src/common/interceptors/success.interceptors';
+import { HttpExceptionFilter } from 'src/common/exceptions/http-exception.filter';
 
 @Controller('api/feed')
+@UseInterceptors(SuccessInterceptor)
+@UseFilters(HttpExceptionFilter)
 @UseGuards(AuthGuard('jwt'))
 export class FeedController {
   constructor(private readonly feedService: FeedService) {}
