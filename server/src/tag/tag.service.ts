@@ -109,6 +109,7 @@ export class TagService {
         user: {
           select: {
             nickname: true,
+            image: true,
           },
         },
       },
