@@ -1,20 +1,14 @@
 import { HashtagIcon } from "@heroicons/react/24/outline";
 import { useSetRecoilState } from "recoil";
-import {
-  tagsInFeedState,
-  tagModalVisble,
-  currentFeedIdState,
-} from "../../states/atom";
+import { tagsInFeedState, tagModalVisble } from "../../states/atom";
 
 export function TagEdit(props: any) {
   const setTagList = useSetRecoilState(tagsInFeedState);
   const setTagModal = useSetRecoilState(tagModalVisble);
-  const setCurrentFeedId = useSetRecoilState(currentFeedIdState);
+
   const tagEditHandler = () => {
     console.log("tagEditHandler");
     console.log(props.tag);
-    console.log(props.feed_id);
-    setCurrentFeedId(props.feed_id);
     tagAdd(props.tag);
     setTagModal(true);
   };
@@ -23,8 +17,6 @@ export function TagEdit(props: any) {
     data.map((item: any) => {
       const newTag = {
         tag_name: item.tag_name,
-        feed_id: props.feed_id,
-        tag_id: item.id,
       };
       setTagList((oldTags: any) => [...oldTags, newTag]);
     });

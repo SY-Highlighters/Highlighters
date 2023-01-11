@@ -11,7 +11,8 @@
     "activeTab",
     "scripting",
     "cookies",
-    "notifications"
+    "notifications",
+    "alarms"
   ],
   "host_permissions": ["<all_urls>", "http://localhost/"],
   "action": {

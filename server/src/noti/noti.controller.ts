@@ -60,6 +60,11 @@ export class NotiController {
     return this.notiService.findNotiExtension(user);
   }
 
+  @Get('/check')
+  async checkNewNoti(): Promise<boolean> {
+    return this.notiService.checkNewNoti();
+  }
+
   // 노티 읽음 처리
   @ApiResponse({ status: 200, description: 'success', type: null })
   @ApiOperation({ summary: '노티 읽음 처리' })

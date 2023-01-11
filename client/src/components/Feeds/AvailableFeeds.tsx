@@ -129,11 +129,11 @@ const AvailableFeeds = () => {
                   id={feed.id}
                   key={feed.id}
                   title={feed.title}
-                  description={feed.og_desc}
+                  description={feed.description}
                   og_image={feed.og_image}
                   url={feed.url}
                   highlight={feed.highlight}
-                  date={feed.createdAt}
+                  date={feed.Date}
                   tag={feed.tag}
                 />
               </div>

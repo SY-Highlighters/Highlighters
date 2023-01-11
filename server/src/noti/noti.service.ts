@@ -128,6 +128,10 @@ export class NotiService {
     return result;
   }
 
+  async checkNewNoti(): Promise<boolean> {
+    return true;
+  }
+
   async readNoti(noti_id: number): Promise<null> {
     try {
       await this.prismaService.noti.update({

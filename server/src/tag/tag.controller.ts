@@ -58,12 +58,12 @@ export class TagController {
   // 웹 배너에서 그룹 내 모든 태그 삭제
   @ApiResponse({ status: 200, description: 'success', type: null })
   @ApiOperation({ summary: '웹 배너에서 그룹 내 모든 태그 삭제' })
-  @Delete('/web/:tag_name')
+  @Delete('/web/:tag_id')
   async deleteTagWeb(
-    @Param('tag_name') tag_name: string,
+    @Param('tag_id') tag_id: number,
     @GetUser() user: User,
   ): Promise<null> {
-    return this.tagService.deleteTagWeb(tag_name, user);
+    return this.tagService.deleteTagWeb(tag_id, user);
   }
 
   // 태그에 따라 피드 검색
