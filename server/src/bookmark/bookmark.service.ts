@@ -55,35 +55,37 @@ export class BookmarkService {
             include: {
               highlight: true,
               tag: true,
+              og: true,
             },
           },
         },
       });
-      const feedswithOg: object[] = [];
-      for (const bookmark of bookmarks) {
-        if (bookmark.feed.url) {
-          const meta = await getUrlMeta(bookmark.feed.url);
-          // 존재하지 않는다면 임의의 값 넣기
-          if (meta.title === undefined) {
-            meta.title = 'No Title';
-          }
-          if (meta.desc === undefined) {
-            meta.desc = 'No Description';
-          }
-          if (meta.image === undefined) {
-            meta.image =
-              'https://img.favpng.com/23/20/7/computer-icons-information-png-favpng-g8DtjAPPNhyaU9EdjHQJRnV97_t.jpg';
-          }
-          const feedwithOg = {
-            ...bookmark,
-            og_title: meta.title,
-            og_desc: meta.desc,
-            og_image: meta.image,
-          };
-          feedswithOg.push(feedwithOg);
-        }
-      }
-      return feedswithOg;
+      // const feedswithOg: object[] = [];
+      // for (const bookmark of bookmarks) {
+      //   if (bookmark.feed.url) {
+      //     const meta = await getUrlMeta(bookmark.feed.url);
+      //     // 존재하지 않는다면 임의의 값 넣기
+      //     if (meta.title === undefined) {
+      //       meta.title = 'No Title';
+      //     }
+      //     if (meta.desc === undefined) {
+      //       meta.desc = 'No Description';
+      //     }
+      //     if (meta.image === undefined) {
+      //       meta.image =
+      //         'https://img.favpng.com/23/20/7/computer-icons-information-png-favpng-g8DtjAPPNhyaU9EdjHQJRnV97_t.jpg';
+      //     }
+      //     const feedwithOg = {
+      //       ...bookmark,
+      //       og_title: meta.title,
+      //       og_desc: meta.desc,
+      //       og_image: meta.image,
+      //     };
+      //     feedswithOg.push(feedwithOg);
+      //   }
+      // }
+      // return feedswithOg;
+      return bookmarks;
     } catch (e) {
       console.log(e);
       throw new HttpException('Internal Server Error', 500);
