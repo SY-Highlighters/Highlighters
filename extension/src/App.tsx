@@ -1,5 +1,5 @@
 
-import Tabs from "./Tabs";
+import Tabs from "./tabs/Tabs";
 function App() {
   return (
     <div className="App">

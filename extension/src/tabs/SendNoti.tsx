@@ -1,31 +1,18 @@
-/*
-  This example requires some changes to your config:
-  
-  ```
-  // tailwind.config.js
-  module.exports = {
-    // ...
-    plugins: [
-      // ...
-      require('@tailwindcss/forms'),
-    ],
-  }
-  ```
-*/
-export default function SendMessage() {
-  const formSubmitHandler = async (event: any) => {
-    event.preventDefault();
-    const contents = event.target[0].value;
 
-    chrome.runtime.sendMessage(
-      {
-        greeting: "postNoti",
-        data: contents
-      },
-      (response) => response.farewell
-    );
-  };
+const formSubmitHandler = async (event: any) => {
+  event.preventDefault();
+  const contents = event.target[0].value;
 
+  chrome.runtime.sendMessage(
+    {
+      greeting: "postNoti",
+      data: contents,
+    },
+    (response) => response.farewell
+  );
+};
+
+export default function SendNoti() {
   return (
     <div className="mt-1">
       <div className="md:grid md:grid-cols-3 md:gap-6">
@@ -39,7 +26,7 @@ export default function SendMessage() {
                 <div>
                   <label
                     htmlFor="about"
-                    className="block text-sm font-medium text-gray-700"
+                    className="block text-sm font-large text-gray-700"
                   >
                     메세지
                   </label>

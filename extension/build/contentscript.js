@@ -126,8 +126,7 @@ function showLoginModal() {
   const modal_content = document.getElementById("modal-content");
   modal_content.cssText = modalContent;
 
-  body.style.overflowX = "hidden";
-  body.style.overflowY = "hidden";
+  body.style.overflow = "hidden";
 }
 
 function highlightDone(range) {
@@ -142,7 +141,6 @@ function highlightDone(range) {
 
 /* 하이라이트 Post */
 async function postHighlight(range, highlightStr) {
-
   const rangeobj = {
     startXPath: makeXPath(range.startContainer),
     startOffset: range.startOffset,
@@ -284,3 +282,18 @@ if (url_check) {
     }
   };
 }
+
+chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+  switch (request.greeting) {
+    // 웹페이지의 하이라이팅을 디비로 전송
+    case "getCurUrl":
+      console.log(document.location.href);
+      sendResponse(document.location.href);
+      break;
+
+    default:
+      console.log(request, sender);
+      break;
+  }
+  return true;
+});

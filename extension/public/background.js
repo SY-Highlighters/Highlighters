@@ -8,8 +8,8 @@ const host_url = is_production
   ? "https://highlighters.site"
   : "http://localhost:3001";
 
-let currentUrl;
 let feedExist;
+let currentUrl;
 
 async function getCookieToken() {
   const cookie = await new Promise((resolve) => {
@@ -36,7 +36,6 @@ async function postHighlight(token, request) {
 
 // 반드시 fetch가 먼저 실행되고나서 feedExist를 업데이트해야 함
 async function getHighlight(token, request) {
-  currentUrl = request.url;
   const response = await fetch(`${host_url}/api/highlight/feed`, {
     method: "POST",
     headers: {
@@ -47,31 +46,37 @@ async function getHighlight(token, request) {
   });
   const data = await response.json();
 
-  if (data.success === false) {
-    feedExist = false;
-  } else feedExist = true;
-  console.log("[getHighlight] feedExist set:", feedExist);
+  // if (data.success === false) {
+  //   feedExist = false;
+  // } else feedExist = true;
+  // console.log("[getHighlight] feedExist set:", feedExist);
 
   return data;
 }
 
 async function postNoti(token, request) {
-  const noti = {
-    url: currentUrl,
-    contents: request,
-  };
-  console.log(noti);
+  chrome.tabs.query({ active: true, currentWindow: true });
+  chrome.tabs.query({ active: true, currentWindow: true }, (pages) => {
+    chrome.tabs.sendMessage(pages[0].id, { greeting: "getCurUrl" }, (r) => {
+      const currentUrl = r;
+      const noti = {
+        url: currentUrl,
+        contents: request,
+      };
+      console.log(noti);
 
-  const response = await fetch(`${host_url}/api/noti/create`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`,
-    },
-    body: JSON.stringify(noti),
+      const response = fetch(`${host_url}/api/noti/create`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(noti),
+      });
+      const data = response.json();
+      return data;
+    });
   });
-  const data = await response.json();
-  return data;
 }
 
 async function getNoti(token) {
@@ -84,6 +89,19 @@ async function getNoti(token) {
   });
   const data = await response.json();
   console.log(data);
+  return data;
+}
+
+async function getFeed(token, url) {
+  const response = await fetch(`${host_url}/api/feed/url`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify(url),
+  });
+  const data = await response.json();
   return data;
 }
 
@@ -144,8 +162,19 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
         break;
 
       case "getFeed":
-        console.log("[getFeed] feedExist:", feedExist);
-        sendResponse(feedExist);
+        chrome.windows.getCurrent(function (win) {
+          chrome.tabs.query(
+            { windowId: win.id, active: true },
+            function (tabs) {
+              if (tabs.length !== "undefined" && tabs.length === 1)
+                var currentURL = tabs[0].url;
+              console.log(currentURL);
+              getFeed(token, currentURL)
+                .then((data) => sendResponse({ data }))
+                .catch((error) => console.log(`fetch 실패: ${error}`));
+            }
+          );
+        });
         break;
 
       default:
@@ -153,26 +182,25 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
         break;
     }
   });
-
   return true;
 });
 
-// when a chrome tab is changed, set currentUrl to the changed tab's url and if a changed tab has feed, make feedExist true, if a changed tab doesn't have feed, make feedExist false
-chrome.tabs.onActivated.addListener(function (activeInfo) {
-  // 탭이 변경되면
-  chrome.tabs.get(activeInfo.tabId, function (tab) {
-    currentUrl = tab.url; // currentUrl 업데이트
-    console.log("[onActivated] currentUrl:", currentUrl);
-    // getHighlight를 통해 feed가 있는지 확인
-    jwt_token.then((token) => {
-      getHighlight(token, { url: currentUrl })
-        .then((data) => {
-          if (data.success === false) {
-            feedExist = false;
-          } else feedExist = true;
-          console.log("[onActivated] feedExist set:", feedExist);
-        })
-        .catch((error) => console.log(`fetch 실패: ${error}`));
-    });
-  });
-});
+// // when a chrome tab is changed, set currentUrl to the changed tab's url and if a changed tab has feed, make feedExist true, if a changed tab doesn't have feed, make feedExist false
+// chrome.tabs.onActivated.addListener(function (activeInfo) {
+//   // 탭이 변경되면
+//   chrome.tabs.get(activeInfo.tabId, function (tab) {
+//     currentUrl = tab.url; // currentUrl 업데이트
+//     console.log("[onActivated] currentUrl:", currentUrl);
+//     // getHighlight를 통해 feed가 있는지 확인
+//     jwt_token.then((token) => {
+//       getHighlight(token, { url: currentUrl })
+//         .then((data) => {
+//           if (data.success === false) {
+//             feedExist = false;
+//           } else feedExist = true;
+//           console.log("[onActivated] feedExist set:", feedExist);
+//         })
+//         .catch((error) => console.log(`fetch 실패: ${error}`));
+//     });
+//   });
+// });

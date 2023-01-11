@@ -1,8 +1,7 @@
 /* global chrome */
 import { useEffect, useState } from "react";
-import Noti from "./Noti";
-import NotiData from "./models/notiData";
-let notiData: any[];
+import Noti from "../components/Noti";
+import NotiData from "../models/notiData";
 
 export default function NotiBox() {
   const [notis, setNoti] = useState<NotiData[]>([]);
@@ -14,12 +13,12 @@ export default function NotiBox() {
       });
       const data = response.data;
       console.log(data);
-      messageadd(data.data);
+      notiAdd(data.data);
     }
     getNotiAsync();
   }, []);
 
-  const messageadd = (data: []) => {
+  const notiAdd = (data: []) => {
     data.map((item: any) => {
       const newNoti = {
         id: item.id,
@@ -33,12 +32,14 @@ export default function NotiBox() {
     });
   };
 
-  // {id: 48, contents: '아아아ㅏㄱ', nickname: '일짱예린', feed_id: 40, title: 'SW사관학교 정글 | SW 사관학교 정글 5기를 위한 웹사이트', …}
   const notiList = notis.map((noti) => (
     <Noti
-      sender={noti.nickname}
-      title={noti.title}
+      id={noti.id}
       contents={noti.contents}
+      sender={noti.nickname}
+      feed-id={noti.feed_id}
+      title={noti.title}
+      url={noti.url}
     ></Noti>
   ));
   return (
