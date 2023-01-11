@@ -1,7 +1,11 @@
 import axios from "axios";
 import { useCookies } from "react-cookie";
+import { useRecoilState } from "recoil";
+import { tagsInFeedState } from "../../../states/atom";
 export function TagEditItem(props: any) {
   const [cookies, setCookie, removeCookie] = useCookies(["logCookie"]);
+  const [tagList, setTagList] = useRecoilState(tagsInFeedState);
+
   // Todo : 태그 삭제 기능
   const tagEditHandler = async () => {
     console.log(props.tagId, props.feedId);
@@ -17,9 +21,11 @@ export function TagEditItem(props: any) {
         feed_id: props.feedId,
       },
     });
+    // 태그 삭제 후 태그 리스트 업데이트
+    setTagList(tagList.filter((tag: any) => tag.tag_id !== props.tagId));
   };
   return (
-    <span className="inline-flex items-center mr-2 px-3 py-0.5 rounded-full text-sm font-medium bg-sky-100 text-sky-800 hover:bg-sky-300">
+    <span className="mt-2 inline-flex items-center mr-2 px-3 py-0.5 rounded-full text-sm font-medium bg-sky-100 text-sky-800 hover:bg-sky-300">
       #{props.tagName}
       <button onClick={tagEditHandler}>
         <svg

@@ -1,4 +1,9 @@
-import { useSetRecoilState, useRecoilState, useRecoilValue } from "recoil";
+import {
+  useSetRecoilState,
+  useRecoilState,
+  useRecoilValue,
+  useResetRecoilState,
+} from "recoil";
 import { tagModalVisble, sighUpCheck } from "../../states/atom";
 import {
   tagsInFeedState,
@@ -11,6 +16,7 @@ import axios from "axios";
 import { TagEditItem } from "./TagItem/TagEditItem";
 import Swal from "sweetalert2";
 import { ArrowRightCircleIcon } from "@heroicons/react/24/outline";
+import GroupTag from "../User/GroupTag";
 export function TagEditModal(props: any) {
   const setTagModal = useSetRecoilState(tagModalVisble);
   const currentFeedId = useRecoilValue(currentFeedIdState);
@@ -19,10 +25,12 @@ export function TagEditModal(props: any) {
   const [inputValue, setInputValue] = useState("");
   // const tagName = useRecoilValue(tagNameState);
   const [tagList, setTagList] = useRecoilState(tagsInFeedState);
+  const resetTagsInFeedState = useResetRecoilState(tagsInFeedState);
+
   const closeModal = () => {
     setTagModal(!tagModalVisble);
+    resetTagsInFeedState();
   };
-  console.log("태그 모달", tagList);
   // const [userData, setUserInfo] = useRecoilState(userInfo); test1 -> 현재 로그인시 유저데이터 받는중
 
   // const gropuId = userData.groupId;
@@ -39,8 +47,6 @@ export function TagEditModal(props: any) {
 
   const tagAddHandler = async () => {
     const host_url = `${process.env.REACT_APP_HOST}/api/tag/create`;
-    console.log(inputValue, currentFeedId);
-    // 서버에 그룹 생성 요청
     await axios
       .post(
         host_url,
@@ -63,8 +69,9 @@ export function TagEditModal(props: any) {
           });
           const newTagItem = {
             tag_name: inputValue,
-            tag_id: response.data.tag_id,
+            tag_id: response.data.id,
           };
+          console.log(response);
           setTagList([...tagList, newTagItem]);
         } else {
           alert("태그 생성 실패!");
@@ -73,11 +80,15 @@ export function TagEditModal(props: any) {
   };
 
   const tagLists = tagList.map((tagItem: any) => (
-    <TagEditItem
-      tagName={tagItem.tag_name}
-      feedId={currentFeedId}
-      tagId={tagItem.tag_id}
-    />
+    <div key={tagItem.tag_id}>
+      <TagEditItem
+        key={tagItem.tag_id}
+        tagName={tagItem.tag_name}
+        feedId={currentFeedId}
+        tagId={tagItem.tag_id}
+        // tagList={tagList}
+      />
+    </div>
   ));
 
   return (
@@ -123,7 +134,7 @@ export function TagEditModal(props: any) {
               태그 수정
             </h1>
 
-            <div className="flex flex-wrap mt-2">{tagLists}</div>
+            <div className="flex flex-wrap mt-2 ">{tagLists}</div>
             {/* 태그 생성 */}
             <div className="flex flex-wrap mt-5">
               <div className="w-full px-2">
@@ -145,6 +156,15 @@ export function TagEditModal(props: any) {
                   </div>
                 </div>
               </div>
+            </div>
+            {/* 검색창 미리보기 형식으로 태그 리스트 */}
+            <div>
+              <GroupTag
+                onFunc={() => {
+                  console.log("test");
+                }}
+                onCss={"w-full mt-10 bg-white"}
+              ></GroupTag>
             </div>
           </div>
         </div>
