@@ -44,7 +44,7 @@ model Feed {
   group_id   Int
   id         Int         @id @default(autoincrement())
   updatedAt  DateTime    @default(now()) @updatedAt
-  url        String      @db.Char(100)
+  url        String
   user_email String
   og_id      Int
   bookmark   Bookmark[]
