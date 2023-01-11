@@ -22,6 +22,10 @@ export class CreateHighlightDto {
 
   @IsOptional()
   title: string;
+
+  image: string;
+
+  description: string;
 }
 
 export class UpdateHighlightDto extends PartialType(CreateHighlightDto) {}

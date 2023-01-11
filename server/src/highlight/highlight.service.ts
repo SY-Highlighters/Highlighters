@@ -19,8 +19,16 @@ export class HighlightService {
   async createHighlight(
     createHighlightDto: CreateHighlightDto,
   ): Promise<Highlight> {
-    const { user_email, group_id, url, contents, selection, title } =
-      createHighlightDto;
+    const {
+      user_email,
+      group_id,
+      url,
+      contents,
+      selection,
+      title,
+      image,
+      description,
+    } = createHighlightDto;
 
     let find_feed = await this.prismaService.feed.findFirst({
       where: { url, group_id },
@@ -32,6 +40,8 @@ export class HighlightService {
       newFeedDto.group_id = group_id;
       newFeedDto.url = url;
       newFeedDto.title = title;
+      newFeedDto.image = image;
+      newFeedDto.description = description;
 
       find_feed = await this.feedService.createFeed(newFeedDto);
     }
