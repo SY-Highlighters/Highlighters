@@ -20,6 +20,11 @@ export class CalendarService {
         highlight: true,
         tag: true,
         og: true,
+        user: {
+          select: {
+            nickname: true,
+          },
+        },
       },
     });
     // const feedswithOg: object[] = [];

@@ -56,6 +56,11 @@ export class BookmarkService {
               highlight: true,
               tag: true,
               og: true,
+              user: {
+                select: {
+                  nickname: true,
+                },
+              },
             },
           },
         },

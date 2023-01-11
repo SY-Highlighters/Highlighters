@@ -58,6 +58,11 @@ export class FeedService {
         highlight: true,
         tag: true,
         og: true,
+        user: {
+          select: {
+            nickname: true,
+          },
+        },
       },
     });
 
