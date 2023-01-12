@@ -18,12 +18,14 @@ export function TagItem(props: any) {
   const tagClickHandler = () => {
     console.log("tag clicked");
     if (props.onFunc) {
+      console.log("설마여기?");
       tagAddFunC();
     } else {
       setMainSectionNum(2);
+      console.log("태그아이템 클릭", props.name, props.id);
       setclickedTag({
         tag_name: props.name,
-        tag_id: props.id,
+        tag_id: props.tag_id,
       });
     }
   };

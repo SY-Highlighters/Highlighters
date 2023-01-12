@@ -1,6 +1,8 @@
 // React
 import { useEffect, useState, Fragment } from "react";
 import { useCookies } from "react-cookie";
+import { GoogleOAuthProvider } from "@react-oauth/google";
+
 // Layout
 //  header section
 import Header from "./components/Layout/Header";
@@ -14,7 +16,8 @@ import LoginModal from "./components/Intro/LoginModal";
 // state management section
 import { useRecoilValue } from "recoil";
 import { logModalVisble, userInfoState } from "./states/atom";
-
+const clientId =
+  "1051615347268-qio4ne1nai8flq7felb5h0relc1lcp0b.apps.googleusercontent.com";
 function App() {
   const loginModalState = useRecoilValue(logModalVisble);
   const [cookies, setCookie, removeCookie] = useCookies(["logCookie"]);
@@ -37,24 +40,26 @@ function App() {
   // );
 
   return (
-    <Fragment>
-      {/* header section */}
-      {header}
-      {/* log section */}
-      {/* loged main section*/}
-      {cookies.logCookie ? (
-        <Main></Main>
-      ) : (
-        // log section
-        <div className="">
-          <div>
-            <Intro></Intro>
+    <GoogleOAuthProvider clientId={clientId}>
+      <Fragment>
+        {/* header section */}
+        {header}
+        {/* log section */}
+        {/* loged main section*/}
+        {cookies.logCookie ? (
+          <Main></Main>
+        ) : (
+          // log section
+          <div className="">
+            <div>
+              <Intro></Intro>
+            </div>
+            {/* log modal*/}
+            {loginModalState && <LoginModal></LoginModal>}
           </div>
-          {/* log modal*/}
-          {loginModalState && <LoginModal></LoginModal>}
-        </div>
-      )}
-    </Fragment>
+        )}
+      </Fragment>
+    </GoogleOAuthProvider>
   );
 }
 export default App;

@@ -39,7 +39,7 @@ export function TagEdit(props: any) {
           className="flex-shrink-0 w-4 h-4 text-gray-400 "
           aria-hidden="true"
         />
-        <span className="ml-1 mr-1">태그 편집</span>
+        <span className="ml-1 mr-1">태그 수정</span>
       </button>
     </div>
   );

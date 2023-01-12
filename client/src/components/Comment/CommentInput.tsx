@@ -21,6 +21,7 @@ export function CommentInput() {
   };
 
   const commentAddHandler = async () => {
+    //인풋 안에 값 비우기
     const host_url = `${process.env.REACT_APP_HOST}/api/comment/create/${currentFeedId}`;
     // 서버에 그룹 생성 요청
     await axios
@@ -43,6 +44,8 @@ export function CommentInput() {
             title: "댓글 생성 성공!",
             text: "댓글 생성에 성공했습니다.",
           });
+          setInputValue(" ");
+
           //   const newTagItem = {
           //     tag_name: inputValue,
           //     tag_id: response.data.tag_id,
@@ -53,8 +56,6 @@ export function CommentInput() {
         }
       });
   };
-
-
 
   return (
     <div className="flex flex-col mt-7">
@@ -68,6 +69,7 @@ export function CommentInput() {
         <div className="w-full mr-3">
           <input
             onChange={handleChange}
+            value={inputValue}
             className="w-full h-10 px-3 mt-1 text-base text-gray-700 placeholder-gray-300 border rounded-lg ml-7 focus:shadow-outline"
             type="text"
             placeholder="댓글을 입력하세요"
