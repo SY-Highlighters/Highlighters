@@ -8,6 +8,7 @@ export class CalendarService {
   constructor(private readonly prisma: PrismaService) {}
 
   async showCalendar(user: User, date: Date): Promise<object[]> {
+    // const date = new Date(server_date + '00:09:00');
     const feeds = await this.prisma.feed.findMany({
       where: {
         group_id: user.group_id,
