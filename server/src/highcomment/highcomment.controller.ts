@@ -15,6 +15,7 @@ import {
 } from '@nestjs/common/decorators/http/request-mapping.decorator';
 import { GetUser } from 'src/auth/get-user.decorator';
 import { Body } from '@nestjs/common/decorators/http/route-params.decorator';
+import { RequesthighcommentDto } from './dto/highcomment.dto';
 
 @Controller('api/highcomment')
 @UseInterceptors(SuccessInterceptor)
@@ -29,9 +30,12 @@ export class HighcommentController {
   @Post('/create')
   async createHighlightComment(
     @GetUser() user: User,
-    @Body() word: string,
-  ): Promise<Highlight> {
-    return this.highcommentService.createHighlightComment(user, word);
+    @Body() requesthighcommentdto: RequesthighcommentDto,
+  ): Promise<Highcomment> {
+    return this.highcommentService.createHighlightComment(
+      user,
+      requesthighcommentdto,
+    );
   }
 
   // 하이라이트 코멘트 조회
