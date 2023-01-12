@@ -85,7 +85,7 @@ export function GoogleLoginButton() {
   return (
     <button
       onClick={() => googleSocialLogin()}
-      className="flex flex-row w-full px-4 py-2 mt-3 tracking-wide text-white transition-colors duration-200 transform bg-white rounded-md outline-double outline-black hover:bg-gray-800 focus:outline-none focus:bg-gray-600"
+      className="flex flex-row w-full px-4 py-2 mt-3 tracking-wide text-white transition-colors duration-200 transform bg-white rounded-md outline-1 outline outline-black hover:bg-gray-200 focus:outline-none focus:bg-gray-400"
     >
       <div className="w-1/3">
         <img

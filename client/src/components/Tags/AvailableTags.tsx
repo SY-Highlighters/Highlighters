@@ -99,12 +99,12 @@ const AvailableTags = () => {
           </span>
         </h1>
       </div>
-      <div className="">
-        <ul className="">
+      <div className="mt-6">
+        <ul className="space-y-5">
           {isSuccess &&
             feedsInTag &&
             feedsInTag.map((feed: any) => (
-              <div key={feed.id}>
+              <div key={feed.id} className="">
                 <FeedItem
                   id={feed.id}
                   key={feed.id}

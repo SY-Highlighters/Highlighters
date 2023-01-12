@@ -139,6 +139,8 @@ const AvailableFeeds = () => {
                   writer={feed.user.nickname}
                   writerImg={feed.user.image}
                   commentLen={feed.comment.length}
+                  bookmarked={feed.bookmark.length !== 0 ? true : false}
+                  bookmarkId={feed.bookmark[0]}
                 />
               </div>
             ))}
