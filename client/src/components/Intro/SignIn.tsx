@@ -5,6 +5,7 @@ import SignUp from "./SignUp";
 import { logModalVisble, sighUpCheck, userInfoState } from "../../states/atom";
 import { useCookies } from "react-cookie";
 import Swal from "sweetalert2";
+import { GoogleLoginButton } from "./GoogleLoginButton";
 
 export default function SignIn() {
   const [sighch, setSignUp] = useRecoilState(sighUpCheck);
@@ -57,7 +58,7 @@ export default function SignIn() {
         Swal.fire({
           icon: "error",
           title: "Oops...",
-          text: "이메일 또는 비밀번호가 일치하지 않습니다.",
+          text: "이메일 또는 비밀번호가 일치하지 않습니다.?",
           confirmButtonColor: "#0ea5e9",
         });
       });
@@ -120,7 +121,9 @@ export default function SignIn() {
               </button>
             </div>
           </form>
-
+          <div className="justify-center">
+            <GoogleLoginButton></GoogleLoginButton>
+          </div>
           <p className="mt-8 text-xs font-light text-center text-gray-700">
             Don't have an account?{" "}
             <p

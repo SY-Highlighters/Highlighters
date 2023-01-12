@@ -126,14 +126,16 @@ const FeedItem = (props: any) => {
             </div>
             즐겨찾기
             {/* 댓글 버튼 (토글식)*/}
-          <button onClick={commentToggleHandler} className="">
-            {/* <button className=""> */}
-
-            <ChatBubbleBottomCenterIcon className="w-5 h-5 text-gray-400 hover:text-gray-700" />
-            {/* </button> */}
-            {/* ChevronDownIcon 클릭시 댓글창  */}
-            {/* */}
-          </button>
+          <div>
+            <span className="mr-2 ">3</span>
+            <button onClick={commentToggleHandler} className="">
+              {/* <button className=""> */}
+              <ChatBubbleBottomCenterIcon className="w-5 h-5 text-gray-400 hover:text-gray-700" />
+              {/* </button> */}
+              {/* ChevronDownIcon 클릭시 댓글창  */}
+              {/* */}
+            </button>
+          </div>
         </div>
         {/* 숨김 코멘트창 */}
         {commentIsClicked && <Comment></Comment>}
