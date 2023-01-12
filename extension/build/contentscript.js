@@ -180,6 +180,7 @@ async function postHighlight(range, highlightStr) {
         );
         showLoginModal();
       } else {
+        console.log(response.data);
         highlights.push(response.data.data);
         highlightDone(range, response.data.data.id);
       }
@@ -196,7 +197,9 @@ function getHighlight(url) {
     },
     async (response) => {
       const highlightsMeta = response.data;
-      highlights = highlightsMeta.data;
+
+      highlights = highlightsMeta.data ? highlightsMeta.data : [];
+      console.log(highlights);
 
       if (highlightsMeta.success === false) {
         throw new Error(
@@ -238,16 +241,23 @@ function getHighlight(url) {
         newNode.style.backgroundColor = highlight.color;
         range.surroundContents(newNode);
 
-        // makeHighlightEventListener(highlight.id);
+        // newNode.addEventListener("click", () => deleteHighlight(newNode));
         newNode.addEventListener("click", () => deleteHighlight(newNode));
       }
     }
   );
 }
 
-function openHighlightMenu() {
-  console.log("CLICKED!!!");
-}
+// function openHighlightMenu() {
+//   console.log("CLICKED!!!");
+// }
+
+// function redirectHome() {
+//   const is_production = false;
+//   window.location.href = is_production
+//     ? "https://highlighters.site"
+//     : "http://localhost:3000";
+// }
 
 function deleteHighlight(node) {
   chrome.runtime.sendMessage(
