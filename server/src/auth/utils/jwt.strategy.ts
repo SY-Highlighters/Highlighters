@@ -3,7 +3,6 @@ import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
 import { ExtractJwt, Strategy } from 'passport-jwt';
 import { PrismaService } from 'src/repository/prisma.service';
-import { AuthService } from './auth.service';
 
 @Injectable() // 다른 곳에서도 사용하기 위함
 export class JwtStrategy extends PassportStrategy(Strategy) {

@@ -12,7 +12,6 @@ export class AuthController {
   async handleGoogleLogin(@Req() req): Promise<void> {
     // redirect google login page
     // return { msg: 'Google Authentication' };
-    // return this.authService.googleLogin();
   }
 
   // api/auth/google/redirect
