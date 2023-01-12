@@ -111,9 +111,8 @@ export const currentFeedIdState = atom<number>({
 //   default: true,
 // });
 
-
-// 그룹 모달창을 띄우는 state (그룹 추가, 그룹 초대)
-export const testRender = atom<boolean>({
-  key: "testRender",
+// 코멘트 작성시 코멘트 리스트 리로드 state
+export const commentReloadState = atom<boolean>({
+  key: "commentReloadState",
   default: false,
 });

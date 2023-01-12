@@ -17,14 +17,14 @@ import {
   tagsInFeedState,
   userInfoState,
   currentFeedIdState,
-  testRender,
+  commentReloadState,
 } from "../../states/atom";
 import { useRecoilValue } from "recoil";
 export function Comment(props: any) {
   const currentFeedId = useRecoilValue(currentFeedIdState);
   const [cookies, setCookie, removeCookie] = useCookies(["logCookie"]);
   const [commentList, setCommentList] = useState([]);
-  const test = useRecoilValue(testRender);
+  const commentReload = useRecoilValue(commentReloadState);
 
   // const { data: commentList, isSuccess } = useQuery(
   //   ["commentList", test, props.reset],
@@ -57,7 +57,7 @@ export function Comment(props: any) {
       setCommentList(response.data.data);
     }
     fetchData();
-  }, [test]);
+  }, [commentReload]);
 
   return (
     <div>

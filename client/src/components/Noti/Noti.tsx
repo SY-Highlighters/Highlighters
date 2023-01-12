@@ -8,6 +8,7 @@ const host_url = `${process.env.REACT_APP_HOST}/api/noti/web`;
 export default function Noti() {
   const [cookies, setCookie, removeCookie] = useCookies(["logCookie"]);
   const [notiData, setNotiData] = useState<NotiData[]>([]);
+  const [notiVisible, setNotiVisible] = useState(false);
   useEffect(() => {
     async function notiGet() {
       const res = await axios({

@@ -20,7 +20,11 @@ import { useEffect, useState } from "react";
 import { Comment } from "../../Comment/Comment";
 import { FeedTagEdit } from "../../Tags/FeedTagEdit";
 import { TagItem } from "../../Tags/TagItem/TagItem";
-import { currentFeedIdState, tagModalVisble } from "../../../states/atom";
+import {
+  currentFeedIdState,
+  tagModalVisble,
+  commentReloadState,
+} from "../../../states/atom";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import { Bookmarked } from "../../Bookmarks/BookmarkItem/Bookmarked";
 import { UnBookmarked } from "../../Bookmarks/BookmarkItem/UnBookmarked";
@@ -29,6 +33,7 @@ const FeedItem = (props: any) => {
   const [commentIsClicked, setCommentIsClicked] = useState(false);
   const setCurrentFeedId = useSetRecoilState(currentFeedIdState);
   const tagModal = useRecoilValue(tagModalVisble);
+  const commentReload = useRecoilValue(commentReloadState);
 
   // 여러개의 하이라이트를 받아서 하나의 리스트로 만들어준다.
   // 하이라이트별 색상 지정해줘야함. -> 수정해야함
@@ -59,8 +64,8 @@ const FeedItem = (props: any) => {
     setCommentIsClicked(!commentIsClicked);
   }
   // useEffect(() => {
-  //   console.log("FeedItem.tsx");
-  // }, [tagModal]);
+  //   console.log("댓글 수 리로드");
+  // }, []);
   return (
     // <li className="py-5">
     <div className="overflow-hidden bg-white rounded-lg shadow-lg">

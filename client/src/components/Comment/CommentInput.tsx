@@ -4,7 +4,7 @@ import {
   tagsInFeedState,
   userInfoState,
   currentFeedIdState,
-  testRender,
+  commentReloadState,
 } from "../../states/atom";
 import { useCookies } from "react-cookie";
 import { useEffect, useState } from "react";
@@ -16,7 +16,7 @@ export function CommentInput() {
   const [cookies, setCookie, removeCookie] = useCookies(["logCookie"]);
   const currentFeedId = useRecoilValue(currentFeedIdState);
   // 코멘트가 입력되었을때 다른 컴포넌트를 리렌더링 시키기위한 상태
-  const setTestRender = useSetRecoilState(testRender);
+  const setcommentReload = useSetRecoilState(commentReloadState);
   const handleChange = (e: any) => {
     console.log(e.target.value);
     setInputValue(e.target.value);
@@ -76,7 +76,7 @@ export function CommentInput() {
       .then(function (response) {
         if (response) {
           setInputValue(" ");
-          setTestRender((prev) => !prev);
+          setcommentReload((prev) => !prev);
 
           //   const newTagItem = {
           //     tag_name: inputValue,
