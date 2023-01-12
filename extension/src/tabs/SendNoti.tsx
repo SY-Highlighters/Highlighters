@@ -1,3 +1,4 @@
+import { useState } from "react";
 import Swal from "sweetalert2";
 
 const Toast = Swal.mixin({
@@ -12,25 +13,31 @@ const Toast = Swal.mixin({
   },
 });
 
-const formSubmitHandler = async (event: any) => {
-  event.preventDefault();
-  const contents = event.target[0].value;
-
-  chrome.runtime.sendMessage(
-    {
-      greeting: "postNoti",
-      data: contents,
-    },
-    (response) => {
-      Toast.fire({
-        icon: "success",
-        title: "알림 전송 성공!",
-      });
-    }
-  );
-};
-
 export default function SendNoti() {
+  const [inputValue, setInputValue] = useState("");
+  const formSubmitHandler = async (event: any) => {
+    event.preventDefault();
+    const contents = event.target[0].value;
+
+    chrome.runtime.sendMessage(
+      {
+        greeting: "postNoti",
+        data: contents,
+      },
+      (response) => {
+        Toast.fire({
+          icon: "success",
+          title: "알림 전송 성공!",
+        });
+        setInputValue("")
+      }
+    );
+  };
+
+  const haneleChange = (event: any) => {
+    setInputValue(event.target.value);
+  };
+  
   return (
     <div className="mt-1">
       <div className="md:grid md:grid-cols-3 md:gap-6">
@@ -50,12 +57,14 @@ export default function SendNoti() {
                   </label>
                   <div className="mt-1">
                     <textarea
+                      onChange={haneleChange}
                       id="about"
                       name="about"
                       rows={3}
                       className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-sky-500 focus:ring-sky-500 sm:text-sm"
                       placeholder="메세지를 입력하세요"
                       defaultValue={""}
+                      value={inputValue}
                     />
                   </div>
                 </div>

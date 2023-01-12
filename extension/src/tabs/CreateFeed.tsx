@@ -1,17 +1,15 @@
 import { ArrowRightCircleIcon } from "@heroicons/react/24/outline";
-import { useEffect, useState } from "react";
+import { TableHTMLAttributes, useEffect, useState } from "react";
 import { TagItem } from "../components/TagItem";
 import { useSetRecoilState, useRecoilState } from "recoil";
 import { tagsInFeedState } from "../states/atom";
 import TagData from "../models/tag";
 
-export default function CreateFeed() {
+export default function CreateFeed(this: any) {
   const [groupTags, setGroupTags] = useState<TagData[]>([]);
   const [feedTags, setFeedTags] = useRecoilState(tagsInFeedState);
 
   useEffect(() => {
-    // console.log("색 저장시작!");
-    // console.log("색 저장끝!");
 
     async function getTagAsync() {
       await chrome.storage.sync.set({ highlightColor: "#FFFF00" });
@@ -37,16 +35,22 @@ export default function CreateFeed() {
     });
   };
 
+
   const groupTagList = groupTags.map((tag) => (
     <span>
-      <TagItem id={tag.tag_id} name={tag.tag_name}></TagItem>
+      <TagItem
+        onClick={() => this.feedTagAdd(tag.tag_id, tag.tag_name)}
+        id={tag.tag_id}
+        name={tag.tag_name}
+      ></TagItem>
     </span>
   ));
+
 
   return (
     <div>
       <div className="px-4"></div>
-      <form action="#" method="POST">
+      {/* <form action="#" method="POST"> */}
         <div className="shadow ">
           <div className="bg-white px-4 py-3">
             <h1 className="text-base font-semibold text-left text-sky-500 ">
@@ -57,15 +61,15 @@ export default function CreateFeed() {
               className="w-full h-8 mr-1 mb-1 mt-1 text-gray-700 bg-white border border-gray-300 rounded-md focus:outline-none focus:border-gray-400"
               placeholder=" 제목을 입력하세요"
             />
-            <h1 className="my-2 text-base font-semibold text-left text-sky-500 ">
+            <h1 className="my-1 text-base font-semibold text-left text-sky-500 ">
               태그 추가
             </h1>
-            <div>
-              {/* {feedTags.map((tag: any) => (
+            <div className="mb-2">
+              {feedTags.map((tag: any) => (
                 <span>
                   <TagItem id={tag.tag_id} name={tag.tag_name}></TagItem>
                 </span>
-              ))} */}
+              ))}
             </div>
             <div className="items-center w-full px-3 py-2 text-gray-700 bg-white border border-gray-300 rounded-lg focus:outline-none focus:border-gray-400">
               <div className="flex flex-row">
@@ -95,7 +99,7 @@ export default function CreateFeed() {
             </button>
           </div>
         </div>
-      </form>
+      {/* </form> */}
     </div>
   );
 }
