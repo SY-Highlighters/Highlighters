@@ -8,19 +8,20 @@ datasource db {
 }
 
 model User {
-  email        String      @id @db.Char(50)
+  email        String        @id @db.Char(50)
   group_id     Int?
-  nickname     String?     @db.Char(20)
-  password     String      @db.Char(100)
+  nickname     String?       @db.Char(20)
+  password     String        @db.Char(100)
   image        String
-  new_noti     Boolean     @default(false)
+  new_noti     Boolean       @default(false)
   bookmark     Bookmark[]
   comment      Comment[]
   Feed         Feed[]
+  Highcomment  Highcomment[]
   highlight    Highlight[]
-  receive_noti Noti[]      @relation("receiver")
-  send_noti    Noti[]      @relation("sender")
-  group        Group?      @relation(fields: [group_id], references: [id])
+  receive_noti Noti[]        @relation("receiver")
+  send_noti    Noti[]        @relation("sender")
+  group        Group?        @relation(fields: [group_id], references: [id])
 
   @@index([group_id], map: "USER_group_id_fkey")
   @@map("USER")
@@ -111,23 +112,38 @@ model Tag {
 }
 
 model Highlight {
-  createdAt  DateTime @default(now())
-  feed_id    Int
-  id         Int      @id @default(autoincrement())
-  selection  Json
-  user_email String
-  contents   String
-  type       Int
-  color      String   @db.Char(10)
-  group_id   Int
-  feed       Feed     @relation(fields: [feed_id], references: [id], onDelete: Cascade)
-  group      Group    @relation(fields: [group_id], references: [id])
-  user       User     @relation(fields: [user_email], references: [email])
+  createdAt   DateTime      @default(now())
+  feed_id     Int
+  id          Int           @id @default(autoincrement())
+  selection   Json
+  user_email  String
+  contents    String
+  type        Int
+  color       String        @db.Char(10)
+  group_id    Int
+  highcomment Highcomment[]
+  feed        Feed          @relation(fields: [feed_id], references: [id], onDelete: Cascade)
+  group       Group         @relation(fields: [group_id], references: [id])
+  user        User          @relation(fields: [user_email], references: [email])
 
   @@index([feed_id], map: "HIGHLIGHT_feed_id_fkey")
   @@index([user_email], map: "HIGHLIGHT_user_email_fkey")
   @@index([group_id], map: "HIGHLIGHT_group_id_fkey")
   @@map("HIGHLIGHT")
+}
+
+model Highcomment {
+  id           Int       @id @default(autoincrement())
+  contents     String
+  user_email   String
+  highlight_id Int
+  createdAt    DateTime  @default(now())
+  highlight    Highlight @relation(fields: [highlight_id], references: [id], onDelete: Cascade)
+  user         User      @relation(fields: [user_email], references: [email])
+
+  @@index([highlight_id], map: "HIGHCOMMENT_highlight_id_fkey")
+  @@index([user_email], map: "HIGHCOMMENT_user_email_fkey")
+  @@map("HIGHCOMMENT")
 }
 
 model Noti {
