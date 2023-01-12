@@ -14,7 +14,7 @@ import { User, Tag } from '@prisma/client';
 import { GetUser } from 'src/auth/get-user.decorator';
 import { HttpExceptionFilter } from 'src/common/exceptions/http-exception.filter';
 import { SuccessInterceptor } from 'src/common/interceptors/success.interceptors';
-import { RequestTagCreateDto, RequestTagDeleteDto } from './dto/tag.dto';
+import { RequestTagCreateDto, RequestTagDeleteDto, RequestTagWebDeleteDto } from './dto/tag.dto';
 import { TagService } from './tag.service';
 import { ApiOperation, ApiResponse } from '@nestjs/swagger';
 
@@ -58,12 +58,12 @@ export class TagController {
   // 웹 배너에서 그룹 내 모든 태그 삭제
   @ApiResponse({ status: 200, description: 'success', type: null })
   @ApiOperation({ summary: '웹 배너에서 그룹 내 모든 태그 삭제' })
-  @Delete('/web/:tag_id')
+  @Delete('/web/delete')
   async deleteTagWeb(
-    @Param('tag_id') tag_id: number,
+    @Body() requestTagwebdeletedto: RequestTagWebDeleteDto,
     @GetUser() user: User,
   ): Promise<null> {
-    return this.tagService.deleteTagWeb(tag_id, user);
+    return this.tagService.deleteTagWeb(requestTagwebdeletedto, user);
   }
 
   // 태그에 따라 피드 검색

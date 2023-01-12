@@ -3,6 +3,7 @@ import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/repository/prisma.service';
 import { getUrlMeta } from 'src/util/geturlmeta';
 import { CreateFeedDto } from './dto/feed.dto';
+import { HttpException } from '@nestjs/common/exceptions';
 
 @Injectable()
 export class FeedService {
@@ -42,6 +43,41 @@ export class FeedService {
     });
 
     return result;
+  }
+
+  async findSepFeedById(page: number, take: number, user: User) {
+    try {
+      const count = await this.prismaService.feed.count({
+        where: { group_id: user.group_id },
+      });
+      const feeds = await this.prismaService.feed.findMany({
+        where: { group_id: user.group_id },
+        orderBy: { updatedAt: 'desc' },
+        take: take,
+        skip: take * (page - 1),
+        include: {
+          highlight: true,
+          tag: true,
+          og: true,
+          user: {
+            select: {
+              nickname: true,
+              image: true,
+            },
+          },
+          comment: {
+            orderBy: { createdAt: 'desc' },
+          },
+        },
+      });
+      return {
+        currentPage: page,
+        totalPage: Math.ceil(count / take),
+        feeds,
+      };
+    } catch (e) {
+      throw new HttpException('Internal Server Error', 500);
+    }
   }
 
   async findFeedById(id: number): Promise<Feed> {

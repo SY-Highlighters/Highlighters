@@ -21,7 +21,11 @@ export const tagsInGroupState = atom<any>({
   key: "tagsInGroupState",
   default: [],
 });
-
+// 태그 삭제 (그룹 태그 삭제시)
+export const clickedGroupTagDelState = atom<any>({
+  key: "clickedGroupTagDelState",
+  default: false,
+});
 /* 피드 */
 //  그룹 피드 리스트
 export const feedsInGroupState = atom<any>({
@@ -72,10 +76,10 @@ export const groupModalState = atom<number>({
   default: 0,
 });
 
-// 태그 편집 모달창을 띄우는 state
-export const tagModalVisble = atom<boolean>({
+// 태그 편집 모달창을 띄우는 state(disabled(0), 피드별(1),그룹별(2))
+export const tagModalVisble = atom<number>({
   key: "tagModalVisble",
-  default: false,
+  default: 0,
 });
 
 /* view 전환 */

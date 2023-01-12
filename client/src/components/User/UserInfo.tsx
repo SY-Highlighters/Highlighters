@@ -40,9 +40,7 @@ const UserInfo = () => {
           }
         );
         return res.data;
-      } catch (err) {
-        console.error(err);
-      }
+      } catch (err) {}
     },
     {
       // cacheTime: 60 * 60 * 1000,
