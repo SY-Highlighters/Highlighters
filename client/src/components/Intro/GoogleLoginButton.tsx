@@ -32,25 +32,37 @@ export function GoogleLoginButton() {
   const googleSocialLogin = useGoogleLogin({
     onSuccess: async (creRes) => {
       console.log(creRes);
+      await axios
+        .post(`${process.env.REACT_APP_HOST}/api/auth/google`, {
+          accessToken: creRes.access_token,
+        })
+        .then(function (response) {
+          console.log('이건머고,?',response);
+          if (response) {
+            axios.defaults.headers.common[
+              "Authorization"
+            ] = `Bearer ${response.data.accessToken}`;
+            // 유저 데이터 저장
+            // setUserInfo({
+            //   nickname: response.data.nickname,
+            //   img: response.data.image,
+            //   groupId: response.data.group_id,
+            //   groupName: response.data.group_name,
+            // });
+            // 쿠키저장
 
-      const response = await axios({
-        method: "get",
-        url: `${process.env.REACT_APP_HOST}/api/auth/google/login`,
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-      console.log(response);
-      // 유저 데이터 저장
-      // setUserInfo({
-      //   nickname: response.data.nickname,
-      //   img: response.data.image,
-      //   groupId: response.data.group_id,
-      //   groupName: response.data.group_name,
-      // });
-      // 쿠키저장
-
-      handleCookie(response.data.accessToken);
+            handleCookie(response.data.accessToken);
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+          // Swal.fire({
+          //   icon: "error",
+          //   title: "Oops...",
+          //   text: "이메일 또는 비밀번호가 일치하지 않습니다.",
+          //   confirmButtonColor: "#0ea5e9",
+          // });
+        });
     },
   });
 
@@ -70,39 +82,10 @@ export function GoogleLoginButton() {
   };
   // flow: "auth-code",
 
-  const devsungtae = () => {
-    // const response = await axios({
-    //   method: "get",
-    //   url: `${process.env.REACT_APP_HOST}/api/auth/google/login`,
-    //   headers: {
-    //     "Content-Type": "application/json",
-    //   },
-    // });
-    // console.log(response);
-    window.open(
-      `${process.env.REACT_APP_HOST}/api/auth/google/login`,
-      "_blank",
-      "height=500,width=500,left=100,top=100"
-    );
-  };
-  // const devsungtae = async() => {
-  //   const response = await axios({
-  //     method: "get",
-  //     url: `${process.env.REACT_APP_HOST}/api/auth/google/login`,
-  //     headers: {
-  //       "Content-Type": "application/json",
-  //     },
-  //   });
-  //   console.log(response);
-  //   // window.open(response.data.url, "_self");
-
-  // };
-
   return (
     <button
-      // onClick={() => googleSocialLogin()}
-      onClick={() => devsungtae()}
-      className="flex flex-row w-full px-4 py-2 mt-3 tracking-wide text-white transition-colors duration-200 transform bg-white rounded-md outline-1 outline outline-black hover:bg-gray-200 focus:outline-none focus:bg-gray-400"
+      onClick={() => googleSocialLogin()}
+      className="flex flex-row w-full px-4 py-2 mt-3 tracking-wide text-white transition-colors duration-200 transform bg-white rounded-md outline-1 ou outline-black hover:bg-gray-800 focus:outline-none focus:bg-gray-600"
     >
       <div className="w-1/3">
         <img
