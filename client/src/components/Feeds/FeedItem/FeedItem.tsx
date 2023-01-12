@@ -144,7 +144,7 @@ const FeedItem = (props: any) => {
           </div>
         </div>
         {/* 숨김 코멘트창 */}
-        {commentIsClicked && <Comment></Comment>}
+        {commentIsClicked && <Comment reset={commentIsClicked}></Comment>}
       </div>
     </div>
     // </li>
