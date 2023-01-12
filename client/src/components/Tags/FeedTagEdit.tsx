@@ -30,7 +30,7 @@ export function FeedTagEdit(props: any) {
   };
 
   return (
-    <div>
+    <div className="">
       <button
         onClick={tagEditHandler}
         className="flex items-center -ml-4 text-sm text-gray-500 hover:text-gray-700"

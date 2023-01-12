@@ -11,7 +11,10 @@ import {
   ChevronRightIcon,
   ForwardIcon,
   HashtagIcon,
+  StarIcon as StarIconOutLine,
 } from "@heroicons/react/24/outline";
+
+import { StarIcon } from "@heroicons/react/24/solid";
 import { useEffect, useState } from "react";
 import { Comment } from "../../Comment/Comment";
 import { FeedTagEdit } from "../../Tags/FeedTagEdit";
@@ -79,9 +82,11 @@ const FeedItem = (props: any) => {
       </div>
       <div className="m-5 sm:px-6">
         <a href={props.url} target="_blank" rel="noreferrer">
-          <h2 className="mb-5 text-xl font-bold leading-6 text-gray-900 hover:text-gray-600">
-            {props.title}
-          </h2>
+          <span>
+            <h2 className="mb-5 text-xl font-bold leading-6 text-gray-900 hover:text-gray-600">
+              {props.title}
+            </h2>
+          </span>
         </a>
 
         <div className="mb-5 ">
@@ -89,7 +94,7 @@ const FeedItem = (props: any) => {
         </div>
 
         {/* 노션 북마크처럼 만들기 프로젝트 */}
-        <div className="max-w-lg mb-3 overflow-hidden rounded-lg shadow-lg w-50 sm:flex">
+        <div className="flex w-full mb-3 overflow-hidden rounded-lg shadow-lg w-50">
           <div className="w-full sm:w-1/3">
             <img
               className="object-cover w-full h-48"
@@ -115,25 +120,29 @@ const FeedItem = (props: any) => {
             tag={props.tag}
             feed_id={props.id}
           ></FeedTagEdit>
-          {/* 즐겨찾기 section */}
-          {/* <div>
-              <CheckIcon
-                className="mr-1.5 h-5 w-5 flex-shrink-0 text-gray-400 hover:text-sky-500"
-                aria-hidden="true"
-              />
-            </div>
-            즐겨찾기
-        
+
           {/* 댓글 버튼 (토글식)*/}
           <div>
-            <span className="mr-2 ">{props.commentLen}</span>
-            <button onClick={commentToggleHandler} className="">
-              {/* <button className=""> */}
-              <ChatBubbleBottomCenterIcon className="w-5 h-5 text-gray-400 hover:text-gray-700" />
-              {/* </button> */}
-              {/* ChevronDownIcon 클릭시 댓글창  */}
-              {/* */}
-            </button>
+            <div className="flex flex-row space-x-5">
+              {" "}
+              {/* 즐겨찾기 section */}
+              <StarIcon
+                className="flex-shrink-0 w-5 h-5 text-yellow-400 cursor-pointer hover:text-yellow-400"
+                aria-hidden="true"
+              />
+              <StarIconOutLine
+                className="flex-shrink-0 w-5 h-5 text-black cursor-pointer hover:text-gray-300"
+                aria-hidden="true"
+              ></StarIconOutLine>
+              <span className="mr-2 ">{props.commentLen}</span>
+              <button onClick={commentToggleHandler} className="">
+                {/* <button className=""> */}
+                <ChatBubbleBottomCenterIcon className="w-5 h-5 text-gray-400 hover:text-gray-700 " />
+                {/* </button> */}
+                {/* ChevronDownIcon 클릭시 댓글창  */}
+                {/* */}
+              </button>
+            </div>
           </div>
         </div>
         {/* 숨김 코멘트창 */}
