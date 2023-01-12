@@ -1,12 +1,12 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
-import { User } from '@prisma/client';
 import { PrismaService } from 'src/repository/prisma.service';
+import { JwtService } from '@nestjs/jwt';
+import { User } from '@prisma/client';
+import * as bcrypt from 'bcryptjs';
 import {
   AuthSigninCredentialsDto,
   AuthSignupCredentialsDto,
-} from './dto/auth.credential.dto';
-import * as bcrypt from 'bcryptjs';
-import { JwtService } from '@nestjs/jwt';
+} from './dto/auth.credentials.dto';
 
 @Injectable()
 export class AuthService {
@@ -14,6 +14,50 @@ export class AuthService {
     private readonly prismaService: PrismaService,
     private jwtService: JwtService,
   ) {}
+
+  // 구글 로그인 redirect
+  async googleRedirect(req) {
+    if (!req.user) {
+      throw new UnauthorizedException('No User from Google: login failed');
+    }
+
+    // db에 유저 정보가 있는지 확인
+    const user = await this.prismaService.user.findUnique({
+      where: { email: req.user.email },
+    });
+
+    // if user does not exist in db, create newuser and return userinfo with accesstoken
+    // db에 유저가 없다면, 회원가입 + 로그인
+    if (!user) {
+      const newUser = await this.prismaService.user.create({
+        data: {
+          email: req.user.email,
+          nickname: req.user.lastName + req.user.firstName,
+          image: req.user.image,
+          password: 'google',
+        },
+      });
+      const email = req.user.email;
+      const payload = { email };
+      const accessToken = await this.jwtService.sign(payload);
+      const userInfo = {
+        ...newUser,
+        accessToken,
+      };
+      return userInfo;
+    }
+
+    // if user already exists in db, return userinfo with accesstoken
+    // db에 유저가 있다면, 로그인
+    const email = req.user.email;
+    const payload = { email };
+    const accessToken = await this.jwtService.sign(payload);
+    const userInfo = {
+      ...user,
+      accessToken,
+    };
+    return userInfo;
+  }
 
   // 회원가입
   async signUp(
@@ -68,35 +112,5 @@ export class AuthService {
     } else {
       throw new UnauthorizedException('login failed');
     }
-  }
-
-  // 구글 로그인
-  async googleLogin(json) {
-    if (!json) {
-      return 'No user from google';
-    }
-    const user_email = json.userProfile.email;
-    let find_user = await this.prismaService.user.findUnique({
-      where: { email: user_email },
-    });
-
-    // 가입하지 않았을 경우, 자동 signup
-    if (!find_user) {
-      const new_signup_dto = new AuthSignupCredentialsDto();
-      new_signup_dto.email = user_email;
-      new_signup_dto.password = 'random_password';
-      new_signup_dto.nickname = json.userProfile.firstName;
-
-      find_user = await this.signUp(new_signup_dto);
-    }
-
-    // sign in
-    const new_signin_dto = new AuthSigninCredentialsDto();
-    new_signin_dto.email = user_email;
-    new_signin_dto.password = 'random_password';
-    const res = await this.signIn(new_signin_dto);
-    console.log(res);
-
-    return res;
   }
 }

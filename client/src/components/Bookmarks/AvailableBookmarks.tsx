@@ -27,13 +27,14 @@ export function AvailableBookmarks() {
           Authorization: `Bearer ${cookies.logCookie}`,
         },
       });
+      console.log("이거모냐고", response.data.data[0].feed);
       return response.data.data;
     },
     {}
   );
 
   return (
-    <div>
+    <div className="h-12 overscroll-auto basis-2/4">
       <div className="rounded-lg bg-sky-500">
         <div className="px-3 py-3 mx-auto rounded-lg max-w-7xl sm:px-6 lg:px-8">
           <div className="flex flex-wrap items-center justify-between">
@@ -52,24 +53,26 @@ export function AvailableBookmarks() {
           </div>
         </div>
       </div>
-      <div className="">
+      <div className="mt-5">
         <ul className="">
           {isSuccess &&
             feedsBookmark &&
-            feedsBookmark.map((feed: any) => (
-              <div key={feed.id}>
+            feedsBookmark.map((item: any) => (
+              <div key={item.feed.id} className="mb-4">
                 <FeedItem
-                  id={feed.id}
-                  key={feed.id}
-                  title={feed.title}
-                  description={feed.og.description}
-                  og_image={feed.og.image}
-                  url={feed.url}
-                  highlight={feed.highlight}
-                  date={feed.createdAt}
-                  tag={feed.tag}
-                  writer={feed.user.nickname}
-                  writerImg={feed.user.image}
+                  id={item.feed.id}
+                  key={item.feed.id}
+                  title={item.feed.title}
+                  description={item.feed.og.description}
+                  og_image={item.feed.og.image}
+                  url={item.feed.url}
+                  highlight={item.feed.highlight}
+                  date={item.feed.createdAt}
+                  tag={item.feed.tag}
+                  writer={item.feed.user.nickname}
+                  writerImg={item.feed.user.image}
+                  // commentLen={item.feed.comment.length}
+                  // bookmarked={item.feed.bookmark.length > 0 ? true : false}
                 />
               </div>
             ))}

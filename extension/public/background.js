@@ -164,7 +164,21 @@ async function initHighlightColor() {
   console.log("Init Highlight Complete");
 }
 
-/* 코드 시작 */
+async function deleteHighlight(token, id) {
+  console.log("id", id);
+  const response = await fetch(`${host_url}/api/highlight/delete`, {
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify(id),
+  });
+  const data = await response.json();
+  return data;
+}
+
+/********************************************** 코드 시작 *********************************************************/
 async function BackgroundStart() {
   await initHighlightColor();
 
@@ -273,6 +287,15 @@ async function BackgroundStart() {
             .catch((error) => console.log(`fetch 실패: ${error}`));
           break;
 
+        case "deleteHighlight":
+          deleteHighlight(token, request.data)
+            .then((data) => {
+              sendResponse({ data });
+              console.log(data);
+            })
+            .catch((error) => console.log(`fetch 실패: ${error}`));
+          break;
+
         default:
           console.log(request, sender);
           break;
@@ -283,23 +306,3 @@ async function BackgroundStart() {
 }
 
 BackgroundStart();
-
-// // when a chrome tab is changed, set currentUrl to the changed tab's url and if a changed tab has feed, make feedExist true, if a changed tab doesn't have feed, make feedExist false
-// chrome.tabs.onActivated.addListener(function (activeInfo) {
-//   // 탭이 변경되면
-//   chrome.tabs.get(activeInfo.tabId, function (tab) {
-//     currentUrl = tab.url; // currentUrl 업데이트
-//     console.log("[onActivated] currentUrl:", currentUrl);
-//     // getHighlight를 통해 feed가 있는지 확인
-//     jwt_token.then((token) => {
-//       getHighlight(token, { url: currentUrl })
-//         .then((data) => {
-//           if (data.success === false) {
-//             feedExist = false;
-//           } else feedExist = true;
-//           console.log("[onActivated] feedExist set:", feedExist);
-//         })
-//         .catch((error) => console.log(`fetch 실패: ${error}`));
-//     });
-//   });
-// });

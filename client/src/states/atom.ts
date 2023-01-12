@@ -110,3 +110,9 @@ export const currentFeedIdState = atom<number>({
 //   key: "bookmarkState",
 //   default: true,
 // });
+
+// 코멘트 작성시 코멘트 리스트 리로드 state
+export const commentReloadState = atom<boolean>({
+  key: "commentReloadState",
+  default: false,
+});

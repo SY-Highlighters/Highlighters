@@ -39,11 +39,8 @@ export class FeedController {
   async createFeed(
     @Body() createFeedDto: CreateFeedDto,
     @GetUser() user: User,
-  ): Promise<Feed> {
-    createFeedDto.user_email = user.email;
-    createFeedDto.group_id = user.group_id;
-
-    return this.feedService.createFeed(createFeedDto);
+  ): Promise<number> {
+    return this.feedService.createFeed(createFeedDto, user);
   }
 
   // Feed take 개의 page Feed 반환
@@ -66,9 +63,12 @@ export class FeedController {
 
   // group_id로 찾은 group에 있는 모든 feed 찾기
   @Get('/group/:id')
-  async findFeedByGroupId(@Param('id') id: number): Promise<object[]> {
+  async findFeedByGroupId(
+    @Param('id') id: number,
+    @GetUser() user: User,
+  ): Promise<object[]> {
     // console.log()
-    return this.feedService.findGroupFeedWithOg(id);
+    return this.feedService.findFeedByGroupId(id, user);
   }
 
   // Id로 Feed 찾은 후 삭제

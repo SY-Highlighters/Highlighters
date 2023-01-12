@@ -164,7 +164,21 @@ async function initHighlightColor() {
   console.log("Init Highlight Complete");
 }
 
-/* 코드 시작 */
+async function deleteHighlight(token, id) {
+  console.log("id", id);
+  const response = await fetch(`${host_url}/api/highlight/delete`, {
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify(id),
+  });
+  const data = await response.json();
+  return data;
+}
+
+/********************************************** 코드 시작 *********************************************************/
 async function BackgroundStart() {
   await initHighlightColor();
 
@@ -267,9 +281,18 @@ async function BackgroundStart() {
             .catch((error) => console.log(`fetch 실패: ${error}`));
           break;
 
+<<<<<<< HEAD
         case "postFeed":
           postFeed(token, request.data)
             .then((data) => sendResponse({ data }))
+=======
+        case "deleteHighlight":
+          deleteHighlight(token, request.data)
+            .then((data) => {
+              sendResponse({ data });
+              console.log(data);
+            })
+>>>>>>> 7618e5781ba26abc6e7e59a88017fc1e8f36c05e
             .catch((error) => console.log(`fetch 실패: ${error}`));
           break;
 

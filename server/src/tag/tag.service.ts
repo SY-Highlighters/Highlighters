@@ -113,6 +113,14 @@ export class TagService {
             image: true,
           },
         },
+        bookmark: {
+          where: {
+            user_email: user.email,
+          },
+          select: {
+            id: true,
+          },
+        },
       },
     });
     // const feedswithOg: object[] = [];

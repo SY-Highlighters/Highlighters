@@ -11,8 +11,8 @@ model User {
   email        String        @id @db.Char(50)
   group_id     Int?
   nickname     String?       @db.Char(20)
-  password     String        @db.Char(100)
   image        String
+  password     String
   new_noti     Boolean       @default(false)
   bookmark     Bookmark[]
   comment      Comment[]
