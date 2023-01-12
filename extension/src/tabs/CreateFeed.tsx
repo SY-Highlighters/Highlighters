@@ -10,7 +10,13 @@ export default function CreateFeed() {
   const [feedTags, setFeedTags] = useRecoilState(tagsInFeedState);
 
   useEffect(() => {
+    // console.log("색 저장시작!");
+    // console.log("색 저장끝!");
+
     async function getTagAsync() {
+      await chrome.storage.sync.set({ highlightColor: "#FFFF00" });
+      const color = await chrome.storage.sync.get("highlightColor");
+      console.log("색 저장끝", color);
       let response = await chrome.runtime.sendMessage({
         greeting: "getGroupTags",
       });
@@ -55,11 +61,11 @@ export default function CreateFeed() {
               태그 추가
             </h1>
             <div>
-              {feedTags.map((tag: any) => (
+              {/* {feedTags.map((tag: any) => (
                 <span>
                   <TagItem id={tag.tag_id} name={tag.tag_name}></TagItem>
                 </span>
-              ))}
+              ))} */}
             </div>
             <div className="items-center w-full px-3 py-2 text-gray-700 bg-white border border-gray-300 rounded-lg focus:outline-none focus:border-gray-400">
               <div className="flex flex-row">
