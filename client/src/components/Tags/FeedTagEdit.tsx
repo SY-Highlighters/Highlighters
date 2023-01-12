@@ -6,7 +6,7 @@ import {
   currentFeedIdState,
 } from "../../states/atom";
 
-export function TagEdit(props: any) {
+export function FeedTagEdit(props: any) {
   const setTagList = useSetRecoilState(tagsInFeedState);
   const setTagModal = useSetRecoilState(tagModalVisble);
   const setCurrentFeedId = useSetRecoilState(currentFeedIdState);
@@ -15,7 +15,7 @@ export function TagEdit(props: any) {
     console.log(props.tag);
     tagAdd(props.tag);
     setCurrentFeedId(props.feed_id);
-    setTagModal(true);
+    setTagModal(1);
   };
 
   const tagAdd = (data: []) => {

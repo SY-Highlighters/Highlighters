@@ -9,7 +9,7 @@ import { useCookies } from "react-cookie";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import Swal from "sweetalert2";
-
+import { useQuery } from "react-query";
 export function CommentInput() {
   const [inputValue, setInputValue] = useState("");
   const [cookies, setCookie, removeCookie] = useCookies(["logCookie"]);
@@ -19,6 +19,40 @@ export function CommentInput() {
     console.log(e.target.value);
     setInputValue(e.target.value);
   };
+
+  const {
+    data: user,
+    isSuccess,
+    isLoading,
+    error,
+  } = useQuery(
+    ["user"],
+    async () => {
+      try {
+        const res = await axios.get(
+          `${process.env.REACT_APP_HOST}/api/user/signin`,
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${cookies.logCookie}`,
+            },
+          }
+        );
+        return res.data;
+      } catch (err) {}
+    },
+    {
+      // cacheTime: 60 * 60 * 1000,
+      // 1시간동안 캐시를 사용한다.
+      cacheTime: 60 * 60 * 1000,
+      staleTime: 2 * 60 * 60 * 1000,
+      // Refetch the data when the component mounts, including when the page is refreshed
+      refetchOnMount: false,
+      // Do not refetch the data when the window gains focus
+      refetchOnWindowFocus: false,
+      // 쿠키가 준비되었을때 쿼리를 실행한다.
+    }
+  );
 
   const commentAddHandler = async () => {
     //인풋 안에 값 비우기
@@ -60,9 +94,9 @@ export function CommentInput() {
   return (
     <div className="flex flex-col mt-7">
       <div className="flex flex-row">
-        <img
-          className="w-10 h-10 rounded-full"
-          src="https://via.placeholder.com/150"
+              <img
+                  className="w-10 h-10 rounded-full"
+                  src={user.image }
           alt=""
         />
         {/* 좌우로 꽉찬 인풋창*/}
