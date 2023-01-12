@@ -1,4 +1,3 @@
-import { useEffect, useState } from "react";
 import ColorButton from "../components/ColorButton";
 import Toggle from "../components/Toggle";
 

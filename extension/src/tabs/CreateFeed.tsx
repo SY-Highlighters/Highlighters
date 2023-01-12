@@ -1,19 +1,38 @@
 import { ArrowRightCircleIcon } from "@heroicons/react/24/outline";
-import { TableHTMLAttributes, useEffect, useState } from "react";
+import { TableHTMLAttributes, useEffect, useState, useRef } from "react";
 import { TagItem } from "../components/TagItem";
 import { useSetRecoilState, useRecoilState } from "recoil";
 import { tagsInFeedState } from "../states/atom";
 import TagData from "../models/tag";
+import Swal from "sweetalert2";
+import { TagEditItem } from "../components/TagEditItem";
+
+const Toast = Swal.mixin({
+  toast: true,
+  position: "center",
+  showConfirmButton: false,
+  timer: 500,
+  timerProgressBar: true,
+  didOpen: (toast) => {
+    toast.addEventListener("mouseenter", Swal.stopTimer);
+    toast.addEventListener("mouseleave", Swal.resumeTimer);
+  },
+});
 
 export default function CreateFeed(this: any) {
   const [groupTags, setGroupTags] = useState<TagData[]>([]);
   const [feedTags, setFeedTags] = useRecoilState(tagsInFeedState);
+  const [titleInput, setTitleInput] = useState<string>("");
   const [tagInput, setTagInput] = useState<string>("");
+  const [currentURL, setCurrentURL] = useState<string | undefined>("");
+  const [ogTitle, setOgTitle] = useState<string>("");
+  const [ogImage, setOgimage] = useState<string>("");
+  const [ogDescription, setOgDescription] = useState<string>("");
+  // const [first, setFirst] = useState(1);
+  const inputRef = useRef<HTMLInputElement>(null);
+
   useEffect(() => {
     async function getTagAsync() {
-      await chrome.storage.sync.set({ highlightColor: "#FFFF00" });
-      const color = await chrome.storage.sync.get("highlightColor");
-      console.log("색 저장끝", color);
       let response = await chrome.runtime.sendMessage({
         greeting: "getGroupTags",
       });
@@ -21,42 +40,102 @@ export default function CreateFeed(this: any) {
       console.log("CreateFeed: ", data);
       groupTagAdd(data);
     }
+
+    async function getInfo() {
+      chrome.tabs.query(
+        { active: true, currentWindow: true },
+        async function (tabs) {
+          if (tabs[0].id !== undefined) {
+            console.log("hi", tabs[0].url);
+            chrome.tabs.sendMessage(
+              tabs[0].id,
+              {
+                greeting: "getOG",
+              },
+              (response) => {
+                console.log("reponse", response);
+                setCurrentURL(tabs[0].url);
+                setOgDescription(response.description);
+                setOgimage(response.image);
+                setOgTitle(response.title);
+                setTitleInput(response.title);
+              }
+            );
+          }
+        }
+      );
+    }
     getTagAsync();
+    getInfo();
   }, []);
 
   const groupTagAdd = (data: []) => {
     data.map((item: any) => {
       const newTag = {
-        tag_id: item.id,
         tag_name: item.tag_name,
       };
       setGroupTags((oldTags: any) => [...oldTags, newTag]);
     });
   };
 
+  const titleInputChangeHandler = (event: any) => {
+    // if (first === 1) {
+    //   setTitleInput("");
+    //   setFirst(0);
+    // } else {
+    setTitleInput(event.target.value);
+    // }
+  };
+
   const tagInputChangeHandler = (event: any) => {
     setTagInput(event.target.value);
   };
-  const tagAddHandler = () => {
+
+  const newTagHandler = () => {
     // 서버에 api 요청
     const newTag = {
-      tag_id: tagInput,
       tag_name: tagInput,
     };
 
+    setTagInput("");
     feedTags.push(newTag);
     setFeedTags(feedTags);
-    setTagInput("");
   };
 
   // enter event handler
   const activeEnter = (e: any) => {
+    if (e.nativeEvent.isComposing) {
+      return;
+    }
     console.log(e);
     if (e.key === "Enter") {
-      console.log("enter");
-      tagAddHandler();
+      newTagHandler();
     }
   };
+
+  const feedSubmitHandler = () => {
+    chrome.runtime.sendMessage(
+      {
+        greeting: "postFeed",
+        data: {
+          url: currentURL,
+          feed_title: titleInput,
+          og_title: ogTitle,
+          image: ogImage,
+          description: ogDescription,
+          tag_name: feedTags,
+        },
+      },
+      (response) => {
+        Toast.fire({
+          icon: "success",
+          title: "알림 전송 성공!",
+        });
+        setTitleInput("");
+      }
+    );
+  };
+
   const groupTagList = groupTags.map((tag) => (
     <span>
       <TagItem
@@ -77,9 +156,11 @@ export default function CreateFeed(this: any) {
             피드 제목
           </h1>
           <input
+            onChange={titleInputChangeHandler}
             type="text"
+            ref={inputRef}
             className="w-full h-8 mt-1 mb-1 mr-1 text-gray-700 bg-white border border-gray-300 rounded-md focus:outline-none focus:border-gray-400"
-            placeholder=" 제목을 입력하세요"
+            value={titleInput}
           />
           <h1 className="my-1 text-base font-semibold text-left text-sky-500 ">
             태그 추가
@@ -87,7 +168,7 @@ export default function CreateFeed(this: any) {
           <div className="mb-2">
             {feedTags.map((tag: any) => (
               <span>
-                <TagItem id={tag.tag_id} name={tag.tag_name}></TagItem>
+                <TagEditItem id={tag.tag_id} name={tag.tag_name}></TagEditItem>
               </span>
             ))}
           </div>
@@ -104,7 +185,7 @@ export default function CreateFeed(this: any) {
                 />
               </div>
               <button
-                onClick={tagAddHandler}
+                onClick={newTagHandler}
                 className="flex flex-row items-center justify-between w-8 h-8 mt-1 mb-1 ml-1 text-gray-400 bg-white border-white rounded-lg focus:outline-none focus:border-gray-400"
               >
                 <ArrowRightCircleIcon
@@ -118,6 +199,7 @@ export default function CreateFeed(this: any) {
         </div>
         <div className="px-4 py-2 text-right bg-gray-50">
           <button
+            onClick={feedSubmitHandler}
             type="submit"
             className="inline-flex justify-center px-4 py-2 text-sm font-medium text-white border border-transparent rounded-md shadow-sm bg-sky-500 hover:bg-sky-600 focus:outline-none focus:ring-2 focus:ring-sky-500 focus:ring-offset-2"
           >

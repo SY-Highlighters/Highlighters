@@ -146,10 +146,10 @@ async function highlightDone(range) {
 /* 하이라이트 Post */
 async function postHighlight(range, highlightStr) {
   highlightColor = await chrome.storage.sync.get("highlightColor");
+  console.log("posthighlgiht", highlightColor);
 
   const uri = window.location.href;
   const decodeuri = decodeURI(uri);
-  console.log("postHighlight: ", decodeuri);
 
   const rangeobj = {
     startXPath: makeXPath(range.startContainer),
@@ -304,17 +304,20 @@ if (url_check) {
   };
 }
 
-// chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
-//   switch (request.greeting) {
-//     // 웹페이지의 하이라이팅을 디비로 전송
-//     case "getCurUrl":
-//       console.log(document.location.href);
-//       sendResponse(document.location.href);
-//       break;
+chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+  switch (request.greeting) {
+    // 웹페이지의 하이라이팅을 디비로 전송
+    case "getOG":
+      sendResponse({
+        title: document.title,
+        image: document.querySelector("meta[property='og:image']").content,
+        description: document.querySelector("meta[property='og:description']"),
+      });
+      break;
 
-//     default:
-//       console.log(request, sender);
-//       break;
-//   }
-//   return true;
-// });
+    default:
+      console.log(request, sender);
+      break;
+  }
+  return true;
+});

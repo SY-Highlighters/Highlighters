@@ -101,6 +101,21 @@ async function postNoti(token, contents, url) {
   return response;
 }
 
+async function postFeed(token, contents) {
+  console.log(contents);
+  const response = fetch(`${host_url}/api/feed/create`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify(contents),
+  });
+  // console.log("postnoti: ", response);
+  // const data = response.json();
+  return response;
+}
+
 function createPush(id, title, msg) {
   chrome.notifications.create(
     id,
@@ -207,7 +222,7 @@ async function BackgroundStart() {
           console.log("bs: postNoti");
           chrome.windows.getCurrent(function (win) {
             chrome.tabs.query(
-              { windowId: win.id, active: true },
+              { windowId: win.id, active: true, lastFocusedWindow: true },
               function (tabs) {
                 if (tabs.length !== "undefined" && tabs.length === 1) {
                   const currentURL = decodeURI(tabs[0].url);
@@ -248,6 +263,12 @@ async function BackgroundStart() {
         // 그룹의 태그 리스트 요청
         case "getGroupTags":
           getGroupTags(token)
+            .then((data) => sendResponse({ data }))
+            .catch((error) => console.log(`fetch 실패: ${error}`));
+          break;
+
+        case "postFeed":
+          postFeed(token, request.data)
             .then((data) => sendResponse({ data }))
             .catch((error) => console.log(`fetch 실패: ${error}`));
           break;
