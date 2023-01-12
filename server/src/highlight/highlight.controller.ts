@@ -65,8 +65,8 @@ export class HighlightController {
   }
 
   // Id로 Highlight 찾은 후 삭제
-  @Delete('/delete/:id')
-  async deleteHighlight(@Param('id') id: number): Promise<Highlight> {
+  @Delete('/delete')
+  async deleteHighlight(@Body('id') id: number): Promise<Highlight> {
     return this.highlightService.deleteHighlight(id);
   }
 }

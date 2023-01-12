@@ -1,6 +1,8 @@
 /* 코드시작 */
 let selectionText;
 let highlightStr = "null";
+let highlightColor;
+let highlights;
 
 const modalOverlay = `width: 100%;
             height: 100%;
@@ -127,14 +129,10 @@ function showLoginModal() {
   body.style.overflow = "hidden";
 }
 
-let highlightColor;
-
-async function highlightDone(range) {
-  // highlightColor = await chrome.storage.sync.get("highlightColor");
-
-  console.log("Done", highlightColor);
-
+async function highlightDone(range, id) {
   const newNode = document.createElement("span");
+  newNode.setAttribute("class", `highlighter`);
+  newNode.setAttribute("id", id);
   newNode.style.backgroundColor = highlightColor.highlightColor;
   range.surroundContents(newNode);
 
@@ -182,8 +180,8 @@ async function postHighlight(range, highlightStr) {
         );
         showLoginModal();
       } else {
-        console.log("highlight success");
-        highlightDone(range);
+        highlights.push(response.data.data);
+        highlightDone(range, response.data.data.id);
       }
     }
   );
@@ -197,14 +195,16 @@ function getHighlight(url) {
       data: { url },
     },
     async (response) => {
-      const data = response.data;
+      const highlightsMeta = response.data;
+      highlights = highlightsMeta.data;
 
-      // console.log(data.data);
-      if (data.success === false) {
-        throw new Error(`[${data.statusCode}] ${data.message}`);
+      if (highlightsMeta.success === false) {
+        throw new Error(
+          `[${highlightsMeta.statusCode}] ${highlightsMeta.message}`
+        );
       }
 
-      for (const highlight of data.data) {
+      for (const highlight of highlights) {
         const selection = highlight.selection;
         const range = document.createRange();
 
@@ -233,9 +233,31 @@ function getHighlight(url) {
         range.setEnd(endNode, endOff);
 
         const newNode = document.createElement("span");
+        newNode.setAttribute("class", "highlighter");
+        newNode.setAttribute("id", highlight.id);
         newNode.style.backgroundColor = highlight.color;
         range.surroundContents(newNode);
+
+        // makeHighlightEventListener(highlight.id);
+        newNode.addEventListener("click", () => deleteHighlight(newNode));
       }
+    }
+  );
+}
+
+function openHighlightMenu() {
+  console.log("CLICKED!!!");
+}
+
+function deleteHighlight(node) {
+  chrome.runtime.sendMessage(
+    {
+      greeting: "deleteHighlight",
+      data: { id: +node.id },
+    },
+    (response) => {
+      console.log(response);
+      node.removeAttribute("style");
     }
   );
 }
@@ -303,18 +325,3 @@ if (url_check) {
     }
   };
 }
-
-// chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
-//   switch (request.greeting) {
-//     // 웹페이지의 하이라이팅을 디비로 전송
-//     case "getCurUrl":
-//       console.log(document.location.href);
-//       sendResponse(document.location.href);
-//       break;
-
-//     default:
-//       console.log(request, sender);
-//       break;
-//   }
-//   return true;
-// });
