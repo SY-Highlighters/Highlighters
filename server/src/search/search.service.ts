@@ -57,7 +57,7 @@ export class SearchService {
         },
       },
     });
-    console.log(paper.hits.hits);
+    // console.log(paper.hits.hits);
     const result = [];
     for (let i = 0; i < paper.hits.hits.length; i++) {
       if (

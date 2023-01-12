@@ -68,6 +68,14 @@ export class FeedService {
           comment: {
             orderBy: { createdAt: 'desc' },
           },
+          bookmark: {
+            where: {
+              user_email: user.email,
+            },
+            select: {
+              id: true,
+            },
+          },
         },
       });
       return {
@@ -86,7 +94,7 @@ export class FeedService {
     });
   }
 
-  async findFeedByGroupId(id: number): Promise<Feed[]> {
+  async findFeedByGroupId(id: number, user: User): Promise<Feed[]> {
     const feeds = await this.prismaService.feed.findMany({
       where: { group_id: id },
       orderBy: { updatedAt: 'desc' },
@@ -103,38 +111,16 @@ export class FeedService {
         comment: {
           orderBy: { createdAt: 'desc' },
         },
+        bookmark: {
+          where: {
+            user_email: user.email,
+          },
+          select: {
+            id: true,
+          },
+        },
       },
     });
-
-    return feeds;
-  }
-
-  async findGroupFeedWithOg(id: number): Promise<object[]> {
-    const feeds = await this.findFeedByGroupId(id);
-    // const feedswithOg: object[] = [];
-    // for (const feed of feeds) {
-    //   if (feed.url) {
-    //     try {
-    //       const meta = await getUrlMeta(feed.url);
-    //       const feedwithOg = {
-    //         ...feed,
-    //         og_title: meta.title,
-    //         og_desc: meta.desc,
-    //         og_image: meta.image,
-    //       };
-    //       feedswithOg.push(feedwithOg);
-    //     } catch (e) {
-    //       const feedwithOg = {
-    //         ...feed,
-    //         og_title: 'Untitled',
-    //         og_desc: '',
-    //         og_image:
-    //           'https://img.favpng.com/23/20/7/computer-icons-information-png-favpng-g8DtjAPPNhyaU9EdjHQJRnV97_t.jpg',
-    //       };
-    //       feedswithOg.push(feedwithOg);
-    //     }
-    //   }
-    // }
 
     return feeds;
   }
