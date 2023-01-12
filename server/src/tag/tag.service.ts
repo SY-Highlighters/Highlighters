@@ -2,7 +2,11 @@ import { Injectable, HttpException } from '@nestjs/common';
 import { Tag, User } from '@prisma/client';
 import { PrismaService } from 'src/repository/prisma.service';
 import { getUrlMeta } from 'src/util/geturlmeta';
-import { RequestTagCreateDto, RequestTagDeleteDto } from './dto/tag.dto';
+import {
+  RequestTagCreateDto,
+  RequestTagDeleteDto,
+  RequestTagWebDeleteDto,
+} from './dto/tag.dto';
 
 @Injectable()
 export class TagService {
@@ -34,25 +38,17 @@ export class TagService {
       console.log(e);
       throw new HttpException('Internal Server Error', 500);
     }
-
   }
 
   async deleteTag(
     requestTagDeleteDto: RequestTagDeleteDto,
     user: User,
   ): Promise<null> {
-    const { tag_id, feed_id } = requestTagDeleteDto;
+    const { tag_id } = requestTagDeleteDto;
     try {
-      await this.prismaService.tag.update({
+      await this.prismaService.tag.delete({
         where: {
           id: tag_id,
-        },
-        data: {
-          feed: {
-            disconnect: {
-              id: feed_id,
-            },
-          },
         },
       });
     } catch (e) {
@@ -77,11 +73,16 @@ export class TagService {
     return tags;
   }
 
-  async deleteTagWeb(tag_id: number, user: User): Promise<null> {
+  async deleteTagWeb(
+    requestTagwebdeletedto: RequestTagWebDeleteDto,
+    user: User,
+  ): Promise<null> {
+    const { tag_name } = requestTagwebdeletedto;
     try {
-      await this.prismaService.tag.delete({
+      await this.prismaService.tag.deleteMany({
         where: {
-          id: tag_id,
+          tag_name: tag_name,
+          group_id: user.group_id,
         },
       });
       return null;

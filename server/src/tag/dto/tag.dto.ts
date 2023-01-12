@@ -5,5 +5,8 @@ export class RequestTagCreateDto {
 
 export class RequestTagDeleteDto {
   tag_id: number;
-  feed_id: number;
+}
+
+export class RequestTagWebDeleteDto {
+  tag_name: string;
 }
