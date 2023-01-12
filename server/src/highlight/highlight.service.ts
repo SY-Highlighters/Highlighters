@@ -1,3 +1,4 @@
+import { User } from '@prisma/client';
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from 'src/repository/prisma.service';
 import { Highlight } from '.prisma/client';
@@ -18,6 +19,7 @@ export class HighlightService {
 
   async createHighlight(
     createHighlightDto: CreateHighlightDto,
+    user: User,
   ): Promise<Highlight> {
     const {
       user_email,
@@ -38,14 +40,13 @@ export class HighlightService {
     let make_feed = null;
     if (!find_feed) {
       const newFeedDto = new CreateFeedDto();
-      newFeedDto.user_email = user_email;
-      newFeedDto.group_id = group_id;
       newFeedDto.url = url;
-      newFeedDto.title = title;
+      newFeedDto.feed_title = title;
+      newFeedDto.og_title = title;
       newFeedDto.image = image;
       newFeedDto.description = description;
 
-      make_feed = await this.feedService.createFeed(newFeedDto);
+      make_feed = await this.feedService.createFeed(newFeedDto, user);
     }
 
     const result = await this.prismaService.highlight.create({

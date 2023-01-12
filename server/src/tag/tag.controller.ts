@@ -14,7 +14,11 @@ import { User, Tag } from '@prisma/client';
 import { GetUser } from 'src/auth/get-user.decorator';
 import { HttpExceptionFilter } from 'src/common/exceptions/http-exception.filter';
 import { SuccessInterceptor } from 'src/common/interceptors/success.interceptors';
-import { RequestTagCreateDto, RequestTagDeleteDto, RequestTagWebDeleteDto } from './dto/tag.dto';
+import {
+  RequestTagCreateDto,
+  RequestTagDeleteDto,
+  RequestTagWebDeleteDto,
+} from './dto/tag.dto';
 import { TagService } from './tag.service';
 import { ApiOperation, ApiResponse } from '@nestjs/swagger';
 

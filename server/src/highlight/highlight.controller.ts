@@ -37,7 +37,7 @@ export class HighlightController {
     // createHighlightDto.user_email = 'siaksiak@jungle.com';
     // createHighlightDto.group_id = 1;
 
-    return this.highlightService.createHighlight(createHighlightDto);
+    return this.highlightService.createHighlight(createHighlightDto, user);
   }
 
   // Id로 highlight 찾기

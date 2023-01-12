@@ -1,25 +1,22 @@
+import { Prisma } from '@prisma/client';
 import { IsNotEmpty, IsNumber, IsOptional, IsString } from 'class-validator';
 
 export class CreateFeedDto {
   @IsString()
-  @IsOptional()
-  user_email: string;
-
-  @IsNumber()
-  @IsOptional()
-  group_id: number;
-
-  @IsString()
   @IsNotEmpty()
   url: string;
 
+  feed_title: string;
+
   @IsString()
   @IsNotEmpty()
-  title: string;
+  og_title: string;
 
   image: string;
 
   description: string;
+
+  tag_name?: string[];
 }
 
 // export class getfeedDto {

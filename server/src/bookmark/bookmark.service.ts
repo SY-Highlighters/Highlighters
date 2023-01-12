@@ -45,53 +45,43 @@ export class BookmarkService {
 
   async getBookmark(user: User): Promise<object[]> {
     try {
-      const bookmarks = await this.prismaService.bookmark.findMany({
+      const feeds = await this.prismaService.feed.findMany({
         where: {
-          user_email: user.email,
+          bookmark: {
+            some: {
+              user_email: user.email,
+            },
+          },
         },
-        orderBy: { createdAt: 'desc' },
+        orderBy: {
+          updatedAt: 'desc',
+        },
         include: {
-          feed: {
-            include: {
-              highlight: true,
-              tag: true,
-              og: true,
-              user: {
-                select: {
-                  nickname: true,
-                  image: true,
-                },
-              },
+          highlight: true,
+          tag: true,
+          og: true,
+          user: {
+            select: {
+              nickname: true,
+              image: true,
+            },
+          },
+          comment: {
+            orderBy: {
+              createdAt: 'desc',
+            },
+          },
+          bookmark: {
+            where: {
+              user_email: user.email,
+            },
+            select: {
+              id: true,
             },
           },
         },
       });
-      // const feedswithOg: object[] = [];
-      // for (const bookmark of bookmarks) {
-      //   if (bookmark.feed.url) {
-      //     const meta = await getUrlMeta(bookmark.feed.url);
-      //     // 존재하지 않는다면 임의의 값 넣기
-      //     if (meta.title === undefined) {
-      //       meta.title = 'No Title';
-      //     }
-      //     if (meta.desc === undefined) {
-      //       meta.desc = 'No Description';
-      //     }
-      //     if (meta.image === undefined) {
-      //       meta.image =
-      //         'https://img.favpng.com/23/20/7/computer-icons-information-png-favpng-g8DtjAPPNhyaU9EdjHQJRnV97_t.jpg';
-      //     }
-      //     const feedwithOg = {
-      //       ...bookmark,
-      //       og_title: meta.title,
-      //       og_desc: meta.desc,
-      //       og_image: meta.image,
-      //     };
-      //     feedswithOg.push(feedwithOg);
-      //   }
-      // }
-      // return feedswithOg;
-      return bookmarks;
+      return feeds;
     } catch (e) {
       console.log(e);
       throw new HttpException('Internal Server Error', 500);

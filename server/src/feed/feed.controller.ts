@@ -39,11 +39,8 @@ export class FeedController {
   async createFeed(
     @Body() createFeedDto: CreateFeedDto,
     @GetUser() user: User,
-  ): Promise<Feed> {
-    createFeedDto.user_email = user.email;
-    createFeedDto.group_id = user.group_id;
-
-    return this.feedService.createFeed(createFeedDto);
+  ): Promise<number> {
+    return this.feedService.createFeed(createFeedDto, user);
   }
 
   // Feed take 개의 page Feed 반환
