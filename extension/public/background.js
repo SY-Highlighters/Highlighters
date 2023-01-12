@@ -96,8 +96,9 @@ async function postNoti(token, contents, url) {
     },
     body: JSON.stringify(noti),
   });
-  const data = response.json();
-  return data;
+  // console.log("postnoti: ", response);
+  // const data = response.json();
+  return response;
 }
 
 function createPush(id, title, msg) {

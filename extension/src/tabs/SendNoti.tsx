@@ -1,3 +1,16 @@
+import Swal from "sweetalert2";
+
+const Toast = Swal.mixin({
+  toast: true,
+  position: "center",
+  showConfirmButton: false,
+  timer: 500,
+  timerProgressBar: true,
+  didOpen: (toast) => {
+    toast.addEventListener("mouseenter", Swal.stopTimer);
+    toast.addEventListener("mouseleave", Swal.resumeTimer);
+  },
+});
 
 const formSubmitHandler = async (event: any) => {
   event.preventDefault();
@@ -8,7 +21,12 @@ const formSubmitHandler = async (event: any) => {
       greeting: "postNoti",
       data: contents,
     },
-    (response) => response.farewell
+    (response) => {
+      Toast.fire({
+        icon: "success",
+        title: "알림 전송 성공!",
+      });
+    }
   );
 };
 
