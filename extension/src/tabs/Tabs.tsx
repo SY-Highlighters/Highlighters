@@ -2,6 +2,7 @@ import { useState } from "react";
 import CreateFeed from "./CreateFeed";
 import SendNoti from "./SendNoti";
 import NotiBox from "./NotiBox";
+import Settings from "./Settings";
 
 export default function Tabs(props: any) {
   const [activeTabIndex, setActiveTabIndex] = useState(0);
@@ -17,6 +18,10 @@ export default function Tabs(props: any) {
     {
       label: "알림 확인하기",
       content: <NotiBox></NotiBox>,
+    },
+    {
+      label: "사용자 설정",
+      content: <Settings></Settings>,
     },
   ];
 
@@ -48,6 +53,18 @@ export default function Tabs(props: any) {
           onClick={() => setActiveTabIndex(1)}
         >
           {tabsData[1].label}
+        </button>
+        <button
+          key={1}
+          className={`py-3 border-b-4 transition-colors duration-300 ${
+            activeTabIndex === 2
+              ? "border-sky-300"
+              : "border-transparent hover:border-gray-200"
+          }`}
+          // Change the active tab on click.
+          onClick={() => setActiveTabIndex(2)}
+        >
+          {tabsData[2].label}
         </button>
       </div>
       {/* Show active tab content. */}

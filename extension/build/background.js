@@ -165,106 +165,11 @@ async function BackgroundStart() {
 
       const check = await isNewNotiCreate(token);
 
-<<<<<<< Updated upstream
-    const check = await isNewNotiCreate(token);
-
-    if (check.data) {
-      chrome.action.setBadgeText({ text: "new" });
-      chrome.action.setBadgeBackgroundColor({ color: "#0000FF" });
-      changeNewNotiInUser(token);
-    }
-  }
-});
-
-chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
-  jwt_token.then((token) => {
-    switch (request.greeting) {
-      // 웹페이지의 하이라이팅을 디비로 전송
-      case "postHighlight":
-        console.log("bs: posthighlighåt");
-        postHighlight(token, request.data)
-          .then((data) => {
-            sendResponse({ data });
-            console.log(data);
-            createPush(
-              `${request.greeting}: ${data.id}`,
-              `${String(data.contents).substring(0, 30)}...`,
-              "하이라이트가 저장되었습니다"
-            );
-          })
-          .catch((error) => console.log(`fetch 실패: ${error}`));
-        break;
-
-      // 웹페이지의 모든 하이라이트를 가져옴
-      case "getHighlight":
-        console.log("bs: getHighlight");
-        getHighlight(token, request.data)
-          .then((data) => sendResponse({ data }))
-          .catch((error) => console.log(`fetch 실패: ${error}`));
-        break;
-
-      // 현재 탭의 url에 대한 노티 생성
-      case "postNoti":
-        console.log("bs: postNoti");
-        chrome.windows.getCurrent(function (win) {
-          chrome.tabs.query(
-            { windowId: win.id, active: true },
-            function (tabs) {
-              if (tabs.length !== "undefined" && tabs.length === 1) {
-                const currentURL = decodeURI(tabs[0].url);
-                postNoti(token, request.data, currentURL)
-                  .then((data) => sendResponse({ data }))
-                  .catch((error) => console.log(`fetch 실패: ${error}`));
-              }
-            }
-          );
-        });
-        break;
-
-      // 유저가 받은 노티 리스트 요청
-      case "getNoti":
-        chrome.action.setBadgeText({ text: "" });
-        getNoti(token)
-          .then((data) => sendResponse({ data }))
-          .catch((error) => console.log(`fetch 실패: ${error}`));
-        break;
-
-      // 현재 탭의 url에 대한 피드 정보 요청
-      case "getFeed":
-        chrome.windows.getCurrent(function (win) {
-          chrome.tabs.query(
-            { windowId: win.id, active: true },
-            function (tabs) {
-              if (tabs.length !== "undefined" && tabs.length === 1) {
-                console.log(tabs[0].url);
-                const currentURL = decodeURI(tabs[0].url);
-                console.log(currentURL);
-                getFeed(token, { url: currentURL })
-                  .then((data) => sendResponse({ data }))
-                  .catch((error) => console.log(`fetch 실패: ${error}`));
-              }
-            }
-          );
-        });
-        break;
-
-      // 그룹의 태그 리스트 요청
-      case "getGroupTags":
-        getGroupTags(token)
-          .then((data) => sendResponse({ data }))
-          .catch((error) => console.log(`fetch 실패: ${error}`));
-        break;
-
-      default:
-        console.log(request, sender);
-        break;
-=======
       if (check.data) {
         chrome.action.setBadgeText({ text: "new" });
         chrome.action.setBadgeBackgroundColor({ color: "#0000FF" });
         changeNewNotiInUser(token);
       }
->>>>>>> Stashed changes
     }
   });
 
@@ -305,7 +210,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
               { windowId: win.id, active: true },
               function (tabs) {
                 if (tabs.length !== "undefined" && tabs.length === 1) {
-                  const currentURL = tabs[0].url;
+                  const currentURL = decodeURI(tabs[0].url);
                   postNoti(token, request.data, currentURL)
                     .then((data) => sendResponse({ data }))
                     .catch((error) => console.log(`fetch 실패: ${error}`));
@@ -330,7 +235,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
               { windowId: win.id, active: true },
               function (tabs) {
                 if (tabs.length !== "undefined" && tabs.length === 1) {
-                  const currentURL = tabs[0].url;
+                  const currentURL = decodeURI(tabs[0].url);
                   getFeed(token, { url: currentURL })
                     .then((data) => sendResponse({ data }))
                     .catch((error) => console.log(`fetch 실패: ${error}`));
