@@ -1,6 +1,5 @@
 import { Fragment } from "react";
 import { useRecoilValue, useRecoilState } from "recoil";
-import AvailableBookmarks from "../Bookmarks/AvailableBookmarks";
 import AvailableFeeds from "../Feeds/AvailableFeeds";
 import AvailableTags from "../Tags/AvailableTags";
 import { FeedTagEditModal } from "../Tags/FeedTagEditModal";
@@ -10,6 +9,7 @@ import {
   userInfoState,
   tagModalVisble,
 } from "../../states/atom";
+import { AvailableBookmarks } from "../Bookmarks/AvailableBookmarks";
 import { useQueryClient } from "react-query";
 import Noti from "../Right/Noti";
 import User from "../User/User";
