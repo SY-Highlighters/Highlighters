@@ -12,6 +12,7 @@ import {
   ForwardIcon,
   HashtagIcon,
   StarIcon as StarIconOutLine,
+  TrashIcon,
 } from "@heroicons/react/24/outline";
 
 import { StarIcon } from "@heroicons/react/24/solid";
@@ -23,6 +24,7 @@ import { currentFeedIdState, tagModalVisble } from "../../../states/atom";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import { Bookmarked } from "../../Bookmarks/BookmarkItem/Bookmarked";
 import { UnBookmarked } from "../../Bookmarks/BookmarkItem/UnBookmarked";
+import { Delete } from "../../Func/Delete";
 const FeedItem = (props: any) => {
   const [commentIsClicked, setCommentIsClicked] = useState(false);
   const setCurrentFeedId = useSetRecoilState(currentFeedIdState);
@@ -64,6 +66,7 @@ const FeedItem = (props: any) => {
     <div className="overflow-hidden bg-white rounded-lg shadow-lg">
       <div className="flex justify-between">
         <div className="flex flex-row items-center px-3 mt-3 text-sm text-gray-500 ">
+          <Delete feedId={props.id}></Delete>
           <CalendarIcon
             className="mr-1.5 h-5 w-5 flex-shrink-0 text-gray-400 "
             aria-hidden="true"

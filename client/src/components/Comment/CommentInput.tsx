@@ -75,11 +75,6 @@ export function CommentInput() {
       )
       .then(function (response) {
         if (response) {
-          Swal.fire({
-            icon: "success",
-            title: "댓글 생성 성공!",
-            text: "댓글 생성에 성공했습니다.",
-          });
           setInputValue(" ");
           setTestRender((prev) => !prev);
 

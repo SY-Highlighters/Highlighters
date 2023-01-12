@@ -58,7 +58,7 @@ export function AvailableBookmarks() {
           {isSuccess &&
             feedsBookmark &&
             feedsBookmark.map((item: any) => (
-              <div key={item.feed.id}>
+              <div key={item.feed.id} className="mb-4">
                 <FeedItem
                   id={item.feed.id}
                   key={item.feed.id}

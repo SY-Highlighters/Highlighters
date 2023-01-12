@@ -11,9 +11,9 @@ import {
 } from "../../states/atom";
 import { AvailableBookmarks } from "../Bookmarks/AvailableBookmarks";
 import { useQueryClient } from "react-query";
-import Noti from "../Right/Noti";
+import Noti from "../Noti/Noti";
 import User from "../User/User";
-import { GroupTagEditModal } from "../Tags/GroupTagEditModal";
+// import { GroupTagEditModal } from "../Tags/GroupTagEditModal";
 export function Main() {
   const mainSectionNum = useRecoilValue(mainSectionState);
   const [tagModal, setTagModal] = useRecoilState(tagModalVisble);
@@ -51,7 +51,7 @@ export function Main() {
       </div>
 
       {tagModal === 1 && <FeedTagEditModal></FeedTagEditModal>}
-      {tagModal === 2 && <GroupTagEditModal></GroupTagEditModal>}
+      {/* {tagModal === 2 && <GroupTagEditModal></GroupTagEditModal>} */}
     </Fragment>
   );
 }
