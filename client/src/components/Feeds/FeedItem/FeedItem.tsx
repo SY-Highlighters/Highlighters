@@ -127,7 +127,7 @@ const FeedItem = (props: any) => {
             즐겨찾기
             {/* 댓글 버튼 (토글식)*/}
           <div>
-            <span className="mr-2 ">3</span>
+            <span className="mr-2 ">{props.commentLen}</span>
             <button onClick={commentToggleHandler} className="">
               {/* <button className=""> */}
               <ChatBubbleBottomCenterIcon className="w-5 h-5 text-gray-400 hover:text-gray-700" />
