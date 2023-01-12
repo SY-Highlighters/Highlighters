@@ -139,7 +139,16 @@ async function changeNewNotiInUser(token) {
   return data;
 }
 
+async function initHighlightColor() {
+  const data = await chrome.storage.sync.get("highlightColor");
+  if (data.highlightColor === undefined) {
+    chrome.storage.sync.set({ highlightColor: "#E9D5FF" });
+  }
+}
+
 /* 코드 시작 */
+initHighlightColor();
+
 const jwt_token = getCookieToken().then((cookie) => cookie?.value);
 
 chrome.alarms.create("checkNoti", {
@@ -183,6 +192,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
 
       // 웹페이지의 모든 하이라이트를 가져옴
       case "getHighlight":
+        console.log("bs: getHighlight");
         getHighlight(token, request.data)
           .then((data) => sendResponse({ data }))
           .catch((error) => console.log(`fetch 실패: ${error}`));

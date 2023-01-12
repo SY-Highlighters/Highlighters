@@ -1,6 +1,4 @@
 /* 코드시작 */
-const highlightColor = "#E9D5FF";
-
 let selectionText;
 let highlightStr = "null";
 
@@ -129,9 +127,15 @@ function showLoginModal() {
   body.style.overflow = "hidden";
 }
 
-function highlightDone(range) {
+let highlightColor;
+
+async function highlightDone(range) {
+  // highlightColor = await chrome.storage.sync.get("highlightColor");
+
+  console.log("Done", highlightColor);
+
   const newNode = document.createElement("span");
-  newNode.style.backgroundColor = highlightColor;
+  newNode.style.backgroundColor = highlightColor.highlightColor;
   range.surroundContents(newNode);
 
   // 펜 버튼 숨기기
@@ -141,6 +145,8 @@ function highlightDone(range) {
 
 /* 하이라이트 Post */
 async function postHighlight(range, highlightStr) {
+  highlightColor = await chrome.storage.sync.get("highlightColor");
+
   const rangeobj = {
     startXPath: makeXPath(range.startContainer),
     startOffset: range.startOffset,
@@ -161,7 +167,7 @@ async function postHighlight(range, highlightStr) {
         image: document.querySelector("meta[property='og:image']").content,
         description: document.querySelector("meta[property='og:description']")
           .content,
-        color: highlightColor,
+        color: highlightColor.highlightColor,
       },
     },
     (response) => {
@@ -186,7 +192,7 @@ function getHighlight(url) {
       greeting: "getHighlight",
       data: { url },
     },
-    (response) => {
+    async (response) => {
       const data = response.data;
 
       // console.log(data.data);
@@ -223,7 +229,7 @@ function getHighlight(url) {
         range.setEnd(endNode, endOff);
 
         const newNode = document.createElement("span");
-        newNode.style.backgroundColor = highlightColor;
+        newNode.style.backgroundColor = highlight.color;
         range.surroundContents(newNode);
       }
     }
