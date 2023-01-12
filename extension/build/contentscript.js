@@ -147,6 +147,10 @@ async function highlightDone(range) {
 async function postHighlight(range, highlightStr) {
   highlightColor = await chrome.storage.sync.get("highlightColor");
 
+  const uri = window.location.href;
+  const decodeuri = decodeURI(uri);
+  console.log("postHighlight: ", decodeuri);
+
   const rangeobj = {
     startXPath: makeXPath(range.startContainer),
     startOffset: range.startOffset,
@@ -160,7 +164,7 @@ async function postHighlight(range, highlightStr) {
     {
       greeting: "postHighlight",
       data: {
-        url: range.startContainer.baseURI,
+        url: decodeuri,
         contents: highlightStr,
         selection: rangeobj,
         title: document.title,
@@ -250,8 +254,11 @@ function onWindowReady() {
   button.addEventListener("click", highlight);
 
   // 하이라이트 가져오기
-  console.log(window.location.href);
-  getHighlight(window.location.href);
+  const uri = window.location.href;
+  const decodeuri = decodeURI(uri);
+  // console.log("gethighlight", uri);
+  console.log("gethighlight: ", decodeuri);
+  getHighlight(decodeuri);
 }
 
 const url_check =
