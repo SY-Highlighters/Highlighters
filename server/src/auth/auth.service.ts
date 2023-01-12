@@ -1,6 +1,12 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { PrismaService } from 'src/repository/prisma.service';
 import { JwtService } from '@nestjs/jwt';
+import { User } from '@prisma/client';
+import * as bcrypt from 'bcryptjs';
+import {
+  AuthSigninCredentialsDto,
+  AuthSignupCredentialsDto,
+} from './dto/auth.credentials.dto';
 
 @Injectable()
 export class AuthService {
@@ -28,6 +34,7 @@ export class AuthService {
           email: req.user.email,
           nickname: req.user.lastName + req.user.firstName,
           image: req.user.image,
+          password: 'google',
         },
       });
       const email = req.user.email;
@@ -50,5 +57,60 @@ export class AuthService {
       accessToken,
     };
     return userInfo;
+  }
+
+  // 회원가입
+  async signUp(
+    authSignupCredentialsDto: AuthSignupCredentialsDto,
+  ): Promise<User> {
+    const { email, password, nickname } = authSignupCredentialsDto;
+
+    const salt = await bcrypt.genSalt();
+    const hashedPassword = await bcrypt.hash(password, salt);
+
+    const user = this.prismaService.user.create({
+      data: {
+        email,
+        password: hashedPassword,
+        image:
+          'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a0/Font_Awesome_5_regular_user-circle.svg/1200px-Font_Awesome_5_regular_user-circle.svg.png',
+        nickname,
+      },
+    });
+
+    return user;
+  }
+
+  // 로그인
+  async signIn(
+    authSigninCredentialsDto: AuthSigninCredentialsDto,
+  ): Promise<object> {
+    const { email, password } = authSigninCredentialsDto;
+    const user = await this.prismaService.user.findUnique({
+      where: { email: email },
+    });
+
+    if (user && (await bcrypt.compare(password, user.password))) {
+      // 유저 토큰 생성 ( Secret + Payload )
+      const payload = { email };
+      const accessToken = await this.jwtService.sign(payload);
+
+      const userInfo = {
+        ...user,
+        accessToken,
+      };
+
+      if (user.group_id) {
+        const group = await this.prismaService.group.findUnique({
+          where: { id: user.group_id },
+        });
+
+        userInfo['group_name'] = group.name;
+      }
+
+      return userInfo;
+    } else {
+      throw new UnauthorizedException('login failed');
+    }
   }
 }

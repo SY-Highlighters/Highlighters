@@ -12,6 +12,7 @@ model User {
   group_id     Int?
   nickname     String?       @db.Char(20)
   image        String
+  password     String
   new_noti     Boolean       @default(false)
   bookmark     Bookmark[]
   comment      Comment[]
