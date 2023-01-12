@@ -21,6 +21,8 @@ import { FeedTagEdit } from "../../Tags/FeedTagEdit";
 import { TagItem } from "../../Tags/TagItem/TagItem";
 import { currentFeedIdState, tagModalVisble } from "../../../states/atom";
 import { useRecoilValue, useSetRecoilState } from "recoil";
+import { Bookmarked } from "../../Bookmarks/BookmarkItem/Bookmarked";
+import { UnBookmarked } from "../../Bookmarks/BookmarkItem/UnBookmarked";
 const FeedItem = (props: any) => {
   const [commentIsClicked, setCommentIsClicked] = useState(false);
   const setCurrentFeedId = useSetRecoilState(currentFeedIdState);
@@ -28,7 +30,6 @@ const FeedItem = (props: any) => {
 
   // 여러개의 하이라이트를 받아서 하나의 리스트로 만들어준다.
   // 하이라이트별 색상 지정해줘야함. -> 수정해야함
-  let font_color = "bg-purple-200";
   // 날짜 파싱
   const date = new Date(props.date);
   const year = date.getFullYear();
@@ -38,7 +39,7 @@ const FeedItem = (props: any) => {
   // 하이라이트 파싱
   const highlights = props.highlight.map((hl: any, index: number) => (
     <li className="" key={index}>
-      <span className={font_color}>{hl.contents}</span>
+      <span style={{ backgroundColor: hl.color }}>{hl.contents}</span>
     </li>
   ));
 
@@ -126,14 +127,11 @@ const FeedItem = (props: any) => {
             <div className="flex flex-row space-x-5">
               {" "}
               {/* 즐겨찾기 section */}
-              <StarIcon
-                className="flex-shrink-0 w-5 h-5 text-yellow-400 cursor-pointer hover:text-yellow-400"
-                aria-hidden="true"
-              />
-              <StarIconOutLine
-                className="flex-shrink-0 w-5 h-5 text-black cursor-pointer hover:text-gray-300"
-                aria-hidden="true"
-              ></StarIconOutLine>
+              {!props.bookmarked ? (
+                <Bookmarked feedId={props.id} />
+              ) : (
+                <UnBookmarked bookmarkId={props.bookmarkId}></UnBookmarked>
+              )}
               <span className="mr-2 ">{props.commentLen}</span>
               <button onClick={commentToggleHandler} className="">
                 {/* <button className=""> */}
@@ -146,7 +144,7 @@ const FeedItem = (props: any) => {
           </div>
         </div>
         {/* 숨김 코멘트창 */}
-        {commentIsClicked && <Comment></Comment>}
+        {commentIsClicked && <Comment reset={commentIsClicked}></Comment>}
       </div>
     </div>
     // </li>

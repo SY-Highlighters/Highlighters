@@ -16,11 +16,7 @@ export function CommentItem(props: any) {
   return (
     <div className="flex flex-col mt-7">
       <div className="flex flex-row">
-        <img
-          className="w-10 h-10 rounded-full"
-          src="https://via.placeholder.com/150"
-          alt=""
-        />
+        <img className="w-10 h-10 rounded-full" src={props.profileImg} alt="" />
         <div className="flex flex-col ml-7">
           <div className="flex flex-row">
             <div className="font-bold">{props.nickname}</div>

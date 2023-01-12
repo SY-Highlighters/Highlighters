@@ -4,6 +4,7 @@ import {
   tagsInFeedState,
   userInfoState,
   currentFeedIdState,
+  testRender,
 } from "../../states/atom";
 import { useCookies } from "react-cookie";
 import { useEffect, useState } from "react";
@@ -14,7 +15,8 @@ export function CommentInput() {
   const [inputValue, setInputValue] = useState("");
   const [cookies, setCookie, removeCookie] = useCookies(["logCookie"]);
   const currentFeedId = useRecoilValue(currentFeedIdState);
-
+  // 코멘트가 입력되었을때 다른 컴포넌트를 리렌더링 시키기위한 상태
+  const setTestRender = useSetRecoilState(testRender);
   const handleChange = (e: any) => {
     console.log(e.target.value);
     setInputValue(e.target.value);
@@ -79,6 +81,7 @@ export function CommentInput() {
             text: "댓글 생성에 성공했습니다.",
           });
           setInputValue(" ");
+          setTestRender((prev) => !prev);
 
           //   const newTagItem = {
           //     tag_name: inputValue,
@@ -94,11 +97,7 @@ export function CommentInput() {
   return (
     <div className="flex flex-col mt-7">
       <div className="flex flex-row">
-              <img
-                  className="w-10 h-10 rounded-full"
-                  src={user.image }
-          alt=""
-        />
+        <img className="w-10 h-10 rounded-full" src={user.image} alt="" />
         {/* 좌우로 꽉찬 인풋창*/}
         <div className="w-full mr-3">
           <input

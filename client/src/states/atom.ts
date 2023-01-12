@@ -110,3 +110,10 @@ export const currentFeedIdState = atom<number>({
 //   key: "bookmarkState",
 //   default: true,
 // });
+
+
+// 그룹 모달창을 띄우는 state (그룹 추가, 그룹 초대)
+export const testRender = atom<boolean>({
+  key: "testRender",
+  default: false,
+});
