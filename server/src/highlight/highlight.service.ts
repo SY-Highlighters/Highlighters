@@ -100,7 +100,14 @@ export class HighlightService {
   ): Promise<Highlight[]> {
     const find_feed = await this.prismaService.feed.findFirst({
       where: { url, group_id },
-      select: { highlight: true },
+      select: {
+        highlight: {
+          include: {
+            user: true,
+            highcomment: true,
+          },
+        },
+      },
     });
 
     if (!find_feed) {
