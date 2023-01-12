@@ -81,14 +81,8 @@ export class TagService {
     try {
       await this.prismaService.tag.deleteMany({
         where: {
-          AND: [
-            {
-              tag_name: tag_name,
-            },
-            {
-              group_id: user.group_id,
-            },
-          ],
+          tag_name: tag_name,
+          group_id: user.group_id,
         },
       });
       return null;
