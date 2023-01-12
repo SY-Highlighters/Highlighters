@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import ColorButton from "../components/ColorButton";
 import Toggle from "../components/Toggle";
 
 export default function Settings() {
@@ -9,21 +10,33 @@ export default function Settings() {
           하이라이터 색상
         </h1>
         <div className="my-2 grid grid-cols-5">
-          <button className="bg-red-300 hover:bg-red-400 text-gray-800 font-bold py-2 px-4 w-15">
-            Red
-          </button>
-          <button className="bg-yellow-300 hover:bg-yellow-400 text-gray-800 font-bold py-2 px-4 w-15">
-            Yellow
-          </button>
-          <button className="bg-green-300 hover:bg-green-400 text-gray-800 font-bold py-2 px-4 w-15">
-            Green
-          </button>
-          <button className="bg-blue-300 hover:bg-blue-400 text-gray-800 font-bold py-2 px-4 w-15">
-            Blue
-          </button>
-          <button className="bg-violet-300 hover:bg-violet-400 text-gray-800 font-bold py-2 px-4 w-15">
-            Violet
-          </button>
+          <ColorButton
+            css="bg-red-200 hover:bg-red-300 text-gray-800 font-bold py-2 px-4 w-15 rounded-l"
+            color="#fecaca"
+            colorName="Red"
+          ></ColorButton>
+          <ColorButton
+            css="bg-yellow-200 hover:bg-yellow-300 text-gray-800 font-bold py-2 px-4 w-15"
+            color="#fef08a"
+            colorName="Yellow"
+          ></ColorButton>
+          <ColorButton
+            css="bg-green-200 hover:bg-green-300 text-gray-800 font-bold py-2 px-4 w-15"
+            color="#bbf7d0"
+            colorName="Green"
+          ></ColorButton>
+          <ColorButton
+            css="bg-blue-200 hover:bg-blue-300 text-gray-800 font-bold py-2 px-4 w-15"
+            color="#bfdbfe"
+            colorName="Blue"
+          >
+          </ColorButton>
+          <ColorButton
+            css="bg-violet-200 hover:bg-violet-300 text-gray-800 font-bold py-2 px-4 w-15 rounded-r"
+            color="#e9d5ff"
+            colorName="Purple"
+          >
+          </ColorButton>
         </div>
       </div>
       <div>
