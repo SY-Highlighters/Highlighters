@@ -93,6 +93,10 @@ const Header: React.FC = () => {
     // resetFeeds();
     removeCookie("logCookie");
   };
+  // 메인 로고 눌렀을때 새로고침
+  const handleLogoClick = () => {
+    window.location.reload();
+  };
 
   return (
     <>
@@ -105,9 +109,11 @@ const Header: React.FC = () => {
                   <div className="flex items-center">
                     {/* 네브 타이틀 */}
                     <div className="flex items-center flex-shrink-0 mr-6 text-white">
-                      <span className="text-xl font-semibold tracking-tight">
-                        Highlighters
-                      </span>
+                      <button onClick={handleLogoClick}>
+                        <span className="text-xl font-semibold tracking-tight">
+                          Highlighters
+                        </span>
+                      </button>
                     </div>
                     {/* 이부분에서 메뉴 만들어주는듯? */}
                   </div>

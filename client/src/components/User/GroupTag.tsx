@@ -1,15 +1,20 @@
 import FeedItem from "../Feeds/FeedItem/FeedItem";
 import { useRecoilState, useRecoilValue } from "recoil";
-import { feedsTagListState } from "../../states/atom";
+import { feedsTagListState, clickedGroupTagDelState } from "../../states/atom";
 import { useCookies } from "react-cookie";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
 import { TagItem } from "../Tags/TagItem/TagItem";
 import { useQuery } from "react-query";
+import { ArchiveBoxXMarkIcon } from "@heroicons/react/24/outline";
+import { GrouptagList } from "./GroupTagList";
+import { GrouptagListEdit } from "./GroupTagListEdit";
 const GroupTag = (props: any) => {
   const [grouptagList, setGroupTagList] = useRecoilState(feedsTagListState);
   const [cookies, setCookie, removeCookie] = useCookies(["logCookie"]);
-
+  const [clickedGroupTagDel, setclickedGroupTagDel] = useRecoilState(
+    clickedGroupTagDelState
+  );
   // useEffect(() => {
   //   async function fetchData() {
   //     const response = await axios({
@@ -81,6 +86,11 @@ const GroupTag = (props: any) => {
   //     <TagItem name={tag.tag_name} id={tag.tag_id} />
   //   </span>
   // ));
+  // 그룹 태그 삭제 버튼 클릭 핸들러
+  function groupTagDeleteHandler() {
+    console.log("그룹 태그 삭제 버튼 클릭");
+    setclickedGroupTagDel(!clickedGroupTagDel);
+  }
   return (
     <div
       className={
@@ -91,23 +101,18 @@ const GroupTag = (props: any) => {
       <div className="relative p-6 rounded-3xl -top-5">
         <div className="relative flex items-end">
           <h3 className="mt-5 text-xl antialiased font-bold ">그룹 태그</h3>
-          <div className="flex flex-col items-center px-5"></div>
+          <ArchiveBoxXMarkIcon
+            onClick={groupTagDeleteHandler}
+            className="w-5 h-5 mb-1 ml-3 text-red-400 cursor-pointer hover:text-red-600"
+          ></ArchiveBoxXMarkIcon>
         </div>
         {/* 태그 공간 -> fix:동적 처리*/}
         {/* <div className="relative items-end mb-3">{tagsList}</div> */}
-        <div className="relative items-end mb-3">
-          {isSuccess &&
-            tagList &&
-            tagList.map((tag: any) => (
-              <span key={tag.id}>
-                <TagItem
-                  name={tag.tag_name}
-                  id={tag.id}
-                  onFunc={props.onFunc}
-                />
-              </span>
-            ))}
-        </div>
+        {clickedGroupTagDel ? (
+          <GrouptagListEdit></GrouptagListEdit>
+        ) : (
+          <GrouptagList onFunc={props.onFunc}></GrouptagList>
+        )}
       </div>
     </div>
   );

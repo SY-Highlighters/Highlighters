@@ -3,7 +3,7 @@ import { useRecoilValue, useRecoilState } from "recoil";
 import AvailableBookmarks from "../Bookmarks/AvailableBookmarks";
 import AvailableFeeds from "../Feeds/AvailableFeeds";
 import AvailableTags from "../Tags/AvailableTags";
-import { TagEditModal } from "../Tags/TagEditModal";
+import { FeedTagEditModal } from "../Tags/FeedTagEditModal";
 import { useEffect, useState } from "react";
 import {
   mainSectionState,
@@ -13,6 +13,7 @@ import {
 import { useQueryClient } from "react-query";
 import Noti from "../Right/Noti";
 import User from "../User/User";
+import { GroupTagEditModal } from "../Tags/GroupTagEditModal";
 export function Main() {
   const mainSectionNum = useRecoilValue(mainSectionState);
   const [tagModal, setTagModal] = useRecoilState(tagModalVisble);
@@ -49,7 +50,8 @@ export function Main() {
         <Noti></Noti>
       </div>
 
-      {tagModal && <TagEditModal></TagEditModal>}
+      {tagModal === 1 && <FeedTagEditModal></FeedTagEditModal>}
+      {tagModal === 2 && <GroupTagEditModal></GroupTagEditModal>}
     </Fragment>
   );
 }

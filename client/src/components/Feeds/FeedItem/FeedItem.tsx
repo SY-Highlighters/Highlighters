@@ -14,7 +14,7 @@ import {
 } from "@heroicons/react/24/outline";
 import { useEffect, useState } from "react";
 import { Comment } from "../../Comment/Comment";
-import { TagEdit } from "../../Tags/TagEdit";
+import { FeedTagEdit } from "../../Tags/FeedTagEdit";
 import { TagItem } from "../../Tags/TagItem/TagItem";
 import { currentFeedIdState, tagModalVisble } from "../../../states/atom";
 import { useRecoilValue, useSetRecoilState } from "recoil";
@@ -106,18 +106,16 @@ const FeedItem = (props: any) => {
             </p>
           </div>
         </div>
-        {/* 태그 */}
-        {/* 태그 추가 버튼 */}
+        {/* 태그 section */}
         <div className="flex flex-wrap mt-2">{tags}</div>
-
-        {/* 댓글 기능 */}
+        {/* 태그 수정 section */}
         <div className="flex items-center justify-between mt-4 text-sm text-gray-500 ">
-          <TagEdit
+          <FeedTagEdit
             // key={props.key}
             tag={props.tag}
             feed_id={props.id}
-          ></TagEdit>
-          {/* 즐겨찾기 */}
+          ></FeedTagEdit>
+          {/* 즐겨찾기 section */}
           {/* <div>
               <CheckIcon
                 className="mr-1.5 h-5 w-5 flex-shrink-0 text-gray-400 hover:text-sky-500"
@@ -125,7 +123,8 @@ const FeedItem = (props: any) => {
               />
             </div>
             즐겨찾기
-            {/* 댓글 버튼 (토글식)*/}
+        
+          {/* 댓글 버튼 (토글식)*/}
           <div>
             <span className="mr-2 ">{props.commentLen}</span>
             <button onClick={commentToggleHandler} className="">

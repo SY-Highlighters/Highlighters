@@ -21,3 +21,13 @@ export class CreateFeedDto {
 
   description: string;
 }
+
+// export class getfeedDto {
+//   @IsNumber()
+//   @IsNotEmpty()
+//   page: number;
+
+//   @IsNumber()
+//   @IsNotEmpty()
+//   take: number;
+// }
