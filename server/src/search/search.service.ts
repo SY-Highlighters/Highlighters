@@ -25,6 +25,11 @@ export class SearchService {
                 Table: 'NOTI',
               },
             },
+            {
+              match: {
+                Table: 'COMMENT',
+              },
+            },
           ],
 
           should: [
@@ -66,6 +71,19 @@ export class SearchService {
           Table: paper.hits.hits[i]._source['Table'],
           title: paper.hits.hits[i]._source['title'],
           url: paper.hits.hits[i]._source['url'],
+        };
+        result.push(temp);
+      } else if (
+        paper.hits.hits[i]._source &&
+        paper.hits.hits[i]._source['Table'] == 'HIGHLIGHT'
+      ) {
+        if (user.group_id != paper.hits.hits[i]._source['group_id']) {
+          continue;
+        }
+        const temp = {
+          Table: paper.hits.hits[i]._source['Table'],
+          feed_id: paper.hits.hits[i]._source['feed_id'],
+          contents: paper.hits.hits[i]._source['contents'],
         };
         result.push(temp);
       }
