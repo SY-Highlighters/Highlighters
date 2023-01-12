@@ -138,6 +138,7 @@ const AvailableFeeds = () => {
                   tag={feed.tag}
                   writer={feed.user.nickname}
                   writerImg={feed.user.image}
+                  commentLen={feed.comment.length}
                 />
               </div>
             ))}
