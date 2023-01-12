@@ -30,7 +30,6 @@ const FeedItem = (props: any) => {
 
   // 여러개의 하이라이트를 받아서 하나의 리스트로 만들어준다.
   // 하이라이트별 색상 지정해줘야함. -> 수정해야함
-  let font_color = "bg-purple-200";
   // 날짜 파싱
   const date = new Date(props.date);
   const year = date.getFullYear();
@@ -40,7 +39,7 @@ const FeedItem = (props: any) => {
   // 하이라이트 파싱
   const highlights = props.highlight.map((hl: any, index: number) => (
     <li className="" key={index}>
-      <span className={font_color}>{hl.contents}</span>
+      <span style={{ backgroundColor: hl.color }}>{hl.contents}</span>
     </li>
   ));
 
@@ -128,7 +127,7 @@ const FeedItem = (props: any) => {
             <div className="flex flex-row space-x-5">
               {" "}
               {/* 즐겨찾기 section */}
-              {!props.bookmarked? (
+              {!props.bookmarked ? (
                 <Bookmarked feedId={props.id} />
               ) : (
                 <UnBookmarked bookmarkId={props.bookmarkId}></UnBookmarked>
