@@ -31,10 +31,11 @@ export class HighlightService {
       color,
     } = createHighlightDto;
 
-    let find_feed = await this.prismaService.feed.findFirst({
+    const find_feed = await this.prismaService.feed.findFirst({
       where: { url, group_id },
     });
 
+    let make_feed = null;
     if (!find_feed) {
       const newFeedDto = new CreateFeedDto();
       newFeedDto.user_email = user_email;
@@ -44,12 +45,12 @@ export class HighlightService {
       newFeedDto.image = image;
       newFeedDto.description = description;
 
-      find_feed = await this.feedService.createFeed(newFeedDto);
+      make_feed = await this.feedService.createFeed(newFeedDto);
     }
 
     const result = await this.prismaService.highlight.create({
       data: {
-        feed_id: find_feed.id,
+        feed_id: find_feed ? find_feed.id : make_feed.id,
         group_id: group_id,
         user_email: user_email,
         selection: selection,
@@ -58,6 +59,16 @@ export class HighlightService {
         color: color,
       },
     });
+
+    if (find_feed) {
+      await this.prismaService.feed.update({
+        where: { id: find_feed.id },
+        data: {
+          // highlight: { connect: { id: result.id } },
+          updatedAt: result.createdAt,
+        },
+      });
+    }
 
     return result;
   }
