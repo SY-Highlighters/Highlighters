@@ -207,7 +207,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
             { windowId: win.id, active: true },
             function (tabs) {
               if (tabs.length !== "undefined" && tabs.length === 1) {
-                const currentURL = tabs[0].url;
+                const currentURL = decodeURI(tabs[0].url);
                 postNoti(token, request.data, currentURL)
                   .then((data) => sendResponse({ data }))
                   .catch((error) => console.log(`fetch 실패: ${error}`));
@@ -232,7 +232,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
             { windowId: win.id, active: true },
             function (tabs) {
               if (tabs.length !== "undefined" && tabs.length === 1) {
-                const currentURL = tabs[0].url;
+                const currentURL = decodeURI(tabs[0].url);
                 getFeed(token, { url: currentURL })
                   .then((data) => sendResponse({ data }))
                   .catch((error) => console.log(`fetch 실패: ${error}`));
