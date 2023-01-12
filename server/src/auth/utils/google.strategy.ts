@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
-import { Strategy, VerifyCallback } from 'passport-google-oauth20';
+import { Profile, Strategy, VerifyCallback } from 'passport-google-oauth20';
 
 @Injectable()
 export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
@@ -8,8 +8,8 @@ export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
     super({
       clientID: process.env.CLIENT_ID, // CLIENT_ID
       clientSecret: process.env.CLIENT_SECRET, // CLIENT_SECRET
-      callbackURL: 'http://localhost:3001/api/auth/google/callback',
-      passReqToCallback: true,
+      callbackURL: 'http://localhost:3001/api/auth/google/redirect',
+      // passReqToCallback: true,
       scope: ['email', 'profile'],
     });
   }
@@ -20,20 +20,27 @@ export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
   // google에서 보내주는 'profile' 정보만 로그로 기록
 
   async validate(
-    request: any,
+    // request: any,
     accessToken: string,
     refreshToken: string,
-    profile,
+    profile: Profile,
     done: VerifyCallback,
   ): Promise<any> {
+    console.log('accessToken: ', accessToken);
+    console.log('refreshToken: ', refreshToken);
+    console.log(profile);
     const { name, emails, photos } = profile;
-    const user = {
+    const user_with_token = {
       email: emails[0].value,
       firstName: name.givenName,
       lastName: name.familyName,
-      picture: photos[0].value,
+      image: photos[0].value,
       accessToken,
+      refreshToken,
     };
-    done(null, user);
+    console.log(user_with_token);
+    // return user;
+    // return user;
+    done(null, user_with_token);
   }
 }
