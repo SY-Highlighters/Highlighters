@@ -37,6 +37,4 @@ export class HighcommentController {
       requesthighcommentdto,
     );
   }
-
-  // 하이라이트 코멘트 조회
 }
