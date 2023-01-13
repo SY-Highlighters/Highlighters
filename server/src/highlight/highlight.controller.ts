@@ -26,7 +26,7 @@ export class HighlightController {
   constructor(private readonly highlightService: HighlightService) {}
 
   /*새로운 Highlight 생성*/
-  @Post('/')
+  @Post('/create')
   async createHighlight(
     @Body() createHighlightDto: CreateHighlightDto,
     @GetUser() user: User,
