@@ -51,7 +51,7 @@ export default function Noti() {
     </div>
   ));
   return (
-    <div className=" basis-1/4">
+    <div className="w-1/5 xl:sticky right-14">
       <div className="rounded-lg bg-sky-500">
         <div className="px-3 py-3 mx-auto rounded-lg">
           <div className="flex flex-wrap items-center justify-between ">
