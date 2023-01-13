@@ -1,4 +1,3 @@
-import FeedItem from "../Feeds/FeedItem/FeedItem";
 import { useRecoilState, useRecoilValue, useResetRecoilState } from "recoil";
 import {
   feedsInGroupState,
@@ -11,7 +10,8 @@ import { useCookies } from "react-cookie";
 // import { useEffect, useState } from "react";
 import axios from "axios";
 import { useQuery } from "react-query";
-import { DocumentIcon, MegaphoneIcon } from "@heroicons/react/24/outline";
+import { DocumentIcon, MegaphoneIcon, StarIcon } from "@heroicons/react/24/outline";
+import FeedItem from "../Feeds/FeedItem/FeedItem";
 
 export function AvailableBookmarks() {
   const [cookies, setCookie, removeCookie] = useCookies(["logCookie"]);
@@ -27,7 +27,6 @@ export function AvailableBookmarks() {
           Authorization: `Bearer ${cookies.logCookie}`,
         },
       });
-      console.log("이거모냐고", response.data.data[0].feed);
       return response.data.data;
     },
     {}
@@ -37,18 +36,17 @@ export function AvailableBookmarks() {
     <div className="h-12 overscroll-auto basis-2/4">
       <div className="rounded-lg bg-sky-500">
         <div className="px-3 py-3 mx-auto rounded-lg max-w-7xl sm:px-6 lg:px-8">
-          <div className="flex flex-wrap items-center justify-between">
-            <div className="flex items-center flex-1 w-0 ">
+          <div className="flex flex-wrap ustify-between s-center">
+            <div className="flex w-0 lex-1 s-center ">
               <span className="flex p-2 mr-1 -ml-3 rounded-lg bg-sky-500">
-                <DocumentIcon
+                <StarIcon
                   className="w-6 h-6 text-white"
                   aria-hidden="true"
                 />
+                <p className="ml-3 text-xl font-bold text-white truncate">
+                  <span className="">북마크</span>
+                </p>
               </span>
-              <p className="text-xl font-bold text-white truncate">
-                <span className="md:hidden">북마크</span>
-                <span className="hidden md:inline">북마크</span>
-              </p>
             </div>
           </div>
         </div>
@@ -57,22 +55,23 @@ export function AvailableBookmarks() {
         <ul className="">
           {isSuccess &&
             feedsBookmark &&
-            feedsBookmark.map((item: any) => (
-              <div key={item.feed.id} className="mb-4">
+            feedsBookmark.map((feed: any) => (
+              <div key={feed.id} className="mb-4">
                 <FeedItem
-                  id={item.feed.id}
-                  key={item.feed.id}
-                  title={item.feed.title}
-                  description={item.feed.og.description}
-                  og_image={item.feed.og.image}
-                  url={item.feed.url}
-                  highlight={item.feed.highlight}
-                  date={item.feed.createdAt}
-                  tag={item.feed.tag}
-                  writer={item.feed.user.nickname}
-                  writerImg={item.feed.user.image}
-                  // commentLen={item.feed.comment.length}
-                  // bookmarked={item.feed.bookmark.length > 0 ? true : false}
+                  id={feed.id}
+                  key={feed.id}
+                  title={feed.title}
+                  description={feed.og.description}
+                  og_image={feed.og.image}
+                  url={feed.url}
+                  highlight={feed.highlight}
+                  date={feed.createdAt}
+                  tag={feed.tag}
+                  writer={feed.user.nickname}
+                  writerImg={feed.user.image}
+                  commentLen={feed.comment.length}
+                  bookmarked={feed.bookmark.length !== 0 ? true : false}
+                  bookmarkId={feed.bookmark[0]}
                 />
               </div>
             ))}

@@ -8,3 +8,9 @@ export class CreateGroupDto {
   @IsNotEmpty()
   name: string;
 }
+
+export class showUserDto {
+  email: string;
+  nickname: string;
+  image: string;
+}
