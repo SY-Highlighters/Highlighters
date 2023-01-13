@@ -103,6 +103,7 @@ async function postNoti(token, contents, url) {
 
 async function postFeed(token, contents) {
   console.log(contents);
+  console.log(JSON.stringify(contents));
   const response = fetch(`${host_url}/api/feed/create`, {
     method: "POST",
     headers: {
@@ -115,6 +116,7 @@ async function postFeed(token, contents) {
   // const data = response.json();
   return response;
 }
+
 
 function createPush(id, title, msg) {
   chrome.notifications.create(

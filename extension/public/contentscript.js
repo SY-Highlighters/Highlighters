@@ -243,29 +243,6 @@ function getHighlight(url) {
         // newNode.addEventListener("click", () => deleteHighlight(newNode));
         newNode.addEventListener("click", () => deleteHighlight(newNode));
       }
-  );
-}
-
-// function openHighlightMenu() {
-//   console.log("CLICKED!!!");
-// }
-
-// function redirectHome() {
-//   const is_production = false;
-//   window.location.href = is_production
-//     ? "https://highlighters.site"
-//     : "http://localhost:3000";
-// }
-
-function deleteHighlight(node) {
-  chrome.runtime.sendMessage(
-    {
-      greeting: "deleteHighlight",
-      data: { id: +node.id },
-    },
-    (response) => {
-      console.log(response);
-      node.removeAttribute("style");
     }
   );
 }
@@ -293,6 +270,19 @@ function deleteHighlight(node) {
     }
   );
 }
+
+// function openHighlightMenu() {
+//   console.log("CLICKED!!!");
+// }
+
+// function redirectHome() {
+//   const is_production = false;
+//   window.location.href = is_production
+//     ? "https://highlighters.site"
+//     : "http://localhost:3000";
+// }
+
+
 
 function onWindowReady() {
   // 버튼 만들어 놓기
@@ -365,7 +355,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
       sendResponse({
         title: document.title,
         image: document.querySelector("meta[property='og:image']").content,
-        description: document.querySelector("meta[property='og:description']"),
+        description: document.querySelector("meta[property='og:description']").content,
       });
       break;
 

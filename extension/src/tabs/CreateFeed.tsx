@@ -71,9 +71,7 @@ export default function CreateFeed(this: any) {
 
   const groupTagAdd = (data: []) => {
     data.map((item: any) => {
-      const newTag = {
-        tag_name: item.tag_name,
-      };
+      const newTag = item.tag_name;
       setGroupTags((oldTags: any) => [...oldTags, newTag]);
     });
   };
@@ -93,9 +91,7 @@ export default function CreateFeed(this: any) {
 
   const newTagHandler = () => {
     // 서버에 api 요청
-    const newTag = {
-      tag_name: tagInput,
-    };
+    const newTag = tagInput ;
 
     setTagInput("");
     feedTags.push(newTag);
@@ -114,6 +110,7 @@ export default function CreateFeed(this: any) {
   };
 
   const feedSubmitHandler = () => {
+    console.log(ogDescription);
     chrome.runtime.sendMessage(
       {
         greeting: "postFeed",
@@ -127,9 +124,10 @@ export default function CreateFeed(this: any) {
         },
       },
       (response) => {
+        console.log(response);
         Toast.fire({
           icon: "success",
-          title: "알림 전송 성공!",
+          title: "피드 생성 성공!",
         });
         setTitleInput("");
       }
@@ -139,9 +137,8 @@ export default function CreateFeed(this: any) {
   const groupTagList = groupTags.map((tag) => (
     <span>
       <TagItem
-        onClick={() => this.feedTagAdd(tag.tag_id, tag.tag_name)}
-        id={tag.tag_id}
-        name={tag.tag_name}
+        onClick={() => this.feedTagAdd(tag)}
+        name={tag}
       ></TagItem>
     </span>
   ));
@@ -168,7 +165,7 @@ export default function CreateFeed(this: any) {
           <div className="mb-2">
             {feedTags.map((tag: any) => (
               <span>
-                <TagEditItem id={tag.tag_id} name={tag.tag_name}></TagEditItem>
+                <TagEditItem name={tag}></TagEditItem>
               </span>
             ))}
           </div>

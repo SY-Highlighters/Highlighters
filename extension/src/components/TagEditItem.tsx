@@ -6,7 +6,7 @@ export function TagEditItem(props: any) {
   const [feedTags, setFeedTags] = useRecoilState(tagsInFeedState);
 
   const buttonClickHandler = () => {
-    setFeedTags(feedTags.filter((tag: any) => tag.tag_name !== props.name));
+    setFeedTags(feedTags.filter((tag: any) => tag !== props.name));
   };
 
   return (

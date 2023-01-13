@@ -7,10 +7,8 @@ export function TagItem(props: any) {
   const [disable, setDisabled] = React.useState(false);
 
   const buttonClickHandler = () => {
-    const newTag = {
-      tag_id: props.id,
-      tag_name: props.name,
-    };
+    const newTag = props.name
+
     setFeedTags((oldTags: any) => [...oldTags, newTag]);
     setDisabled(true);
   };
