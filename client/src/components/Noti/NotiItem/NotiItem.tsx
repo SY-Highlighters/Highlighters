@@ -1,7 +1,7 @@
 export default function NotiItem(props: any) {
   return (
     <li>
-      <div className="px-4 py-3 mb-3 border-t-4 rounded-lg rounded-b shadow-md bg-sky-100 border-sky-500 hover:bg-sky-200">
+      <div className="px-4 py-3 mt-5 mb-3 border-t-4 rounded-lg rounded-b shadow-md bg-sky-100 border-sky-500 hover:bg-sky-200">
         <div className="flex">
           <div className="py-1"></div>
           <div>

@@ -94,10 +94,11 @@ const GroupTag = (props: any) => {
   return (
     <div
       className={
-        props.onCss ? props.onCss : "w-full mt-10 bg-white rounded-lg shadow-lg"
+        props.onCss
+          ? props.onCss
+          : "w-full mt-10 bg-white rounded-lg shadow-lg mb-10"
       }
     >
-      <div className="" />
       <div className="relative p-6 rounded-3xl -top-5">
         <div className="relative flex items-end">
           <h3 className="mt-5 text-xl antialiased font-bold ">그룹 태그</h3>

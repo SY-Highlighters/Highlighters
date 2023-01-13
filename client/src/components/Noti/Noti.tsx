@@ -51,9 +51,9 @@ export default function Noti() {
     </div>
   ));
   return (
-    <div className="bg-white rounded-lg shadow-lg justify-self-center basis-1/4">
+    <div className=" basis-1/4">
       <div className="rounded-lg bg-sky-500">
-        <div className="px-3 py-3 mx-auto rounded-lg max-w-7xl sm:px-6 lg:px-8">
+        <div className="px-3 py-3 mx-auto rounded-lg">
           <div className="flex flex-wrap items-center justify-between ">
             <div className="flex items-center flex-1 w-0 -ml-2">
               <span className="flex mr-3 rounded-lg bg-sky-500">
@@ -81,10 +81,12 @@ export default function Noti() {
         </div>
       </div>
       {/* 아래로 긴 카드박스 */}
-      <div className="flex flex-col m-5 ">
-        {/* 카드박스 내용 */}
-        <ul>{notiList}</ul>
-        {/* 카드박스 내용 1 */}
+      <div className="bg-white rounded-lg shadow-lg erflow-hidden">
+        <div className="flex flex-col m-5">
+          {/* 카드박스 내용 */}
+          <ul>{notiList}</ul>
+          {/* 카드박스 내용 1 */}
+        </div>
       </div>
     </div>
   );
