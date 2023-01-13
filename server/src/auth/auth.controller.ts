@@ -11,9 +11,9 @@ import { GoogleAuthGuard } from './utils/Guards';
 export class AuthController {
   constructor(private authService: AuthService) {}
 
-  @Get('google/login')
+  @Post('google/login')
   @UseGuards(GoogleAuthGuard)
-  async handleGoogleLogin(@Req() req): Promise<void> {
+  async googleLoginRedirect(@Req() req): Promise<void> {
     // redirect google login page
     // return { msg: 'Google Authentication' };
   }
@@ -21,9 +21,12 @@ export class AuthController {
   // api/auth/google/redirect
   @Get('google/redirect')
   @UseGuards(GoogleAuthGuard)
-  handleRedirect(@Req() req) {
+  googleLoginCallback(@Req() req) {
     // return { msg: 'OK' };
-    return this.authService.googleRedirect(req);
+    // return this.authService.googleRedirect(req);
+    // after google login, redirect to frontend server url which is "http://localhost:3000"
+    const res = this.authService.googleLoginCallback(req);
+    return res;
   }
 
   @Post('/signup')

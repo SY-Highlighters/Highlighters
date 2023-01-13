@@ -16,7 +16,7 @@ export class AuthService {
   ) {}
 
   // 구글 로그인 redirect
-  async googleRedirect(req) {
+  async googleLoginCallback(req) {
     if (!req.user) {
       throw new UnauthorizedException('No User from Google: login failed');
     }
