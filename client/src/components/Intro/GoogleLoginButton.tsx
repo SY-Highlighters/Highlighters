@@ -28,16 +28,16 @@ export function GoogleLoginButton() {
     });
   };
   // flow: "auth-code",
-
+  // process.env.REACT_APP_GOOGLE_CLIENT_ID
   return (
     <div className="App">
-      <GoogleOAuthProvider clientId="1051615347268-qio4ne1nai8flq7felb5h0relc1lcp0b.apps.googleusercontent.com">
+      <GoogleOAuthProvider clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID!}>
         <GoogleLogin
           // useOneTap={true}
           onSuccess={async (creRes) => {
             console.log(creRes);
             await axios
-              .post(`${process.env.REACT_APP_HOST}/api/auth/google`, {
+              .post(`${process.env.REACT_APP_HOST}/api/auth/google/login`, {
                 accessToken: creRes.credential,
               })
               .then(function (response) {
@@ -45,7 +45,7 @@ export function GoogleLoginButton() {
                 if (response) {
                   axios.defaults.headers.common[
                     "Authorization"
-                  ] = `Bearer ${response.data.accessToken}`;
+                  ] = `Bearer ${response.data.data.accessToken}`;
                   // 유저 데이터 저장
                   // setUserInfo({
                   //   nickname: response.data.nickname,
@@ -55,7 +55,7 @@ export function GoogleLoginButton() {
                   // });
                   // 쿠키저장
 
-                  handleCookie(response.data.accessToken);
+                  handleCookie(response.data.data.accessToken);
                 }
               })
               .catch((error) => {
