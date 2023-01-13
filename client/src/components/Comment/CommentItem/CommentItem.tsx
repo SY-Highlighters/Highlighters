@@ -19,7 +19,7 @@ export function CommentItem(props: any) {
         <img className="w-10 h-10 rounded-full" src={props.profileImg} alt="" />
         <div className="flex flex-col ml-7">
           <div className="flex flex-row">
-            <div className="font-bold">{props.nickname}</div>
+            <div className="font-bold">{props.writer}</div>
             {/* extra */}
             {/* 날짜는 위로, 시간은 아래로 표시 */}
             <div className="mt-1 ml-2 text-xs text-gray-500">
@@ -32,6 +32,16 @@ export function CommentItem(props: any) {
                 <div className="text-xs text-gray-500">좋아요</div>
                 <div className="ml-2 text-xs text-gray-500">답글</div>
               </div> */}
+          {props.userId === props.writerId && (
+            <div className="-mt-1">
+              <button className="text-xs text-gray-500 hover:text-gray-600">
+                수정
+              </button>
+              <button className="ml-1 text-xs text-gray-500 hover:text-gray-600">
+                삭제
+              </button>
+            </div>
+          )}
         </div>
       </div>
     </div>
