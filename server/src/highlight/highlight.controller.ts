@@ -30,7 +30,7 @@ export class HighlightController {
   async createHighlight(
     @Body() createHighlightDto: CreateHighlightDto,
     @GetUser() user: User,
-  ): Promise<Highlight> {
+  ): Promise<boolean> {
     createHighlightDto.user_email = user.email;
     createHighlightDto.group_id = user.group_id;
 
