@@ -11,7 +11,8 @@ import { GetUser } from 'src/auth/get-user.decorator';
 import { User } from '@prisma/client';
 import { SuccessInterceptor } from 'src/common/interceptors/success.interceptors';
 import { HttpExceptionFilter } from 'src/common/exceptions/http-exception.filter';
-import { CreateGroupDto } from './dto/group.dto';
+import { CreateGroupDto, showUserDto } from './dto/group.dto';
+import { ApiResponse, ApiOperation } from '@nestjs/swagger';
 
 @Controller('api/group')
 @UseInterceptors(SuccessInterceptor)
@@ -43,5 +44,13 @@ export class MemberController {
   @Get('/code')
   async getGroupCode(@GetUser() user: User): Promise<string> {
     return this.memberService.getGroupCode(user.group_id);
+  }
+
+  // 그룹 멤버 리스트 프사띄우기
+  @Get('/members')
+  @ApiResponse({ status: 200, description: 'success', type: 'User[]' })
+  @ApiOperation({ summary: '그룹 멤버 리스트 프사띄우기' })
+  async getGroupMembers(@GetUser() user: User): Promise<showUserDto[]> {
+    return this.memberService.getGroupMembers(user);
   }
 }

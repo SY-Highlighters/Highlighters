@@ -26,7 +26,7 @@ export class UserService {
     return { ...user, group_name: group.name };
   }
 
-  async findGroupUsersByGroupId(id: number): Promise<User[]> {
+  async findGroupUsersInfoByGroupId(id: number): Promise<User[]> {
     const users = await this.prismaService.user.findMany({
       where: { group_id: id },
     });

@@ -1,6 +1,7 @@
+import { User } from '@prisma/client';
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from 'src/repository/prisma.service';
-import { CreateGroupDto } from './dto/group.dto';
+import { CreateGroupDto, showUserDto } from './dto/group.dto';
 
 @Injectable()
 export class MemberService {
@@ -59,5 +60,30 @@ export class MemberService {
     }
 
     return group.group_code;
+  }
+
+  // 그룹 멤버 리스트 프사띄우기
+  async getGroupMembers(user: User): Promise<showUserDto[]> {
+    if (!user.group_id) {
+      return [];
+    }
+
+    const members = await this.prismaService.user.findMany({
+      where: {
+        NOT: { email: user.email },
+        group_id: user.group_id,
+      },
+      select: {
+        email: true,
+        nickname: true,
+        image: true,
+      },
+    });
+
+    if (!members) {
+      throw new NotFoundException(`Group Members Not Found`);
+    }
+
+    return members;
   }
 }
