@@ -8,6 +8,7 @@ import { ValidationPipe } from '@nestjs/common';
 import { DocumentBuilder } from '@nestjs/swagger';
 import { SwaggerModule } from '@nestjs/swagger/dist';
 import { HttpExceptionFilter } from './common/exceptions/http-exception.filter';
+import * as expressBasicAuth from 'express-basic-auth';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -19,6 +20,15 @@ async function bootstrap() {
     origin: true,
     credentials: true,
   });
+  app.use(
+    ['/api_docs', '/api_docs/*'],
+    expressBasicAuth({
+      challenge: true,
+      users: {
+        [process.env.SWAGGER_USER]: process.env.SWAGGER_PASSWORD,
+      },
+    }),
+  );
 
   app.useGlobalPipes(
     new ValidationPipe({
