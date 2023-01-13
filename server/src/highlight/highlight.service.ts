@@ -104,7 +104,6 @@ export class HighlightService {
         highlight: {
           include: {
             user: true,
-            highcomment: true,
           },
         },
       },

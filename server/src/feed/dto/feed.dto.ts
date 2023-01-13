@@ -14,7 +14,7 @@ export class CreateFeedDto {
 
   image: string;
 
-  description: string;
+  description?: string;
 
   tag_name?: string[];
 }
