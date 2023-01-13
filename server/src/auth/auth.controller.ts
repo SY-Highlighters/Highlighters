@@ -1,32 +1,42 @@
-import { Body, Controller, Get, Post, Req, UseGuards } from '@nestjs/common';
+import { Body, Controller, Post, UnauthorizedException } from '@nestjs/common';
 import { User } from '@prisma/client';
 import { AuthService } from './auth.service';
 import {
   AuthSigninCredentialsDto,
   AuthSignupCredentialsDto,
 } from './dto/auth.credentials.dto';
-import { GoogleAuthGuard } from './utils/Guards';
+import { OAuth2Client } from 'google-auth-library';
+
+const client = new OAuth2Client(
+  process.env.GOOGLE_CLIENT_ID,
+  process.env.GOOGLE_CLIENT_SECRET,
+);
 
 @Controller('api/auth')
 export class AuthController {
   constructor(private authService: AuthService) {}
 
   @Post('google/login')
-  @UseGuards(GoogleAuthGuard)
-  async googleLoginRedirect(@Req() req): Promise<void> {
-    // redirect google login page
-    // return { msg: 'Google Authentication' };
-  }
-
-  // api/auth/google/redirect
-  @Get('google/redirect')
-  @UseGuards(GoogleAuthGuard)
-  googleLoginCallback(@Req() req) {
-    // return { msg: 'OK' };
-    // return this.authService.googleRedirect(req);
-    // after google login, redirect to frontend server url which is "http://localhost:3000"
-    const res = this.authService.googleLoginCallback(req);
-    return res;
+  async googleLogin(@Body('accessToken') accessToken): Promise<any> {
+    const ticket = await client.verifyIdToken({
+      idToken: accessToken,
+      audience: process.env.GOOGLE_CLIENT_ID,
+    });
+    if (!ticket) {
+      throw new UnauthorizedException('No User from Google: login failed');
+    }
+    // log the ticket payload in the console to see what's inside
+    console.log('ticket: ', ticket.getPayload());
+    const { email, name, picture } = ticket.getPayload();
+    const data = await this.authService.googleLogin({
+      email,
+      name,
+      image: picture,
+    });
+    return {
+      data,
+      message: 'success',
+    };
   }
 
   @Post('/signup')

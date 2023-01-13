@@ -44,6 +44,7 @@
     "elastic-apm-node": "^3.41.1",
     "express-basic-auth": "^1.2.1",
     "express-session": "^1.17.3",
+    "google-auth-library": "^8.7.0",
     "nestjs-elastic-apm": "^1.2.0",
     "node": "^19.3.0",
     "passport-google-oauth20": "^2.0.0",

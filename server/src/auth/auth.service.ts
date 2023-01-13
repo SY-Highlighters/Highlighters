@@ -15,48 +15,35 @@ export class AuthService {
     private jwtService: JwtService,
   ) {}
 
-  // 구글 로그인 redirect
-  async googleLoginCallback(req) {
-    if (!req.user) {
-      throw new UnauthorizedException('No User from Google: login failed');
-    }
-
+  // 구글 로그인
+  async googleLogin({ email, name, image }): Promise<any> {
     // db에 유저 정보가 있는지 확인
     const user = await this.prismaService.user.findUnique({
-      where: { email: req.user.email },
+      where: { email: email },
     });
+    console.log('inside the googleLogin service', 'user: ', user);
 
     // if user does not exist in db, create newuser and return userinfo with accesstoken
     // db에 유저가 없다면, 회원가입 + 로그인
     if (!user) {
       const newUser = await this.prismaService.user.create({
         data: {
-          email: req.user.email,
-          nickname: req.user.lastName + req.user.firstName,
-          image: req.user.image,
+          email: email,
+          nickname: name,
+          image: image,
           password: 'google',
         },
       });
-      const email = req.user.email;
-      const payload = { email };
-      const accessToken = await this.jwtService.sign(payload);
-      const userInfo = {
-        ...newUser,
-        accessToken,
+      return {
+        accessToken: this.jwtService.sign({ email: newUser.email }),
       };
-      return userInfo;
     }
 
     // if user already exists in db, return userinfo with accesstoken
     // db에 유저가 있다면, 로그인
-    const email = req.user.email;
-    const payload = { email };
-    const accessToken = await this.jwtService.sign(payload);
-    const userInfo = {
-      ...user,
-      accessToken,
+    return {
+      accessToken: this.jwtService.sign({ email: user.email }),
     };
-    return userInfo;
   }
 
   // 회원가입
