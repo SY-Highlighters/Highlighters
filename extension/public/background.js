@@ -71,7 +71,7 @@ async function getGroupTags(token) {
 }
 
 async function postHighlight(token, request) {
-  const response = await fetch(`${host_url}/api/highlight`, {
+  const response = await fetch(`${host_url}/api/highlight/create`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -116,7 +116,6 @@ async function postFeed(token, contents) {
   // const data = response.json();
   return response;
 }
-
 
 function createPush(id, title, msg) {
   chrome.notifications.create(

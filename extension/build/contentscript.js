@@ -243,29 +243,6 @@ function getHighlight(url) {
         // newNode.addEventListener("click", () => deleteHighlight(newNode));
         newNode.addEventListener("click", () => deleteHighlight(newNode));
       }
-  );
-}
-
-// function openHighlightMenu() {
-//   console.log("CLICKED!!!");
-// }
-
-// function redirectHome() {
-//   const is_production = false;
-//   window.location.href = is_production
-//     ? "https://highlighters.site"
-//     : "http://localhost:3000";
-// }
-
-function deleteHighlight(node) {
-  chrome.runtime.sendMessage(
-    {
-      greeting: "deleteHighlight",
-      data: { id: +node.id },
-    },
-    (response) => {
-      console.log(response);
-      node.removeAttribute("style");
     }
   );
 }
