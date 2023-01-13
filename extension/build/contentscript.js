@@ -144,7 +144,6 @@ async function highlightDone(range, id) {
 /* 하이라이트 Post */
 async function postHighlight(range, highlightStr) {
   highlightColor = await chrome.storage.sync.get("highlightColor");
-  console.log("posthighlgiht", highlightColor);
 
   const uri = window.location.href;
   const decodeuri = decodeURI(uri);
@@ -244,6 +243,29 @@ function getHighlight(url) {
         // newNode.addEventListener("click", () => deleteHighlight(newNode));
         newNode.addEventListener("click", () => deleteHighlight(newNode));
       }
+  );
+}
+
+// function openHighlightMenu() {
+//   console.log("CLICKED!!!");
+// }
+
+// function redirectHome() {
+//   const is_production = false;
+//   window.location.href = is_production
+//     ? "https://highlighters.site"
+//     : "http://localhost:3000";
+// }
+
+function deleteHighlight(node) {
+  chrome.runtime.sendMessage(
+    {
+      greeting: "deleteHighlight",
+      data: { id: +node.id },
+    },
+    (response) => {
+      console.log(response);
+      node.removeAttribute("style");
     }
   );
 }
@@ -335,7 +357,6 @@ if (url_check) {
     }
   };
 }
-<<<<<<< HEAD
 
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   switch (request.greeting) {
@@ -354,5 +375,3 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   }
   return true;
 });
-=======
->>>>>>> 7618e5781ba26abc6e7e59a88017fc1e8f36c05e
