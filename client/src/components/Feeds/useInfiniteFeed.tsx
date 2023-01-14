@@ -9,13 +9,12 @@ export const useInfiniteFeed = () => {
       method: "get",
       url: `${
         process.env.REACT_APP_HOST
-      }/api/feed/sep/feed?page=${pageParam}&take=${5}`,
+      }/api/feed/sep/feed?page=${pageParam}&take=${4}`,
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${cookies.logCookie}`,
       },
     });
-    console.log(res.data.data.feeds);
     return {
       // 실제 데이터
       board_page: res.data.data.feeds,
