@@ -3,6 +3,8 @@ let selectionText;
 let highlightStr = "null";
 let highlightColor;
 let highlights;
+let userImage;
+let curNode;
 
 const modalOverlay = `width: 100%;
             height: 100%;
@@ -42,6 +44,27 @@ const modalContent = `margin-top: 20px;
             padding: 0px 10px;
             text-shadow: 1px 1px 2px gray;
             color: white;`;
+
+const toolBarCSS = `
+    width: 111px !important;
+    height: 40px !important;
+    align-items: center !important;
+    background-color: #fff !important;
+    border: 1px solid #f2f2f2 !important;
+    box-sizing: border-box !important;
+    box-shadow: 0px 3px 8px rgb(0 0 0 / 20%) !important;
+    border-radius: 8px !important;
+    display: none`;
+
+const backgroundCSS = `
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    left: 0;
+    top: 0;
+    background: rgba(255, 255, 255, 0);
+    z-index: 999;
+`;
 
 function highlight() {
   const range = selectionText.getRangeAt(0);
@@ -135,6 +158,9 @@ async function highlightDone(range, id) {
   newNode.setAttribute("id", id);
   newNode.style.backgroundColor = highlightColor.highlightColor;
   range.surroundContents(newNode);
+  newNode.addEventListener("click", (event) =>
+    showToolBar(event, newNode, userImage)
+  );
 
   // 펜 버튼 숨기기
   const button = document.getElementById("btn_text_highlighters");
@@ -143,6 +169,7 @@ async function highlightDone(range, id) {
 
 /* 하이라이트 Post */
 async function postHighlight(range, highlightStr) {
+  highlightColor = await chrome.storage.sync.get("highlightColor");
   const uri = window.location.href;
   const decodeuri = decodeURI(uri);
 
@@ -264,7 +291,9 @@ function rehighlightText(highlight) {
   newNode.style.backgroundColor = highlight.color;
   range.surroundContents(newNode);
 
-  newNode.addEventListener("click", () => deleteHighlight(newNode));
+  newNode.addEventListener("click", (event) =>
+    showToolBar(event, newNode, highlight.user.image)
+  );
 }
 
 function rehighlightImage(highlight) {
@@ -292,6 +321,53 @@ function deleteHighlight(node) {
     (response) => {
       console.log(response);
       node.removeAttribute("style");
+    }
+  );
+
+  hideToolBar();
+}
+
+function showToolBar(event, node, user) {
+  console.log("showToolBar");
+  const html = document.querySelector("html");
+  const toolBar = document.getElementById("toolBar-highlighters");
+  const userImageDiv = document.getElementById("userImageDiv-highlighters");
+
+  curNode = node; // 현재 선택된 하이라이트 업데이트
+  userImageDiv.setAttribute("src", user); // 현재 선택된 하이라이트의 유저 이미지로 설정
+
+  const background = document.createElement("div");
+  background.setAttribute("id", "background-highlighters");
+  background.style.cssText = backgroundCSS;
+  background.addEventListener("click", hideToolBar);
+  html.appendChild(background);
+
+  const divTop = event.pageY - 50;
+  const divLeft = event.pageX - 40;
+  toolBar.style.top = divTop + "px";
+  toolBar.style.left = divLeft + "px";
+  toolBar.style.position = "absolute";
+  toolBar.style.display = "block";
+  toolBar.style.zIndex = "1000";
+}
+
+function hideToolBar() {
+  const toolBar = document.getElementById("toolBar-highlighters");
+  const background = document.getElementById("background-highlighters");
+
+  toolBar.style.display = "none";
+  background.remove();
+}
+
+function getUserInfo() {
+  chrome.runtime.sendMessage(
+    {
+      greeting: "getUserInfo",
+    },
+    (response) => {
+      // console.log("getUserInfo", response);
+      userImage = response.data.image;
+      console.log(userImage);
     }
   );
 }
@@ -395,12 +471,73 @@ function makeButton(name) {
   return button;
 }
 
+function makeToolBar() {
+  const rootDiv = document.createElement("div");
+  rootDiv.setAttribute("id", "toolBar-highlighters");
+
+  rootDiv.style.cssText = toolBarCSS;
+
+  // 삭제버튼 삽입
+  const userImageDiv = document.createElement("input");
+  userImageDiv.setAttribute("type", "image");
+  userImageDiv.setAttribute("id", "userImageDiv-highlighters");
+  userImageDiv.setAttribute(
+    "src",
+    "https://cdn-icons-png.flaticon.com/512/1946/1946429.png"
+  );
+  userImageDiv.style.height = "22px";
+  userImageDiv.style.width = "22px";
+  userImageDiv.style.position = "relative";
+  userImageDiv.style.top = "9px";
+  userImageDiv.style.left = "10px";
+  userImageDiv.style.borderRadius = "15px";
+
+  // 삭제버튼 삽입
+  const deleteButton = document.createElement("input");
+  deleteButton.setAttribute("type", "image");
+  deleteButton.setAttribute("id", "deleteButton-highlighters");
+  deleteButton.setAttribute(
+    "src",
+    "https://cdn-icons-png.flaticon.com/512/484/484662.png"
+  );
+  deleteButton.style.height = "20px";
+  deleteButton.style.width = "20px";
+  deleteButton.style.position = "relative";
+  deleteButton.style.top = "8px";
+  deleteButton.style.left = "22px";
+  deleteButton.addEventListener("click", () => deleteHighlight(curNode));
+
+  // 홈버튼 삽입
+  const homeButton = document.createElement("input");
+  homeButton.setAttribute("type", "image");
+  homeButton.setAttribute("id", "homeButton-highlighters");
+  homeButton.setAttribute(
+    "src",
+    "https://cdn-icons-png.flaticon.com/512/1946/1946488.png"
+  );
+  homeButton.style.height = "20px";
+  homeButton.style.width = "20px";
+  homeButton.style.position = "relative";
+  homeButton.style.top = "8px";
+  homeButton.style.left = "35px";
+  homeButton.addEventListener("click", () =>
+    window.open("https://highlighters.site/")
+  );
+
+  rootDiv.appendChild(userImageDiv);
+  rootDiv.appendChild(deleteButton);
+  rootDiv.appendChild(homeButton);
+
+  return rootDiv;
+}
+
 async function onWindowReady() {
   // 버튼 만들어 놓기
   const html = document.querySelector("html");
 
   const textPenButton = makeButton("text");
   const imagePenButton = makeButton("image");
+  const toolBar = makeToolBar();
 
   textPenButton.addEventListener("click", highlight);
   imagePenButton.addEventListener("click", highlightImage);
@@ -410,6 +547,7 @@ async function onWindowReady() {
 
   html.appendChild(textPenButton);
   html.appendChild(imagePenButton);
+  html.appendChild(toolBar);
 
   highlightColor = await chrome.storage.sync.get("highlightColor");
 
@@ -418,10 +556,12 @@ async function onWindowReady() {
   const decodeuri = decodeURI(uri);
   console.log("gethighlight: ", decodeuri);
 
+  getUserInfo();
+  // console.log(userImage);
   getHighlight(decodeuri);
   makeEventOnImage();
 }
-
+//
 /* contentscript 시작 */
 window.onload = onWindowReady;
 

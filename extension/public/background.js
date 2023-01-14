@@ -165,6 +165,19 @@ async function initHighlightColor() {
   console.log("Init Highlight Complete");
 }
 
+async function getUserInfo(token) {
+  const response = await fetch(`${host_url}/api/user/signin`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+  });
+  // console.log("bs: getuserinfo", response);
+  const data = await response.json();
+  return data;
+}
+
 async function deleteHighlight(token, id) {
   console.log("id", id);
   const response = await fetch(`${host_url}/api/highlight/delete`, {
@@ -304,6 +317,12 @@ async function BackgroundStart() {
                 "하이라이트가 저장되었습니다"
               );
             })
+            .catch((error) => console.log(`fetch 실패: ${error}`));
+          break;
+
+        case "getUserInfo":
+          getUserInfo(token)
+            .then((data) => sendResponse({ data }))
             .catch((error) => console.log(`fetch 실패: ${error}`));
           break;
 

@@ -53,11 +53,12 @@ export function Main() {
       cacheTime: 60 * 60 * 1000,
       staleTime: 2 * 60 * 60 * 1000,
       // Refetch the data when the component mounts, including when the page is refreshed
-      refetchOnMount: false,
+      // refetchOnMount: false,
       // Do not refetch the data when the window gains focus
       refetchOnWindowFocus: false,
       // 쿠키가 준비되었을때 쿼리를 실행한다.
       enabled: !!cookies.logCookie,
+      
     }
   );
   const MainSection = (setionNum: number) => {
