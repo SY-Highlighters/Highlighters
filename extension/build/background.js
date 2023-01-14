@@ -297,6 +297,20 @@ async function BackgroundStart() {
             .catch((error) => console.log(`fetch 실패: ${error}`));
           break;
 
+        case "postHighlightImage":
+          postHighlight(token, request.data)
+            .then((data) => {
+              sendResponse({ data });
+              console.log(data);
+              createPush(
+                `${request.greeting}: ${data.id}`,
+                `${String(data.contents).substring(0, 30)}...`,
+                "하이라이트가 저장되었습니다"
+              );
+            })
+            .catch((error) => console.log(`fetch 실패: ${error}`));
+          break;
+
         default:
           console.log(request, sender);
           break;

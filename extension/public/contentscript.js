@@ -43,7 +43,7 @@ const modalContent = `margin-top: 20px;
             text-shadow: 1px 1px 2px gray;
             color: white;`;
 
-async function highlight() {
+function highlight() {
   const range = selectionText.getRangeAt(0);
   postHighlight(range, highlightStr);
 }
@@ -92,7 +92,7 @@ function makeXPath(node, currentPath) {
 
 function showLoginModal() {
   // 펜 버튼 숨기기
-  const button = document.getElementById("btn_highlighters");
+  const button = document.getElementById("btn_text_highlighters");
   button.style.display = "none";
 
   const body = document.querySelector("body");
@@ -137,14 +137,12 @@ async function highlightDone(range, id) {
   range.surroundContents(newNode);
 
   // 펜 버튼 숨기기
-  const button = document.getElementById("btn_highlighters");
+  const button = document.getElementById("btn_text_highlighters");
   button.style.display = "none";
 }
 
 /* 하이라이트 Post */
 async function postHighlight(range, highlightStr) {
-  highlightColor = await chrome.storage.sync.get("highlightColor");
-
   const uri = window.location.href;
   const decodeuri = decodeURI(uri);
 
@@ -169,6 +167,7 @@ async function postHighlight(range, highlightStr) {
         description: document.querySelector("meta[property='og:description']")
           .content,
         color: highlightColor.highlightColor,
+        type: 1,
       },
     },
     (response) => {
@@ -207,55 +206,67 @@ function getHighlight(url) {
       }
 
       for (const highlight of highlights) {
-        const selection = highlight.selection;
-        const range = document.createRange();
-
-        // 시작 노드 복원
-        const startNode = document.evaluate(
-          selection.startXPath,
-          document,
-          null,
-          XPathResult.FIRST_ORDERED_NODE_TYPE,
-          null
-        ).singleNodeValue;
-        const startOff = Number(selection.startOffset);
-
-        // 종료 노드 복원
-        const endNode = document.evaluate(
-          selection.endXPath,
-          document,
-          null,
-          XPathResult.FIRST_ORDERED_NODE_TYPE,
-          null
-        ).singleNodeValue;
-        const endOff = Number(selection.endOffset);
-
-        // 복원한 시작노드, 종료 노드 기준으로 range 복원
-        range.setStart(startNode, startOff);
-        range.setEnd(endNode, endOff);
-
-        const newNode = document.createElement("span");
-        newNode.setAttribute("class", "highlighter");
-        newNode.setAttribute("id", highlight.id);
-        newNode.style.backgroundColor = highlight.color;
-        range.surroundContents(newNode);
-
-        // newNode.addEventListener("click", () => deleteHighlight(newNode));
-        newNode.addEventListener("click", () => deleteHighlight(newNode));
+        if (highlight.type === 1) {
+          rehighlightText(highlight);
+        } else if (highlight.type === 2) {
+          rehighlightImage(highlight);
+        }
       }
     }
   );
 }
 
+function rehighlightText(highlight) {
+  const selection = highlight.selection;
+  const range = document.createRange();
+
+  // 시작 노드 복원
+  const startNode = document.evaluate(
+    selection.startXPath,
+    document,
+    null,
+    XPathResult.FIRST_ORDERED_NODE_TYPE,
+    null
+  ).singleNodeValue;
+  const startOff = Number(selection.startOffset);
+
+  // 종료 노드 복원
+  const endNode = document.evaluate(
+    selection.endXPath,
+    document,
+    null,
+    XPathResult.FIRST_ORDERED_NODE_TYPE,
+    null
+  ).singleNodeValue;
+  const endOff = Number(selection.endOffset);
+
+  // 복원한 시작노드, 종료 노드 기준으로 range 복원
+  range.setStart(startNode, startOff);
+  range.setEnd(endNode, endOff);
+
+  const newNode = document.createElement("span");
+  newNode.setAttribute("class", "highlighter");
+  newNode.setAttribute("id", highlight.id);
+  newNode.style.backgroundColor = highlight.color;
+  range.surroundContents(newNode);
+
+  newNode.addEventListener("click", () => deleteHighlight(newNode));
+}
+
+function rehighlightImage(highlight) {
+  const img = document.evaluate(
+    highlight.selection.XPath,
+    document,
+    null,
+    XPathResult.FIRST_ORDERED_NODE_TYPE,
+    null
+  ).singleNodeValue;
+
+  img.style.border = `8px solid ${highlight.color}`;
+}
+
 // function openHighlightMenu() {
 //   console.log("CLICKED!!!");
-// }
-
-// function redirectHome() {
-//   const is_production = false;
-//   window.location.href = is_production
-//     ? "https://highlighters.site"
-//     : "http://localhost:3000";
 // }
 
 function deleteHighlight(node) {
@@ -271,10 +282,6 @@ function deleteHighlight(node) {
   );
 }
 
-// function openHighlightMenu() {
-//   console.log("CLICKED!!!");
-// }
-
 // function redirectHome() {
 //   const is_production = false;
 //   window.location.href = is_production
@@ -282,71 +289,150 @@ function deleteHighlight(node) {
 //     : "http://localhost:3000";
 // }
 
+function makeButtonWhenMouseOnImage() {
+  const button = document.getElementById("btn_image_highlighters");
+  const images = document.querySelectorAll("img");
 
+  for (const image of images) {
+    const position = image.getBoundingClientRect();
 
-function onWindowReady() {
-  // 버튼 만들어 놓기
-  const body = document.querySelector("body");
+    if (position.height > 150 || position.width > 150) {
+      image.addEventListener("mouseover", () => {
+        button.style.top = position.top + 10 + "px";
+        button.style.left = position.left + 10 + "px";
+        button.style.transform = "rotate(270deg)";
+        button.style.zIndex = "2147483647";
+        button.style.display = "block";
+        button.style.position = "absolute";
 
-  let penButton = `<input id="btn_highlighters" type="image" src="https://cdn-icons-png.flaticon.com/512/3237/3237124.png"
-  height = "35" width="35">`;
+        button.addEventListener("click", () => highlightImage(image));
+        button.addEventListener(
+          "mouseover",
+          () => (button.style.display = "block")
+        );
+      });
 
-  body.innerHTML += penButton;
+      image.addEventListener("mouseout", () => {
+        button.style.display = "none";
+      });
+    }
+  }
+}
 
-  const button = document.getElementById("btn_highlighters");
+function highlightImage(image) {
+  const uri = window.location.href;
+  const decodeuri = decodeURI(uri);
+
+  image.style.border = `8px solid ${highlightColor.highlightColor}`;
+
+  const rangeObject = {
+    XPath: makeXPath(image),
+  };
+
+  console.log("rangeObject", rangeObject);
+
+  chrome.runtime.sendMessage(
+    {
+      greeting: "postHighlight",
+      data: {
+        url: decodeuri,
+        contents: image.src,
+        selection: rangeObject,
+        title: document.title,
+        image: document.querySelector("meta[property='og:image']").content,
+        description: document.querySelector("meta[property='og:description']")
+          .content,
+        color: highlightColor.highlightColor,
+        type: 2,
+      },
+    },
+    (response) => {
+      if (response.data.statusCode === 401) {
+        console.log(
+          "unauthorized error status code: ",
+          response.data.statusCode
+        );
+        showLoginModal();
+      } else {
+        console.log("Post Highlight Image Success", response.data);
+        highlights.push(response.data.data);
+      }
+    }
+  );
+}
+
+function makeButton(name) {
+  const button = document.createElement("input");
+  button.setAttribute("id", `btn_${name}_highlighters`);
+  button.setAttribute("type", "image");
+  button.setAttribute(
+    "src",
+    "https://cdn-icons-png.flaticon.com/512/3237/3237124.png"
+  );
+  button.style.height = "35px";
+  button.style.width = "35px";
   button.style.display = "none";
-  button.addEventListener("click", highlight);
+
+  return button;
+}
+
+async function onWindowReady() {
+  // 버튼 만들어 놓기
+  const html = document.querySelector("html");
+
+  const textPenButton = makeButton("text");
+  const imagePenButton = makeButton("image");
+
+  textPenButton.addEventListener("click", highlight);
+
+  html.appendChild(textPenButton);
+  html.appendChild(imagePenButton);
+
+  highlightColor = await chrome.storage.sync.get("highlightColor");
 
   // 하이라이트 가져오기
   const uri = window.location.href;
   const decodeuri = decodeURI(uri);
-  // console.log("gethighlight", uri);
   console.log("gethighlight: ", decodeuri);
-  getHighlight(decodeuri);
-}
 
-const url_check =
-  window.location.href !== `http://localhost:3000/` &&
-  window.location.href !== `https://highlighters.site/` &&
-  window.location.href !== `http://localhost:5555/`;
+  getHighlight(decodeuri);
+  makeButtonWhenMouseOnImage();
+}
 
 /* contentscript 시작 */
-if (url_check) {
-  window.onload = onWindowReady;
+window.onload = onWindowReady;
 
-  // 드래그하고 마우스를 떼면 selection 객체 생성
-  document.onmouseup = function (e) {
-    const button = document.getElementById("btn_highlighters");
-    const sel = document.getSelection();
+// 드래그하고 마우스를 떼면 selection 객체 생성
+document.onmouseup = function (e) {
+  const button = document.getElementById("btn_text_highlighters");
+  const sel = document.getSelection();
 
-    if (sel.isCollapsed || sel.toString() === highlightStr) {
-      button.style.display = "none";
-      return;
-    } //
-    else {
-      selectionText = sel;
-      highlightStr = sel.toString();
+  if (sel.isCollapsed || sel.toString() === highlightStr) {
+    button.style.display = "none";
+    return;
+  } //
+  else {
+    selectionText = sel;
+    highlightStr = sel.toString();
 
-      // 드래그한 영역의 위치를 가져온다.
-      const direction = sel.anchorOffset - sel.focusOffset < 0;
-      const divTop = direction ? e.pageY + 10 : e.pageY - 40;
-      const divLeft = direction ? e.pageX + 10 : e.pageX - 40;
-      button.style.transform = direction ? "rotate(90deg)" : "rotate(270deg)";
+    // 드래그한 영역의 위치를 가져온다.
+    const direction = sel.anchorOffset - sel.focusOffset < 0;
+    const divTop = direction ? e.pageY + 10 : e.pageY - 40;
+    const divLeft = direction ? e.pageX + 10 : e.pageX - 40;
+    button.style.transform = direction ? "rotate(90deg)" : "rotate(270deg)";
 
-      // 드래그한 영역의 위치에 레이어를 띄운다.
-      // 레이어의 위치를 변경하고 싶으면 위치값을 수정한다.
-      // 레이어가 화면을 벗어나면 안되므로 위치값을 수정한다.
+    // 드래그한 영역의 위치에 레이어를 띄운다.
+    // 레이어의 위치를 변경하고 싶으면 위치값을 수정한다.
+    // 레이어가 화면을 벗어나면 안되므로 위치값을 수정한다.
 
-      // 레이어 위치를 변경한다.
-      // let button = document.getElementById("btn_highlighters");
-      button.style.top = divTop + "px";
-      button.style.left = divLeft + "px";
-      button.style.position = "absolute";
-      button.style.display = "block";
-      button.style.zIndex = "2147483647";
-    }
-  };
-}
+    // 레이어 위치를 변경한다.
+    button.style.top = divTop + "px";
+    button.style.left = divLeft + "px";
+    button.style.position = "absolute";
+    button.style.display = "block";
+    button.style.zIndex = "2147483647";
+  }
+};
 
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   switch (request.greeting) {
@@ -355,7 +441,8 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
       sendResponse({
         title: document.title,
         image: document.querySelector("meta[property='og:image']").content,
-        description: document.querySelector("meta[property='og:description']").content,
+        description: document.querySelector("meta[property='og:description']")
+          .content,
       });
       break;
 

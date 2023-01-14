@@ -36,3 +36,5 @@ lerna-debug.log*
 
 # Test
 test.js
+
+/picture
