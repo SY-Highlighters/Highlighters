@@ -18,11 +18,11 @@ const AvailableFeeds = () => {
     if (isView && getNextPageIsPossible) {
       getNextPage();
     }
-
   }, [isView, getNextPage, getNextPageIsPossible]);
 
   return (
-    <div className="xl:ml-20 justify-self-center xl:w-3/6">
+    // <div className="xl:ml-20 justify-self-center xl:w-3/6">
+    <div className="basis-2/4">
       {/* 위에 여백 두고 그룹피드 타이틀 만들기 */}
       {/* 그룹 피드 타이틀 ver1*/}
       {/* <div className="relative p-3 rounded-3xl">
@@ -49,7 +49,7 @@ const AvailableFeeds = () => {
         </div>
       </div>
       {/* feedslist section */}
-      <div className="mt-5">
+      <div className="mt-5 rounded-md xl:overflow-y-scroll xl:h-5/6">
         <ul className="">
           {
             // 데이터를 불러오는데 성공하고 데이터가 0개가 아닐 때 렌더링
@@ -138,18 +138,6 @@ const AvailableFeeds = () => {
               </div>
             ))} */}
         </ul>
-      </div>
-      {/* {tagModal && <TagEditModal></TagEditModal>} */}
-      {/* 토글 버튼 느낌으로 댓글 기능 */}
-      <div className="fixed bottom-0 right-0 z-10">
-        <button
-          type="button"
-          className="inline-flex items-center px-4 py-2 text-sm font-medium text-white border border-transparent rounded-md shadow-sm bg-sky-500 hover:bg-sky-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-500"
-          // onClick={() => setTagModal(true)}
-        >
-          <MegaphoneIcon className="w-5 h-5 mr-2 -ml-1" aria-hidden="true" />
-          <span>피드 추가</span>
-        </button>
       </div>
     </div>
   );

@@ -46,7 +46,7 @@ const FeedItem = (props: any) => {
   // 하이라이트 파싱
   const highlights = props.highlight.map((hl: any, index: number) => (
     <li className="" key={index}>
-      <span style={{ backgroundColor: hl.color }}>{hl.contents}</span>
+      <span className="text-xs lg:text-base" style={{ backgroundColor: hl.color }}>{hl.contents}</span>
     </li>
   ));
 
@@ -70,10 +70,10 @@ const FeedItem = (props: any) => {
     // <li className="py-5">
     <div className="overflow-hidden bg-white rounded-lg shadow-lg">
       <div className="flex justify-between">
-        <div className="flex flex-row items-center px-3 mt-3 text-sm text-gray-500 ">
+        <div className="flex flex-row items-center px-3 mt-3 text-xs text-gray-500 xl:text-sm ">
           <Delete feedId={props.id}></Delete>
           <CalendarIcon
-            className="mr-1.5 h-5 w-5 flex-shrink-0 text-gray-400 "
+            className="mr-1.5 h-3 w-3 xl:h-5 xl:w-5 flex-shrink-0 text-gray-400 "
             aria-hidden="true"
           />
           {`${month}월 ${day}일, ${year}년 `}
@@ -82,7 +82,7 @@ const FeedItem = (props: any) => {
           <div className="text-xs">{props.writer}</div>
           <div>
             <img
-              className="object-cover w-5 h-5 ml-1"
+              className="object-cover w-5 h-5 ml-1 rounded-full border-circle "
               src={props.writerImg}
               alt="Flower and sky"
             />
@@ -92,7 +92,7 @@ const FeedItem = (props: any) => {
       <div className="m-5 sm:px-6">
         <a href={props.url} target="_blank" rel="noreferrer">
           <span>
-            <h2 className="mb-5 text-xl font-bold leading-6 text-gray-900 hover:text-gray-600">
+            <h2 className="mb-5 font-bold leading-6 text-gray-900 text-mg xl:text-xl hover:text-gray-600">
               {props.title}
             </h2>
           </span>
@@ -104,7 +104,7 @@ const FeedItem = (props: any) => {
 
         {/* 노션 북마크처럼 만들기 프로젝트 */}
         <div className="flex w-full mb-3 overflow-hidden rounded-lg shadow-lg w-50">
-          <div className="w-full sm:w-1/3">
+          <div className="w-1/4">
             <img
               className="object-cover w-full h-48"
               src={props.og_image}
@@ -123,7 +123,7 @@ const FeedItem = (props: any) => {
         {/* 태그 section */}
         <div className="flex flex-wrap mt-2">{tags}</div>
         {/* 태그 수정 section */}
-        <div className="flex items-center justify-between mt-4 text-sm text-gray-500 ">
+        <div className="flex items-center justify-between mt-4 ml-2 text-sm text-gray-500 ">
           <FeedTagEdit
             // key={props.key}
             tag={props.tag}
