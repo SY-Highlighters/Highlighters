@@ -12,7 +12,6 @@ import { UserModule } from './user/user.module';
 import { NotiModule } from './noti/noti.module';
 import { TagModule } from './tag/tag.module';
 import { BookmarkModule } from './bookmark/bookmark.module';
-import { CalendarModule } from './calendar/calendar.module';
 import { ElasticsearchService } from './repository/connection';
 import { CommentModule } from './comment/comment.module';
 import { SearchModule } from './search/search.module';
@@ -31,7 +30,6 @@ import { DownloadModule } from './download/download.module';
     NotiModule,
     TagModule,
     BookmarkModule,
-    CalendarModule,
     CommentModule,
     SearchModule,
     ApmModule.register(),
