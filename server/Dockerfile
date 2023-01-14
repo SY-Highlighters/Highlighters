@@ -4,8 +4,8 @@ WORKDIR /app
 COPY . .
 
 RUN npm install --silent
-RUN npx prisma db pull --silent
-RUN npx prisma generate --silent
+RUN npx prisma db pull
+RUN npx prisma generate
 RUN npm run build
 
 FROM node:19
