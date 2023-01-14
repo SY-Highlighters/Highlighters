@@ -16,7 +16,6 @@ import { ElasticsearchService } from './repository/connection';
 import { CommentModule } from './comment/comment.module';
 import { SearchModule } from './search/search.module';
 import { ApmModule } from 'nestjs-elastic-apm';
-import { DownloadModule } from './download/download.module';
 
 @Module({
   imports: [
@@ -33,7 +32,6 @@ import { DownloadModule } from './download/download.module';
     CommentModule,
     SearchModule,
     ApmModule.register(),
-    DownloadModule,
   ],
   controllers: [AppController],
   providers: [AppService, ElasticsearchService],
