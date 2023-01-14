@@ -1,454 +1,323 @@
-/* 코드시작 */
-let selectionText;
-let highlightStr = "null";
-let highlightColor;
-let highlights;
+const is_production = false;
 
-const modalOverlay = `width: 100%;
-            height: 100%;
-            position: absolute;
-            left: 0;
-            top: 0;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            background: rgba(0, 0, 0, 0.25);
-            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
-            backdrop-filter: blur(1.5px);
-            -webkit-backdrop-filter: blur(1.5px);
-            border-radius: 10px;
-            border: 1px solid rgba(255, 255, 255, 0.18);
-            z-index: 2147483647`;
+const cookie_url = is_production
+  ? "https://highlighters.site"
+  : "http://localhost:3000";
 
-const modalWindow = `background: rgba( 69, 139, 197, 0.70 );
-            box-shadow: 0 8px 32px 0 rgba( 31, 38, 135, 0.37 );
-            backdrop-filter: blur( 13.5px );
-            -webkit-backdrop-filter: blur( 13.5px );
-            border-radius: 10px;
-            border: 1px solid rgba( 255, 255, 255, 0.18 );
-            width: 400px;
-            height: 500px;
-            position: relative;
-            top: -100px;
-            padding: 10px;`;
+const host_url = is_production
+  ? "https://highlighters.site"
+  : "http://localhost:3001";
 
-const modalTitle = `padding-left: 10px;
-            display: inline;
-            text-shadow: 1px 1px 2px gray;
-            color: white;`;
+async function getCookieToken() {
+  const cookie = await new Promise((resolve) => {
+    chrome.cookies.get({ name: "logCookie", url: cookie_url }, (cookie) =>
+      resolve(cookie)
+    );
+  });
 
-const modalContent = `margin-top: 20px;
-            padding: 0px 10px;
-            text-shadow: 1px 1px 2px gray;
-            color: white;`;
-
-function highlight() {
-  const range = selectionText.getRangeAt(0);
-  postHighlight(range, highlightStr);
+  return cookie;
 }
 
-function makeXPath(node, currentPath) {
-  /* this should suffice in HTML documents for selectable nodes, XML with namespaces needs more code */
-  currentPath = currentPath || "";
-  switch (node.nodeType) {
-    case 3:
-    case 4:
-      return makeXPath(
-        node.parentNode,
-        "text()[" +
-          (document.evaluate(
-            "preceding-sibling::text()",
-            node,
-            null,
-            XPathResult.ORDERED_NODE_SNAPSHOT_TYPE,
-            null
-          ).snapshotLength +
-            1) +
-          "]"
-      );
-    case 1:
-      return makeXPath(
-        node.parentNode,
-        node.nodeName +
-          "[" +
-          (document.evaluate(
-            "preceding-sibling::" + node.nodeName,
-            node,
-            null,
-            XPathResult.ORDERED_NODE_SNAPSHOT_TYPE,
-            null
-          ).snapshotLength +
-            1) +
-          "]" +
-          (currentPath ? "/" + currentPath : "")
-      );
-    case 9:
-      return "/" + currentPath;
-    default:
-      return "";
-  }
+async function getHighlight(token, request) {
+  const response = await fetch(`${host_url}/api/highlight/feed`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify(request),
+  });
+
+  const data = await response.json();
+  return data;
 }
 
-function showLoginModal() {
-  // 펜 버튼 숨기기
-  const button = document.getElementById("btn_text_highlighters");
-  button.style.display = "none";
-
-  const body = document.querySelector("body");
-
-  // 모달 만들어서 띄우기
-  let loginModal = `<div id="modal" class="modal-overlay">
-        <div id="modal-window">
-            <div id="modal-title">
-                <h2 display: inline>로그인하세요</h2>
-            </div>
-            <div id="modal-close-area">X</div>
-            <div id="modal-content">
-                아이디<input type="text"><br>
-                패스워드<input type="password"><br>
-                <a id="modal-button"><br>
-            </div>
-        </div>
-    </div>`;
-
-  body.innerHTML += loginModal;
-
-  const modal = document.getElementById("modal");
-  modal.style.cssText = modalOverlay;
-
-  const modal_window = document.getElementById("modal-window");
-  modal_window.cssText = modalWindow;
-
-  const modal_title = document.getElementById("modal-title");
-  modal_title.cssText = modalTitle;
-
-  const modal_content = document.getElementById("modal-content");
-  modal_content.cssText = modalContent;
-
-  body.style.overflow = "hidden";
+async function getNoti(token) {
+  const response = await fetch(`${host_url}/api/noti/extension`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+  });
+  const data = await response.json();
+  console.log("bs getNoti", data);
+  return data;
 }
 
-async function highlightDone(range, id) {
-  const newNode = document.createElement("span");
-  newNode.setAttribute("class", `highlighter`);
-  newNode.setAttribute("id", id);
-  newNode.style.backgroundColor = highlightColor.highlightColor;
-  range.surroundContents(newNode);
-
-  // 펜 버튼 숨기기
-  const button = document.getElementById("btn_text_highlighters");
-  button.style.display = "none";
+async function getFeed(token, url) {
+  const response = await fetch(`${host_url}/api/feed/feed_url`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify(url),
+  });
+  const data = await response.json();
+  return data;
 }
 
-/* 하이라이트 Post */
-async function postHighlight(range, highlightStr) {
-  const uri = window.location.href;
-  const decodeuri = decodeURI(uri);
+async function getGroupTags(token) {
+  const response = await fetch(`${host_url}/api/tag/web`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+  });
+  const data = await response.json();
+  return data;
+}
 
-  const rangeobj = {
-    startXPath: makeXPath(range.startContainer),
-    startOffset: range.startOffset,
-    endXPath: makeXPath(range.endContainer),
-    endOffset: range.endOffset,
+async function postHighlight(token, request) {
+  const response = await fetch(`${host_url}/api/highlight/create`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify(request),
+  });
+  const data = await response.json();
+  return data;
+}
+
+async function postNoti(token, contents, url) {
+  const noti = {
+    url: url,
+    contents: contents,
   };
-
-  console.log("contentscript: posthighlight");
-
-  chrome.runtime.sendMessage(
-    {
-      greeting: "postHighlight",
-      data: {
-        url: decodeuri,
-        contents: highlightStr,
-        selection: rangeobj,
-        title: document.title,
-        image: document.querySelector("meta[property='og:image']").content,
-        description: document.querySelector("meta[property='og:description']")
-          .content,
-        color: highlightColor.highlightColor,
-        type: 1,
-      },
+  const response = fetch(`${host_url}/api/noti/create`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
     },
-    (response) => {
-      if (response.data.statusCode === 401) {
-        console.log(
-          "unauthorized error status code: ",
-          response.data.statusCode
-        );
-        showLoginModal();
-      } else {
-        console.log(response.data);
-        highlights.push(response.data.data);
-        highlightDone(range, response.data.data.id);
-      }
+    body: JSON.stringify(noti),
+  });
+  // console.log("postnoti: ", response);
+  // const data = response.json();
+  return response;
+}
+
+async function postFeed(token, contents) {
+  console.log(contents);
+  console.log(JSON.stringify(contents));
+  const response = fetch(`${host_url}/api/feed/create`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify(contents),
+  });
+  // console.log("postnoti: ", response);
+  // const data = response.json();
+  return response;
+}
+
+function createPush(id, title, msg) {
+  chrome.notifications.create(
+    id,
+    {
+      type: "basic",
+      iconUrl: "https://cdn-icons-png.flaticon.com/512/3237/3237124.png",
+      title: title,
+      message: msg,
+    },
+    (notificationId) => {
+      console.log(notificationId);
     }
   );
 }
 
-/* 하이라이트 Get */
-function getHighlight(url) {
-  chrome.runtime.sendMessage(
-    {
-      greeting: "getHighlight",
-      data: { url },
+async function isNewNotiCreate(token) {
+  const response = await fetch(`${host_url}/api/noti/push`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
     },
-    async (response) => {
-      const highlightsMeta = response.data;
-
-      highlights = highlightsMeta.data ? highlightsMeta.data : [];
-      console.log(highlights);
-
-      if (highlightsMeta.success === false) {
-        throw new Error(
-          `[${highlightsMeta.statusCode}] ${highlightsMeta.message}`
-        );
-      }
-
-      for (const highlight of highlights) {
-        if (highlight.type === 1) {
-          rehighlightText(highlight);
-        } else if (highlight.type === 2) {
-          rehighlightImage(highlight);
-        }
-      }
-    }
-  );
+  });
+  const data = await response.json();
+  return data;
 }
 
-function rehighlightText(highlight) {
-  const selection = highlight.selection;
-  const range = document.createRange();
-
-  // 시작 노드 복원
-  const startNode = document.evaluate(
-    selection.startXPath,
-    document,
-    null,
-    XPathResult.FIRST_ORDERED_NODE_TYPE,
-    null
-  ).singleNodeValue;
-  const startOff = Number(selection.startOffset);
-
-  // 종료 노드 복원
-  const endNode = document.evaluate(
-    selection.endXPath,
-    document,
-    null,
-    XPathResult.FIRST_ORDERED_NODE_TYPE,
-    null
-  ).singleNodeValue;
-  const endOff = Number(selection.endOffset);
-
-  // 복원한 시작노드, 종료 노드 기준으로 range 복원
-  range.setStart(startNode, startOff);
-  range.setEnd(endNode, endOff);
-
-  const newNode = document.createElement("span");
-  newNode.setAttribute("class", "highlighter");
-  newNode.setAttribute("id", highlight.id);
-  newNode.style.backgroundColor = highlight.color;
-  range.surroundContents(newNode);
-
-  newNode.addEventListener("click", () => deleteHighlight(newNode));
-}
-
-function rehighlightImage(highlight) {
-  const img = document.evaluate(
-    highlight.selection.XPath,
-    document,
-    null,
-    XPathResult.FIRST_ORDERED_NODE_TYPE,
-    null
-  ).singleNodeValue;
-
-  img.style.border = `8px solid ${highlight.color}`;
-}
-
-// function openHighlightMenu() {
-//   console.log("CLICKED!!!");
-// }
-
-function deleteHighlight(node) {
-  chrome.runtime.sendMessage(
-    {
-      greeting: "deleteHighlight",
-      data: { id: +node.id },
+async function changeNewNotiInUser(token) {
+  const response = await fetch(`${host_url}/api/noti/check`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
     },
-    (response) => {
-      console.log(response);
-      node.removeAttribute("style");
-    }
-  );
+  });
+  const data = await response.json();
+  return data;
 }
 
-// function redirectHome() {
-//   const is_production = false;
-//   window.location.href = is_production
-//     ? "https://highlighters.site"
-//     : "http://localhost:3000";
-// }
-
-function makeButtonWhenMouseOnImage() {
-  const button = document.getElementById("btn_image_highlighters");
-  const images = document.querySelectorAll("img");
-
-  for (const image of images) {
-    const position = image.getBoundingClientRect();
-
-    if (position.height > 150 || position.width > 150) {
-      image.addEventListener("mouseover", () => {
-        button.style.top = position.top + 10 + "px";
-        button.style.left = position.left + 10 + "px";
-        button.style.transform = "rotate(270deg)";
-        button.style.zIndex = "2147483647";
-        button.style.display = "block";
-        button.style.position = "absolute";
-
-        button.addEventListener("click", () => highlightImage(image));
-        button.addEventListener(
-          "mouseover",
-          () => (button.style.display = "block")
-        );
-      });
-
-      image.addEventListener("mouseout", () => {
-        button.style.display = "none";
-      });
-    }
+async function initHighlightColor() {
+  const data = await chrome.storage.sync.get("highlightColor");
+  if (data.highlightColor === undefined) {
+    chrome.storage.sync.set({ highlightColor: "#E9D5FF" });
   }
+
+  console.log("Init Highlight Complete");
 }
 
-function highlightImage(image) {
-  const uri = window.location.href;
-  const decodeuri = decodeURI(uri);
-
-  image.style.border = `8px solid ${highlightColor.highlightColor}`;
-
-  const rangeObject = {
-    XPath: makeXPath(image),
-  };
-
-  console.log("rangeObject", rangeObject);
-
-  chrome.runtime.sendMessage(
-    {
-      greeting: "postHighlight",
-      data: {
-        url: decodeuri,
-        contents: image.src,
-        selection: rangeObject,
-        title: document.title,
-        image: document.querySelector("meta[property='og:image']").content,
-        description: document.querySelector("meta[property='og:description']")
-          .content,
-        color: highlightColor.highlightColor,
-        type: 2,
-      },
+async function deleteHighlight(token, id) {
+  console.log("id", id);
+  const response = await fetch(`${host_url}/api/highlight/delete`, {
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
     },
-    (response) => {
-      if (response.data.statusCode === 401) {
-        console.log(
-          "unauthorized error status code: ",
-          response.data.statusCode
-        );
-        showLoginModal();
-      } else {
-        console.log("Post Highlight Image Success", response.data);
-        highlights.push(response.data.data);
+    body: JSON.stringify(id),
+  });
+  const data = await response.json();
+  return data;
+}
+
+/********************************************** 코드 시작 *********************************************************/
+async function BackgroundStart() {
+  await initHighlightColor();
+
+  chrome.alarms.create("checkNoti", {
+    periodInMinutes: 1 / 6,
+    when: Date.now(),
+  });
+
+  chrome.alarms.onAlarm.addListener(async (alarm) => {
+    if (alarm.name === "checkNoti") {
+      const cookie = await getCookieToken();
+      const token = cookie?.value;
+
+      const check = await isNewNotiCreate(token);
+
+      if (check.data) {
+        chrome.action.setBadgeText({ text: "new" });
+        chrome.action.setBadgeBackgroundColor({ color: "#0000FF" });
+        changeNewNotiInUser(token);
       }
     }
-  );
+  });
+
+  chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+    getCookieToken().then((cookie) => {
+      const token = cookie?.value;
+
+      switch (request.greeting) {
+        // 웹페이지의 하이라이팅을 디비로 전송
+        case "postHighlight":
+          console.log("bs: posthighlighåt");
+          postHighlight(token, request.data)
+            .then((data) => {
+              sendResponse({ data });
+              console.log(data);
+              createPush(
+                `${request.greeting}: ${data.id}`,
+                `${String(data.contents).substring(0, 30)}...`,
+                "하이라이트가 저장되었습니다"
+              );
+            })
+            .catch((error) => console.log(`fetch 실패: ${error}`));
+          break;
+
+        // 웹페이지의 모든 하이라이트를 가져옴
+        case "getHighlight":
+          console.log("bs: getHighlight");
+          getHighlight(token, request.data)
+            .then((data) => sendResponse({ data }))
+            .catch((error) => console.log(`fetch 실패: ${error}`));
+          break;
+
+        // 현재 탭의 url에 대한 노티 생성
+        case "postNoti":
+          console.log("bs: postNoti");
+          chrome.windows.getCurrent(function (win) {
+            chrome.tabs.query(
+              { windowId: win.id, active: true, lastFocusedWindow: true },
+              function (tabs) {
+                if (tabs.length !== "undefined" && tabs.length === 1) {
+                  const currentURL = decodeURI(tabs[0].url);
+                  postNoti(token, request.data, currentURL)
+                    .then((data) => sendResponse({ data }))
+                    .catch((error) => console.log(`fetch 실패: ${error}`));
+                }
+              }
+            );
+          });
+          break;
+
+        // 유저가 받은 노티 리스트 요청
+        case "getNoti":
+          chrome.action.setBadgeText({ text: "" });
+          getNoti(token)
+            .then((data) => sendResponse({ data }))
+            .catch((error) => console.log(`fetch 실패: ${error}`));
+          break;
+
+        // 현재 탭의 url에 대한 피드 정보 요청
+        case "getFeed":
+          chrome.windows.getCurrent(function (win) {
+            chrome.tabs.query(
+              { windowId: win.id, active: true },
+              function (tabs) {
+                if (tabs.length !== "undefined" && tabs.length === 1) {
+                  const currentURL = decodeURI(tabs[0].url);
+                  getFeed(token, { url: currentURL })
+                    .then((data) => sendResponse({ data }))
+                    .catch((error) => console.log(`fetch 실패: ${error}`));
+                }
+              }
+            );
+          });
+          break;
+
+        // 그룹의 태그 리스트 요청
+        case "getGroupTags":
+          getGroupTags(token)
+            .then((data) => sendResponse({ data }))
+            .catch((error) => console.log(`fetch 실패: ${error}`));
+          break;
+
+        case "postFeed":
+          postFeed(token, request.data)
+            .then((data) => sendResponse({ data }))
+            .catch((error) => console.log(`fetch 실패: ${error}`));
+          break;
+
+        case "deleteHighlight":
+          deleteHighlight(token, request.data)
+            .then((data) => {
+              sendResponse({ data });
+              console.log(data);
+            })
+            .catch((error) => console.log(`fetch 실패: ${error}`));
+          break;
+
+        case "postHighlightImage":
+          postHighlight(token, request.data)
+            .then((data) => {
+              sendResponse({ data });
+              console.log(data);
+              createPush(
+                `${request.greeting}: ${data.id}`,
+                `${String(data.contents).substring(0, 30)}...`,
+                "하이라이트가 저장되었습니다"
+              );
+            })
+            .catch((error) => console.log(`fetch 실패: ${error}`));
+          break;
+
+        default:
+          console.log(request, sender);
+          break;
+      }
+    });
+    return true;
+  });
 }
 
-function makeButton(name) {
-  const button = document.createElement("input");
-  button.setAttribute("id", `btn_${name}_highlighters`);
-  button.setAttribute("type", "image");
-  button.setAttribute(
-    "src",
-    "https://cdn-icons-png.flaticon.com/512/3237/3237124.png"
-  );
-  button.style.height = "35px";
-  button.style.width = "35px";
-  button.style.display = "none";
-
-  return button;
-}
-
-async function onWindowReady() {
-  // 버튼 만들어 놓기
-  const html = document.querySelector("html");
-
-  const textPenButton = makeButton("text");
-  const imagePenButton = makeButton("image");
-
-  textPenButton.addEventListener("click", highlight);
-
-  html.appendChild(textPenButton);
-  html.appendChild(imagePenButton);
-
-  highlightColor = await chrome.storage.sync.get("highlightColor");
-
-  // 하이라이트 가져오기
-  const uri = window.location.href;
-  const decodeuri = decodeURI(uri);
-  console.log("gethighlight: ", decodeuri);
-
-  getHighlight(decodeuri);
-  makeButtonWhenMouseOnImage();
-}
-
-/* contentscript 시작 */
-window.onload = onWindowReady;
-
-// 드래그하고 마우스를 떼면 selection 객체 생성
-document.onmouseup = function (e) {
-  const button = document.getElementById("btn_text_highlighters");
-  const sel = document.getSelection();
-
-  if (sel.isCollapsed || sel.toString() === highlightStr) {
-    button.style.display = "none";
-    return;
-  } //
-  else {
-    selectionText = sel;
-    highlightStr = sel.toString();
-
-    // 드래그한 영역의 위치를 가져온다.
-    const direction = sel.anchorOffset - sel.focusOffset < 0;
-    const divTop = direction ? e.pageY + 10 : e.pageY - 40;
-    const divLeft = direction ? e.pageX + 10 : e.pageX - 40;
-    button.style.transform = direction ? "rotate(90deg)" : "rotate(270deg)";
-
-    // 드래그한 영역의 위치에 레이어를 띄운다.
-    // 레이어의 위치를 변경하고 싶으면 위치값을 수정한다.
-    // 레이어가 화면을 벗어나면 안되므로 위치값을 수정한다.
-
-    // 레이어 위치를 변경한다.
-    button.style.top = divTop + "px";
-    button.style.left = divLeft + "px";
-    button.style.position = "absolute";
-    button.style.display = "block";
-    button.style.zIndex = "2147483647";
-  }
-};
-
-chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
-  switch (request.greeting) {
-    // 웹페이지의 하이라이팅을 디비로 전송
-    case "getOG":
-      sendResponse({
-        title: document.title,
-        image: document.querySelector("meta[property='og:image']").content,
-        description: document.querySelector("meta[property='og:description']")
-          .content,
-      });
-      break;
-
-    default:
-      console.log(request, sender);
-      break;
-  }
-  return true;
-});
+BackgroundStart();
