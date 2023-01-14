@@ -22,7 +22,7 @@ export class HighlightService {
   async createHighlight(
     createHighlightDto: CreateHighlightDto,
     user: User,
-  ): Promise<highlight> {
+  ): Promise<Highlight> {
     const {
       user_email,
       group_id,
