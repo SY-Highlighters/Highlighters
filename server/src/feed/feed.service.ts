@@ -72,7 +72,11 @@ export class FeedService {
         take: take,
         skip: take * (page - 1),
         include: {
-          highlight: true,
+          highlight: {
+            include: {
+              user: true,
+            },
+          },
           tag: true,
           og: true,
           user: {
