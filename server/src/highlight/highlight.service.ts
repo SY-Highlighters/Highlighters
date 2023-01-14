@@ -8,7 +8,7 @@ import { FeedService } from 'src/feed/feed.service';
 import { CreateFeedDto } from 'src/feed/dto/feed.dto';
 import { forwardRef } from '@nestjs/common/utils';
 import { Inject } from '@nestjs/common/decorators';
-import { fetchandsave } from 'src/util/fetch';
+import { fetchandsave, deleteS3 } from 'src/util/fetch';
 
 @Injectable()
 export class HighlightService {
@@ -161,7 +161,13 @@ export class HighlightService {
     return result;
   }
 
-  async deleteHighlight(id: number): Promise<Highlight> {
-    return this.prismaService.highlight.delete({ where: { id: id } });
+  async deleteHighlight(id: number): Promise<boolean> {
+    try {
+      await this.prismaService.highlight.delete({ where: { id: id } });
+      await deleteS3(id);
+      return true;
+    } catch (error) {
+      throw new HttpException('Internal Server Error', 500);
+    }
   }
 }
