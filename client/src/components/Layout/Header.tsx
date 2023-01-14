@@ -104,7 +104,7 @@ const Header: React.FC = () => {
         <Disclosure as="nav" className="bg-sky-600">
           {({ open }) => (
             <>
-              <div className="px-4 mx-auto max-w-7xl sm:px-6 lg:px-8">
+              <div className="px-4 mx-auto max-w-7xl sm:px-6 lg:px-8 ">
                 <div className="flex items-center justify-between h-16">
                   <div className="flex items-center">
                     {/* 네브 타이틀 */}

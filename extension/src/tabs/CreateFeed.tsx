@@ -37,7 +37,6 @@ export default function CreateFeed(this: any) {
         greeting: "getGroupTags",
       });
       const data = response.data.data;
-      console.log("CreateFeed: ", data);
       groupTagAdd(data);
     }
 
@@ -46,14 +45,13 @@ export default function CreateFeed(this: any) {
         { active: true, currentWindow: true },
         async function (tabs) {
           if (tabs[0].id !== undefined) {
-            console.log("hi", tabs[0].url);
             chrome.tabs.sendMessage(
               tabs[0].id,
               {
                 greeting: "getOG",
               },
               (response) => {
-                console.log("reponse", response);
+                console.log("[getInfo] reponse:", response);
                 setCurrentURL(tabs[0].url);
                 setOgDescription(response.description);
                 setOgimage(response.image);
@@ -91,7 +89,7 @@ export default function CreateFeed(this: any) {
 
   const newTagHandler = () => {
     // 서버에 api 요청
-    const newTag = tagInput ;
+    const newTag = tagInput;
 
     setTagInput("");
     feedTags.push(newTag);
@@ -136,10 +134,7 @@ export default function CreateFeed(this: any) {
 
   const groupTagList = groupTags.map((tag) => (
     <span>
-      <TagItem
-        onClick={() => this.feedTagAdd(tag)}
-        name={tag}
-      ></TagItem>
+      <TagItem onClick={() => this.feedTagAdd(tag)} name={tag}></TagItem>
     </span>
   ));
 

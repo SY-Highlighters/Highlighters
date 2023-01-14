@@ -150,14 +150,13 @@ export class FeedService {
     return result;
   }
 
-  async findFeedByUrl(url: JSON, user: User): Promise<Feed | null> {
-    const url_ = url['url'];
+  async findFeedByUrl(url: string, user: User): Promise<boolean> {
     const result = await this.prismaService.feed.findFirst({
       where: {
-        url: url_,
+        url: url,
         group_id: user.group_id,
       },
     });
-    return result;
+    return result ? true : false;
   }
 }

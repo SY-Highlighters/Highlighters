@@ -5,20 +5,16 @@ import { useEffect, useState } from "react";
 import Tabs from "./tabs/Tabs";
 
 export default function Popups() {
-  // const [activeTabIndex, setActiveTabIndex] = useState(0);
   const [loadComplete, setLoadComplete] = useState(false);
   const [feed, setFeed] = useState(null);
-  // let feedExist = true;
-  // const [feedExist, setFeedExist] = useState(0);
 
   useEffect(() => {
     async function getFeed() {
       let response = await chrome.runtime.sendMessage({
         greeting: "getFeed",
       });
-      console.log(response);
       const result = response.data.data;
-      console.log(result);
+      console.log("[getFeed] result: ", result);
       setFeed(result);
       setLoadComplete(true);
     }

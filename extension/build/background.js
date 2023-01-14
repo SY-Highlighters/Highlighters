@@ -235,19 +235,17 @@ async function BackgroundStart() {
         // 현재 탭의 url에 대한 노티 생성
         case "postNoti":
           console.log("bs: postNoti");
-          chrome.windows.getCurrent(function (win) {
-            chrome.tabs.query(
-              { windowId: win.id, active: true, lastFocusedWindow: true },
-              function (tabs) {
-                if (tabs.length !== "undefined" && tabs.length === 1) {
-                  const currentURL = decodeURI(tabs[0].url);
-                  postNoti(token, request.data, currentURL)
-                    .then((data) => sendResponse({ data }))
-                    .catch((error) => console.log(`fetch 실패: ${error}`));
-                }
+          chrome.tabs.query(
+            { active: true, currentWindow: true },
+            function (tabs) {
+              if (tabs.length !== "undefined" && tabs.length === 1) {
+                const currentURL = decodeURI(tabs[0].url);
+                postNoti(token, request.data, currentURL)
+                  .then((data) => sendResponse({ data }))
+                  .catch((error) => console.log(`fetch 실패: ${error}`));
               }
-            );
-          });
+            }
+          );
           break;
 
         // 유저가 받은 노티 리스트 요청
@@ -260,19 +258,17 @@ async function BackgroundStart() {
 
         // 현재 탭의 url에 대한 피드 정보 요청
         case "getFeed":
-          chrome.windows.getCurrent(function (win) {
-            chrome.tabs.query(
-              { windowId: win.id, active: true },
-              function (tabs) {
-                if (tabs.length !== "undefined" && tabs.length === 1) {
-                  const currentURL = decodeURI(tabs[0].url);
-                  getFeed(token, { url: currentURL })
-                    .then((data) => sendResponse({ data }))
-                    .catch((error) => console.log(`fetch 실패: ${error}`));
-                }
+          chrome.tabs.query(
+            { active: true, currentWindow: true },
+            function (tabs) {
+              if (tabs.length !== "undefined" && tabs.length === 1) {
+                const currentURL = decodeURI(tabs[0].url);
+                getFeed(token, { url: currentURL })
+                  .then((data) => sendResponse({ data }))
+                  .catch((error) => console.log(`fetch 실패: ${error}`));
               }
-            );
-          });
+            }
+          );
           break;
 
         // 그룹의 태그 리스트 요청

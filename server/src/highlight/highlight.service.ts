@@ -22,7 +22,7 @@ export class HighlightService {
   async createHighlight(
     createHighlightDto: CreateHighlightDto,
     user: User,
-  ): Promise<number> {
+  ): Promise<Highlight> {
     const {
       user_email,
       group_id,
@@ -82,7 +82,7 @@ export class HighlightService {
         });
         // type 2 사진 하이라이트
         // url에서 이미지를 fetch 이후 s3에 업로드
-        await fetchandsave(contents, result.id);
+        fetchandsave(contents, result.id);
         // s3 url을 db에 업데이트
         result = await this.prismaService.highlight.update({
           where: { id: result.id },
@@ -101,7 +101,7 @@ export class HighlightService {
         });
       }
 
-      return find_feed ? find_feed.id : make_feed.id;
+      return find_feed ? find_feed : make_feed;
     } catch (error) {
       throw new HttpException('Internal Server Error', 500);
     }
@@ -164,7 +164,7 @@ export class HighlightService {
   async deleteHighlight(id: number): Promise<boolean> {
     try {
       await this.prismaService.highlight.delete({ where: { id: id } });
-      await deleteS3(id);
+      deleteS3(id);
       return true;
     } catch (error) {
       throw new HttpException('Internal Server Error', 500);
