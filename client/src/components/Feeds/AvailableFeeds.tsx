@@ -1,84 +1,28 @@
 import FeedItem from "./FeedItem/FeedItem";
 import { useEffect, useState } from "react";
-// import { useRecoilState, useRecoilValue } from "recoil";
-// import {
-//   groupFeedListState,
-//   userInfoState,
-//   tagModalVisble,
-// } from "../../states/atom";
+
 import { useCookies } from "react-cookie";
-// import { useEffect } from "react";
 import axios from "axios";
 import { DocumentIcon, MegaphoneIcon } from "@heroicons/react/24/outline";
-// import { TagEditModal } from "../Tags/TagEditModal";
 import { QueryCache, useQuery, QueryClient, useQueryClient } from "react-query";
 import { useInView } from "react-intersection-observer";
 import { useInfiniteFeed } from "./useInfiniteFeed";
 const AvailableFeeds = () => {
-  const [cookies, setCookie, removeCookie] = useCookies(["logCookie"]);
   const { getBoard, getNextPage, getBoardIsSuccess, getNextPageIsPossible } =
     useInfiniteFeed();
   const [ref, isView] = useInView();
 
   useEffect(() => {
-    // 맨 마지막 요소를 보고있고 더이상 페이지가 존재하면
+    // 맨 마지막 요소를 보고있고 페이지가 존재하면
     // 다음 페이지 데이터를 가져옴
     if (isView && getNextPageIsPossible) {
       getNextPage();
     }
-  }, [isView, getBoard]);
-  // const { data: feedsInGroup, isSuccess } = useQuery(
-  //   "feedsInGroup",
-  //   async () => {
-  //     const response = await axios({
-  //       method: "get",
-  //       url: `${process.env.REACT_APP_HOST}/api/feed/group/${groupId}`,
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //         Authorization: `Bearer ${cookies.logCookie}`,
-  //       },
-  //     });
-  //     console.log(response.data.data);
-  //     return response.data.data;
-  //   },
-  //   {
-  //     enabled: groupId !== undefined,
-  //   }
-  // );
-  // const {
-  //   data: feedsInGroup,
-  //   hasNextPage,
-  //   fetchNextPage,
-  //   isFetchingNextPage,
-  // } = useInfiniteQuery(
-  //   "feedsInGroup",
-  //   async ({ pageParam = 1 }) => {
-  //     const response = await axios({
-  //       method: "get",
-  //       url: `${
-  //         process.env.REACT_APP_HOST
-  //       }/api/feed/sep/feed?page=${pageParam}&take=${5}`,
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //         Authorization: `Bearer ${cookies.logCookie}`,
-  //       },
-  //     });
-  //     console.log(response.data.data);
-  //     return response.data.data;
-  //   },
-  //   {
-  //     enabled: groupId !== undefined,
-  //     getNextPageParam: (lastPage: [], pages: []) => {
-  //       if (lastPage.length < 5) {
-  //         return undefined;
-  //       }
-  //       return pages.length;
-  //     },
-  //   }
-  // );
+
+  }, [isView, getNextPage, getNextPageIsPossible]);
 
   return (
-    <div className="overflow-auto basis-2/4">
+    <div className="xl:ml-20 justify-self-center xl:w-3/6">
       {/* 위에 여백 두고 그룹피드 타이틀 만들기 */}
       {/* 그룹 피드 타이틀 ver1*/}
       {/* <div className="relative p-3 rounded-3xl">
@@ -86,8 +30,9 @@ const AvailableFeeds = () => {
       </div> */}
       {/* 그룹 피드 타이틀 ver2 */}
       <div className="rounded-lg bg-sky-500">
+        {/* 메뉴바*/}
         <div className="px-3 py-3 mx-auto rounded-lg max-w-7xl">
-          <div className="flex flex-wrap items-center justify-between">
+          <div className="flex flex-wrap items-center ">
             <div className="flex items-center flex-1 w-0 ">
               <span className="flex p-2 mr-1 -ml-3 rounded-lg bg-sky-500">
                 <DocumentIcon
@@ -104,14 +49,13 @@ const AvailableFeeds = () => {
         </div>
       </div>
       {/* feedslist section */}
-      <div className="mt-5 ">
+      <div className="mt-5">
         <ul className="">
           {
             // 데이터를 불러오는데 성공하고 데이터가 0개가 아닐 때 렌더링
             getBoardIsSuccess && getBoard!.pages
               ? getBoard!.pages.map((page_data, page_num) => {
                   const board_page = page_data.board_page;
-                  console.log("피드 리스트", board_page, page_num);
                   return board_page.map((feed: any, idx: any) => {
                     if (
                       // 마지막 요소에 ref 달아주기
@@ -120,26 +64,29 @@ const AvailableFeeds = () => {
                     ) {
                       return (
                         // 마지막 요소에 ref 넣기 위해 div로 감싸기
-                        <div ref={ref} key={feed.board_id} className="mb-4">
-                          <FeedItem
-                            id={feed.id}
-                            key={feed.id}
-                            title={feed.title}
-                            description={feed.og.description}
-                            og_image={feed.og.image}
-                            url={feed.url}
-                            highlight={feed.highlight}
-                            date={feed.createdAt}
-                            tag={feed.tag}
-                            writer={feed.user.nickname}
-                            writerImg={feed.user.image}
-                            commentLen={feed.comment.length}
-                            bookmarked={
-                              feed.bookmark.length !== 0 ? true : false
-                            }
-                            bookmarkId={feed.bookmark[0]}
-                          />
-                        </div>
+                        <>
+                          <div ref={ref} />
+                          <div key={feed.board_id} className="mb-4">
+                            <FeedItem
+                              id={feed.id}
+                              key={feed.id}
+                              title={feed.title}
+                              description={feed.og.description}
+                              og_image={feed.og.image}
+                              url={feed.url}
+                              highlight={feed.highlight}
+                              date={feed.createdAt}
+                              tag={feed.tag}
+                              writer={feed.user.nickname}
+                              writerImg={feed.user.image}
+                              commentLen={feed.comment.length}
+                              bookmarked={
+                                feed.bookmark.length !== 0 ? true : false
+                              }
+                              bookmarkId={feed.bookmark[0]}
+                            />
+                          </div>
+                        </>
                       );
                     } else {
                       return (

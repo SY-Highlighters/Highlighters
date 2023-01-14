@@ -5,7 +5,7 @@ import { UserIcon } from "@heroicons/react/24/outline";
 const User = () => {
   //Todo: 후에 유저정보가 변경되었을때 useEffect함수가 작동해서 다시 유저정보를 리로드해야함
   return (
-    <div className="basis-1/4">
+    <div className="xl:w-1/5 xl:fixed xl:left-30">
       <aside className="grid grid-col-2">
         {/* ui ver1  */}
         <div className="mb-5 rounded-lg bg-sky-500">

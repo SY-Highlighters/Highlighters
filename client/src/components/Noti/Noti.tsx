@@ -51,10 +51,11 @@ export default function Noti() {
     </div>
   ));
   return (
-    <div className=" basis-1/4">
+    <div className="w-1/5 xl:fixed right-24 xl:overflow-auto ">
       <div className="rounded-lg bg-sky-500">
         <div className="px-3 py-3 mx-auto rounded-lg">
           <div className="flex flex-wrap items-center justify-between ">
+            {/* 알림 아이콘, 타이틀 */}
             <div className="flex items-center flex-1 w-0 -ml-2">
               <span className="flex mr-3 rounded-lg bg-sky-500">
                 <MegaphoneIcon
@@ -81,10 +82,10 @@ export default function Noti() {
         </div>
       </div>
       {/* 아래로 긴 카드박스 */}
-      <div className="bg-white rounded-lg shadow-lg erflow-hidden">
+      <div className="bg-white rounded-lg shadow-lg ">
         <div className="flex flex-col m-5">
           {/* 카드박스 내용 */}
-          <ul>{notiList}</ul>
+          <ul className="overflow-y-scroll ">{notiList}</ul>
           {/* 카드박스 내용 1 */}
         </div>
       </div>
