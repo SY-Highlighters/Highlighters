@@ -22,7 +22,7 @@ export class HighlightService {
   async createHighlight(
     createHighlightDto: CreateHighlightDto,
     user: User,
-  ): Promise<number> {
+  ): Promise<highlight> {
     const {
       user_email,
       group_id,
@@ -101,7 +101,7 @@ export class HighlightService {
         });
       }
 
-      return find_feed ? find_feed.id : make_feed.id;
+      return find_feed ? find_feed : make_feed;
     } catch (error) {
       throw new HttpException('Internal Server Error', 500);
     }
