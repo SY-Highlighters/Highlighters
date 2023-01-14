@@ -50,7 +50,7 @@ const AvailableFeeds = () => {
       </div>
       {/* feedslist section */}
       <div className="mt-5 rounded-md shadow-lg xl:overflow-y-auto xl:scrollbar-hide xl:h-full">
-        <ul className="">
+        <ul className="space-y-4 ">
           {
             // 데이터를 불러오는데 성공하고 데이터가 0개가 아닐 때 렌더링
             getBoardIsSuccess && getBoard!.pages
@@ -64,33 +64,30 @@ const AvailableFeeds = () => {
                     ) {
                       return (
                         // 마지막 요소에 ref 넣기 위해 div로 감싸기
-                        <>
-                          <div ref={ref} />
-                          <div key={feed.board_id} className="mb-4">
-                            <FeedItem
-                              id={feed.id}
-                              key={feed.id}
-                              title={feed.title}
-                              description={feed.og.description}
-                              og_image={feed.og.image}
-                              url={feed.url}
-                              highlight={feed.highlight}
-                              date={feed.createdAt}
-                              tag={feed.tag}
-                              writer={feed.user.nickname}
-                              writerImg={feed.user.image}
-                              commentLen={feed.comment.length}
-                              bookmarked={
-                                feed.bookmark.length !== 0 ? true : false
-                              }
-                              bookmarkId={feed.bookmark[0]}
-                            />
-                          </div>
-                        </>
+                        <div ref={ref} key={feed.id} className="">
+                          <FeedItem
+                            id={feed.id}
+                            key={feed.id}
+                            title={feed.title}
+                            description={feed.og.description}
+                            og_image={feed.og.image}
+                            url={feed.url}
+                            highlight={feed.highlight}
+                            date={feed.createdAt}
+                            tag={feed.tag}
+                            writer={feed.user.nickname}
+                            writerImg={feed.user.image}
+                            commentLen={feed.comment.length}
+                            bookmarked={
+                              feed.bookmark.length !== 0 ? true : false
+                            }
+                            bookmarkId={feed.bookmark[0]}
+                          />
+                        </div>
                       );
                     } else {
                       return (
-                        <div key={feed.board_id} className="mb-4">
+                        <div key={feed.id} className="">
                           <FeedItem
                             id={feed.id}
                             key={feed.id}

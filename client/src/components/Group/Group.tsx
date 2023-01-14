@@ -1,11 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useRecoilState, useRecoilValue } from "recoil";
-import {
-  groupAddState,
-  groupJoinState,
-  groupModalVisble,
-  userInfoState,
-} from "../../states/atom";
+import { groupModalVisble, userInfoState } from "../../states/atom";
 // import GroupJoined from "./GroupJoined";
 import GroupModal from "./Modal/GroupModal";
 import GroupNotJoined from "./GroupNotJoined";
@@ -16,7 +11,6 @@ const GroupJoined = React.lazy(async () => import("./GroupJoined"));
 export default function Group() {
   const [groupModal, setGroupModal] = useRecoilState(groupModalVisble);
   const userData = useRecoilValue(userInfoState);
-  const [localUser, setLocalUser] = useState(userData);
   const [cookies, setCookie, removeCookie] = useCookies(["logCookie"]);
 
   // useEffect(() => {
@@ -41,7 +35,6 @@ export default function Group() {
             },
           }
         );
-        console.log("서버에서 가져옴");
         return res.data;
       } catch (err) {
         console.error(err);

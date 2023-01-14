@@ -17,9 +17,13 @@ import Swal from "sweetalert2";
 import { ArrowRightCircleIcon } from "@heroicons/react/24/outline";
 import GroupTag from "../User/GroupTag";
 import { GrouptagList } from "../User/GroupTagList";
+import { optionModalToggleState } from "../../states/atom";
 export function OptionModal(props: any) {
   const setTagModal = useSetRecoilState(tagModalVisble);
   const currentFeedId = useRecoilValue(currentFeedIdState);
+  const [optionModalToggle, setOptionModalToggle] = useRecoilState(
+    optionModalToggleState
+  );
   // 그룹 태그 리스트 전역
   const [cookies, setCookie, removeCookie] = useCookies(["logCookie"]);
   const [inputValue, setInputValue] = useState("");
@@ -28,8 +32,9 @@ export function OptionModal(props: any) {
   const resetTagsInFeedState = useResetRecoilState(tagsInFeedState);
 
   const closeModal = () => {
-    setTagModal(0);
+    setOptionModalToggle(!optionModalToggle);
     resetTagsInFeedState();
+    window.location.reload();
   };
   // const [userData, setUserInfo] = useRecoilState(userInfo); test1 -> 현재 로그인시 유저데이터 받는중
 
@@ -124,6 +129,7 @@ export function OptionModal(props: any) {
             </h1>
           </div>
           {/* 파일 업로드 */}
+          
         </div>
       </div>
     </div>
