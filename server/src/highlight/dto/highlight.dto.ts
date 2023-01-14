@@ -28,6 +28,8 @@ export class CreateHighlightDto {
   description: string;
 
   color: string;
+
+  type?: number;
 }
 
 export class UpdateHighlightDto extends PartialType(CreateHighlightDto) {}
