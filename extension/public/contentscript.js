@@ -289,7 +289,9 @@ function deleteHighlight(node) {
 //     : "http://localhost:3000";
 // }
 
-function makeButtonWhenMouseOnImage() {
+let selectedImage = null;
+
+function makeEventOnImage() {
   const button = document.getElementById("btn_image_highlighters");
   const images = document.querySelectorAll("img");
 
@@ -297,19 +299,17 @@ function makeButtonWhenMouseOnImage() {
     const position = image.getBoundingClientRect();
 
     if (position.height > 150 || position.width > 150) {
-      image.addEventListener("mouseover", () => {
-        button.style.top = position.top + 10 + "px";
-        button.style.left = position.left + 10 + "px";
+      // eslint-disable-next-line no-loop-func
+      image.addEventListener("click", (e) => {
+        button.style.top = e.pageY - 17 + "px";
+        button.style.left = e.pageX - 17 + "px";
         button.style.transform = "rotate(270deg)";
         button.style.zIndex = "2147483647";
         button.style.display = "block";
         button.style.position = "absolute";
 
-        button.addEventListener("click", () => highlightImage(image));
-        button.addEventListener(
-          "mouseover",
-          () => (button.style.display = "block")
-        );
+        selectedImage = image;
+        console.log("selectedImage", selectedImage);
       });
 
       image.addEventListener("mouseout", () => {
@@ -319,14 +319,14 @@ function makeButtonWhenMouseOnImage() {
   }
 }
 
-function highlightImage(image) {
+function highlightImage() {
   const uri = window.location.href;
   const decodeuri = decodeURI(uri);
 
-  image.style.border = `8px solid ${highlightColor.highlightColor}`;
+  selectedImage.style.border = `8px solid ${highlightColor.highlightColor}`;
 
   const rangeObject = {
-    XPath: makeXPath(image),
+    XPath: makeXPath(selectedImage),
   };
 
   console.log("rangeObject", rangeObject);
@@ -336,7 +336,7 @@ function highlightImage(image) {
       greeting: "postHighlight",
       data: {
         url: decodeuri,
-        contents: image.src,
+        contents: selectedImage.src,
         selection: rangeObject,
         title: document.title,
         image: document.querySelector("meta[property='og:image']").content,
@@ -384,6 +384,10 @@ async function onWindowReady() {
   const imagePenButton = makeButton("image");
 
   textPenButton.addEventListener("click", highlight);
+  imagePenButton.addEventListener("click", highlightImage);
+  imagePenButton.addEventListener("mouseover", () => {
+    imagePenButton.style.display = "block";
+  });
 
   html.appendChild(textPenButton);
   html.appendChild(imagePenButton);
@@ -396,7 +400,7 @@ async function onWindowReady() {
   console.log("gethighlight: ", decodeuri);
 
   getHighlight(decodeuri);
-  makeButtonWhenMouseOnImage();
+  makeEventOnImage();
 }
 
 /* contentscript 시작 */
