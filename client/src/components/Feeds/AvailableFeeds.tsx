@@ -49,7 +49,7 @@ const AvailableFeeds = () => {
         </div>
       </div>
       {/* feedslist section */}
-      <div className="mt-5 rounded-md xl:overflow-y-scroll xl:h-5/6">
+      <div className="mt-5 rounded-md xl:overflow-y-auto xl:h-5/6">
         <ul className="">
           {
             // 데이터를 불러오는데 성공하고 데이터가 0개가 아닐 때 렌더링
