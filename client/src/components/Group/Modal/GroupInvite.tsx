@@ -60,10 +60,10 @@ export default function GroupInvite() {
             참여코드
           </label>
         </div>
-        <div>
+        <div className="cursor-pointer ">
           <span
             onClick={() => handleCopyClipBoard(code)}
-            className="flex p-2 rounded-lg bg-sky-500 hover:bg-sky-700"
+            className="flex p-2 rounded-lg bg-sky-500 hover:bg-sky-400 hover:scale-95"
           >
             <ClipboardDocumentCheckIcon
               className="w-5 h-5 m-2 text-white"

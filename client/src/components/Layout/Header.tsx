@@ -213,7 +213,7 @@ export default function Header() {
           </div>
         </div>
       )}
-      {optionModalToggle && <OptionModal></OptionModal>}
+      {optionModalToggle && <OptionModal userImg={user.image}></OptionModal>}
       {/* 모바일 메뉴 */}
       {/* <div onClick={setNavbarOpen}>
         <ListBulletIcon className="absolute block text-white cursor-pointer h-7 right-2 top-3 hover:opacity-75 lg:hidden"></ListBulletIcon>

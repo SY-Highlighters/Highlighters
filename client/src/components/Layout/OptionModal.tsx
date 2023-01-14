@@ -128,8 +128,37 @@ export function OptionModal(props: any) {
               설정
             </h1>
           </div>
-          {/* 파일 업로드 */}
-          
+          <div className="flex flex-col m-3 space-y-3">
+            <div className="flex justify-center">
+              <h1 className="text-xl font-bold text-center text-sky-500">
+                프로필
+              </h1>
+            </div>
+            {/* 사진 */}
+            <div className="flex flex-col items-center justify-center">
+              <div className="relative">
+                <img
+                  className="object-cover w-20 h-20 mx-auto rounded-full shadow"
+                  src={props.userImg}
+                  alt="avatar"
+                />
+                {/* 이미지 밑에 수정버튼 */}
+                <div className="absolute bottom-0 right-0 p-1 m-1 bg-white rounded-full shadow">
+                  <svg
+                    className="w-5 h-5 text-gray-400 transition duration-150 transform rounded-full hover:text-gray-600 hover:scale-110"
+                    fill="currentColor"
+                    viewBox="0 0 20 20"
+                  >
+                    <path
+                      fillRule="evenodd"
+                      d="M8 5a3 3 0 100 6 3 3 0 000-6zm0 1a2 2 0 110 4 2 2 0 010-4zm8 2a3 3 0 11-6 0 3 3 0 016 0zm-1 0a2 2 0 10-4 0 2 2 0 004 0zm-8 8a3 3 0 100-6 3 3 0 000 6zm0-1a2 2 0 110-4 2 2 0 010 4zm8 0a3 3 0 100-6 3 3 0 000 6zm0-1a2 2 0 110-4 2 2 0 010 4z"
+                      clipRule="evenodd"
+                    ></path>
+                  </svg>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
