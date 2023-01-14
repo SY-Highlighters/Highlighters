@@ -46,7 +46,12 @@ const FeedItem = (props: any) => {
   // 하이라이트 파싱
   const highlights = props.highlight.map((hl: any, index: number) => (
     <li className="" key={index}>
-      <span className="text-xs lg:text-base" style={{ backgroundColor: hl.color }}>{hl.contents}</span>
+      <span
+        className="text-xs lg:text-base"
+        style={{ backgroundColor: hl.color }}
+      >
+        {hl.contents}
+      </span>
     </li>
   ));
 

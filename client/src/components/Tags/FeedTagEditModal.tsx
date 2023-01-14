@@ -31,6 +31,7 @@ export function FeedTagEditModal(props: any) {
   const closeModal = () => {
     setTagModal(0);
     resetTagsInFeedState();
+    window.location.reload();
   };
   // const [userData, setUserInfo] = useRecoilState(userInfo); test1 -> 현재 로그인시 유저데이터 받는중
 
@@ -42,11 +43,29 @@ export function FeedTagEditModal(props: any) {
   //   ));
 
   const handleChange = (e: any) => {
-    console.log(e.target.value);
     setInputValue(e.target.value);
   };
 
+  // 엔터 입력시 태그 추가
+  const handleKeyPress = (e: any) => {
+    if (e.key === "Enter") {
+      tagAddHandler();
+    }
+  };
+
   const tagAddHandler = async () => {
+    // 태그 중복 체크
+    for (let i = 0; i < tagList.length; i++) {
+      if (tagList[i].tag_name === inputValue) {
+        Swal.fire({
+          icon: "error",
+          title: "태그 중복",
+          text: "이미 존재하는 태그입니다.",
+        });
+        return;
+      }
+    }
+
     const host_url = `${process.env.REACT_APP_HOST}/api/tag/create`;
     await axios
       .post(
@@ -74,6 +93,7 @@ export function FeedTagEditModal(props: any) {
           };
           console.log(response);
           setTagList([...tagList, newTagItem]);
+          setInputValue("");
         } else {
           alert("태그 생성 실패!");
         }
@@ -143,9 +163,11 @@ export function FeedTagEditModal(props: any) {
                 <div className="flex flex-row items-center justify-between w-full px-4 py-2 text-gray-700 bg-white border border-gray-300 rounded-lg focus:outline-none focus:border-gray-400">
                   <input
                     onChange={handleChange}
+                    onKeyDown={handleKeyPress}
                     type="text"
                     className="w-full px-4 py-2 text-gray-700 bg-white border border-gray-300 rounded-lg focus:outline-none focus:border-gray-400"
                     placeholder="태그를 입력하세요"
+                    value={inputValue}
                   />
                   <div>
                     <button onClick={tagAddHandler} className="">

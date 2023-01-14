@@ -13,6 +13,7 @@ export function CommentItem(props: any) {
   const day = date.getDate();
   const hours = date.getHours();
   const min = date.getMinutes();
+  console.log(props.writer, props.userId);
   return (
     <div className="flex flex-col mt-7">
       <div className="flex flex-row">
@@ -32,7 +33,7 @@ export function CommentItem(props: any) {
                 <div className="text-xs text-gray-500">좋아요</div>
                 <div className="ml-2 text-xs text-gray-500">답글</div>
               </div> */}
-          {props.userId === props.writerId && (
+          {props.userId === props.writer && (
             <div className="-mt-1">
               <button className="text-xs text-gray-500 hover:text-gray-600">
                 수정

@@ -3,40 +3,27 @@ import {
   ListBulletIcon,
   MagnifyingGlassCircleIcon,
 } from "@heroicons/react/24/outline";
-import { Fragment } from "react";
-import { Disclosure, Menu, Transition } from "@headlessui/react";
-import {
-  Bars3Icon,
-  BellIcon,
-  XMarkIcon,
-  HomeIcon,
-} from "@heroicons/react/24/outline";
-import {
-  useRecoilState,
-  useRecoilValue,
-  useResetRecoilState,
-  useSetRecoilState,
-} from "recoil";
-import { mainSectionState } from "../../states/atom";
+import { Fragment, useState } from "react";
+import { HomeIcon } from "@heroicons/react/24/outline";
+import { useRecoilState } from "recoil";
+import { mainSectionState, optionModalToggleState } from "../../states/atom";
 import { useCookies } from "react-cookie";
-import { userInfoState } from "../../states/atom";
 import axios from "axios";
 import { useQuery } from "react-query";
 import React from "react";
+import { OptionModal } from "./OptionModal";
 
 export default function Header() {
   const [navbarOpen, setNavbarOpen] = React.useState(false);
   // const [bookmark, setBookmark] = useRecoilState(bookmarkState);
   const [mainSectionNum, setMainSectionNum] = useRecoilState(mainSectionState);
   const [cookies, setCookie, removeCookie] = useCookies(["logCookie"]);
+  const [optionModalToggle, setOptionModalToggle] = useRecoilState(
+    optionModalToggleState
+  );
   // const resetFeeds = useResetRecoilState(groupFeedListState);
   // react-query 사용 시 server state
-  const {
-    data: user,
-    isSuccess,
-    isLoading,
-    error,
-  } = useQuery(
+  const { data: user, isSuccess } = useQuery(
     ["user"],
     async () => {
       try {
@@ -49,7 +36,6 @@ export default function Header() {
             },
           }
         );
-        console.log(res.data);
         return res.data;
       } catch (err) {
         console.error(err);
@@ -85,8 +71,10 @@ export default function Header() {
     window.location.reload();
   };
   const userMenuClicked = () => {
-    console.log("user menu clicked");
     setNavbarOpen(!navbarOpen);
+  };
+  const optionClicked = () => {
+    setOptionModalToggle(!optionModalToggle);
   };
   return (
     <>
@@ -208,7 +196,10 @@ export default function Header() {
           <div className="relative">
             <div className="absolute right-0 z-10 w-56 mt-4 origin-top-right bg-white border rounded-md shadow-lg">
               <div className="p-2">
-                <span className="block px-4 py-2 text-sm text-gray-500 rounded-lg cursor-pointer hover:bg-gray-50 hover:text-gray-700">
+                <span
+                  onClick={optionClicked}
+                  className="block px-4 py-2 text-sm text-gray-500 rounded-lg cursor-pointer hover:bg-gray-50 hover:text-gray-700"
+                >
                   설정
                 </span>
                 <span
@@ -222,7 +213,7 @@ export default function Header() {
           </div>
         </div>
       )}
-
+      {optionModalToggle && <OptionModal userImg={user.image}></OptionModal>}
       {/* 모바일 메뉴 */}
       {/* <div onClick={setNavbarOpen}>
         <ListBulletIcon className="absolute block text-white cursor-pointer h-7 right-2 top-3 hover:opacity-75 lg:hidden"></ListBulletIcon>

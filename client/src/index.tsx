@@ -14,7 +14,7 @@ const queryClient = new QueryClient({
       console.log("onError", error);
     },
     onSuccess: (data) => {
-      console.log("onSuccess", data);
+      console.log("캐싱된 데이터", data);
     },
   }),
 });

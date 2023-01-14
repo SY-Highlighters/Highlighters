@@ -19,7 +19,6 @@ export default function Noti() {
           Authorization: `Bearer ${cookies.logCookie}`,
         },
       });
-      console.log(res.data.data);
       notiAdd(res.data.data);
     }
     notiGet();
@@ -52,7 +51,7 @@ export default function Noti() {
   ));
   return (
     // <div className="w-1/5 xl:fixed right-24 xl:overflow-auto ">
-    <div className="pr-16 basis-1/4">
+    <div className="hidden pr-16 basis-1/4 xl:block">
       <div className="rounded-lg bg-sky-500">
         <div className="px-3 py-3 mx-auto rounded-lg">
           <div className="flex flex-wrap items-center justify-between ">
