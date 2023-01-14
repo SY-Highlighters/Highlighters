@@ -87,7 +87,7 @@ export function Comment(props: any) {
             writer={commentItem.nickname}
             date={commentItem.createdAt}
             profileImg={commentItem.profile_image}
-            userId={user.id}
+            userId={user.nickname}
           ></CommentItem>
         ))}
       </ul>

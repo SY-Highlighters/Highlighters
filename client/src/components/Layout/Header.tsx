@@ -23,6 +23,7 @@ import { userInfoState } from "../../states/atom";
 import axios from "axios";
 import { useQuery } from "react-query";
 import React from "react";
+import { OptionModal } from "./OptionModal";
 
 export default function Header() {
   const [navbarOpen, setNavbarOpen] = React.useState(false);
@@ -222,7 +223,7 @@ export default function Header() {
           </div>
         </div>
       )}
-
+      {/* <OptionModal></OptionModal> */}
       {/* 모바일 메뉴 */}
       {/* <div onClick={setNavbarOpen}>
         <ListBulletIcon className="absolute block text-white cursor-pointer h-7 right-2 top-3 hover:opacity-75 lg:hidden"></ListBulletIcon>

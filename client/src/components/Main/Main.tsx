@@ -78,8 +78,8 @@ export function Main() {
   return (
     <Fragment>
       {/* <div className="flex-1 mt-5 overflow-y-auto xl:grid-row xl:grid"> */}
-      <div className="box-border h-screen gap-3 p-5 pb-5 xl:px-20 xl:overflow-y-auto xl:flex-row xl:flex">
-      {/* <div className="box-border p-5 px-20 overflow-x-hidden overflow-y-auto xl:flex-row xl:flex"> */}
+      <div className="box-border h-full gap-3 p-5 pb-5 overflow-hidden xl:px-20 xl:flex-row xl:flex">
+        {/* <div className="box-border p-5 px-20 overflow-x-hidden overflow-y-auto xl:flex-row xl:flex"> */}
         <User></User>
         {isSuccess && user.group_id && MainSection(mainSectionNum)}
         {isSuccess && user.group_id && <Noti></Noti>}
