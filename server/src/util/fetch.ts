@@ -37,3 +37,34 @@ export function fetchandsave(imageUrl, fileName): Promise<string> {
     });
   });
 }
+
+export function deleteS3(id): Promise<boolean> {
+  try {
+    const AWS = require('aws-sdk');
+
+    const s3 = new AWS.S3({
+      credentials: {
+        accessKeyId: process.env.S3_ACCESS_KEY_ID,
+        secretAccessKey: process.env.S3_SECRET_ACCESS_KEY,
+      },
+      region: 'ap-northeast-2',
+    });
+
+    s3.deleteObject(
+      {
+        Bucket: 'highlighters-s3',
+        Key: `picture/${id}.jpg`,
+      },
+      (err, data) => {
+        if (err) {
+          console.log(err);
+        } else {
+          console.log(data);
+        }
+      },
+    );
+    return Promise.resolve(true);
+  } catch (error) {
+    return Promise.resolve(false);
+  }
+}
