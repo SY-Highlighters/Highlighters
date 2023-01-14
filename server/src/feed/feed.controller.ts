@@ -28,9 +28,9 @@ export class FeedController {
   @ApiOperation({ summary: 'URL로 Feed 찾기' })
   @Post('/feed_url')
   async findFeedByUrl(
-    @Body() feed_url: JSON,
+    @Body() feed_url: string,
     @GetUser() user: User,
-  ): Promise<Feed | null> {
+  ): Promise<boolean> {
     return this.feedService.findFeedByUrl(feed_url, user);
   }
 
