@@ -12,12 +12,13 @@ import axios from "axios";
 import { useQuery } from "react-query";
 import React from "react";
 import { OptionModal } from "./OptionModal";
-
+import { useQueryClient } from "react-query";
 export default function Header() {
   const [navbarOpen, setNavbarOpen] = React.useState(false);
   // const [bookmark, setBookmark] = useRecoilState(bookmarkState);
   const [mainSectionNum, setMainSectionNum] = useRecoilState(mainSectionState);
   const [cookies, setCookie, removeCookie] = useCookies(["logCookie"]);
+  const queryClient = useQueryClient();
   const [optionModalToggle, setOptionModalToggle] = useRecoilState(
     optionModalToggleState
   );
@@ -62,8 +63,10 @@ export default function Header() {
       setMainSectionNum(1);
     }
   };
-  const logout = () => {
+  const logout = async () => {
     // resetFeeds();
+    // 쿼리 삭제
+    queryClient.removeQueries();
     removeCookie("logCookie");
   };
   // 메인 로고 눌렀을때 새로고침
