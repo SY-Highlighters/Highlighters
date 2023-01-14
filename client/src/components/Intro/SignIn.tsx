@@ -121,7 +121,7 @@ export default function SignIn() {
               </button>
             </div>
           </form>
-          <div className="justify-center">
+          <div className="justify-center mt-1">
             <GoogleLoginButton></GoogleLoginButton>
           </div>
           <p className="mt-8 text-xs font-light text-center text-gray-700">

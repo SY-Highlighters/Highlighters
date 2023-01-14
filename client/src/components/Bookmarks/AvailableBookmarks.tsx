@@ -33,7 +33,7 @@ export function AvailableBookmarks() {
   );
 
   return (
-    <div className="h-12 overscroll-auto basis-2/4">
+    <div className="basis-2/4">
       <div className="rounded-lg bg-sky-500">
         <div className="px-3 py-3 mx-auto rounded-lg max-w-7xl sm:px-6 lg:px-8">
           <div className="flex flex-wrap ustify-between s-center">
@@ -51,7 +51,7 @@ export function AvailableBookmarks() {
           </div>
         </div>
       </div>
-      <div className="mt-5">
+      <div className="mt-5 rounded-md xl:overflow-y-scroll xl:h-5/6">
         <ul className="">
           {isSuccess &&
             feedsBookmark &&

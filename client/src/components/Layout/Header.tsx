@@ -224,7 +224,9 @@ export default function Header() {
       )}
 
       {/* 모바일 메뉴 */}
-      <ListBulletIcon onClick={setNavbarOpen} className="absolute block text-white cursor-pointer h-7 right-2 top-3 hover:opacity-75 lg:hidden"></ListBulletIcon>
+      {/* <div onClick={setNavbarOpen}>
+        <ListBulletIcon className="absolute block text-white cursor-pointer h-7 right-2 top-3 hover:opacity-75 lg:hidden"></ListBulletIcon>
+      </div> */}
     </>
   );
 }

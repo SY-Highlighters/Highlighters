@@ -91,7 +91,7 @@ const AvailableTags = () => {
   //   </div>
   // ));
   return (
-    <div className="h-12 overscroll-auto basis-2/4">
+    <div className="basis-2/4">
       <div className="relative p-3 rounded-3xl">
         <h1 className="text-2xl antialiased font-bold text-whtie">
           <span className="inline-flex items-center mr-2 px-3 py-0.5 rounded-full text-xl font-bold bg-sky-100 text-sky-800">
@@ -99,7 +99,7 @@ const AvailableTags = () => {
           </span>
         </h1>
       </div>
-      <div className="mt-6">
+      <div className="mt-6 rounded-md xl:overflow-y-scroll xl:h-5/6">
         <ul className="space-y-5">
           {isSuccess &&
             feedsInTag &&
