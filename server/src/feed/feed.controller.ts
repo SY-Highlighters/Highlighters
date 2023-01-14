@@ -39,7 +39,7 @@ export class FeedController {
   async createFeed(
     @Body() createFeedDto: CreateFeedDto,
     @GetUser() user: User,
-  ): Promise<number> {
+  ): Promise<Feed> {
     return this.feedService.createFeed(createFeedDto, user);
   }
 

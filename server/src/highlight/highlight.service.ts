@@ -1,4 +1,3 @@
-import { BeginTransactionRequest } from './../../node_modules/aws-sdk/clients/rdsdataservice.d';
 import { User } from '@prisma/client';
 import { Injectable, NotFoundException, HttpException } from '@nestjs/common';
 import { PrismaService } from 'src/repository/prisma.service';
@@ -37,11 +36,10 @@ export class HighlightService {
     } = createHighlightDto;
 
     try {
-      const find_feed = await this.prismaService.feed.findFirst({
+      let find_feed = await this.prismaService.feed.findFirst({
         where: { url, group_id },
       });
 
-      let make_feed = null;
       if (!find_feed) {
         const newFeedDto = new CreateFeedDto();
         newFeedDto.url = url;
@@ -50,7 +48,7 @@ export class HighlightService {
         newFeedDto.image = image;
         newFeedDto.description = description;
 
-        make_feed = await this.feedService.createFeed(newFeedDto, user);
+        find_feed = await this.feedService.createFeed(newFeedDto, user);
       }
 
       let result = null;
@@ -59,7 +57,7 @@ export class HighlightService {
       if (type !== 2) {
         result = await this.prismaService.highlight.create({
           data: {
-            feed_id: find_feed ? find_feed.id : make_feed.id,
+            feed_id: find_feed.id,
             group_id: group_id,
             user_email: user_email,
             selection: selection,
@@ -71,7 +69,7 @@ export class HighlightService {
       } else {
         result = await this.prismaService.highlight.create({
           data: {
-            feed_id: find_feed ? find_feed.id : make_feed.id,
+            feed_id: find_feed.id,
             group_id: group_id,
             user_email: user_email,
             selection: selection,
@@ -101,8 +99,9 @@ export class HighlightService {
         });
       }
 
-      return find_feed ? find_feed : make_feed;
+      return result;
     } catch (error) {
+      console.log(error);
       throw new HttpException('Internal Server Error', 500);
     }
   }

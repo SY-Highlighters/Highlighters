@@ -1,3 +1,4 @@
+import { UserGroupIcon } from "@heroicons/react/24/outline";
 import { useState } from "react";
 import { useRecoilState, useRecoilValue } from "recoil";
 import {
@@ -36,13 +37,13 @@ export default function GroupNotJoined() {
             onClick={handleGroupAdd}
             className="inline-flex mr-2 mt-2 px-3 py-0.5 rounded-full text-sm font-medium bg-indigo-100 text-indigo-500 hover:bg-indigo-700"
           >
-            그룹 생성
+            그룹 Add
           </button>
           <button
             onClick={handleGroupJoin}
             className="inline-flex mr-2 mt-2 px-3 py-0.5 rounded-full text-sm font-medium bg-rose-100 text-rose-500 hover:bg-rose-600"
           >
-            그룹 참가
+            그룹 Join
           </button>
         </div>
       </div>

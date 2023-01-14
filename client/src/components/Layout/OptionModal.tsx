@@ -13,13 +13,17 @@ import {
 import { useCookies } from "react-cookie";
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { TagEditItem } from "./TagItem/TagEditItem";
 import Swal from "sweetalert2";
 import { ArrowRightCircleIcon } from "@heroicons/react/24/outline";
 import GroupTag from "../User/GroupTag";
-export function GroupTagEditModal(props: any) {
+import { GrouptagList } from "../User/GroupTagList";
+import { optionModalToggleState } from "../../states/atom";
+export function OptionModal(props: any) {
   const setTagModal = useSetRecoilState(tagModalVisble);
   const currentFeedId = useRecoilValue(currentFeedIdState);
+  const [optionModalToggle, setOptionModalToggle] = useRecoilState(
+    optionModalToggleState
+  );
   // 그룹 태그 리스트 전역
   const [cookies, setCookie, removeCookie] = useCookies(["logCookie"]);
   const [inputValue, setInputValue] = useState("");
@@ -28,8 +32,9 @@ export function GroupTagEditModal(props: any) {
   const resetTagsInFeedState = useResetRecoilState(tagsInFeedState);
 
   const closeModal = () => {
-    setTagModal(0);
+    setOptionModalToggle(!optionModalToggle);
     resetTagsInFeedState();
+    window.location.reload();
   };
   // const [userData, setUserInfo] = useRecoilState(userInfo); test1 -> 현재 로그인시 유저데이터 받는중
 
@@ -40,17 +45,44 @@ export function GroupTagEditModal(props: any) {
   //     <TagEditItem tagName={tagItem.tag_name} />
   //   ));
 
-  const tagLists = tagList.map((tagItem: any) => (
-    <div key={tagItem.tag_id}>
-      <TagEditItem
-        key={tagItem.tag_id}
-        tagName={tagItem.tag_name}
-        feedId={currentFeedId}
-        tagId={tagItem.tag_id}
-        // tagList={tagList}
-      />
-    </div>
-  ));
+  const handleChange = (e: any) => {
+    console.log(e.target.value);
+    setInputValue(e.target.value);
+  };
+
+  const tagAddHandler = async () => {
+    const host_url = `${process.env.REACT_APP_HOST}/api/tag/create`;
+    await axios
+      .post(
+        host_url,
+        {
+          tag_name: inputValue,
+          feed_id: currentFeedId,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${cookies.logCookie}`,
+          },
+        }
+      )
+      .then(function (response) {
+        if (response) {
+          Swal.fire({
+            icon: "success",
+            title: "태그 생성 성공!",
+            text: "태그 생성에 성공했습니다.",
+          });
+          const newTagItem = {
+            tag_name: inputValue,
+            tag_id: response.data.id,
+          };
+          console.log(response);
+          setTagList([...tagList, newTagItem]);
+        } else {
+          alert("태그 생성 실패!");
+        }
+      });
+  };
 
   return (
     <div
@@ -60,8 +92,9 @@ export function GroupTagEditModal(props: any) {
       aria-modal="true"
     >
       <div className="flex items-end justify-center min-h-screen px-4 pt-4 pb-20 text-center sm:block sm:p-0">
+        {/* 모달 배경 수정 여기 */}
         <div
-          className="fixed inset-0 transition-opacity bg-transparent bg-opacity-75"
+          className="fixed inset-0 transition-opacity bg-gray-200 bg-opacity-75"
           aria-hidden="true"
         ></div>
         <span
@@ -92,19 +125,38 @@ export function GroupTagEditModal(props: any) {
           {/* 모달 안 내용 */}
           <div className="w-full p-6 m-auto bg-white rounded-md shadow-md lg:max-w-xl">
             <h1 className="text-3xl font-semibold text-left text-sky-500 ">
-              태그 수정
+              설정
             </h1>
-
-            <div className="flex flex-wrap mt-2 ">{tagLists}</div>
-
-            {/* 검색창 미리보기 형식으로 태그 리스트 */}
-            <div>
-              <GroupTag
-                onFunc={() => {
-                  console.log("test");
-                }}
-                onCss={"w-full mt-10 bg-white"}
-              ></GroupTag>
+          </div>
+          <div className="flex flex-col m-3 space-y-3">
+            <div className="flex justify-center">
+              <h1 className="text-xl font-bold text-center text-sky-500">
+                프로필
+              </h1>
+            </div>
+            {/* 사진 */}
+            <div className="flex flex-col items-center justify-center">
+              <div className="relative">
+                <img
+                  className="object-cover w-20 h-20 mx-auto rounded-full shadow"
+                  src={props.userImg}
+                  alt="avatar"
+                />
+                {/* 이미지 밑에 수정버튼 */}
+                <div className="absolute bottom-0 right-0 p-1 m-1 bg-white rounded-full shadow">
+                  <svg
+                    className="w-5 h-5 text-gray-400 transition duration-150 transform rounded-full hover:text-gray-600 hover:scale-110"
+                    fill="currentColor"
+                    viewBox="0 0 20 20"
+                  >
+                    <path
+                      fillRule="evenodd"
+                      d="M8 5a3 3 0 100 6 3 3 0 000-6zm0 1a2 2 0 110 4 2 2 0 010-4zm8 2a3 3 0 11-6 0 3 3 0 016 0zm-1 0a2 2 0 10-4 0 2 2 0 004 0zm-8 8a3 3 0 100-6 3 3 0 000 6zm0-1a2 2 0 110-4 2 2 0 010 4zm8 0a3 3 0 100-6 3 3 0 000 6zm0-1a2 2 0 110-4 2 2 0 010 4z"
+                      clipRule="evenodd"
+                    ></path>
+                  </svg>
+                </div>
+              </div>
             </div>
           </div>
         </div>

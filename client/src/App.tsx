@@ -41,7 +41,7 @@ function App() {
 
   return (
     <GoogleOAuthProvider clientId={clientId}>
-      <Fragment>
+      <div className="flex flex-col h-screen">
         {/* header section */}
         {header}
         {/* log section */}
@@ -58,7 +58,7 @@ function App() {
             {loginModalState && <LoginModal></LoginModal>}
           </div>
         )}
-      </Fragment>
+      </div>
     </GoogleOAuthProvider>
   );
 }

@@ -104,16 +104,18 @@ const GroupTag = (props: any) => {
           <h3 className="mt-5 text-xl antialiased font-bold ">그룹 태그</h3>
           <ArchiveBoxXMarkIcon
             onClick={groupTagDeleteHandler}
-            className="w-5 h-5 mb-1 ml-3 text-red-400 cursor-pointer hover:text-red-600"
+            className="w-5 h-5 mb-1 ml-3 text-red-400 cursor-pointer hover:text-red-600 hover:scale-95"
           ></ArchiveBoxXMarkIcon>
         </div>
         {/* 태그 공간 -> fix:동적 처리*/}
         {/* <div className="relative items-end mb-3">{tagsList}</div> */}
-        {clickedGroupTagDel ? (
-          <GrouptagListEdit></GrouptagListEdit>
-        ) : (
-          <GrouptagList onFunc={props.onFunc}></GrouptagList>
-        )}
+        <div className="overflow-y-auto h-30">
+          {clickedGroupTagDel ? (
+            <GrouptagListEdit></GrouptagListEdit>
+          ) : (
+            <GrouptagList onFunc={props.onFunc}></GrouptagList>
+          )}
+        </div>
       </div>
     </div>
   );

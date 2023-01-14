@@ -53,11 +53,12 @@ export function Main() {
       cacheTime: 60 * 60 * 1000,
       staleTime: 2 * 60 * 60 * 1000,
       // Refetch the data when the component mounts, including when the page is refreshed
-      refetchOnMount: false,
+      // refetchOnMount: false,
       // Do not refetch the data when the window gains focus
       refetchOnWindowFocus: false,
       // 쿠키가 준비되었을때 쿼리를 실행한다.
       enabled: !!cookies.logCookie,
+      
     }
   );
   const MainSection = (setionNum: number) => {
@@ -77,8 +78,9 @@ export function Main() {
   // }, [userData]);
   return (
     <Fragment>
-      <div className="gap-4 mt-5 sm:m-5 xl:grid-row xl:grid xl:px-40">
-        {/* <div className="m-8 mx-10 xl:flex-row xl:flex xl:px-40"> */}
+      {/* <div className="flex-1 mt-5 overflow-y-auto xl:grid-row xl:grid"> */}
+      <div className="box-border h-full gap-3 p-5 pb-5 xl:px-20 xl:flex-row xl:flex">
+        {/* <div className="box-border p-5 px-20 overflow-x-hidden overflow-y-auto xl:flex-row xl:flex"> */}
         <User></User>
         {isSuccess && user.group_id && MainSection(mainSectionNum)}
         {isSuccess && user.group_id && <Noti></Noti>}

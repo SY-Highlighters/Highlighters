@@ -2,7 +2,6 @@ import { TagService } from './../tag/tag.service';
 import { Feed, User } from '@prisma/client';
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/repository/prisma.service';
-import { getUrlMeta } from 'src/util/geturlmeta';
 import { CreateFeedDto } from './dto/feed.dto';
 import { HttpException } from '@nestjs/common/exceptions';
 
@@ -13,7 +12,7 @@ export class FeedService {
     private readonly tagService: TagService,
   ) {}
 
-  async createFeed(createFeedDto: CreateFeedDto, user: User): Promise<number> {
+  async createFeed(createFeedDto: CreateFeedDto, user: User): Promise<Feed> {
     const { url, feed_title, og_title, image, description, tag_name } =
       createFeedDto;
 
@@ -55,11 +54,11 @@ export class FeedService {
           tag_name: tag,
           feed_id: _Feed.id,
         };
-        const _Tag = await this.tagService.createTag(requestTagCreateDto, user);
+        await this.tagService.createTag(requestTagCreateDto, user);
       }
     }
 
-    return _Feed.id;
+    return _Feed;
   }
 
   async findSepFeedById(page: number, take: number, user: User) {

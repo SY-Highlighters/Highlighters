@@ -10,11 +10,11 @@ export default function Intro() {
   return (
     <div>
       <div className="grid p-10 space-y-5 justify-items-center bg-sky-600">
-        <h1 className="mb-3 text-5xl font-bold text-gray-200 ">
+        <h1 className="mb-3 text-3xl font-bold text-gray-200 xl:text-5xl ">
           "Highlighters "
         </h1>
         <p className="text-2xl text-gray-400">
-          링크를 공유하고, 관리하고, 북마크하세요.
+          링크를 <span className="font-bold">공유</span>하고, 관리하고, 북마크하세요.
         </p>
         <button
           onClick={loginModalHandler}
@@ -24,7 +24,7 @@ export default function Intro() {
         </button>
       </div>
       {/* 소개문*/}
-      <div className="grid grid-cols-3 gap-4 p-10 mt-20">
+      <div className="gap-4 p-10 mt-20 xl:grid xl:grid-cols-3">
         <div className="flex flex-col justify-center">
           <img
             src="https://img.icons8.com/ios/100/000000/link--v1.png"

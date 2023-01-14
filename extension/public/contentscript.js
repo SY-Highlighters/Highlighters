@@ -182,6 +182,11 @@ async function postHighlight(range, highlightStr) {
 
   console.log("contentscript: posthighlight");
 
+  const og_image = document.querySelector("meta[property='og:image']");
+  const og_description = document.querySelector(
+    "meta[property='og:description']"
+  );
+
   chrome.runtime.sendMessage(
     {
       greeting: "postHighlight",
@@ -190,9 +195,10 @@ async function postHighlight(range, highlightStr) {
         contents: highlightStr,
         selection: rangeobj,
         title: document.title,
-        image: document.querySelector("meta[property='og:image']").content,
-        description: document.querySelector("meta[property='og:description']")
-          .content,
+        image: og_image
+          ? og_image.content
+          : "https://www.salonlfc.com/wp-content/uploads/2018/01/image-not-found-1-scaled-1150x647.png",
+        description: og_description ? og_description.content : "No Description",
         color: highlightColor.highlightColor,
         type: 1,
       },
@@ -205,7 +211,7 @@ async function postHighlight(range, highlightStr) {
         );
         showLoginModal();
       } else {
-        console.log(response.data);
+        console.log("Post Highlight Response", response.data);
         highlights.push(response.data.data);
         highlightDone(range, response.data.data.id);
       }
@@ -233,11 +239,14 @@ function getHighlight(url) {
       }
 
       for (const highlight of highlights) {
-        console.log(highlight);
-        if (highlight.type === 1) {
-          rehighlightText(highlight);
-        } else if (highlight.type === 2) {
-          rehighlightImage(highlight);
+        try {
+          if (highlight.type === 1) {
+            rehighlightText(highlight);
+          } else if (highlight.type === 2) {
+            rehighlightImage(highlight);
+          }
+        } catch (e) {
+          console.log("하이라이트 복원 실패", e);
         }
       }
     }
@@ -247,6 +256,8 @@ function getHighlight(url) {
 function rehighlightText(highlight) {
   const selection = highlight.selection;
   const range = document.createRange();
+
+  console.log("selection: ", selection);
 
   // 시작 노드 복원
   const startNode = document.evaluate(
@@ -267,6 +278,8 @@ function rehighlightText(highlight) {
     null
   ).singleNodeValue;
   const endOff = Number(selection.endOffset);
+
+  console.log("위치 복원", startNode, startOff, endNode, endOff);
 
   // 복원한 시작노드, 종료 노드 기준으로 range 복원
   range.setStart(startNode, startOff);
@@ -376,17 +389,22 @@ function makeEventOnImage() {
     const position = image.getBoundingClientRect();
 
     if (position.height > 150 || position.width > 150) {
+      const scrollY = window.scrollY;
+      const scrollX = window.scrollX;
+
       // eslint-disable-next-line no-loop-func
-      image.addEventListener("click", (e) => {
-        button.style.top = e.pageY - 17 + "px";
-        button.style.left = e.pageX - 17 + "px";
+      image.addEventListener("mouseover", () => {
+        console.log(position.top);
+
+        button.style.top = position.top + scrollY + 10 + "px";
+        button.style.left = position.left + scrollX + 10 + "px";
         button.style.transform = "rotate(270deg)";
         button.style.zIndex = "2147483647";
         button.style.display = "block";
         button.style.position = "absolute";
 
         selectedImage = image;
-        console.log("selectedImage", selectedImage);
+        // console.log("selectedImage", selectedImage);
       });
 
       image.addEventListener("mouseout", () => {

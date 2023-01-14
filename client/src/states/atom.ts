@@ -116,3 +116,8 @@ export const commentReloadState = atom<boolean>({
   key: "commentReloadState",
   default: false,
 });
+
+export const optionModalToggleState = atom<boolean>({
+  key: "optionModalToggleState",
+  default: false,
+});

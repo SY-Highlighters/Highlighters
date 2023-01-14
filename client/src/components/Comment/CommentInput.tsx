@@ -21,6 +21,12 @@ export function CommentInput() {
     console.log(e.target.value);
     setInputValue(e.target.value);
   };
+  // 엔터
+  const handleKeyPress = (e: any) => {
+    if (e.key === "Enter") {
+      commentAddHandler();
+    }
+  };
 
   const {
     data: user,
@@ -96,6 +102,7 @@ export function CommentInput() {
         {/* 좌우로 꽉찬 인풋창*/}
         <div className="w-full mr-3">
           <input
+            onKeyDown={handleKeyPress}
             onChange={handleChange}
             value={inputValue}
             className="w-full h-10 px-3 mt-1 text-base text-gray-700 placeholder-gray-300 border rounded-lg ml-7 focus:shadow-outline"
