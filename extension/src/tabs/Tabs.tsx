@@ -7,9 +7,7 @@ import Settings from "./Settings";
 export default function Tabs(props: any) {
   const [activeTabIndex, setActiveTabIndex] = useState(0);
 
-  // console.log(props.feed);
-
-  const feedExist = props.feed != null ? true : false;
+  const feedExist = props.feed;
   const tabsData = [
     {
       label: feedExist ? "알림 보내기" : "피드 생성하기",
