@@ -28,10 +28,10 @@ export class FeedController {
   @ApiOperation({ summary: 'URL로 Feed 찾기' })
   @Post('/feed_url')
   async findFeedByUrl(
-    @Body() feed_url: string,
+    @Body('url') url: string,
     @GetUser() user: User,
   ): Promise<boolean> {
-    return this.feedService.findFeedByUrl(feed_url, user);
+    return this.feedService.findFeedByUrl(url, user);
   }
 
   // 새로운 Feed 생성
