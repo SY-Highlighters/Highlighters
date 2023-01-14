@@ -3,9 +3,9 @@ FROM node:19 AS builder
 WORKDIR /app
 COPY . .
 
-RUN npm install
-RUN npx prisma db pull
-RUN npx prisma generate
+RUN npm install --silent
+RUN npx prisma db pull --silent
+RUN npx prisma generate --silent
 RUN npm run build
 
 FROM node:19
