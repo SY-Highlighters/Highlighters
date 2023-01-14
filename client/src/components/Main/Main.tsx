@@ -77,7 +77,7 @@ export function Main() {
   // }, [userData]);
   return (
     <Fragment>
-      <div className="gap-4 m-8 xl:grid-row xl:grid xl:px-40">
+      <div className="gap-4 mt-5 sm:m-5 xl:grid-row xl:grid xl:px-40">
         {/* <div className="m-8 mx-10 xl:flex-row xl:flex xl:px-40"> */}
         <User></User>
         {isSuccess && user.group_id && MainSection(mainSectionNum)}
