@@ -21,7 +21,7 @@ export function Delete(props: any) {
   return (
     <TrashIcon
       onClick={feedDelHandler}
-      className="flex-shrink-0 w-5 h-5 mr-3 text-gray-400 cursor-pointer "
+      className="flex-shrink-0 w-3 h-3 mr-3 text-gray-400 cursor-pointer xl:h-5 xl:w-5 "
     ></TrashIcon>
   );
 }

@@ -59,6 +59,7 @@ const UserInfo = () => {
     return (
       //QueryClientProvider로 감싸져있어서 queryClient를 사용할 수 있다.
       <div className="w-full bg-white rounded-lg shadow-lg erflow-hidden">
+      {/* <div className="w-full bg-white rounded-lg shadow-lg erflow-hidden"> */}
         <div className="h-10" />
         <div className="relative p-6 rounded-3xl -top-5">
           <div className="relative flex items-end px-3 justify-left -top-1">

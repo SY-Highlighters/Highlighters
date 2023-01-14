@@ -109,11 +109,13 @@ const GroupTag = (props: any) => {
         </div>
         {/* 태그 공간 -> fix:동적 처리*/}
         {/* <div className="relative items-end mb-3">{tagsList}</div> */}
-        {clickedGroupTagDel ? (
-          <GrouptagListEdit></GrouptagListEdit>
-        ) : (
-          <GrouptagList onFunc={props.onFunc}></GrouptagList>
-        )}
+        <div className="overflow-y-auto h-30">
+          {clickedGroupTagDel ? (
+            <GrouptagListEdit></GrouptagListEdit>
+          ) : (
+            <GrouptagList onFunc={props.onFunc}></GrouptagList>
+          )}
+        </div>
       </div>
     </div>
   );
