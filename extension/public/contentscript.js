@@ -6,6 +6,27 @@ let highlights;
 let userImage;
 let curNode;
 
+const toolBarCSS = `
+    width: 111px !important;
+    height: 40px !important;
+    align-items: center !important;
+    background-color: #fff !important;
+    border: 1px solid #f2f2f2 !important;
+    box-sizing: border-box !important;
+    box-shadow: 0px 3px 8px rgb(0 0 0 / 20%) !important;
+    border-radius: 8px !important;
+    display: none`;
+
+const backgroundCSS = `
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    left: 0;
+    top: 0;
+    background: rgba(255, 255, 255, 0);
+    z-index: 999;
+`;
+
 function highlight() {
   const range = selectionText.getRangeAt(0);
   postHighlight(range, highlightStr);

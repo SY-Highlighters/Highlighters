@@ -6,45 +6,6 @@ let highlights;
 let userImage;
 let curNode;
 
-const modalOverlay = `width: 100%;
-            height: 100%;
-            position: absolute;
-            left: 0;
-            top: 0;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            background: rgba(0, 0, 0, 0.25);
-            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
-            backdrop-filter: blur(1.5px);
-            -webkit-backdrop-filter: blur(1.5px);
-            border-radius: 10px;
-            border: 1px solid rgba(255, 255, 255, 0.18);
-            z-index: 2147483647`;
-
-const modalWindow = `background: rgba( 69, 139, 197, 0.70 );
-            box-shadow: 0 8px 32px 0 rgba( 31, 38, 135, 0.37 );
-            backdrop-filter: blur( 13.5px );
-            -webkit-backdrop-filter: blur( 13.5px );
-            border-radius: 10px;
-            border: 1px solid rgba( 255, 255, 255, 0.18 );
-            width: 400px;
-            height: 500px;
-            position: relative;
-            top: -100px;
-            padding: 10px;`;
-
-const modalTitle = `padding-left: 10px;
-            display: inline;
-            text-shadow: 1px 1px 2px gray;
-            color: white;`;
-
-const modalContent = `margin-top: 20px;
-            padding: 0px 10px;
-            text-shadow: 1px 1px 2px gray;
-            color: white;`;
-
 const toolBarCSS = `
     width: 111px !important;
     height: 40px !important;
@@ -113,45 +74,6 @@ function makeXPath(node, currentPath) {
   }
 }
 
-function showLoginModal() {
-  // 펜 버튼 숨기기
-  const button = document.getElementById("btn_text_highlighters");
-  button.style.display = "none";
-
-  const body = document.querySelector("body");
-
-  // 모달 만들어서 띄우기
-  let loginModal = `<div id="modal" class="modal-overlay">
-        <div id="modal-window">
-            <div id="modal-title">
-                <h2 display: inline>로그인하세요</h2>
-            </div>
-            <div id="modal-close-area">X</div>
-            <div id="modal-content">
-                아이디<input type="text"><br>
-                패스워드<input type="password"><br>
-                <a id="modal-button"><br>
-            </div>
-        </div>
-    </div>`;
-
-  body.innerHTML += loginModal;
-
-  const modal = document.getElementById("modal");
-  modal.style.cssText = modalOverlay;
-
-  const modal_window = document.getElementById("modal-window");
-  modal_window.cssText = modalWindow;
-
-  const modal_title = document.getElementById("modal-title");
-  modal_title.cssText = modalTitle;
-
-  const modal_content = document.getElementById("modal-content");
-  modal_content.cssText = modalContent;
-
-  body.style.overflow = "hidden";
-}
-
 async function highlightDone(range, id) {
   const newNode = document.createElement("span");
   newNode.setAttribute("class", `highlighter`);
@@ -207,9 +129,10 @@ async function postHighlight(range, highlightStr) {
           "unauthorized error status code: ",
           response.data.statusCode
         );
-        alert("Highlighters: 로그인이 필요한 서비스입니다.\n(확인을 누르면 로그인 페이지로 이동합니다)");
+        alert(
+          "Highlighters: 로그인이 필요한 서비스입니다.\n(확인을 누르면 웹사이트로 이동합니다)"
+        );
         window.open("https://highlighters.site/");
-        // showLoginModal();
       } else {
         highlights.push(response.data.data);
         highlightDone(range, response.data.data.id);
@@ -422,7 +345,10 @@ function highlightImage() {
           "unauthorized error status code: ",
           response.data.statusCode
         );
-        showLoginModal();
+        alert(
+          "Highlighters: 로그인이 필요한 서비스입니다.\n(확인을 누르면 웹사이트로 이동합니다)"
+        );
+        window.open("https://highlighters.site/");
       } else {
         console.log("Post Highlight Image Success", response.data);
         highlights.push(response.data.data);
