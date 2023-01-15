@@ -96,9 +96,53 @@ async function BackgroundStart() {
       const token = cookie?.value;
 
       switch (request.greeting) {
-        // 웹페이지의 하이라이팅을 디비로 전송
+        // 유저 정보 불러오기
+        case "getUserInfo":
+          console.log("[background] getUserInfo");
+          const getUserInfoURL = `${host_url}/api/user/signin`;
+          sendHTTPRequest("GET", getUserInfoURL, token, request.data)
+            .then((data) => sendResponse({ data }))
+            .catch((error) => console.log(`fetch 실패: ${error}`));
+          break;
+
+        // 현재 탭의 url에 대한 피드 정보 요청
+        case "getFeed":
+          console.log("[background] getFeed");
+          const getFeedURL = `${host_url}/api/feed/feed_url`;
+          chrome.tabs.query(
+            { active: true, currentWindow: true },
+            function (tabs) {
+              if (tabs.length !== "undefined" && tabs.length === 1) {
+                const currentURL = decodeURI(tabs[0].url);
+                sendHTTPRequest("POST", getFeedURL, token, { url: currentURL })
+                  .then((data) => sendResponse({ data }))
+                  .catch((error) => console.log(`fetch 실패: ${error}`));
+              }
+            }
+          );
+          break;
+
+        // 피드 생성 요청
+        case "postFeed":
+          console.log("[background] postFeed");
+          const postFeedURL = `${host_url}/api/feed/create`;
+          sendHTTPRequest("POST", postFeedURL, token, request.data)
+            .then((data) => sendResponse({ data }))
+            .catch((error) => console.log(`fetch 실패: ${error}`));
+          break;
+
+        // 웹페이지의 모든 하이라이트를 가져옴
+        case "getHighlight":
+          console.log("[background] getHighlight");
+          const getHighlightURL = `${host_url}/api/highlight/feed/endpoint?url=${request.data.url}`;
+          sendHTTPRequest("GET", getHighlightURL, token)
+            .then((data) => sendResponse({ data }))
+            .catch((error) => console.log(`fetch 실패: ${error}`));
+          break;
+
+        // 텍스트 하이라이트 포스트 요청
         case "postHighlight":
-          console.log("bs: posthighlight");
+          console.log("[background] postHighlight");
           const postHighlightURL = `${host_url}/api/highlight/create`;
           sendHTTPRequest("POST", postHighlightURL, token, request.data) //
             .then((data) => {
@@ -112,17 +156,44 @@ async function BackgroundStart() {
             .catch((error) => console.log(`fetch 실패: ${error}`));
           break;
 
-        // 웹페이지의 모든 하이라이트를 가져옴
-        case "getHighlight":
-          const getHighlightURL = `${host_url}/api/highlight/feed/endpoint?url=${request.data.url}`;
-          sendHTTPRequest("GET", getHighlightURL, token)
+        // 이미지 하이라이트 포스트 요청
+        case "postHighlightImage":
+          console.log("[background] postHighlightImage");
+          const postHighlightImageURL = `${host_url}/api/highlight/create`;
+          sendHTTPRequest("POST", postHighlightImageURL, token, request.data)
+            .then((data) => {
+              sendResponse({ data });
+              createPush(
+                `${request.greeting}: ${data.id}`,
+                `${String(data.contents).substring(0, 30)}...`,
+                "하이라이트가 저장되었습니다"
+              );
+            })
+            .catch((error) => console.log(`fetch 실패: ${error}`));
+          break;
+
+        // 하이라이트 삭제 요청
+        case "deleteHighlight":
+          console.log("[background] deleteHighlight");
+          const deleteHighlightURL = `${host_url}/api/highlight/delete`;
+          sendHTTPRequest("DELETE", deleteHighlightURL, token, request.data)
+            .then((data) => sendResponse({ data }))
+            .catch((error) => console.log(`fetch 실패: ${error}`));
+          break;
+
+        // 유저가 받은 노티 리스트 요청
+        case "getNoti":
+          console.log("[background] getNoti");
+          chrome.action.setBadgeText({ text: "" });
+          const getNotiURL = `${host_url}/api/noti/extension`;
+          sendHTTPRequest("GET", getNotiURL, token, request.data)
             .then((data) => sendResponse({ data }))
             .catch((error) => console.log(`fetch 실패: ${error}`));
           break;
 
         // 현재 탭의 url에 대한 노티 생성
         case "postNoti":
-          console.log("bs: postNoti");
+          console.log("[background] postNoti");
           const postNotiURL = `${host_url}/api/noti/create`;
           chrome.tabs.query(
             { active: true, currentWindow: true },
@@ -138,84 +209,17 @@ async function BackgroundStart() {
           );
           break;
 
-        // 유저가 받은 노티 리스트 요청
-        case "getNoti":
-          console.log("bs: getNoti");
-          chrome.action.setBadgeText({ text: "" });
-          const getNotiURL = `${host_url}/api/noti/extension`;
-          sendHTTPRequest("GET", getNotiURL, token, request.data)
-            .then((data) => sendResponse({ data }))
-            .catch((error) => console.log(`fetch 실패: ${error}`));
-          break;
-
-        // 현재 탭의 url에 대한 피드 정보 요청
-        case "getFeed":
-          console.log("bs: getFeed");
-          const getFeedURL = `${host_url}/api/feed/feed_url`;
-
-          chrome.tabs.query(
-            { active: true, currentWindow: true },
-            function (tabs) {
-              if (tabs.length !== "undefined" && tabs.length === 1) {
-                const currentURL = decodeURI(tabs[0].url);
-                sendHTTPRequest("POST", getFeedURL, token, { url: currentURL })
-                  .then((data) => sendResponse({ data }))
-                  .catch((error) => console.log(`fetch 실패: ${error}`));
-              }
-            }
-          );
-          break;
-
         // 그룹의 태그 리스트 요청
         case "getGroupTags":
-          console.log("bs: getGroupTags");
+          console.log("[background] getGroupTags");
           const getGroupTagsURL = `${host_url}/api/tag/web`;
           sendHTTPRequest("GET", getGroupTagsURL, token)
             .then((data) => sendResponse({ data }))
             .catch((error) => console.log(`fetch 실패: ${error}`));
           break;
 
-        case "postFeed":
-          console.log("bs: postFeed");
-          const postFeedURL = `${host_url}/api/feed/create`;
-          sendHTTPRequest("POST", postFeedURL, token, request.data)
-            .then((data) => sendResponse({ data }))
-            .catch((error) => console.log(`fetch 실패: ${error}`));
-          break;
-
-        case "deleteHighlight":
-          console.log("bs: deleteHighlight");
-          const deleteHighlightURL = `${host_url}/api/highlight/delete`;
-          sendHTTPRequest("DELETE", deleteHighlightURL, token, request.data)
-            .then((data) => sendResponse({ data }))
-            .catch((error) => console.log(`fetch 실패: ${error}`));
-          break;
-
-        case "postHighlightImage":
-          console.log("bs: postHighlightImage");
-          const postHighlightImageURL = `${host_url}/api/highlight/create`;
-          sendHTTPRequest("POST", postHighlightImageURL, token, request.data)
-            .then((data) => {
-              sendResponse({ data });
-              createPush(
-                `${request.greeting}: ${data.id}`,
-                `${String(data.contents).substring(0, 30)}...`,
-                "하이라이트가 저장되었습니다"
-              );
-            })
-            .catch((error) => console.log(`fetch 실패: ${error}`));
-          break;
-
-        case "getUserInfo":
-          console.log("bs: getUserInfo");
-          const getUserInfoURL = `${host_url}/api/user/signin`;
-          sendHTTPRequest("GET", getUserInfoURL, token, request.data)
-            .then((data) => sendResponse({ data }))
-            .catch((error) => console.log(`fetch 실패: ${error}`));
-          break;
-
         default:
-          console.log("bs: Bad Request");
+          console.log("[background] Bad Request");
           break;
       }
     });
