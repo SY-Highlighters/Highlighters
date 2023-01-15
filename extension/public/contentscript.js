@@ -180,7 +180,7 @@ async function postHighlight(range, highlightStr) {
     endOffset: range.endOffset,
   };
 
-  console.log("contentscript: posthighlight");
+  console.log("cs: posthighlight");
 
   const og_image = document.querySelector("meta[property='og:image']");
   const og_description = document.querySelector(
@@ -211,7 +211,6 @@ async function postHighlight(range, highlightStr) {
         );
         showLoginModal();
       } else {
-        console.log("Post Highlight Response", response.data);
         highlights.push(response.data.data);
         highlightDone(range, response.data.data.id);
       }
@@ -257,8 +256,6 @@ function rehighlightText(highlight) {
   const selection = highlight.selection;
   const range = document.createRange();
 
-  console.log("selection: ", selection);
-
   // 시작 노드 복원
   const startNode = document.evaluate(
     selection.startXPath,
@@ -278,8 +275,6 @@ function rehighlightText(highlight) {
     null
   ).singleNodeValue;
   const endOff = Number(selection.endOffset);
-
-  console.log("위치 복원", startNode, startOff, endNode, endOff);
 
   // 복원한 시작노드, 종료 노드 기준으로 range 복원
   range.setStart(startNode, startOff);
@@ -315,7 +310,6 @@ function deleteHighlight(node) {
       data: { id: +node.id },
     },
     (response) => {
-      console.log(response);
       node.removeAttribute("style");
     }
   );
@@ -324,7 +318,6 @@ function deleteHighlight(node) {
 }
 
 function showToolBar(event, node, user) {
-  console.log("showToolBar");
   const html = document.querySelector("html");
   const toolBar = document.getElementById("toolBar-highlighters");
   const userImageDiv = document.getElementById("userImageDiv-highlighters");
@@ -361,9 +354,7 @@ function getUserInfo() {
       greeting: "getUserInfo",
     },
     (response) => {
-      // console.log("getUserInfo", response);
       userImage = response.data.image;
-      console.log(userImage);
     }
   );
 }
@@ -383,8 +374,6 @@ function makeEventOnImage() {
 
       // eslint-disable-next-line no-loop-func
       image.addEventListener("mouseover", () => {
-        console.log(position.top);
-
         button.style.top = position.top + scrollY + 10 + "px";
         button.style.left = position.left + scrollX + 10 + "px";
         button.style.transform = "rotate(270deg)";
@@ -393,7 +382,6 @@ function makeEventOnImage() {
         button.style.position = "absolute";
 
         selectedImage = image;
-        // console.log("selectedImage", selectedImage);
       });
 
       image.addEventListener("mouseout", () => {
@@ -412,8 +400,6 @@ function highlightImage() {
   const rangeObject = {
     XPath: makeXPath(selectedImage),
   };
-
-  console.log("rangeObject", rangeObject);
 
   chrome.runtime.sendMessage(
     {
@@ -543,10 +529,8 @@ async function onWindowReady() {
   // 하이라이트 가져오기
   const uri = window.location.href;
   const decodeuri = decodeURI(uri);
-  console.log("gethighlight: ", decodeuri);
 
   getUserInfo();
-  // console.log(userImage);
   getHighlight(decodeuri);
   makeEventOnImage();
 }
