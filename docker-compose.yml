@@ -25,6 +25,7 @@ services:
       - "3001"
     volumes:
       - ./https:/usr/share/nginx/html
+      - ./server/picture:/app/picture
 
   client:
     build:
