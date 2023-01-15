@@ -1,16 +1,21 @@
-import FeedItem from "./FeedItem/FeedItem";
+import FeedItem from "../Feeds/FeedItem/FeedItem";
 import { useEffect, useState } from "react";
-
-import { useCookies } from "react-cookie";
-import axios from "axios";
-import { DocumentIcon, MegaphoneIcon } from "@heroicons/react/24/outline";
-import { QueryCache, useQuery, QueryClient, useQueryClient } from "react-query";
+import { CalendarDaysIcon } from "@heroicons/react/24/outline";
 import { useInView } from "react-intersection-observer";
 import { useInfiniteFeed } from "../../hooks/useInfiniteFeed";
-const AvailableFeeds = () => {
+import { useRecoilValue } from "recoil";
+import { selectedDayState } from "../../states/atom";
+export function FeedsDay(props: any) {
   const { getBoard, getNextPage, getBoardIsSuccess, getNextPageIsPossible } =
     useInfiniteFeed();
   const [ref, isView] = useInView();
+
+  const selectedDay = useRecoilValue(selectedDayState);
+  // 날짜 문자로 변환
+  const date = new Date(selectedDay);
+  const year = date.getFullYear();
+  const month = date.getMonth() + 1;
+  const day = date.getDate();
 
   useEffect(() => {
     // 맨 마지막 요소를 보고있고 페이지가 존재하면
@@ -35,14 +40,13 @@ const AvailableFeeds = () => {
           <div className="flex flex-wrap items-center ">
             <div className="flex items-center flex-1 w-0 ">
               <span className="flex p-2 mr-1 -ml-3 rounded-lg bg-sky-500">
-                <DocumentIcon
+                <CalendarDaysIcon
                   className="w-6 h-6 ml-3 text-white"
                   aria-hidden="true"
                 />
               </span>
               <p className="text-xl font-bold text-white truncate">
-                <span className="md:hidden">그룹 피드</span>
-                <span className="hidden md:inline">그룹 피드</span>
+                <span className="">{`${year}년 ${month}월 ${day}일`}</span>
               </p>
             </div>
           </div>
@@ -138,10 +142,4 @@ const AvailableFeeds = () => {
       </div>
     </div>
   );
-};
-
-export default AvailableFeeds;
-
-function getUserData() {
-  return;
 }

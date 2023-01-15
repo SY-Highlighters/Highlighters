@@ -3,6 +3,7 @@ import { useCookies } from "react-cookie";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { tagsInFeedState, clickedGroupTagDelState } from "../../../states/atom";
 import Swal from "sweetalert2";
+import { useMutation } from "react-query";
 export function TagEditItem(props: any) {
   const [cookies, setCookie, removeCookie] = useCookies(["logCookie"]);
   const [tagList, setTagList] = useRecoilState(tagsInFeedState);
@@ -26,10 +27,10 @@ export function TagEditItem(props: any) {
       },
       data,
     });
-    // 태그 삭제 후 태그 리스트 업데이트
+    // 태그 삭제 후 태그 리스트 업데이트(클라사이드 -> 서버사이드 변경 예정)
     setTagList(tagList.filter((tag: any) => tag.tag_id !== props.tagId));
   };
-
+  
   const delClickHandler = () => {
     Swal.fire({
       title: "태그를 삭제하시겠습니까?",

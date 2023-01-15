@@ -121,3 +121,8 @@ export const optionModalToggleState = atom<boolean>({
   key: "optionModalToggleState",
   default: false,
 });
+
+export const selectedDayState = atom<Date>({
+  key: "selectedDayState",
+  default: new Date(),
+});
