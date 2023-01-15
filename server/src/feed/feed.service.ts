@@ -1,15 +1,17 @@
 import { TagService } from './../tag/tag.service';
 import { Feed, User } from '@prisma/client';
-import { Injectable } from '@nestjs/common';
+import { CACHE_MANAGER, Inject, Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/repository/prisma.service';
 import { CreateFeedDto } from './dto/feed.dto';
 import { HttpException } from '@nestjs/common/exceptions';
+import { Cache } from 'cache-manager';
 
 @Injectable()
 export class FeedService {
   constructor(
     private readonly prismaService: PrismaService,
     private readonly tagService: TagService,
+    @Inject(CACHE_MANAGER) private readonly cacheManager: Cache,
   ) {}
 
   async createFeed(createFeedDto: CreateFeedDto, user: User): Promise<Feed> {

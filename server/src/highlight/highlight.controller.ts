@@ -1,5 +1,6 @@
 import {
   Body,
+  CacheInterceptor,
   Controller,
   Delete,
   Get,
@@ -21,6 +22,7 @@ import { HighlightService } from './highlight.service';
 
 @Controller('api/highlight')
 @UseInterceptors(SuccessInterceptor)
+// @UseInterceptors(CacheInterceptor)
 @UseFilters(HttpExceptionFilter)
 @UseGuards(AuthGuard('jwt'))
 export class HighlightController {
