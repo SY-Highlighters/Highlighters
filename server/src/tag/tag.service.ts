@@ -70,14 +70,18 @@ export class TagService {
   }
 
   async getTag(user: User): Promise<object[]> {
-    const tags = await this.prismaService.tag.findMany({
+    const tags = await this.prismaService.tag.groupBy({
+      by: ['tag_name'],
+      _count: {
+        tag_name: true,
+      },
+      orderBy: {
+        _count: {
+          tag_name: 'desc',
+        },
+      },
       where: {
         group_id: user.group_id,
-      },
-      distinct: ['tag_name'],
-      select: {
-        id: true,
-        tag_name: true,
       },
     });
     return tags;
