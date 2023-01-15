@@ -81,10 +81,14 @@ export class FeedService {
                 },
               },
             },
-            orderBy: {
-              user_email: 'asc',
-              createdAt: 'asc',
-            },
+            orderBy: [
+              {
+                user_email: 'asc',
+              },
+              {
+                createdAt: 'asc',
+              },
+            ],
           },
           tag: true,
           og: true,
