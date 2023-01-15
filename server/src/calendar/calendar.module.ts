@@ -1,9 +1,11 @@
 import { Module } from '@nestjs/common';
-import { CalendarController } from './calendar.controller';
 import { CalendarService } from './calendar.service';
+import { CalendarController } from './calendar.controller';
+import { AuthModule } from 'src/auth/auth.module';
 
 @Module({
+  imports: [AuthModule],
+  providers: [CalendarService],
   controllers: [CalendarController],
-  providers: [CalendarService]
 })
 export class CalendarModule {}
