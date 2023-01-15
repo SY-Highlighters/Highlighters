@@ -1,40 +1,16 @@
 import FeedItem from "./FeedItem/FeedItem";
-import { useEffect, useState } from "react";
-// import { useRecoilState, useRecoilValue } from "recoil";
-// import {
-//   groupFeedListState,
-//   userInfoState,
-//   tagModalVisble,
-// } from "../../states/atom";
+
 import { useCookies } from "react-cookie";
-// import { useEffect } from "react";
 import axios from "axios";
 import { DocumentIcon, MegaphoneIcon } from "@heroicons/react/24/outline";
-// import { TagEditModal } from "../Tags/TagEditModal";
 import { QueryCache, useQuery, QueryClient, useQueryClient } from "react-query";
+import { useUserData } from "../../hooks/useUserData";
 const AvailableFeeds = () => {
-  // const [feeds, setFeeds] = useRecoilState(groupFeedListState);
-  const [cookies, setCookie, removeCookie] = useCookies(["logCookie"]);
-  // const [tagModal, setTagModal] = useRecoilState(tagModalVisble);
-  // const queryClient = useQueryClient();
-  // const user = queryClient.getQueryData("user");
-  // const [user, setUser] = useState(null);
+  const [cookies] = useCookies(["logCookie"]);
 
-  // const [userData, setUserInfo] = useRecoilState(userInfo); test1 -> 현재 로그인시 유저데이터 받는중
-  // const userData = useRecoilValue(userInfoState);
-  // const gropuId = userData.groupId;
   // react query 캐시에서 유저 데이터 가져옴
-  const { data: user } = useQuery("user", async () => {
-    const response = await axios({
-      method: "get",
-      url: `${process.env.REACT_APP_HOST}/api/user/signin`,
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${cookies.logCookie}`,
-      },
-    });
-    return response.data;
-  });
+  const { data: user } = useUserData(cookies);
+
   const groupId = user?.group_id;
 
   const { data: feedsInGroup, isSuccess } = useQuery(
@@ -55,43 +31,6 @@ const AvailableFeeds = () => {
       enabled: groupId !== undefined,
     }
   );
-  // useEffect(() => {
-  //   async function fetchData() {
-  //     const response = await axios({
-  //       method: "get",
-  //       url: `${process.env.REACT_APP_HOST}/api/feed/group/${user!.group_id}`,
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //         Authorization: `Bearer ${cookies.logCookie}`,
-  //       },
-  //     });
-
-  //     const data = response.data;
-  //     console.log(data);
-  //     // console.log(data[0].id);
-  //     feedadd(data);
-  //   }
-  //   fetchData();
-  // }, []);
-
-  // 피드리스트에 피드아이템 넣기
-  // const feedadd = (data: []) => {
-  //   data.map((item: any) => {
-  //     const newfeed = {
-  //       id: item.id,
-  //       key: item.id,
-  //       url: item.url,
-  //       og_image: item.og_image,
-  //       title: item.og_title,
-  //       description: item.og_desc,
-  //       highlight: item.highlight,
-  //       Date: item.createdAt,
-  //       tag: item.tag,
-  //     };
-  //     // recoil feeds state에 피드 추가
-  //     setFeeds((oldFeeds: any) => [...oldFeeds, newfeed]);
-  //   });
-  // };
 
   return (
     <div className="h-12 overscroll-auto basis-2/4">

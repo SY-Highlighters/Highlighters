@@ -13,6 +13,7 @@ import { useQuery } from "react-query";
 import React from "react";
 import { OptionModal } from "./OptionModal";
 import { useQueryClient } from "react-query";
+import { useUserData } from "../../hooks/useUserData";
 export default function Header() {
   const [navbarOpen, setNavbarOpen] = React.useState(false);
   // const [bookmark, setBookmark] = useRecoilState(bookmarkState);
@@ -24,36 +25,8 @@ export default function Header() {
   );
   // const resetFeeds = useResetRecoilState(groupFeedListState);
   // react-query 사용 시 server state
-  const { data: user, isSuccess } = useQuery(
-    ["user"],
-    async () => {
-      try {
-        const res = await axios.get(
-          `${process.env.REACT_APP_HOST}/api/user/signin`,
-          {
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${cookies.logCookie}`,
-            },
-          }
-        );
-        return res.data;
-      } catch (err) {
-        console.error(err);
-      }
-    },
-    {
-      // cacheTime: 60 * 60 * 1000,
-      // 1시간동안 캐시를 사용한다.
-      cacheTime: 60 * 60 * 1000,
-      staleTime: 2 * 60 * 60 * 1000,
-      // Refetch the data when the component mounts, including when the page is refreshed
-      refetchOnMount: false,
-      // Do not refetch the data when the window gains focus
-      refetchOnWindowFocus: false,
-      // 쿠키가 준비되었을때 쿼리를 실행한다.
-    }
-  );
+  const { data: user, isSuccess } = useUserData(cookies);
+
   const handleBookmarkClick = () => {
     console.log("bookmark click");
     // setBookmark(!bookmark);

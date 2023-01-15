@@ -14,10 +14,14 @@ import { useCookies } from "react-cookie";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import Swal from "sweetalert2";
-import { ArrowRightCircleIcon } from "@heroicons/react/24/outline";
+import {
+  ArrowPathIcon,
+  ArrowRightCircleIcon,
+} from "@heroicons/react/24/outline";
 import GroupTag from "../User/GroupTag";
 import { GrouptagList } from "../User/GroupTagList";
 import { optionModalToggleState } from "../../states/atom";
+import { useRef } from "react";
 export function OptionModal(props: any) {
   const setTagModal = useSetRecoilState(tagModalVisble);
   const currentFeedId = useRecoilValue(currentFeedIdState);
@@ -30,7 +34,7 @@ export function OptionModal(props: any) {
   // const tagName = useRecoilValue(tagNameState);
   const [tagList, setTagList] = useRecoilState(tagsInFeedState);
   const resetTagsInFeedState = useResetRecoilState(tagsInFeedState);
-
+  const inputRef = useRef<HTMLInputElement>(null);
   const closeModal = () => {
     setOptionModalToggle(!optionModalToggle);
     resetTagsInFeedState();
@@ -134,7 +138,7 @@ export function OptionModal(props: any) {
                 프로필
               </h1>
             </div>
-            {/* 사진 */}
+            {/* 프사 변경*/}
             <div className="flex flex-col items-center justify-center">
               <div className="relative">
                 <img
@@ -142,19 +146,13 @@ export function OptionModal(props: any) {
                   src={props.userImg}
                   alt="avatar"
                 />
-                {/* 이미지 밑에 수정버튼 */}
                 <div className="absolute bottom-0 right-0 p-1 m-1 bg-white rounded-full shadow">
-                  <svg
-                    className="w-5 h-5 text-gray-400 transition duration-150 transform rounded-full hover:text-gray-600 hover:scale-110"
-                    fill="currentColor"
-                    viewBox="0 0 20 20"
-                  >
-                    <path
-                      fillRule="evenodd"
-                      d="M8 5a3 3 0 100 6 3 3 0 000-6zm0 1a2 2 0 110 4 2 2 0 010-4zm8 2a3 3 0 11-6 0 3 3 0 016 0zm-1 0a2 2 0 10-4 0 2 2 0 004 0zm-8 8a3 3 0 100-6 3 3 0 000 6zm0-1a2 2 0 110-4 2 2 0 010 4zm8 0a3 3 0 100-6 3 3 0 000 6zm0-1a2 2 0 110-4 2 2 0 010 4z"
-                      clipRule="evenodd"
-                    ></path>
-                  </svg>
+                  <ArrowPathIcon
+                    onClick={() => inputRef.current?.click()}
+                    className="w-5 h-5 text-gray-400 transition duration-150 transform rounded-full cursor-pointer hover:text-gray-600 hover:scale-110"
+                  ></ArrowPathIcon>
+                  {/* 파일 업로드 */}
+                  <input type="file" className="hidden" ref={inputRef} />
                 </div>
               </div>
             </div>

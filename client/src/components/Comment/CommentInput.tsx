@@ -11,6 +11,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import Swal from "sweetalert2";
 import { useQuery } from "react-query";
+import { useUserData } from "../../hooks/useUserData";
 export function CommentInput() {
   const [inputValue, setInputValue] = useState("");
   const [cookies, setCookie, removeCookie] = useCookies(["logCookie"]);
@@ -28,39 +29,7 @@ export function CommentInput() {
     }
   };
 
-  const {
-    data: user,
-    isSuccess,
-    isLoading,
-    error,
-  } = useQuery(
-    ["user"],
-    async () => {
-      try {
-        const res = await axios.get(
-          `${process.env.REACT_APP_HOST}/api/user/signin`,
-          {
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${cookies.logCookie}`,
-            },
-          }
-        );
-        return res.data;
-      } catch (err) {}
-    },
-    {
-      // cacheTime: 60 * 60 * 1000,
-      // 1시간동안 캐시를 사용한다.
-      cacheTime: 60 * 60 * 1000,
-      staleTime: 2 * 60 * 60 * 1000,
-      // Refetch the data when the component mounts, including when the page is refreshed
-      refetchOnMount: false,
-      // Do not refetch the data when the window gains focus
-      refetchOnWindowFocus: false,
-      // 쿠키가 준비되었을때 쿼리를 실행한다.
-    }
-  );
+  const { data: user, isSuccess, isLoading, error } = useUserData(cookies);
 
   const commentAddHandler = async () => {
     //인풋 안에 값 비우기

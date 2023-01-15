@@ -239,13 +239,6 @@ function getHighlight(url) {
       }
 
       for (const highlight of highlights) {
-<<<<<<< HEAD
-        console.log(highlight);
-        if (highlight.type === 1) {
-          rehighlightText(highlight);
-        } else if (highlight.type === 2) {
-          rehighlightImage(highlight);
-=======
         try {
           if (highlight.type === 1) {
             rehighlightText(highlight);
@@ -254,7 +247,6 @@ function getHighlight(url) {
           }
         } catch (e) {
           console.log("하이라이트 복원 실패", e);
->>>>>>> 9bc9797bd1a65f3f1e7af939948f72264f62330d
         }
       }
     }
