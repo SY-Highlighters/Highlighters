@@ -8,113 +8,34 @@ const host_url = is_production
   ? "https://highlighters.site"
   : "http://localhost:3001";
 
-async function getCookieToken() {
-  const cookie = await new Promise((resolve) => {
-    chrome.cookies.get({ name: "logCookie", url: cookie_url }, (cookie) =>
-      resolve(cookie)
-    );
-  });
-
-  return cookie;
+function getCookieToken() {
+  return chrome.cookies.get({ name: "logCookie", url: cookie_url });
 }
 
-async function getHighlight(token, request) {
-  const response = await fetch(`${host_url}/api/highlight/feed`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`,
-    },
-    body: JSON.stringify(request),
-  });
+async function sendHTTPRequest(method, url, token, body) {
+  let response = null;
+
+  if (body) {
+    response = await fetch(url, {
+      method: method,
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(body),
+    });
+  } else {
+    response = await fetch(url, {
+      method: method,
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+  }
 
   const data = await response.json();
   return data;
-}
-
-async function getNoti(token) {
-  const response = await fetch(`${host_url}/api/noti/extension`, {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`,
-    },
-  });
-  const data = await response.json();
-  console.log("bs getNoti", data);
-  return data;
-}
-
-async function getFeed(token, url) {
-  const response = await fetch(`${host_url}/api/feed/feed_url`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`,
-    },
-    body: JSON.stringify(url),
-  });
-  const data = await response.json();
-  return data;
-}
-
-async function getGroupTags(token) {
-  const response = await fetch(`${host_url}/api/tag/web`, {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`,
-    },
-  });
-  const data = await response.json();
-  return data;
-}
-
-async function postHighlight(token, request) {
-  const response = await fetch(`${host_url}/api/highlight/create`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`,
-    },
-    body: JSON.stringify(request),
-  });
-  const data = await response.json();
-  return data;
-}
-
-async function postNoti(token, contents, url) {
-  const noti = {
-    url: url,
-    contents: contents,
-  };
-  const response = fetch(`${host_url}/api/noti/create`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`,
-    },
-    body: JSON.stringify(noti),
-  });
-  // console.log("postnoti: ", response);
-  // const data = response.json();
-  return response;
-}
-
-async function postFeed(token, contents) {
-  console.log(contents);
-  console.log(JSON.stringify(contents));
-  const response = fetch(`${host_url}/api/feed/create`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`,
-    },
-    body: JSON.stringify(contents),
-  });
-  // console.log("postnoti: ", response);
-  // const data = response.json();
-  return response;
 }
 
 function createPush(id, title, msg) {
@@ -132,30 +53,6 @@ function createPush(id, title, msg) {
   );
 }
 
-async function isNewNotiCreate(token) {
-  const response = await fetch(`${host_url}/api/noti/push`, {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`,
-    },
-  });
-  const data = await response.json();
-  return data;
-}
-
-async function changeNewNotiInUser(token) {
-  const response = await fetch(`${host_url}/api/noti/check`, {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`,
-    },
-  });
-  const data = await response.json();
-  return data;
-}
-
 async function initHighlightColor() {
   const data = await chrome.storage.sync.get("highlightColor");
   if (data.highlightColor === undefined) {
@@ -163,33 +60,6 @@ async function initHighlightColor() {
   }
 
   console.log("Init Highlight Complete");
-}
-
-async function getUserInfo(token) {
-  const response = await fetch(`${host_url}/api/user/signin`, {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`,
-    },
-  });
-  // console.log("bs: getuserinfo", response);
-  const data = await response.json();
-  return data;
-}
-
-async function deleteHighlight(token, id) {
-  console.log("id", id);
-  const response = await fetch(`${host_url}/api/highlight/delete`, {
-    method: "DELETE",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`,
-    },
-    body: JSON.stringify(id),
-  });
-  const data = await response.json();
-  return data;
 }
 
 /********************************************** 코드 시작 *********************************************************/
@@ -206,12 +76,15 @@ async function BackgroundStart() {
       const cookie = await getCookieToken();
       const token = cookie?.value;
 
-      const check = await isNewNotiCreate(token);
+      const isNewNotiCreateURL = `${host_url}/api/noti/push`;
+      const changeNewNotiInUserURL = `${host_url}/api/noti/check`;
+
+      const check = await sendHTTPRequest("GET", isNewNotiCreateURL, token);
 
       if (check.data) {
         chrome.action.setBadgeText({ text: "new" });
         chrome.action.setBadgeBackgroundColor({ color: "#0000FF" });
-        changeNewNotiInUser(token);
+        sendHTTPRequest("GET", changeNewNotiInUserURL, token);
       }
     }
   });
@@ -223,11 +96,11 @@ async function BackgroundStart() {
       switch (request.greeting) {
         // 웹페이지의 하이라이팅을 디비로 전송
         case "postHighlight":
-          console.log("bs: posthighlighåt");
-          postHighlight(token, request.data)
+          console.log("bs: posthighlight");
+          const postHighlightURL = `${host_url}/api/highlight/create`;
+          sendHTTPRequest("POST", postHighlightURL, token, request.data) //
             .then((data) => {
               sendResponse({ data });
-              console.log(data);
               createPush(
                 `${request.greeting}: ${data.id}`,
                 `${String(data.contents).substring(0, 30)}...`,
@@ -239,8 +112,9 @@ async function BackgroundStart() {
 
         // 웹페이지의 모든 하이라이트를 가져옴
         case "getHighlight":
-          console.log("bs: getHighlight");
-          getHighlight(token, request.data)
+          console.log("bs: getHighligh");
+          const getHighlightURL = `${host_url}/api/highlight/feed`;
+          sendHTTPRequest("POST", getHighlightURL, token, request.data)
             .then((data) => sendResponse({ data }))
             .catch((error) => console.log(`fetch 실패: ${error}`));
           break;
@@ -248,12 +122,14 @@ async function BackgroundStart() {
         // 현재 탭의 url에 대한 노티 생성
         case "postNoti":
           console.log("bs: postNoti");
+          const postNotiURL = `${host_url}/api/noti/create`;
           chrome.tabs.query(
             { active: true, currentWindow: true },
             function (tabs) {
               if (tabs.length !== "undefined" && tabs.length === 1) {
                 const currentURL = decodeURI(tabs[0].url);
-                postNoti(token, request.data, currentURL)
+                const body = { url: currentURL, contents: request.data };
+                sendHTTPRequest("POST", postNotiURL, token, body)
                   .then((data) => sendResponse({ data }))
                   .catch((error) => console.log(`fetch 실패: ${error}`));
               }
@@ -263,20 +139,25 @@ async function BackgroundStart() {
 
         // 유저가 받은 노티 리스트 요청
         case "getNoti":
+          console.log("bs: getNoti");
           chrome.action.setBadgeText({ text: "" });
-          getNoti(token)
+          const getNotiURL = `${host_url}/api/noti/extension`;
+          sendHTTPRequest("GET", getNotiURL, token, request.data)
             .then((data) => sendResponse({ data }))
             .catch((error) => console.log(`fetch 실패: ${error}`));
           break;
 
         // 현재 탭의 url에 대한 피드 정보 요청
         case "getFeed":
+          console.log("bs: getFeed");
+          const getFeedURL = `${host_url}/api/feed/feed_url`;
+
           chrome.tabs.query(
             { active: true, currentWindow: true },
             function (tabs) {
               if (tabs.length !== "undefined" && tabs.length === 1) {
                 const currentURL = decodeURI(tabs[0].url);
-                getFeed(token, { url: currentURL })
+                sendHTTPRequest("POST", getFeedURL, token, { url: currentURL })
                   .then((data) => sendResponse({ data }))
                   .catch((error) => console.log(`fetch 실패: ${error}`));
               }
@@ -286,31 +167,35 @@ async function BackgroundStart() {
 
         // 그룹의 태그 리스트 요청
         case "getGroupTags":
-          getGroupTags(token)
+          console.log("bs: getGroupTags");
+          const getGroupTagsURL = `${host_url}/api/tag/web`;
+          sendHTTPRequest("GET", getGroupTagsURL, token)
             .then((data) => sendResponse({ data }))
             .catch((error) => console.log(`fetch 실패: ${error}`));
           break;
 
         case "postFeed":
-          postFeed(token, request.data)
+          console.log("bs: postFeed");
+          const postFeedURL = `${host_url}/api/feed/create`;
+          sendHTTPRequest("POST", postFeedURL, token, request.data)
             .then((data) => sendResponse({ data }))
             .catch((error) => console.log(`fetch 실패: ${error}`));
           break;
 
         case "deleteHighlight":
-          deleteHighlight(token, request.data)
-            .then((data) => {
-              sendResponse({ data });
-              console.log(data);
-            })
+          console.log("bs: deleteHighlight");
+          const deleteHighlightURL = `${host_url}/api/highlight/delete`;
+          sendHTTPRequest("DELETE", deleteHighlightURL, token, request.data)
+            .then((data) => sendResponse({ data }))
             .catch((error) => console.log(`fetch 실패: ${error}`));
           break;
 
         case "postHighlightImage":
-          postHighlight(token, request.data)
+          console.log("bs: postHighlightImage");
+          const postHighlightImageURL = `${host_url}/api/highlight/create`;
+          sendHTTPRequest("POST", postHighlightImageURL, token, request.data)
             .then((data) => {
               sendResponse({ data });
-              console.log(data);
               createPush(
                 `${request.greeting}: ${data.id}`,
                 `${String(data.contents).substring(0, 30)}...`,
@@ -321,13 +206,15 @@ async function BackgroundStart() {
           break;
 
         case "getUserInfo":
-          getUserInfo(token)
+          console.log("bs: getUserInfo");
+          const getUserInfoURL = `${host_url}/api/user/signin`;
+          sendHTTPRequest("GET", getUserInfoURL, token, request.data)
             .then((data) => sendResponse({ data }))
             .catch((error) => console.log(`fetch 실패: ${error}`));
           break;
 
         default:
-          console.log(request, sender);
+          console.log("bs: Bad Request");
           break;
       }
     });
