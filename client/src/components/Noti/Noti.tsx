@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useCookies } from "react-cookie";
 import NotiItem from "./NotiItem/NotiItem";
 import { NotiData } from "../../models/notiData";
+import Calender from "../Cal/Calender";
 const host_url = `${process.env.REACT_APP_HOST}/api/noti/web`;
 export default function Noti() {
   const [cookies, setCookie, removeCookie] = useCookies(["logCookie"]);
@@ -53,42 +54,32 @@ export default function Noti() {
     // <div className="w-1/5 xl:fixed right-24 xl:overflow-auto ">
     <div className="hidden pr-16 basis-1/4 xl:block">
       <div className="rounded-lg bg-sky-500">
-        <div className="px-3 py-3 mx-auto rounded-lg">
-          <div className="flex flex-wrap items-center justify-between ">
-            {/* 알림 아이콘, 타이틀 */}
-            <div className="flex items-center flex-1 w-0 -ml-2">
-              <span className="flex mr-3 rounded-lg bg-sky-500">
+        {/* 메뉴바*/}
+        <div className="px-3 py-3 mx-auto rounded-lg max-w-7xl">
+          <div className="flex flex-wrap items-center ">
+            <div className="flex items-center flex-1 w-0">
+              <span className="flex p-2 mr-1 -ml-3 rounded-lg bg-sky-500">
                 <MegaphoneIcon
-                  className="w-6 h-6 text-white"
+                  className="w-6 h-6 ml-3 text-white"
                   aria-hidden="true"
                 />
               </span>
-              <p className="text-xl font-bold text-white truncate ">
-                <span className="md:hidden">알림</span>
-                <span className="hidden md:inline">알림</span>
+              <p className="text-xl font-bold text-white truncate">
+                <span className="">알림</span>
               </p>
-            </div>
-
-            <div className="flex-shrink-0 order-2 sm:order-3 sm:ml-3">
-              <button
-                type="button"
-                className="flex p-2 -mr-1 rounded-md hover:bg-sky-500 focus:outline-none focus:ring-2 focus:ring-white sm:-mr-2"
-              >
-                <span className="sr-only">Dismiss</span>
-                <XMarkIcon className="w-6 h-6 text-white" aria-hidden="true" />
-              </button>
             </div>
           </div>
         </div>
       </div>
       {/* 아래로 긴 카드박스 */}
-      <div className="mt-5 overflow-y-auto bg-white rounded-lg shadow-lg h-1/2">
+      <div className="mt-5 overflow-y-auto bg-white rounded-lg shadow-lg h-1/3">
         <div className="m-5">
           {/* 카드박스 내용 */}
           <ul className="">{notiList}</ul>
           {/* 카드박스 내용 1 */}
         </div>
       </div>
+      <Calender></Calender>
     </div>
   );
 }

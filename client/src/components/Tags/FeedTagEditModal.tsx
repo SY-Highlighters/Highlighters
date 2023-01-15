@@ -18,6 +18,14 @@ import Swal from "sweetalert2";
 import { ArrowRightCircleIcon } from "@heroicons/react/24/outline";
 import GroupTag from "../User/GroupTag";
 import { GrouptagList } from "../User/GroupTagList";
+import AWS from "aws-sdk";
+AWS.config.update({
+  region: "ap-northeast-2",
+  credentials: {
+    accessKeyId: `${process.env.REACT_APP_S3_ACCESS_KEY_ID}`,
+    secretAccessKey: `${process.env.REACT_APP_S3_SECRET_ACCESS_KEY}`,
+  },
+});
 export function FeedTagEditModal(props: any) {
   const setTagModal = useSetRecoilState(tagModalVisble);
   const currentFeedId = useRecoilValue(currentFeedIdState);
@@ -27,7 +35,27 @@ export function FeedTagEditModal(props: any) {
   // const tagName = useRecoilValue(tagNameState);
   const [tagList, setTagList] = useRecoilState(tagsInFeedState);
   const resetTagsInFeedState = useResetRecoilState(tagsInFeedState);
+  const [imgUrl, setImgUrl] = useState("");
 
+  // s3 설정
+  const s3 = new AWS.S3();
+
+  const params = {
+    Bucket: "highlighters-s3",
+    Key: "picture/345.jpg",
+  };
+  // s3.getObject(params, function (err, data) {
+  //   if (err) {
+  //     console.log(err, err.stack);
+  //   } else {
+  //     const imgUrl = URL.createObjectURL(
+  //       new Blob([data.Body], { type: "image/png" })
+  //     );
+  //     setImgUrl(imgUrl);
+  //     console.log(imgUrl);
+  //     console.log("suc", data);
+  //   }
+  // });
   const closeModal = () => {
     setTagModal(0);
     resetTagsInFeedState();
@@ -112,6 +140,10 @@ export function FeedTagEditModal(props: any) {
     </div>
   ));
 
+  // s3에서 이미지 가져오기
+  // const [imgUrl, setImgUrl] = useState("");
+  // const s3 = new AWS.S3();
+
   return (
     <div
       className="fixed z-10 overflow-y-auto inset-1"
@@ -191,6 +223,21 @@ export function FeedTagEditModal(props: any) {
                 ></GrouptagList>
               </div>
             </div>
+            {/* <a
+              href="#"
+              onClick={() => {
+                const newWindow = window.open(
+                  "https://search.naver.com/search.naver?ie=UTF-8&sm=whl_hty&query=%E3%85%9C%E3%85%81%E3%85%8D",
+                  "new window"
+                );
+                newWindow!.onload = () => {
+                  newWindow!.scrollTo(0, 15);
+                };
+              }}
+            >
+              Go to Scroll Position
+            </a> */}
+            {/* <img src={imgUrl} className="w-full h-full"></img> */}
           </div>
         </div>
       </div>

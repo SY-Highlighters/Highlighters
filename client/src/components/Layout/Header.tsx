@@ -2,6 +2,7 @@
 import {
   ListBulletIcon,
   MagnifyingGlassCircleIcon,
+  StarIcon,
 } from "@heroicons/react/24/outline";
 import { Fragment, useState } from "react";
 import { HomeIcon } from "@heroicons/react/24/outline";
@@ -118,7 +119,7 @@ export default function Header() {
                   <button
                     onClick={handleBookmarkClick}
                     type="button"
-                    className="p-1 text-white rounded-full bg-sky-600 hover:bg-sky-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-sky-500 focus:ring-white"
+                    className="p-1 text-white rounded-full bg-sky-600 hover:bg-sky-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-sky-500 "
                   >
                     <span className="sr-only">View notifications</span>
                     <HomeIcon className="w-6 h-6" aria-hidden="true" />
@@ -126,24 +127,9 @@ export default function Header() {
                 ) : (
                   <button
                     onClick={handleBookmarkClick}
-                    className="p-1 text-white rounded-full bg-sky-600 hover:bg-sky-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-sky-500 focus:ring-white"
-                  >
-                    <span className="sr-only">View notifications</span>
-                    {/* <!-- Heroicon name: outline/bell --> */}
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      strokeWidth={1.5}
-                      stroke="currentColor"
-                      className="w-6 h-6"
+                    className="p-1 text-white rounded-full bg-sky-600 hover:bg-sky-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-sky-500 "
                     >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        d="M13 17h8m0 0v-6m0 6a2 2 0 11-4 0 2 2 0 014 0zm-6 0h.01M6 17h.01M18 6a2 2 0 00-2-2H8a2 2 0 00-2 2v11a2 2 0 002 2h8a2 2 0 002-2V6z"
-                      />
-                    </svg>
+                      <StarIcon className="w-6 h-6"></StarIcon>
                   </button>
                 )}
               </li>
