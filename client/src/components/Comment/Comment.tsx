@@ -20,56 +20,18 @@ import {
   commentReloadState,
 } from "../../states/atom";
 import { useRecoilValue } from "recoil";
+import { useUserData } from "../../hooks/useUserData";
 export function Comment(props: any) {
   const currentFeedId = useRecoilValue(currentFeedIdState);
   const [cookies, setCookie, removeCookie] = useCookies(["logCookie"]);
   const [commentList, setCommentList] = useState([]);
   const commentReload = useRecoilValue(commentReloadState);
 
-  const {
-    data: user,
-    isSuccess,
-    isLoading,
-    error,
-  } = useQuery(
-    ["user"],
-    async () => {
-      try {
-        const res = await axios.get(
-          `${process.env.REACT_APP_HOST}/api/user/signin`,
-          {
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${cookies.logCookie}`,
-            },
-          }
-        );
-        return res.data;
-      } catch (err) {}
-    },
-    {
-      // cacheTime: 60 * 60 * 1000,
-      // 1시간동안 캐시를 사용한다.
-      cacheTime: 60 * 60 * 1000,
-      staleTime: 2 * 60 * 60 * 1000,
-      // Refetch the data when the component mounts, including when the page is refreshed
-      refetchOnMount: false,
-      // Do not refetch the data when the window gains focus
-      refetchOnWindowFocus: false,
-      // 쿠키가 준비되었을때 쿼리를 실행한다.
-    }
-  );
+  const { data: user, isSuccess, isLoading, error } = useUserData(cookies);
 
   useEffect(() => {
     async function fetchData() {
-      const response = await axios({
-        method: "get",
-        url: `${process.env.REACT_APP_HOST}/api/comment/get/${currentFeedId}`,
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${cookies.logCookie}`,
-        },
-      });
+      const response = await getFeedComment(currentFeedId, cookies);
       setCommentList(response.data.data);
     }
     fetchData();
@@ -93,4 +55,18 @@ export function Comment(props: any) {
       </ul>
     </div>
   );
+}
+
+async function getFeedComment(
+  currentFeedId: number,
+  cookies: { logCookie?: any }
+) {
+  return await axios({
+    method: "get",
+    url: `${process.env.REACT_APP_HOST}/api/comment/get/${currentFeedId}`,
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${cookies.logCookie}`,
+    },
+  });
 }

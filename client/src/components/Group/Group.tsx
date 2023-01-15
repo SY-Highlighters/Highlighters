@@ -1,58 +1,16 @@
-import React, { useState, useEffect } from "react";
-import { useRecoilState, useRecoilValue } from "recoil";
-import { groupModalVisble, userInfoState } from "../../states/atom";
-// import GroupJoined from "./GroupJoined";
+import { useRecoilValue } from "recoil";
+import { groupModalVisble } from "../../states/atom";
 import GroupModal from "./Modal/GroupModal";
 import GroupNotJoined from "./GroupNotJoined";
+import GroupJoined from "./GroupJoined";
 import { useCookies } from "react-cookie";
-import { useQuery } from "react-query";
-import axios from "axios";
-const GroupJoined = React.lazy(async () => import("./GroupJoined"));
+import { useUserData } from "../../hooks/useUserData";
 export default function Group() {
-  const [groupModal, setGroupModal] = useRecoilState(groupModalVisble);
-  const userData = useRecoilValue(userInfoState);
-  const [cookies, setCookie, removeCookie] = useCookies(["logCookie"]);
+  const groupModal = useRecoilValue(groupModalVisble);
+  const [cookies] = useCookies(["logCookie"]);
 
-  // useEffect(() => {
-  //   setLocalUser(userData);
-  // }, [userData]);
-  // react-query 사용 시 server state
-  const {
-    data: user,
-    isSuccess,
-    isLoading,
-    error,
-  } = useQuery(
-    ["user", cookies.logCookie],
-    async () => {
-      try {
-        const res = await axios.get(
-          `${process.env.REACT_APP_HOST}/api/user/signin`,
-          {
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${cookies.logCookie}`,
-            },
-          }
-        );
-        return res.data;
-      } catch (err) {
-        console.error(err);
-      }
-    },
-    {
-      // cacheTime: 60 * 60 * 1000,
-      // 1시간동안 캐시를 사용한다.
-      cacheTime: 60 * 60 * 1000,
-      staleTime: 2 * 60 * 60 * 1000,
-      // Refetch the data when the component mounts, including when the page is refreshed
-      refetchOnMount: false,
-      // Do not refetch the data when the window gains focus
-      refetchOnWindowFocus: false,
-      // 쿠키가 준비되었을때 쿼리를 실행한다.
-      enabled: !!cookies.logCookie,
-    }
-  );
+  // 유저 데이터 요청
+  const { data: user, isSuccess, isLoading, error } = useUserData(cookies);
 
   if (isSuccess) {
     return (

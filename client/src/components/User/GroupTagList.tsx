@@ -48,6 +48,7 @@ export function GrouptagList(props: any) {
       // 쿠키가 준비되었을때 쿼리를 실행한다.
     }
   );
+  useEffect(() => {}, []);
   return (
     <div className="relative items-end mb-3">
       {isSuccess &&

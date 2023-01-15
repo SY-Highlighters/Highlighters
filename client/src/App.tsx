@@ -41,7 +41,7 @@ function App() {
 
   return (
     <GoogleOAuthProvider clientId={clientId}>
-      <div className="flex flex-col h-screen">
+      <div className="flex flex-col xl:h-screen">
         {/* header section */}
         {header}
         {/* log section */}
