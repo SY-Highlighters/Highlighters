@@ -1,4 +1,9 @@
-import { UseInterceptors, UseFilters, Param } from '@nestjs/common/decorators';
+import {
+  UseInterceptors,
+  UseFilters,
+  Param,
+  Query,
+} from '@nestjs/common/decorators';
 import { Controller, UseGuards, Post, Body, Delete, Get } from '@nestjs/common';
 import { SuccessInterceptor } from 'src/common/interceptors/success.interceptors';
 import { HttpExceptionFilter } from 'src/common/exceptions/http-exception.filter';
@@ -39,11 +44,15 @@ export class BookmarkController {
   @ApiResponse({
     status: 200,
     description: 'success',
-    type: '북마크에 피드 양식 + og',
+    type: 'Feed',
   })
   @ApiOperation({ summary: '북마크 조회' })
   @Get('/')
-  async findBookmark(@GetUser() user: User): Promise<object[]> {
-    return this.bookmarkService.getBookmark(user);
+  async findBookmark(
+    @Query('page') page: number,
+    @Query('take') take: number,
+    @GetUser() user: User,
+  ) {
+    return this.bookmarkService.getBookmark(Number(page), Number(take), user);
   }
 }

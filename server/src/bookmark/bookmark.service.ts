@@ -43,8 +43,17 @@ export class BookmarkService {
     return null;
   }
 
-  async getBookmark(user: User): Promise<object[]> {
+  async getBookmark(page: number, take: number, user: User) {
     try {
+      const count = await this.prismaService.feed.count({
+        where: {
+          bookmark: {
+            some: {
+              user_email: user.email,
+            },
+          },
+        },
+      });
       const feeds = await this.prismaService.feed.findMany({
         where: {
           bookmark: {
@@ -53,9 +62,9 @@ export class BookmarkService {
             },
           },
         },
-        orderBy: {
-          updatedAt: 'desc',
-        },
+        orderBy: { updatedAt: 'desc' },
+        take: take,
+        skip: take * (page - 1),
         include: {
           highlight: {
             include: {
@@ -66,10 +75,14 @@ export class BookmarkService {
                 },
               },
             },
-            orderBy: {
-              user_email: 'asc',
-              createdAt: 'asc',
-            },
+            orderBy: [
+              {
+                user_email: 'asc',
+              },
+              {
+                createdAt: 'asc',
+              },
+            ],
           },
           tag: true,
           og: true,
@@ -80,9 +93,7 @@ export class BookmarkService {
             },
           },
           comment: {
-            orderBy: {
-              createdAt: 'desc',
-            },
+            orderBy: { createdAt: 'desc' },
           },
           bookmark: {
             where: {
@@ -94,9 +105,12 @@ export class BookmarkService {
           },
         },
       });
-      return feeds;
+      return {
+        currentPage: page,
+        totalPage: Math.ceil(count / take),
+        feeds,
+      };
     } catch (e) {
-      console.log(e);
       throw new HttpException('Internal Server Error', 500);
     }
   }

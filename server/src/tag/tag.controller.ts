@@ -8,6 +8,7 @@ import {
   UseGuards,
   UseInterceptors,
   Delete,
+  Query,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { User, Tag } from '@prisma/client';
@@ -71,15 +72,33 @@ export class TagController {
   }
 
   // 태그에 따라 피드 검색
-  @ApiResponse({ status: 200, description: 'success', type: [Object] })
+  @ApiResponse({ status: 200, description: 'success', type: 'Feed' })
   @ApiOperation({ summary: '태그에 따라 피드 검색' })
-  @Get('/search/:tag_name')
+  @Get('/search/')
   async searchTag(
+    @Query('page') page: number,
+    @Query('take') take: number,
+    @Query('tag_name') tag_name: string,
     @GetUser() user: User,
-    @Param('tag_name') tag_name: string,
-  ): Promise<object[]> {
-    return this.tagService.searchTag(tag_name, user);
+  ) {
+    return this.tagService.searchTag(
+      Number(page),
+      Number(take),
+      tag_name,
+      user,
+    );
   }
+
+  // // 태그에 따라 피드 검색
+  // @ApiResponse({ status: 200, description: 'success', type: [Object] })
+  // @ApiOperation({ summary: '태그에 따라 피드 검색' })
+  // @Get('/search/:tag_name')
+  // async searchTag(
+  //   @GetUser() user: User,
+  //   @Param('tag_name') tag_name: string,
+  // ): Promise<object[]> {
+  //   return this.tagService.searchTag(tag_name, user);
+  // }
 
   // 피드에 해당하는 태그 조회
   @ApiResponse({ status: 200, description: 'success', type: [String] })
