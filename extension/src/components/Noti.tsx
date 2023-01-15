@@ -1,13 +1,3 @@
-// // [TODO] onclick 이벤트 추가하기 -> 서버에 요청 보내기
-// async function getNotiAsync() {
-//   let response = await chrome.runtime.sendMessage({
-//     greeting: "isRead",
-    
-
-//   });
-
-// }
-
 
 export default function Noti(props: any) {
   return (
