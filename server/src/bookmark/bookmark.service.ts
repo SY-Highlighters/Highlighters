@@ -57,7 +57,20 @@ export class BookmarkService {
           updatedAt: 'desc',
         },
         include: {
-          highlight: true,
+          highlight: {
+            include: {
+              user: {
+                select: {
+                  nickname: true,
+                  image: true,
+                },
+              },
+            },
+            orderBy: {
+              user_email: 'asc',
+              createdAt: 'asc',
+            },
+          },
           tag: true,
           og: true,
           user: {

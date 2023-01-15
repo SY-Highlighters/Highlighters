@@ -74,7 +74,16 @@ export class FeedService {
         include: {
           highlight: {
             include: {
-              user: true,
+              user: {
+                select: {
+                  nickname: true,
+                  image: true,
+                },
+              },
+            },
+            orderBy: {
+              user_email: 'asc',
+              createdAt: 'asc',
             },
           },
           tag: true,
