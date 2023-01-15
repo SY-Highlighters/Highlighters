@@ -145,6 +145,31 @@ export class FeedService {
     return feeds;
   }
 
+  async findFeedByUserId(user: User): Promise<Feed[]> {
+    const feeds = await this.prismaService.feed.findMany({
+      where: { user_email: user.email },
+      orderBy: { updatedAt: 'desc' },
+      include: {
+        highlight: true,
+        tag: true,
+        og: true,
+        comment: {
+          orderBy: { createdAt: 'desc' },
+        },
+        bookmark: {
+          where: {
+            user_email: user.email,
+          },
+          select: {
+            id: true,
+          },
+        },
+      },
+    });
+
+    return feeds;
+  }
+
   async deleteFeedById(id: number): Promise<Feed> {
     const result = await this.prismaService.feed.delete({
       where: { id },

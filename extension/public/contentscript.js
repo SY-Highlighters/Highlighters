@@ -308,10 +308,6 @@ function rehighlightImage(highlight) {
   img.style.border = `8px solid ${highlight.color}`;
 }
 
-// function openHighlightMenu() {
-//   console.log("CLICKED!!!");
-// }
-
 function deleteHighlight(node) {
   chrome.runtime.sendMessage(
     {
@@ -371,13 +367,6 @@ function getUserInfo() {
     }
   );
 }
-
-// function redirectHome() {
-//   const is_production = false;
-//   window.location.href = is_production
-//     ? "https://highlighters.site"
-//     : "http://localhost:3000";
-// }
 
 let selectedImage = null;
 

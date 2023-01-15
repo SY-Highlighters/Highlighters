@@ -71,6 +71,13 @@ export class FeedController {
     return this.feedService.findFeedByGroupId(id, user);
   }
 
+  @ApiResponse({ status: 200, description: 'success', type: [Object] })
+  @ApiOperation({ summary: '로그인한 사용자가 작성한 피드 찾기' })
+  @Get('/user')
+  async findFeedByUserId(@GetUser() user: User): Promise<Feed[]> {
+    return this.feedService.findFeedByUserId(user);
+  }
+
   // Id로 Feed 찾은 후 삭제
   @Delete('/delete/:id')
   async deleteFeedById(@Param('id') id: number): Promise<Feed> {
