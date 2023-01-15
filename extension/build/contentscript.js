@@ -180,8 +180,6 @@ async function postHighlight(range, highlightStr) {
     endOffset: range.endOffset,
   };
 
-  console.log("cs: posthighlight");
-
   const og_image = document.querySelector("meta[property='og:image']");
   const og_description = document.querySelector(
     "meta[property='og:description']"
@@ -209,7 +207,9 @@ async function postHighlight(range, highlightStr) {
           "unauthorized error status code: ",
           response.data.statusCode
         );
-        showLoginModal();
+        alert("Highlighters: 로그인이 필요한 서비스입니다.\n(확인을 누르면 로그인 페이지로 이동합니다)");
+        window.open("https://highlighters.site/");
+        // showLoginModal();
       } else {
         highlights.push(response.data.data);
         highlightDone(range, response.data.data.id);
@@ -229,7 +229,7 @@ function getHighlight(url) {
       const highlightsMeta = response.data;
 
       highlights = highlightsMeta.data ? highlightsMeta.data : [];
-      console.log(highlights);
+      console.log("[contentscript] getHighlight", highlights);
 
       if (highlightsMeta.success === false) {
         throw new Error(
