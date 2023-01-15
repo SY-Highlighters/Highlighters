@@ -6,6 +6,7 @@ import {
   Param,
   Patch,
   Post,
+  Query,
   UseFilters,
   UseGuards,
   UseInterceptors,
@@ -47,10 +48,10 @@ export class HighlightController {
   }
 
   // URL로 찾은 Feed에 있는 모든 highlight 찾기
-  @Post('/feed')
+  @Get('/feed/endpoint')
   async findHighlightAll(
     @GetUser() user: User,
-    @Body('url') url: string,
+    @Query('url') url: string,
   ): Promise<any> {
     return this.highlightService.findAllHighlightInFeed(user.group_id, url);
   }
