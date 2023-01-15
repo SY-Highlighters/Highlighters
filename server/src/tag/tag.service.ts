@@ -18,6 +18,16 @@ export class TagService {
   ): Promise<Tag> {
     const { tag_name, feed_id } = createTagDeleteDto;
     try {
+      const isTag = await this.prismaService.tag.findFirst({
+        where: {
+          group_id: user.group_id,
+          tag_name: tag_name,
+        },
+      });
+      if (isTag) {
+        throw new HttpException('Tag already exists', 400);
+      }
+
       const tag = await this.prismaService.tag.create({
         data: {
           tag_name: tag_name,
