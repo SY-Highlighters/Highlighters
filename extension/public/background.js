@@ -1,4 +1,4 @@
-const is_production = true;
+const is_production = false; // true: 배포용, false: 로컬용
 
 const cookie_url = is_production
   ? "https://highlighters.site"
@@ -16,6 +16,7 @@ async function sendHTTPRequest(method, url, token, body) {
   let response = null;
 
   if (body) {
+    // POST fetch
     response = await fetch(url, {
       method: method,
       headers: {
@@ -25,6 +26,7 @@ async function sendHTTPRequest(method, url, token, body) {
       body: JSON.stringify(body),
     });
   } else {
+    // GET fetch
     response = await fetch(url, {
       method: method,
       headers: {
@@ -112,9 +114,8 @@ async function BackgroundStart() {
 
         // 웹페이지의 모든 하이라이트를 가져옴
         case "getHighlight":
-          console.log("bs: getHighligh");
-          const getHighlightURL = `${host_url}/api/highlight/feed`;
-          sendHTTPRequest("POST", getHighlightURL, token, request.data)
+          const getHighlightURL = `${host_url}/api/highlight/feed/endpoint?url=${request.data.url}`;
+          sendHTTPRequest("GET", getHighlightURL, token)
             .then((data) => sendResponse({ data }))
             .catch((error) => console.log(`fetch 실패: ${error}`));
           break;
