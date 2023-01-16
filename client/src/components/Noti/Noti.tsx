@@ -5,51 +5,48 @@ import { useCookies } from "react-cookie";
 import NotiItem from "./NotiItem/NotiItem";
 import { NotiData } from "../../models/notiData";
 import Calender from "../Calender/Calender";
-const host_url = `${process.env.REACT_APP_HOST}/api/noti/web`;
-export default function Noti() {
-  const [cookies, setCookie, removeCookie] = useCookies(["logCookie"]);
-  const [notiData, setNotiData] = useState<NotiData[]>([]);
-  const [notiVisible, setNotiVisible] = useState(false);
-  useEffect(() => {
-    async function notiGet() {
-      const res = await axios({
-        method: "get",
-        url: host_url,
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${cookies.logCookie}`,
-        },
-      });
-      notiAdd(res.data.data);
-    }
-    notiGet();
-  }, []);
+import { useNoti } from "../../hooks/useNoti";
+import { useInView } from "react-intersection-observer";
 
+export default function Noti() {
+  const [cookies] = useCookies(["logCookie"]);
+  const [ref, isView] = useInView();
+  // const [notiData, setNotiData] = useState<NotiData[]>([]);
+  const [notiVisible, setNotiVisible] = useState(false);
+  const { getBoard, getNextPage, getBoardIsSuccess, getNextPageIsPossible } =
+    useNoti();
+  useEffect(() => {
+    // 맨 마지막 요소를 보고있고 페이지가 존재하면
+    // 다음 페이지 데이터를 가져옴
+    if (isView && getNextPageIsPossible) {
+      getNextPage();
+    }
+  }, [isView, getNextPage, getNextPageIsPossible]);
   // 피드리스트에 피드아이템 넣기
-  const notiAdd = (data: any) => {
-    data.map((item: any) => {
-      const newNoti = {
-        id: item.id,
-        contents: item.contents,
-        nickname: item.nickname,
-        feed_id: item.feed_id,
-        title: item.title,
-        url: item.url,
-      };
-      // // NotiList에 NotiItem 추가
-      setNotiData((prev) => [...prev, newNoti]);
-    });
-  };
-  const notiList = notiData.map((noti: any) => (
-    <div key={noti.id}>
-      <NotiItem
-        sender={noti.nickname}
-        title={noti.title}
-        contents={noti.contents}
-        url={noti.url}
-      />
-    </div>
-  ));
+  // const notiAdd = (data: any) => {
+  //   data.map((item: any) => {
+  //     const newNoti = {
+  //       id: item.id,
+  //       contents: item.contents,
+  //       nickname: item.nickname,
+  //       feed_id: item.feed_id,
+  //       title: item.title,
+  //       url: item.url,
+  //     };
+  //     // // NotiList에 NotiItem 추가
+  //     setNotiData((prev) => [...prev, newNoti]);
+  //   });
+  // };
+  // const notiList = notiData.map((noti: any) => (
+  //   <div key={noti.id}>
+  //     <NotiItem
+  //       sender={noti.nickname}
+  //       title={noti.title}
+  //       contents={noti.contents}
+  //       url={noti.url}
+  //     />
+  //   </div>
+  // ));
   return (
     // <div className="w-1/5 xl:fixed right-24 xl:overflow-auto ">
     <div className="hidden pr-16 basis-1/4 xl:block">
@@ -75,8 +72,46 @@ export default function Noti() {
       <div className="mt-5 overflow-y-auto bg-white rounded-lg shadow-lg h-1/3">
         <div className="m-5">
           {/* 카드박스 내용 */}
-          <ul className="">{notiList}</ul>
-          {/* 카드박스 내용 1 */}
+          <ul className="">
+            {/* {
+              // 데이터를 불러오는데 성공하고 데이터가 0개가 아닐 때 렌더링
+              getBoardIsSuccess && getBoard!.pages
+                ? getBoard!.pages.map((page_data, page_num) => {
+                    const board_page = page_data.board_page;
+                    return board_page.map((noti: any, idx: any) => {
+                      if (
+                        // 마지막 요소에 ref 달아주기
+                        getBoard!.pages.length - 1 === page_num &&
+                        board_page.length - 1 === idx
+                      ) {
+                        return (
+                          // 마지막 요소에 ref 넣기 위해 div로 감싸기
+                          <div ref={ref} key={noti.id} className="">
+                            <NotiItem
+                              sender={noti.nickname}
+                              title={noti.title}
+                              contents={noti.contents}
+                              url={noti.url}
+                            />
+                          </div>
+                        );
+                      } else {
+                        return (
+                          <div key={noti.id} className="">
+                            <NotiItem
+                              sender={noti.nickname}
+                              title={noti.title}
+                              contents={noti.contents}
+                              url={noti.url}
+                            />
+                          </div>
+                        );
+                      }
+                    });
+                  })
+                : null
+            } */}
+          </ul>
         </div>
       </div>
       <Calender></Calender>
