@@ -31,6 +31,7 @@ export function GrouptagList(props: any) {
             },
           }
         );
+        console.log(res.data.data);
         return res.data.data;
       } catch (err) {
         console.error(err);
@@ -55,7 +56,12 @@ export function GrouptagList(props: any) {
         tagList &&
         tagList.map((tag: any) => (
           <span key={tag.id}>
-            <TagItem name={tag.tag_name} id={tag.id} onFunc={props.onFunc} />
+            <TagItem
+              name={tag.tag_name}
+              count={tag._count.tag_name}
+              id={tag.id}
+              onFunc={props.onFunc}
+            />
           </span>
         ))}
     </div>

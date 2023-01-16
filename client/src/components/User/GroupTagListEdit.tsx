@@ -12,28 +12,31 @@ export function GrouptagListEdit(props: any) {
   const [cookies] = useCookies(["logCookie"]);
   const [clickedTagEdit, setClickedTagEdit] = useState(false);
 
-  const {
-    data: tagList,
-    isSuccess,
-  } = useQuery(["tagList"], async () => {
-    try {
-      const res = await axios.get(`${process.env.REACT_APP_HOST}/api/tag/web`, {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${cookies.logCookie}`,
-        },
-      });
-      console.log(res.data.data);
-      return res.data.data;
-    } catch (err) {
-      console.error(err);
+  const { data: tagEditList, isSuccess } = useQuery(
+    ["tagEditList"],
+    async () => {
+      try {
+        const res = await axios.get(
+          `${process.env.REACT_APP_HOST}/api/tag/web`,
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${cookies.logCookie}`,
+            },
+          }
+        );
+        console.log(res.data.data);
+        return res.data.data;
+      } catch (err) {
+        console.error(err);
+      }
     }
-  });
+  );
   return (
     <div className="relative items-end mb-3">
       {isSuccess &&
-        tagList &&
-        tagList.map((tag: any) => (
+        tagEditList &&
+        tagEditList.map((tag: any) => (
           <span key={tag.id}>
             <TagEditItem
               key={tag.tag_id}

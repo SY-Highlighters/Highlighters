@@ -8,7 +8,11 @@ import * as redisStore from 'cache-manager-redis-store';
 
 @Module({
   imports: [
+<<<<<<< Updated upstream
     AuthModule,
+=======
+    // AuthModule,
+>>>>>>> Stashed changes
     // CacheModule.register({
     //   store: redisStore,
     //   ttl: 10,

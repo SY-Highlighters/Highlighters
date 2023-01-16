@@ -11,6 +11,8 @@ export function FeedsDay(props: any) {
   const [ref, isView] = useInView();
   const selectedDay = useRecoilValue(selectedDayState);
   const date = new Date(selectedDay);
+  // 9시간 뺴서 한국 시간으로 변환
+  date.setHours(date.getHours() - 9);
   const { getBoard, getNextPage, getBoardIsSuccess, getNextPageIsPossible } =
     useFeedsInDay(date);
   // // 날짜 문자로 변환
