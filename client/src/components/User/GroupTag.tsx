@@ -38,7 +38,7 @@ const GroupTag = (props: any) => {
         </div>
       </div>
 
-      <div className="px-2 m-2 overflow-y-auto h-2/3">
+      <div className="px-2 m-2 overflow-y-auto h-2/3 xl:scrollbar-hide ">
         <ul>
           {clickedGroupTagDel ? (
             <GrouptagListEdit></GrouptagListEdit>

@@ -14,6 +14,23 @@ module.exports = {
       //   height: "100%",
       // },
     },
+    // that is animation class
+    keyframes: {
+      "fade-in-down": {
+        "0%": {
+          opacity: "0",
+          transform: "translateY(-20px)",
+        },
+        "100%": {
+          opacity: "1",
+          transform: "translateY(0)",
+        },
+      },
+    },
+    animation: {
+      "fade-in-down": "fade-in-down 1.5s ease-out",
+    },
+
     screens: {
       xs: "400px",
       sm: "640px",
@@ -32,5 +49,8 @@ module.exports = {
       // => @media (min-width: 1536px) { ... }
     },
   },
-  plugins: [require("tailwind-scrollbar-hide")],
+  plugins: [
+    require("tailwind-scrollbar-hide"),
+    require("@tailwindcss/aspect-ratio"),
+  ],
 };

@@ -11,8 +11,8 @@ import LoginHeader from "./components/Layout/LoginHeader";
 // main section
 import { Main } from "./components/Main/Main";
 // user before login section
-import Intro from "./components/Intro/Intro";
-import LoginModal from "./components/Intro/LoginModal";
+import Intro from "./components/Group/Intro/Intro";
+import LoginModal from "./components/Group/Intro/LoginModal";
 // state management section
 import { useRecoilValue } from "recoil";
 import { logModalVisble, userInfoState } from "./states/atom";

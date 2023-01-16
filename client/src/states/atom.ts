@@ -126,3 +126,8 @@ export const selectedDayState = atom<Date>({
   key: "selectedDayState",
   default: new Date(),
 });
+
+export const changeMainSectionState = atom<boolean>({
+  key: "changeMainSectionState",
+  default: false,
+});
