@@ -315,7 +315,7 @@ function makeEventOnImage() {
   const images = document.querySelectorAll("img");
 
   for (const image of images) {
-    console.log(image.classList);
+    // console.log(image.classList);
     if (image.classList.contains("highlighted")) {
       continue;
     }
@@ -513,10 +513,6 @@ document.onmouseup = function (e) {
     const divTop = direction ? e.pageY + 10 : e.pageY - 40;
     const divLeft = direction ? e.pageX + 10 : e.pageX - 40;
     button.style.transform = direction ? "rotate(90deg)" : "rotate(270deg)";
-
-    // 드래그한 영역의 위치에 레이어를 띄운다.
-    // 레이어의 위치를 변경하고 싶으면 위치값을 수정한다.
-    // 레이어가 화면을 벗어나면 안되므로 위치값을 수정한다.
 
     // 레이어 위치를 변경한다.
     button.style.top = divTop + "px";

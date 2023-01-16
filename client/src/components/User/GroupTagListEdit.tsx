@@ -33,7 +33,7 @@ export function GrouptagListEdit(props: any) {
     }
   );
   return (
-    <div className="relative items-end mb-3">
+    <div>
       {isSuccess &&
         tagEditList &&
         tagEditList.map((tag: any) => (

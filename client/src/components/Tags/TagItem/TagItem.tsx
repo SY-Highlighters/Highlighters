@@ -17,11 +17,12 @@ export function TagItem(props: any) {
   const tags =
     props.count && props.count ? (
       <span className="inline-flex items-center mr-2 px-3 py-0.5 rounded-full text-sm font-medium bg-sky-100 text-sky-800 hover:bg-sky-300 hover:scale-95">
-        {`#${props.name} `} <span className="ml-1 font-bold text-sky-500">{` ${props.count}`}</span>
+        {`#${props.name} `}{" "}
+        <span className="ml-1 font-bold text-sky-500">{` ${props.count}`}</span>
       </span>
     ) : (
       <span className="inline-flex items-center mr-2 px-3 py-0.5 rounded-full text-sm font-medium bg-sky-100 text-sky-800 hover:bg-sky-300 hover:scale-95">
-        {props.name}
+        #{props.name}
       </span>
     );
   const tagClickHandler = () => {
@@ -39,8 +40,19 @@ export function TagItem(props: any) {
     }
   };
   async function tagAddFunC() {
+    // 태그 중복 체크
+    for (let i = 0; i < tagList.length; i++) {
+      if (tagList[i].tag_name === props.name) {
+        Swal.fire({
+          icon: "error",
+          title: "태그 중복",
+          text: "이미 존재하는 태그입니다.",
+        });
+        return;
+      }
+    }
     const host_url = `${process.env.REACT_APP_HOST}/api/tag/create`;
-
+    console.log("태그 추가 함수 실행", props.name, currentFeedId);
     await axios
       .post(
         host_url,
