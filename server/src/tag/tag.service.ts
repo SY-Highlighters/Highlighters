@@ -36,11 +36,6 @@ export class TagService {
       const tag = await this.prismaService.tag.create({
         data: {
           tag_name: tag_name,
-          feed: {
-            connect: {
-              id: feed_id,
-            },
-          },
           group_id: user.group_id,
         },
       });
