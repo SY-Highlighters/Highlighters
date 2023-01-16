@@ -18,7 +18,7 @@ export function FeedsDay(props: any) {
   // // 날짜 문자로 변환
   const year = date.getFullYear();
   const month = date.getMonth() + 1;
-  const day = date.getDate();
+  const day = date.getDate() + 1;
 
   useEffect(() => {
     // 맨 마지막 요소를 보고있고 페이지가 존재하면
