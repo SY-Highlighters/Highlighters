@@ -7,8 +7,7 @@ import { CalendarDto } from './dto/calendar.dto';
 export class CalendarService {
   constructor(private readonly prismaService: PrismaService) {}
 
-  async showCalendar(user: User, calendarDto: CalendarDto) {
-    const { date, take, page } = calendarDto;
+  async showCalendar(user: User, page: number, take: number, date: Date) {
     console.log(new Date(date));
     // const server_date = new Date(date + '00:09:00');
     // console.log(server_date);
