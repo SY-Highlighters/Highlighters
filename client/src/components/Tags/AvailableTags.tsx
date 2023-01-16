@@ -25,21 +25,7 @@ const AvailableTags = () => {
     useFeedsInTag(clickedTag.tag_name);
 
   const resetClickedTag = useResetRecoilState(clickedTagState);
-  // useEffect(() => {
-  //   async function fetchData() {
-  //     const response = await axios({
-  //       method: "get",
-  //       url: `${process.env.REACT_APP_HOST}/api/tag/search/${clickedTag.tag_id}`,
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //         Authorization: `Bearer ${cookies.logCookie}`,
-  //       },
-  //     });
 
-  //     const data = response.data.data;
-  //   }
-  //   fetchData();
-  // }, []);
   useEffect(() => {
     // 맨 마지막 요소를 보고있고 페이지가 존재하면
     // 다음 페이지 데이터를 가져옴
