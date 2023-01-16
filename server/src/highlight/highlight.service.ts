@@ -19,7 +19,7 @@ import { Cache } from 'cache-manager';
 export class HighlightService {
   constructor(
     private readonly prismaService: PrismaService,
-    @Inject(CACHE_MANAGER) private readonly cacheManager: Cache,
+    // @Inject(CACHE_MANAGER) private readonly cacheManager: Cache,
     @Inject(forwardRef(() => FeedService))
     private readonly feedService: FeedService,
   ) {}
