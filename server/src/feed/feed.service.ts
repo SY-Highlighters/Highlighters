@@ -10,8 +10,7 @@ import { Cache } from 'cache-manager';
 export class FeedService {
   constructor(
     private readonly prismaService: PrismaService,
-    private readonly tagService: TagService,
-    @Inject(CACHE_MANAGER) private readonly cacheManager: Cache,
+    private readonly tagService: TagService, // @Inject(CACHE_MANAGER) private readonly cacheManager: Cache,
   ) {}
 
   async createFeed(createFeedDto: CreateFeedDto, user: User): Promise<Feed> {

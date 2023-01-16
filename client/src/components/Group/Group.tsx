@@ -27,7 +27,7 @@ export default function Group() {
   } else {
     // 로딩 중 또는 에러 발생 시 화면 빈 크기의 div를 반환
     return (
-      <div className="w-full mt-10 bg-white rounded-lg shadow-lg erflow-hidden">
+      <div className="w-full mt-4 bg-white rounded-lg shadow-lg erflow-hidden">
         <div className="h-12" />
         <div className="relative p-6 mb-9 rounded-3xl -top-5">
           <div className="relative flex items-end px-3 justify-left -top-1"></div>

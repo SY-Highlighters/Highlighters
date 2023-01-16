@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { useCookies } from "react-cookie";
 import NotiItem from "./NotiItem/NotiItem";
 import { NotiData } from "../../models/notiData";
-import Calender from "../Cal/Calender";
+import Calender from "../Calender/Calender";
 const host_url = `${process.env.REACT_APP_HOST}/api/noti/web`;
 export default function Noti() {
   const [cookies, setCookie, removeCookie] = useCookies(["logCookie"]);
