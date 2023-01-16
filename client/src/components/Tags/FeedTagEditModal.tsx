@@ -77,7 +77,7 @@ export function FeedTagEditModal(props: any) {
   // 엔터 입력시 태그 추가
   const handleKeyPress = (e: any) => {
     if (e.key === "Enter") {
-      tagAddHandler();
+      if (!tagList.some((tag:any) => tag.tag_name === inputValue)) tagAddHandler();
     }
   };
 
@@ -119,9 +119,8 @@ export function FeedTagEditModal(props: any) {
             tag_name: inputValue,
             tag_id: response.data.id,
           };
-          console.log(response);
-          setTagList([...tagList, newTagItem]);
           setInputValue("");
+          setTagList([...tagList, newTagItem]);
         } else {
           alert("태그 생성 실패!");
         }
@@ -237,7 +236,7 @@ export function FeedTagEditModal(props: any) {
             >
               Go to Scroll Position
             </a> */}
-            <img src={imgUrl} className="w-full h-full"></img>
+            {/* <img src={imgUrl} className="w-full h-full"></img> */}
           </div>
         </div>
       </div>
