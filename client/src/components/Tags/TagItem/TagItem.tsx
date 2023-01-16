@@ -22,7 +22,7 @@ export function TagItem(props: any) {
       </span>
     ) : (
       <span className="inline-flex items-center mr-2 px-3 py-0.5 rounded-full text-sm font-medium bg-sky-100 text-sky-800 hover:bg-sky-300 hover:scale-95">
-        {props.name}
+        #{props.name}
       </span>
     );
   const tagClickHandler = () => {
