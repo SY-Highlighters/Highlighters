@@ -457,7 +457,8 @@ async function onWindowReady() {
   const decodeuri = decodeURI(uri);
 
   getUserInfo();
-  getHighlight(decodeuri);
+
+  setTimeout(() => getHighlight(decodeuri), 0);
   makeEventOnImage();
 }
 //
