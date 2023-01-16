@@ -65,6 +65,9 @@ export class NotiService {
 
   async findNotiWeb(user: User, page: number, take: number) {
     try {
+      const count = await this.prismaService.noti.count({
+        where: { receiver_id: user.email },
+      });
       const noties = await this.prismaService.noti.findMany({
         where: { receiver_id: user.email },
         orderBy: { createdAt: 'desc' },
@@ -90,7 +93,7 @@ export class NotiService {
       }
       return {
         currentPage: page,
-        totalPage: Math.ceil(noties.length / take),
+        totalPage: Math.ceil(count / take),
         data: result,
       };
     } catch (e) {

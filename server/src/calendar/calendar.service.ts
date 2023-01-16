@@ -19,6 +19,7 @@ export class CalendarService {
           createdAt: {
             // gte: new Date(date.getFullYear(), date.getMonth(), date.getDate()),
             gte: new Date(date),
+            // lte: new Date(date + '23:59:59'),
           },
         },
       });
