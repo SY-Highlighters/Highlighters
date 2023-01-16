@@ -9,7 +9,7 @@ export const useNoti = () => {
       method: "get",
       url: `${
         process.env.REACT_APP_HOST
-      }/api/noti/web?page=${pageParam}&take=${4}`,
+      }/api/noti/web?page=${pageParam}&take=${3}`,
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${cookies.logCookie}`,
@@ -17,11 +17,11 @@ export const useNoti = () => {
     });
     return {
       // 실제 데이터
-      board_page: res.data.data.feeds,
+      board_page: res.data,
       // 반환 값에 현재 페이지를 넘겨주자
       current_page: pageParam,
       // 페이지가 마지막인지 알려주는 서버에서 넘겨준 true/false 값
-      isLast: pageParam === res.data.data.totalPage,
+      isLast: pageParam === res.data.totalPage,
     };
   };
 

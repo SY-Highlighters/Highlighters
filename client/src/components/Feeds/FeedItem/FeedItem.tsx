@@ -5,12 +5,7 @@ import {
   PencilIcon,
 } from "@heroicons/react/20/solid";
 import {
-  AcademicCapIcon,
-  ArrowRightCircleIcon,
   ChatBubbleBottomCenterIcon,
-  ChevronRightIcon,
-  ForwardIcon,
-  HashtagIcon,
   StarIcon as StarIconOutLine,
   TrashIcon,
 } from "@heroicons/react/24/outline";
@@ -29,11 +24,19 @@ import { useRecoilValue, useSetRecoilState } from "recoil";
 import { Bookmarked } from "../../Bookmarks/BookmarkItem/Bookmarked";
 import { UnBookmarked } from "../../Bookmarks/BookmarkItem/UnBookmarked";
 import { Delete } from "../../Func/Delete";
-
+// import AWS from "aws-sdk";
+// AWS.config.update({
+//   region: "ap-northeast-2",
+//   credentials: {
+//     accessKeyId: `${process.env.REACT_APP_S3_ACCESS_KEY_ID}`,
+//     secretAccessKey: `${process.env.REACT_APP_S3_SECRET_ACCESS_KEY}`,
+//   },
+// });
 const FeedItem = (props: any) => {
   const [commentIsClicked, setCommentIsClicked] = useState(false);
   const setCurrentFeedId = useSetRecoilState(currentFeedIdState);
-  const [userImages, setUserImages] = useState<{ [key: string]: string }>({});
+  // const [img, setImgUrl] = useState("");
+
   // const [firstHighlight, setFirstHighlight] = useState(
   //   props.highlight[0].user.nickname
   // );
@@ -45,37 +48,80 @@ const FeedItem = (props: any) => {
   const month = date.getMonth() + 1;
   const day = date.getDate();
 
-  // 하이라이트 파싱
-  // const highlights = props.highlight.map((hl: any, index: number) => {
-  //   let firstHighlight = true;
-  //   if (!userImages[hl.user.nickname]) {
-  //     console.log(userImages);
-  //     setUserImages((prev) => ({
-  //       ...prev,
-  //       [hl.user.nickname]: hl.user.image,
-  //     }));
-  //   } else {
-  //     firstHighlight = false;
-  //   }
-  //   return (
-  //     <li className="" key={index}>
-  //       <div className="flex flex-row">
-  //         {firstHighlight && (
-  //           <img
-  //             src={userImages[hl.user.nickname]}
-  //             className="w-5 h-5 mr-1 rounded-full"
-  //           ></img>
-  //         )}
+  // // 원본
+  // let highlights;
+  // let img = "";
+  // if (props.highlight.length > 0) {
+  //   let firstHighlight = props.highlight[0].user.nickname;
+  //   highlights = props.highlight.map(async (hl: any, index: number) => {
+  //     if (hl.contents.includes("https://highlighters-s3")) {
+  //       let parts = hl.contents.split("/");
+  //       let imagePath = parts[parts.length - 1];
+  //       console.log(imagePath);
+  //       const s3 = new AWS.S3();
+  //       const params = {
+  //         Bucket: "highlighters-s3",
+  //         Key: "picture/" + imagePath,
+  //       };
+  //       await s3.getObject(params, function (err, data) {
+  //         if (err) {
+  //           console.log(err, err.stack);
+  //         } else {
+  //           const imgUrl = URL.createObjectURL(
+  //             new Blob([data.Body], { type: "image/png" })
+  //           );
+  //           img = imgUrl;
+  //           console.log("suc", data);
+  //         }
+  //       });
+  //     } else {
+  //       img = "";
+  //     }
+
+  //     if (firstHighlight !== hl.user.nickname || index === 0) {
+  //       firstHighlight = hl.user.nickname;
+  //       return (
+  //         <div key={index}>
+  //           <ul>
+  //             <li className="flex flex-row" key={index}>
+  //               {" "}
+  //               <img
+  //                 src={hl.user.image}
+  //                 className="w-5 h-5 mr-1 rounded-full"
+  //               ></img>
+  //               <span
+  //                 className="text-xs lg:text-base"
+  //                 style={{ backgroundColor: hl.color }}
+  //               >
+  //                 {img ? (
+  //                   <img src={img} className="w-10 h-10"></img>
+  //                 ) : (
+  //                   hl.contents
+  //                 )}
+  //                 <img src={img} className="w-10 h-10"></img>
+  //               </span>
+  //             </li>
+  //           </ul>
+  //         </div>
+  //       );
+  //     }
+  //     return (
+  //       <li className="ml-6" key={index}>
   //         <span
   //           className="text-xs lg:text-base"
   //           style={{ backgroundColor: hl.color }}
   //         >
-  //           {hl.contents}
+  //           {/* {img ? (
+  //             <img src={img} className="w-10 h-10"></img>
+  //           ) : (
+  //             hl.contents
+  //           )} */}
+  //           <img src={img} className="w-10 h-10"></img>
   //         </span>
-  //       </div>
-  //     </li>
-  //   );
-  // });
+  //       </li>
+  //     );
+  //   });
+  // }
   // 원본
   let highlights;
   if (props.highlight.length > 0) {
@@ -115,6 +161,7 @@ const FeedItem = (props: any) => {
       );
     });
   }
+
   // 태그 파싱
   const tags = props.tag.map((tagItem: any, index: number) => (
     <li key={index}>
@@ -129,8 +176,9 @@ const FeedItem = (props: any) => {
     setCommentIsClicked(!commentIsClicked);
   }
   // useEffect(() => {
-  //   console.log("댓글 수 리로드");
+  //   setImgUrl("");
   // }, []);
+
   return (
     // <li className="py-5">
     <div className="overflow-hidden bg-white rounded-lg shadow-lg">

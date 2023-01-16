@@ -12,8 +12,14 @@ export class SearchService {
 
   async find(word: string, user: User): Promise<object[] | void> {
     const client = this.elasticsearchService.getClient();
+    // const take = await client.get({
+    //   index: 'search-mysql',
+    //   id: '1',
+    // });
+    console.log(word);
+
     const paper = await client.search({
-      index: 'search-mysql',
+      index: 'search-highlighter',
       // body: {
       //   query: {
       //     query_string: {
@@ -96,7 +102,56 @@ export class SearchService {
     }
   }
 
-  // async findtest(word: string, user: User): Promise<object[] | void> {
-
-  // }
+  async findtest(word: string, user: User): Promise<object[] | void> {
+    const result = await this.prismaService.feed.findMany({
+      where: {
+        group_id: user.group_id,
+        OR: [
+          {
+            title: {
+              contains: word,
+            },
+          },
+          {
+            og: {
+              title: {
+                contains: word,
+              },
+            },
+          },
+          {
+            og: {
+              description: {
+                contains: word,
+              },
+            },
+          },
+          {
+            user_email: {
+              contains: word,
+            },
+          },
+          {
+            highlight: {
+              some: {
+                contents: {
+                  contains: word,
+                },
+              },
+            },
+          },
+          {
+            tag: {
+              some: {
+                tag_name: {
+                  contains: word,
+                },
+              },
+            },
+          },
+        ],
+      },
+    });
+    return result;
+  }
 }

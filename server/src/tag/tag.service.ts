@@ -22,6 +22,11 @@ export class TagService {
         where: {
           group_id: user.group_id,
           tag_name: tag_name,
+          feed: {
+            some: {
+              id: feed_id,
+            },
+          },
         },
       });
       if (isTag) {
@@ -36,11 +41,7 @@ export class TagService {
               id: feed_id,
             },
           },
-          group: {
-            connect: {
-              id: user.group_id,
-            },
-          },
+          group_id: user.group_id,
         },
       });
       return tag;
