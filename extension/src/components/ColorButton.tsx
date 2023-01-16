@@ -1,4 +1,3 @@
-import { useEffect, useState } from "react";
 
 export default function ColorButton(props: any) {
   async function colorButtonHandler() {

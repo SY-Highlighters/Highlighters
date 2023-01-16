@@ -6,6 +6,7 @@ export function TagEditItem(props: any) {
 
   const buttonClickHandler = () => {
     setFeedTags(feedTags.filter((tag: any) => tag !== props.name));
+    
   };
 
   return (

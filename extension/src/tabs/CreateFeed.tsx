@@ -3,7 +3,6 @@ import { useEffect, useState, useRef } from "react";
 import { TagItem } from "../components/TagItem";
 import { useSetRecoilState, useRecoilState } from "recoil";
 import { feedGenerateState, tagsInFeedState } from "../states/atom";
-import TagData from "../models/tag";
 import Swal from "sweetalert2";
 import { TagEditItem } from "../components/TagEditItem";
 
@@ -11,17 +10,16 @@ const Toast = Swal.mixin({
   toast: true,
   position: "center",
   showConfirmButton: false,
-  timer: 500,
-  timerProgressBar: true,
-  didOpen: (toast) => {
-    toast.addEventListener("mouseenter", Swal.stopTimer);
-    toast.addEventListener("mouseleave", Swal.resumeTimer);
-  },
+  // timerProgressBar: true,
+  // didOpen: (toast) => {
+  //   toast.addEventListener("mouseenter", Swal.stopTimer);
+  //   toast.addEventListener("mouseleave", Swal.resumeTimer);
+  // },
 });
 
 export default function CreateFeed(this: any) {
-  const [groupTags, setGroupTags] = useState<TagData[]>([]);
-  const [feedTags, setFeedTags] = useRecoilState(tagsInFeedState);
+  const [groupTags, setGroupTags] = useState<string[]>([]); // 그룹의 태그 리스트
+  const [feedTags, setFeedTags] = useRecoilState(tagsInFeedState); // 피드에 추가된 태그 리스트
   const [titleInput, setTitleInput] = useState<string>("");
   const [tagInput, setTagInput] = useState<string>("");
   const [currentURL, setCurrentURL] = useState<string | undefined>("");
@@ -76,17 +74,39 @@ export default function CreateFeed(this: any) {
     });
   };
 
-  const titleInputChangeHandler = (event: any) => {
+  const handleTitleChange = (event: any) => {
     setTitleInput(event.target.value);
   };
 
-  const tagInputChangeHandler = (event: any) => {
+  const handleTagChange = (event: any) => {
     setTagInput(event.target.value);
   };
 
   const newTagHandler = () => {
     // 서버에 api 요청
     const newTag = tagInput;
+    // 태그 중복 체크
+    for (let i = 0; i < groupTags.length; i++) {
+      if (groupTags[i] === newTag) {
+        Toast.fire({
+          icon: "error",
+          title: "이미 존재하는 태그입니다.",
+          timer: 300,
+        });
+        return;
+      }
+    }
+
+    for (let i = 0; i < feedTags.length; i++) {
+      if (feedTags[i] === newTag) {
+        Toast.fire({
+          icon: "error",
+          title: "이미 존재하는 태그입니다.",
+          timer: 300,
+        });
+        return;
+      }
+    }
 
     setTagInput("");
     feedTags.push(newTag);
@@ -105,7 +125,6 @@ export default function CreateFeed(this: any) {
   };
 
   const feedSubmitHandler = () => {
-    console.log(ogDescription);
     chrome.runtime.sendMessage(
       {
         greeting: "postFeed",
@@ -122,7 +141,8 @@ export default function CreateFeed(this: any) {
         console.log(response);
         Toast.fire({
           icon: "success",
-          title: "피드 생성 성공!",
+          title: "피드 생성 완료!",
+          timer: 500,
         });
         setTitleInput("");
         setFeedGenerate(true);
@@ -146,7 +166,7 @@ export default function CreateFeed(this: any) {
             피드 제목
           </h1>
           <input
-            onChange={titleInputChangeHandler}
+            onChange={handleTitleChange}
             type="text"
             ref={inputRef}
             className="w-full h-8 mt-1 mb-1 mr-1 text-gray-700 bg-white border border-gray-300 rounded-md focus:outline-none focus:border-gray-400"
@@ -166,7 +186,7 @@ export default function CreateFeed(this: any) {
             <div className="flex flex-row">
               <div className="w-full">
                 <input
-                  onChange={tagInputChangeHandler}
+                  onChange={handleTagChange}
                   type="text"
                   className="h-8 mt-1 mb-1 mr-1 text-gray-700 bg-white border border-gray-300 rounded-md w-72 focus:outline-none focus:border-gray-400"
                   placeholder="태그를 입력하세요"
