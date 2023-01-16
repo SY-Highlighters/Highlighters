@@ -6,7 +6,7 @@ import axios from "axios";
 import { DocumentIcon, MegaphoneIcon } from "@heroicons/react/24/outline";
 import { QueryCache, useQuery, QueryClient, useQueryClient } from "react-query";
 import { useInView } from "react-intersection-observer";
-import { useInfiniteFeed } from "./useInfiniteFeed";
+import { useInfiniteFeed } from "../../hooks/useInfiniteFeed";
 const AvailableFeeds = () => {
   const { getBoard, getNextPage, getBoardIsSuccess, getNextPageIsPossible } =
     useInfiniteFeed();
@@ -22,7 +22,7 @@ const AvailableFeeds = () => {
 
   return (
     // <div className="xl:ml-20 justify-self-center xl:w-3/6">
-    <div className="basis-2/4">
+    <div className="basis-2/4 ">
       {/* 위에 여백 두고 그룹피드 타이틀 만들기 */}
       {/* 그룹 피드 타이틀 ver1*/}
       {/* <div className="relative p-3 rounded-3xl">
@@ -36,7 +36,7 @@ const AvailableFeeds = () => {
             <div className="flex items-center flex-1 w-0 ">
               <span className="flex p-2 mr-1 -ml-3 rounded-lg bg-sky-500">
                 <DocumentIcon
-                  className="w-6 h-6 text-white"
+                  className="w-6 h-6 ml-3 text-white"
                   aria-hidden="true"
                 />
               </span>
@@ -49,7 +49,7 @@ const AvailableFeeds = () => {
         </div>
       </div>
       {/* feedslist section */}
-      <div className="mt-5 rounded-md shadow-lg xl:overflow-y-auto xl:scrollbar-hide xl:h-full">
+      <div className="mt-5 rounded-md shadow-lg xl:overflow-y-auto xl:scrollbar-hide xl:h-full hover:scale-95 ">
         <ul className="space-y-4 ">
           {
             // 데이터를 불러오는데 성공하고 데이터가 0개가 아닐 때 렌더링

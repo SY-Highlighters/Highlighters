@@ -1,65 +1,34 @@
-import { Injectable, HttpException } from '@nestjs/common';
+import { HttpException, Injectable } from '@nestjs/common';
 import { User } from '@prisma/client';
 import { PrismaService } from 'src/repository/prisma.service';
-import { getUrlMeta } from 'src/util/geturlmeta';
-import { RequestBookmarkDto } from './dto/bookmark.dto';
+import { CalendarDto } from './dto/calendar.dto';
 
 @Injectable()
-export class BookmarkService {
+export class CalendarService {
   constructor(private readonly prismaService: PrismaService) {}
 
-  async createBookmark(
-    requestBookmarkDto: RequestBookmarkDto,
-    user: User,
-  ): Promise<null> {
-    const { feed_id } = requestBookmarkDto;
-    try {
-      await this.prismaService.bookmark.create({
-        data: {
-          feed_id: feed_id,
-          user_email: user.email,
-        },
-      });
-    } catch (e) {
-      console.log(e);
-      throw new HttpException('Internal Server Error', 500);
-    }
-
-    return null;
-  }
-
-  async deleteBookmark(bookmark_id: number): Promise<null> {
-    try {
-      await this.prismaService.bookmark.delete({
-        where: {
-          id: bookmark_id,
-        },
-      });
-    } catch (e) {
-      console.log(e);
-      throw new HttpException('Internal Server Error', 500);
-    }
-
-    return null;
-  }
-
-  async getBookmark(page: number, take: number, user: User) {
+  async showCalendar(user: User, calendarDto: CalendarDto) {
+    const { date, take, page } = calendarDto;
+    console.log(new Date(date));
+    // const server_date = new Date(date + '00:09:00');
+    // console.log(server_date);
+    console.log('1');
     try {
       const count = await this.prismaService.feed.count({
         where: {
-          bookmark: {
-            some: {
-              user_email: user.email,
-            },
+          group_id: user.group_id,
+          createdAt: {
+            // gte: new Date(date.getFullYear(), date.getMonth(), date.getDate()),
+            gte: new Date(date),
           },
         },
       });
+      console.log('2');
       const feeds = await this.prismaService.feed.findMany({
         where: {
-          bookmark: {
-            some: {
-              user_email: user.email,
-            },
+          group_id: user.group_id,
+          createdAt: {
+            gte: new Date(date),
           },
         },
         orderBy: { updatedAt: 'desc' },

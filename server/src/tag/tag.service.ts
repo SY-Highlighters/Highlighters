@@ -18,6 +18,16 @@ export class TagService {
   ): Promise<Tag> {
     const { tag_name, feed_id } = createTagDeleteDto;
     try {
+      const isTag = await this.prismaService.tag.findFirst({
+        where: {
+          group_id: user.group_id,
+          tag_name: tag_name,
+        },
+      });
+      if (isTag) {
+        throw new HttpException('Tag already exists', 400);
+      }
+
       const tag = await this.prismaService.tag.create({
         data: {
           tag_name: tag_name,
@@ -60,14 +70,18 @@ export class TagService {
   }
 
   async getTag(user: User): Promise<object[]> {
-    const tags = await this.prismaService.tag.findMany({
+    const tags = await this.prismaService.tag.groupBy({
+      by: ['tag_name'],
+      _count: {
+        tag_name: true,
+      },
+      orderBy: {
+        _count: {
+          tag_name: 'desc',
+        },
+      },
       where: {
         group_id: user.group_id,
-      },
-      distinct: ['tag_name'],
-      select: {
-        id: true,
-        tag_name: true,
       },
     });
     return tags;
@@ -92,76 +106,78 @@ export class TagService {
     }
   }
 
-  async searchTag(tag_name: string, user: User): Promise<object[]> {
-    const feeds = await this.prismaService.feed.findMany({
-      where: {
-        group_id: user.group_id,
-        tag: {
-          some: {
-            tag_name: tag_name,
-          },
-        },
-      },
-      orderBy: { updatedAt: 'desc' },
-      include: {
-        highlight: {
-          include: {
-            user: {
-              select: {
-                nickname: true,
-                image: true,
-              },
+  async searchTag(page: number, take: number, tag_name: string, user: User) {
+    try {
+      const count = await this.prismaService.feed.count({
+        where: {
+          group_id: user.group_id,
+          tag: {
+            some: {
+              tag_name: tag_name,
             },
           },
-          orderBy: {
-            user_email: 'asc',
-            createdAt: 'asc',
+        },
+      });
+      const feeds = await this.prismaService.feed.findMany({
+        where: {
+          group_id: user.group_id,
+          tag: {
+            some: {
+              tag_name: tag_name,
+            },
           },
         },
-        tag: true,
-        og: true,
-        user: {
-          select: {
-            nickname: true,
-            image: true,
+        orderBy: { updatedAt: 'desc' },
+        take: take,
+        skip: take * (page - 1),
+        include: {
+          highlight: {
+            include: {
+              user: {
+                select: {
+                  nickname: true,
+                  image: true,
+                },
+              },
+            },
+            orderBy: [
+              {
+                user_email: 'asc',
+              },
+              {
+                createdAt: 'asc',
+              },
+            ],
+          },
+          tag: true,
+          og: true,
+          user: {
+            select: {
+              nickname: true,
+              image: true,
+            },
+          },
+          comment: {
+            orderBy: { createdAt: 'desc' },
+          },
+          bookmark: {
+            where: {
+              user_email: user.email,
+            },
+            select: {
+              id: true,
+            },
           },
         },
-        bookmark: {
-          where: {
-            user_email: user.email,
-          },
-          select: {
-            id: true,
-          },
-        },
-      },
-    });
-    // const feedswithOg: object[] = [];
-    // for (const feed of feeds) {
-    //   if (feed.url) {
-    //     const meta = await getUrlMeta(feed.url);
-    //     // 존재하지 않는다면 임의의 값 넣기
-    //     if (meta.title === undefined) {
-    //       meta.title = 'No Title';
-    //     }
-    //     if (meta.desc === undefined) {
-    //       meta.desc = 'No Description';
-    //     }
-    //     if (meta.image === undefined) {
-    //       meta.image =
-    //         'https://img.favpng.com/23/20/7/computer-icons-information-png-favpng-g8DtjAPPNhyaU9EdjHQJRnV97_t.jpg';
-    //     }
-    //     const feedwithOg = {
-    //       ...feed,
-    //       og_title: meta.title,
-    //       og_desc: meta.desc,
-    //       og_image: meta.image,
-    //     };
-    //     feedswithOg.push(feedwithOg);
-    //   }
-    // }
-
-    return feeds;
+      });
+      return {
+        currentPage: page,
+        totalPage: Math.ceil(count / take),
+        feeds,
+      };
+    } catch (e) {
+      throw new HttpException('Internal Server Error', 500);
+    }
   }
 
   async getTagByFeedId(feed_id: number): Promise<string[]> {

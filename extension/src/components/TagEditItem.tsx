@@ -2,7 +2,6 @@ import { useRecoilState } from "recoil";
 import { tagsInFeedState } from "../states/atom";
 import React from "react";
 export function TagEditItem(props: any) {
-  // console.log("여기는 태그아이템");
   const [feedTags, setFeedTags] = useRecoilState(tagsInFeedState);
 
   const buttonClickHandler = () => {

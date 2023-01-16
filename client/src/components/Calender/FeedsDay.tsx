@@ -1,65 +1,59 @@
 import FeedItem from "../Feeds/FeedItem/FeedItem";
-import { useRecoilState, useRecoilValue, useResetRecoilState } from "recoil";
-import {
-  feedsInGroupState,
-  tagsInFeedState,
-  clickedTagState,
-  userInfoState,
-  feedsTagListState,
-} from "../../states/atom";
-import { useCookies } from "react-cookie";
-// import { useEffect, useState } from "react";
-import axios from "axios";
-import { useQuery } from "react-query";
-import { useEffect } from "react";
-import { useFeedsInTag } from "../../hooks/useFeedsInTag";
+import { useEffect, useState } from "react";
+import { CalendarDaysIcon } from "@heroicons/react/24/outline";
 import { useInView } from "react-intersection-observer";
-
-const AvailableTags = () => {
-  // const [tagFeedList, setTagFeedList] = useRecoilState(feedsTagListState);
-  // const [feedsTagList, setFeedsTagList] = useState([]);
-  const [cookies, setCookie, removeCookie] = useCookies(["logCookie"]);
-  const clickedTag = useRecoilValue(clickedTagState);
-  const [ref, isView] = useInView();
+import { useInfiniteFeed } from "../../hooks/useInfiniteFeed";
+import { useRecoilValue } from "recoil";
+import { selectedDayState } from "../../states/atom";
+export function FeedsDay(props: any) {
   const { getBoard, getNextPage, getBoardIsSuccess, getNextPageIsPossible } =
-    useFeedsInTag(clickedTag.tag_name);
+    useInfiniteFeed();
+  const [ref, isView] = useInView();
 
-  const resetClickedTag = useResetRecoilState(clickedTagState);
-  // useEffect(() => {
-  //   async function fetchData() {
-  //     const response = await axios({
-  //       method: "get",
-  //       url: `${process.env.REACT_APP_HOST}/api/tag/search/${clickedTag.tag_id}`,
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //         Authorization: `Bearer ${cookies.logCookie}`,
-  //       },
-  //     });
+  const selectedDay = useRecoilValue(selectedDayState);
+  // 날짜 문자로 변환
+  const date = new Date(selectedDay);
+  const year = date.getFullYear();
+  const month = date.getMonth() + 1;
+  const day = date.getDate();
 
-  //     const data = response.data.data;
-  //   }
-  //   fetchData();
-  // }, []);
   useEffect(() => {
     // 맨 마지막 요소를 보고있고 페이지가 존재하면
     // 다음 페이지 데이터를 가져옴
     if (isView && getNextPageIsPossible) {
       getNextPage();
     }
-  }, [isView, getNextPage, getNextPageIsPossible, clickedTag.tag_name]);
-  // clickTag가 변경시 새로운 쿼리를 요청
+  }, [isView, getNextPage, getNextPageIsPossible]);
 
   return (
+    // <div className="xl:ml-20 justify-self-center xl:w-3/6">
     <div className="basis-2/4">
-      <div className="relative p-3 rounded-3xl">
-        <h1 className="text-2xl antialiased font-bold text-whtie">
-          <span className="inline-flex items-center mr-2 px-3 py-0.5 rounded-full text-xl font-bold bg-sky-100 text-sky-800">
-            # {clickedTag.tag_name}
-          </span>
-        </h1>
+      {/* 위에 여백 두고 그룹피드 타이틀 만들기 */}
+      {/* 그룹 피드 타이틀 ver1*/}
+      {/* <div className="relative p-3 rounded-3xl">
+        <h1 className="text-2xl antialiased font-bold text-whtie">그룹 피드</h1>
+      </div> */}
+      {/* 그룹 피드 타이틀 ver2 */}
+      <div className="rounded-lg bg-sky-500">
+        {/* 메뉴바*/}
+        <div className="px-3 py-3 mx-auto rounded-lg max-w-7xl">
+          <div className="flex flex-wrap items-center ">
+            <div className="flex items-center flex-1 w-0 ">
+              <span className="flex p-2 mr-1 -ml-3 rounded-lg bg-sky-500">
+                <CalendarDaysIcon
+                  className="w-6 h-6 ml-3 text-white"
+                  aria-hidden="true"
+                />
+              </span>
+              <p className="text-xl font-bold text-white truncate">
+                <span className="">{`${year}년 ${month}월 ${day}일`}</span>
+              </p>
+            </div>
+          </div>
+        </div>
       </div>
       {/* feedslist section */}
-      <div className="mt-5 rounded-md shadow-lg xl:overflow-y-auto xl:scrollbar-hide xl:h-full hover:scale-95 ">
+      <div className="mt-5 rounded-md shadow-lg xl:overflow-y-auto xl:scrollbar-hide xl:h-full">
         <ul className="space-y-4 ">
           {
             // 데이터를 불러오는데 성공하고 데이터가 0개가 아닐 때 렌더링
@@ -123,10 +117,29 @@ const AvailableTags = () => {
                 })
               : null
           }
+          {/* {feedsInGroup &&
+            feedsInGroup.map((feed: any) => (
+              <div key={feed.id} className="mb-4">
+                <FeedItem
+                  id={feed.id}
+                  key={feed.id}
+                  title={feed.title}
+                  description={feed.og.description}
+                  og_image={feed.og.image}
+                  url={feed.url}
+                  highlight={feed.highlight}
+                  date={feed.createdAt}
+                  tag={feed.tag}
+                  writer={feed.user.nickname}
+                  writerImg={feed.user.image}
+                  commentLen={feed.comment.length}
+                  bookmarked={feed.bookmark.length !== 0 ? true : false}
+                  bookmarkId={feed.bookmark[0]}
+                />
+              </div>
+            ))} */}
         </ul>
       </div>
     </div>
   );
-};
-
-export default AvailableTags;
+}

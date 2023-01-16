@@ -96,7 +96,7 @@ const GroupTag = (props: any) => {
       className={
         props.onCss
           ? props.onCss
-          : "w-full mt-10 bg-white rounded-lg shadow-lg mb-10"
+          : "w-full mt-4 bg-white rounded-lg shadow-lg"
       }
     >
       <div className="relative p-6 rounded-3xl -top-5">
