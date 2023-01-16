@@ -8,6 +8,8 @@ let highlightColor;
 let highlights;
 let userImage;
 let curNode;
+let curNodeType;
+let curNodeID = null;
 // let mouseOverImgButton = {};
 
 const toolBarCSS = `
@@ -80,13 +82,17 @@ function makeXPath(node, currentPath) {
 
 async function highlightDone(range, id) {
   console.log("highlightdone: ", id);
+
+  //하이라이팅
   const newNode = document.createElement("span");
   newNode.setAttribute("class", `highlighter`);
   newNode.setAttribute("id", id);
   newNode.style.backgroundColor = highlightColor.highlightColor;
   range.surroundContents(newNode);
+
+  // 툴바표시 이벤트리스너 추가
   newNode.addEventListener("click", (event) =>
-    showToolBar(event, newNode, userImage)
+    showToolBar(event, newNode, userImage, 1)
   );
 
   // 펜 버튼 숨기기
@@ -208,18 +214,21 @@ function rehighlightText(highlight) {
   range.setStart(startNode, startOff);
   range.setEnd(endNode, endOff);
 
+  // 하이라이팅
   const newNode = document.createElement("span");
   newNode.setAttribute("class", "highlighter");
   newNode.setAttribute("id", highlight.id);
   newNode.style.backgroundColor = highlight.color;
   range.surroundContents(newNode);
 
+  // 툴바 표시 이벤트리스너 추가
   newNode.addEventListener("click", (event) =>
-    showToolBar(event, newNode, highlight.user.image)
+    showToolBar(event, newNode, highlight.user.image, 1)
   );
 }
 
 function rehighlightImage(highlight) {
+  // 이미지 노드 복원
   const img = document.evaluate(
     highlight.selection.XPath,
     document,
@@ -228,45 +237,77 @@ function rehighlightImage(highlight) {
     null
   ).singleNodeValue;
 
+  // 하이라이팅
   img.style.border = `8px solid ${highlight.color}`;
   img.setAttribute("id", highlight.id);
   img.classList.add("highlighted");
 
+  // 툴바 표시 이벤트리스너 추가
   img.addEventListener("click", (event) =>
-    showToolBar(event, img, highlight.user.image)
+    showToolBar(event, img, highlight.user.image, 2)
   );
 }
 
 function deleteHighlight(node) {
+
+  const nodeid = (curNodeID == null) ? node.id : curNodeID;
+
   chrome.runtime.sendMessage(
     {
       greeting: "deleteHighlight",
-      data: { id: +node.id },
+      data: { id: +nodeid },
     },
     (response) => {
       node.removeAttribute("style");
+        if (curNodeType === 2) {
+          const deletedImageNode = node.cloneNode(true);
+          node.parentNode.replaceChild(deletedImageNode, node);
+          const button = document.getElementById("btn_image_highlighters");
+
+          const position = deletedImageNode.getBoundingClientRect();
+
+          const scrollY = window.scrollY;
+          const scrollX = window.scrollX;
+
+          const mouseOverImgBtn = mouseOverImgBtnHandler(
+            button,
+            deletedImageNode,
+            position,
+            scrollY,
+            scrollX
+          );
+          deletedImageNode.addEventListener("mouseover", mouseOverImgBtn);
+          deletedImageNode.addEventListener("mouseout", mouseOnImgBtn);
+        }
     }
   );
 
   hideToolBar();
 }
 
-function showToolBar(event, node, user) {
+
+function showToolBar(event, node, user, nodetype, nodeID) {
   const html = document.querySelector("html");
   const userImageDiv = document.getElementById("userImageDiv-highlighters");
   const toolBar = document.getElementById("toolBar-highlighters");
 
   curNode = node; // 현재 선택된 하이라이트 업데이트
+  curNodeType = nodetype; // 현재 선택된 하이라이트 노드 타입 업데이트
+  curNodeID = nodeID; // 현재 선택된 하이라이트 노드 아이디 업데이트
   userImageDiv.setAttribute("src", user); // 현재 선택된 하이라이트의 유저 이미지로 설정
 
+  // 투명 배경 : 툴바 바깥 눌렀을 때 툴바가 닫히도록 이벤트 리스너 추가
   const background = document.createElement("div");
   background.setAttribute("id", "background-highlighters");
   background.style.cssText = backgroundCSS;
   background.addEventListener("click", hideToolBar);
   html.appendChild(background);
 
+  // 툴바의 위치를 마우스 이벤트가 발생한 곳으로 설정
   const divTop = event.pageY - 50;
   const divLeft = event.pageX - 40;
+
+  // 툴바 스타일 설정
   toolBar.style.top = divTop + "px";
   toolBar.style.left = divLeft + "px";
   toolBar.style.position = "absolute";
@@ -375,10 +416,21 @@ function highlightImage() {
       } else {
         console.log("Post Highlight Image Success", response.data);
         highlights.push(response.data.data);
+
+        const curId = response.data.data.id; // 현재 선택된 이미지 노드아이디 백업
+
+        // 이벤트리스너(하이라이트 버튼) 없애기
         const highlightedImage = selectedImage.cloneNode(true);
         highlightedImage.style.border = `8px solid ${highlightColor.highlightColor}`;
         selectedImage.parentNode.replaceChild(highlightedImage, selectedImage);
-        selectedImage = null;
+        selectedImage = highlightedImage;
+
+        // 툴바 표시 이벤트리스너 추가
+        highlightedImage.addEventListener("click", (event) =>
+          showToolBar(event, highlightedImage, userImage, 2, curId)
+        );
+
+        // 펜 버튼 숨기기
         const ImageButton = document.getElementById("btn_image_highlighters");
         ImageButton.style.display = "none";
       }
