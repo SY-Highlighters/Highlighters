@@ -487,7 +487,7 @@ async function onWindowReady() {
 
   getUserInfo();
 
-  setTimeout(() => getHighlight(decodeuri), 0);
+  setTimeout(() => getHighlight(decodeuri), 50);
   // setTimeout(() => makeEventOnImage(), 1);
   // setTimeout(() => , 0);
 }

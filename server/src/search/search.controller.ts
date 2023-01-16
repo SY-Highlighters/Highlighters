@@ -33,6 +33,6 @@ export class SearchController {
     @GetUser() user: User,
     @Param('word') word: string,
   ): Promise<object[] | void> {
-    return this.searchService.find(word, user);
+    return this.searchService.findtest(word, user);
   }
 }
