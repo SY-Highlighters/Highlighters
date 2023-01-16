@@ -9,11 +9,11 @@ import * as redisStore from 'cache-manager-redis-store';
 @Module({
   imports: [
     AuthModule,
-    CacheModule.register({
-      store: redisStore,
-      ttl: 10,
-      url: process.env.REDIS_URL,
-    }),
+    // CacheModule.register({
+    //   store: redisStore,
+    //   ttl: 10,
+    //   url: process.env.REDIS_URL,
+    // }),
   ],
   controllers: [HighlightController],
   providers: [HighlightService, FeedService, TagService],
