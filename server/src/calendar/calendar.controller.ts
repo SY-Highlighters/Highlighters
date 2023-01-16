@@ -7,6 +7,7 @@ import {
   UseGuards,
   UseInterceptors,
   Body,
+  Query,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { HttpExceptionFilter } from 'src/common/exceptions/http-exception.filter';
@@ -14,6 +15,7 @@ import { SuccessInterceptor } from 'src/common/interceptors/success.interceptors
 import { User } from '@prisma/client';
 import { ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { CalendarDto } from './dto/calendar.dto';
+import { query } from 'express';
 
 @Controller('api/calendar')
 @UseInterceptors(SuccessInterceptor)
@@ -26,7 +28,12 @@ export class CalendarController {
   @ApiResponse({ status: 200, description: 'success', type: 'Feed' })
   @ApiOperation({ summary: '캘린더 조회' })
   @Get('/')
-  async showCalendar(@GetUser() user: User, @Body() calendarDto: CalendarDto) {
-    return this.calendarService.showCalendar(user, calendarDto);
+  async showCalendar(
+    @GetUser() user: User,
+    @Query('page') page: number,
+    @Query('take') take: number,
+    @Query('date') date: Date,
+  ) {
+    return this.calendarService.showCalendar(user, page, take, date);
   }
 }

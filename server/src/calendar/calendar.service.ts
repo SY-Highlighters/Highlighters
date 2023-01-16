@@ -7,28 +7,44 @@ import { CalendarDto } from './dto/calendar.dto';
 export class CalendarService {
   constructor(private readonly prismaService: PrismaService) {}
 
-  async showCalendar(user: User, calendarDto: CalendarDto) {
-    const { date, take, page } = calendarDto;
-    console.log(new Date(date));
-    // const server_date = new Date(date + '00:09:00');
-    // console.log(server_date);
-    console.log('1');
+  async showCalendar(user: User, page: number, take: number, date: Date) {
     try {
       const count = await this.prismaService.feed.count({
         where: {
           group_id: user.group_id,
-          createdAt: {
-            // gte: new Date(date.getFullYear(), date.getMonth(), date.getDate()),
-            gte: new Date(date),
+          updatedAt: {
+            gte: new Date(
+              date.getFullYear(),
+              date.getMonth(),
+              date.getDate(),
+              date.getHours(),
+            ),
+            lte: new Date(
+              date.getFullYear(),
+              date.getMonth(),
+              date.getDate() + 1,
+              date.getHours(),
+            ),
           },
         },
       });
-      console.log('2');
+      console.log(count);
       const feeds = await this.prismaService.feed.findMany({
         where: {
           group_id: user.group_id,
-          createdAt: {
-            gte: new Date(date),
+          updatedAt: {
+            gte: new Date(
+              date.getFullYear(),
+              date.getMonth(),
+              date.getDate(),
+              date.getHours(),
+            ),
+            lte: new Date(
+              date.getFullYear(),
+              date.getMonth(),
+              date.getDate() + 1,
+              date.getHours(),
+            ),
           },
         },
         orderBy: { updatedAt: 'desc' },

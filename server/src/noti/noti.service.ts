@@ -63,14 +63,19 @@ export class NotiService {
     }
   }
 
-  async findNotiWeb(user: User): Promise<ShowNotiDto[]> {
-    const noties = await this.prismaService.noti.findMany({
-      where: { receiver_id: user.email },
-      orderBy: { createdAt: 'desc' },
-      include: { feed: true, sender: true },
-    });
-    const result: ShowNotiDto[] = [];
+  async findNotiWeb(user: User, page: number, take: number) {
     try {
+      const count = await this.prismaService.noti.count({
+        where: { receiver_id: user.email },
+      });
+      const noties = await this.prismaService.noti.findMany({
+        where: { receiver_id: user.email },
+        orderBy: { createdAt: 'desc' },
+        include: { feed: true, sender: true },
+        take: take,
+        skip: (page - 1) * take,
+      });
+      const result: ShowNotiDto[] = [];
       for (let i = 0; i < noties.length; i++) {
         // await this.prismaService.noti.update({
         //   where: { id: noties[i].id },
@@ -86,11 +91,14 @@ export class NotiService {
           createdAt: noties[i].createdAt,
         });
       }
+      return {
+        currentPage: page,
+        totalPage: Math.ceil(count / take),
+        data: result,
+      };
     } catch (e) {
       throw new HttpException('Internal Server Error', 500);
     }
-
-    return result;
   }
 
   async findNotiExtension(user: User): Promise<ShowNotiDto[]> {
