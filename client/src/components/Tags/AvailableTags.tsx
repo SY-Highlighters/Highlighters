@@ -12,11 +12,18 @@ import { useCookies } from "react-cookie";
 import axios from "axios";
 import { useQuery } from "react-query";
 import { useEffect } from "react";
+import { useFeedsInTag } from "../../hooks/useFeedsInTag";
+import { useInView } from "react-intersection-observer";
+
 const AvailableTags = () => {
   // const [tagFeedList, setTagFeedList] = useRecoilState(feedsTagListState);
   // const [feedsTagList, setFeedsTagList] = useState([]);
   const [cookies, setCookie, removeCookie] = useCookies(["logCookie"]);
   const clickedTag = useRecoilValue(clickedTagState);
+  const [ref, isView] = useInView();
+  const { getBoard, getNextPage, getBoardIsSuccess, getNextPageIsPossible } =
+    useFeedsInTag(clickedTag.tag_name);
+
   const resetClickedTag = useResetRecoilState(clickedTagState);
   // useEffect(() => {
   //   async function fetchData() {
@@ -34,62 +41,14 @@ const AvailableTags = () => {
   //   fetchData();
   // }, []);
   useEffect(() => {
-    console.log("여기는 태그에 대한 피드야", clickedTag.tag_name);
-    return () => {
-      console.log("태그 피드리스트 리턴", clickedTag.tag_name);
-    };
-  }, [clickedTag.tag_name]);
+    // 맨 마지막 요소를 보고있고 페이지가 존재하면
+    // 다음 페이지 데이터를 가져옴
+    if (isView && getNextPageIsPossible) {
+      getNextPage();
+    }
+  }, [isView, getNextPage, getNextPageIsPossible, clickedTag.tag_name]);
   // clickTag가 변경시 새로운 쿼리를 요청
 
-  const { data: feedsInTag, isSuccess } = useQuery(
-    clickedTag.tag_name,
-    async () => {
-      const response = await axios({
-        method: "get",
-        url: `${process.env.REACT_APP_HOST}/api/tag/search/${clickedTag.tag_name}`,
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${cookies.logCookie}`,
-        },
-      });
-      return response.data.data;
-    },
-    {
-      enabled: clickedTag.tag_name !== undefined,
-    }
-  );
-  // const tagAdd = (data: []) => {
-  //   data.map((item: any) => {
-  //     const newTag = {
-  //       id: item.id,
-  //       key: item.id,
-  //       url: item.url,
-  //       og_image: item.og_image,
-  //       title: item.og_title,
-  //       description: item.og_desc,
-  //       highlight: item.highlight,
-  //       Date: item.createdAt,
-  //       tag: item.tag,
-  //     };
-  //     setFeedsTagList((oldTags: any) => [...oldTags, newTag]);
-  //   });
-  // };
-
-  // const tagsList = feedsTagList.map((feed: any, index: number) => (
-  //   <div key={feed.id}>
-  //     <FeedItem
-  //       id={feed.id}
-  //       key={feed.id + index}
-  //       title={feed.title}
-  //       description={feed.description}
-  //       og_image={feed.og_image}
-  //       url={feed.url}
-  //       highlight={feed.highlight}
-  //       date={feed.Date}
-  //       tag={feed.tag}
-  //     />
-  //   </div>
-  // ));
   return (
     <div className="basis-2/4">
       <div className="relative p-3 rounded-3xl">
@@ -99,27 +58,71 @@ const AvailableTags = () => {
           </span>
         </h1>
       </div>
-      <div className="mt-6 rounded-md xl:overflow-y-scroll xl:h-5/6">
-        <ul className="space-y-5">
-          {isSuccess &&
-            feedsInTag &&
-            feedsInTag.map((feed: any) => (
-              <div key={feed.id} className="">
-                <FeedItem
-                  id={feed.id}
-                  key={feed.id}
-                  title={feed.title}
-                  description={feed.og.description}
-                  og_image={feed.og.image}
-                  url={feed.url}
-                  highlight={feed.highlight}
-                  date={feed.createdAt}
-                  tag={feed.tag}
-                  writer={feed.user.nickname}
-                  writerImg={feed.user.image}
-                />
-              </div>
-            ))}
+      {/* feedslist section */}
+      <div className="mt-5 rounded-md shadow-lg xl:overflow-y-auto xl:scrollbar-hide xl:h-full hover:scale-95 ">
+        <ul className="space-y-4 ">
+          {
+            // 데이터를 불러오는데 성공하고 데이터가 0개가 아닐 때 렌더링
+            getBoardIsSuccess && getBoard!.pages
+              ? getBoard!.pages.map((page_data, page_num) => {
+                  const board_page = page_data.board_page;
+                  return board_page.map((feed: any, idx: any) => {
+                    if (
+                      // 마지막 요소에 ref 달아주기
+                      getBoard!.pages.length - 1 === page_num &&
+                      board_page.length - 1 === idx
+                    ) {
+                      return (
+                        // 마지막 요소에 ref 넣기 위해 div로 감싸기
+                        <div ref={ref} key={feed.id} className="">
+                          <FeedItem
+                            id={feed.id}
+                            key={feed.id}
+                            title={feed.title}
+                            description={feed.og.description}
+                            og_image={feed.og.image}
+                            url={feed.url}
+                            highlight={feed.highlight}
+                            date={feed.createdAt}
+                            tag={feed.tag}
+                            writer={feed.user.nickname}
+                            writerImg={feed.user.image}
+                            commentLen={feed.comment.length}
+                            bookmarked={
+                              feed.bookmark.length !== 0 ? true : false
+                            }
+                            bookmarkId={feed.bookmark[0]}
+                          />
+                        </div>
+                      );
+                    } else {
+                      return (
+                        <div key={feed.id} className="">
+                          <FeedItem
+                            id={feed.id}
+                            key={feed.id}
+                            title={feed.title}
+                            description={feed.og.description}
+                            og_image={feed.og.image}
+                            url={feed.url}
+                            highlight={feed.highlight}
+                            date={feed.createdAt}
+                            tag={feed.tag}
+                            writer={feed.user.nickname}
+                            writerImg={feed.user.image}
+                            commentLen={feed.comment.length}
+                            bookmarked={
+                              feed.bookmark.length !== 0 ? true : false
+                            }
+                            bookmarkId={feed.bookmark[0]}
+                          />
+                        </div>
+                      );
+                    }
+                  });
+                })
+              : null
+          }
         </ul>
       </div>
     </div>

@@ -34,9 +34,9 @@ const FeedItem = (props: any) => {
   const [commentIsClicked, setCommentIsClicked] = useState(false);
   const setCurrentFeedId = useSetRecoilState(currentFeedIdState);
   const [userImages, setUserImages] = useState<{ [key: string]: string }>({});
-  // const [firstHighlight, setFirstHighlight] = useState(true);
-
-
+  // const [firstHighlight, setFirstHighlight] = useState(
+  //   props.highlight[0].user.nickname
+  // );
   // 여러개의 하이라이트를 받아서 하나의 리스트로 만들어준다.
   // 하이라이트별 색상 지정해줘야함. -> 수정해야함
   // 날짜 파싱
@@ -46,37 +46,75 @@ const FeedItem = (props: any) => {
   const day = date.getDate();
 
   // 하이라이트 파싱
-  const highlights = props.highlight.map((hl: any, index: number) => {
-    let firstHighlight = true;
-    if (!userImages[hl.user.nickname]) {
-      console.log(userImages);
-      setUserImages((prev) => ({
-        ...prev,
-        [hl.user.nickname]: hl.user.image,
-      }));
-    } else {
-      firstHighlight = false;
-    }
-    return (
-      <li className="" key={index}>
-        <div className="flex flex-row">
-          {firstHighlight && (
-            <img
-              src={userImages[hl.user.nickname]}
-              className="w-5 h-5 mr-1 rounded-full"
-            ></img>
-          )}
+  // const highlights = props.highlight.map((hl: any, index: number) => {
+  //   let firstHighlight = true;
+  //   if (!userImages[hl.user.nickname]) {
+  //     console.log(userImages);
+  //     setUserImages((prev) => ({
+  //       ...prev,
+  //       [hl.user.nickname]: hl.user.image,
+  //     }));
+  //   } else {
+  //     firstHighlight = false;
+  //   }
+  //   return (
+  //     <li className="" key={index}>
+  //       <div className="flex flex-row">
+  //         {firstHighlight && (
+  //           <img
+  //             src={userImages[hl.user.nickname]}
+  //             className="w-5 h-5 mr-1 rounded-full"
+  //           ></img>
+  //         )}
+  //         <span
+  //           className="text-xs lg:text-base"
+  //           style={{ backgroundColor: hl.color }}
+  //         >
+  //           {hl.contents}
+  //         </span>
+  //       </div>
+  //     </li>
+  //   );
+  // });
+  // 원본
+  let highlights;
+  if (props.highlight.length > 0) {
+    let firstHighlight = props.highlight[0].user.nickname;
+    highlights = props.highlight.map((hl: any, index: number) => {
+      if (firstHighlight !== hl.user.nickname || index === 0) {
+        firstHighlight = hl.user.nickname;
+        return (
+          <div key={index}>
+            <ul>
+              <li className="flex flex-row" key={index}>
+                {" "}
+                <img
+                  src={hl.user.image}
+                  className="w-5 h-5 mr-1 rounded-full"
+                ></img>
+                <span
+                  className="text-xs lg:text-base"
+                  style={{ backgroundColor: hl.color }}
+                >
+                  {hl.contents}
+                </span>
+              </li>
+            </ul>
+          </div>
+        );
+      }
+      return (
+        <li className="ml-6" key={index}>
           <span
             className="text-xs lg:text-base"
             style={{ backgroundColor: hl.color }}
           >
             {hl.contents}
           </span>
-        </div>
-      </li>
-    );
-  });
-
+        </li>
+      );
+    });
+  }
   // 태그 파싱
   const tags = props.tag.map((tagItem: any, index: number) => (
     <li key={index}>

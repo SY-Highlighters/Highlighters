@@ -1,15 +1,15 @@
 import { useInfiniteQuery } from "react-query";
 import axios from "axios";
 import { useCookies } from "react-cookie";
-export const useFeedsInDay = (date: any) => {
-  const [cookies] = useCookies(["logCookie"]);
+export const useFeedsInTag = (tagName: String) => {
+  const [cookies, setCookie, removeCookie] = useCookies(["logCookie"]);
 
   const getPageBoard = async ({ pageParam = 1 }) => {
     const res = await axios({
       method: "get",
       url: `${
         process.env.REACT_APP_HOST
-      }/api/calender=${pageParam}&take=${4}&date=${date}`,
+      }/api/tag/search?page=${pageParam}&take=${4}&tag_name=${tagName}`,
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${cookies.logCookie}`,
@@ -30,7 +30,7 @@ export const useFeedsInDay = (date: any) => {
     fetchNextPage: getNextPage,
     isSuccess: getBoardIsSuccess,
     hasNextPage: getNextPageIsPossible,
-  } = useInfiniteQuery(["feedsInDay"], getPageBoard, {
+  } = useInfiniteQuery([tagName], getPageBoard, {
     getNextPageParam: (lastPage, pages) => {
       // lastPage와 pages는 콜백함수에서 리턴한 값을 의미한다!!
       // lastPage: 직전에 반환된 리턴값, pages: 여태 받아온 전체 페이지

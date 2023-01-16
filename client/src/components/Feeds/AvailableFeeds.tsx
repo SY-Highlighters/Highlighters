@@ -22,7 +22,7 @@ const AvailableFeeds = () => {
 
   return (
     // <div className="xl:ml-20 justify-self-center xl:w-3/6">
-    <div className="basis-2/4">
+    <div className="basis-2/4 ">
       {/* 위에 여백 두고 그룹피드 타이틀 만들기 */}
       {/* 그룹 피드 타이틀 ver1*/}
       {/* <div className="relative p-3 rounded-3xl">
@@ -49,7 +49,7 @@ const AvailableFeeds = () => {
         </div>
       </div>
       {/* feedslist section */}
-      <div className="mt-5 rounded-md shadow-lg xl:overflow-y-auto xl:scrollbar-hide xl:h-full">
+      <div className="mt-5 rounded-md shadow-lg xl:overflow-y-auto xl:scrollbar-hide xl:h-full ">
         <ul className="space-y-4 ">
           {
             // 데이터를 불러오는데 성공하고 데이터가 0개가 아닐 때 렌더링
