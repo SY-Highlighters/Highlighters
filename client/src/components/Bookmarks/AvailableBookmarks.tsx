@@ -10,7 +10,11 @@ import { useCookies } from "react-cookie";
 // import { useEffect, useState } from "react";
 import axios from "axios";
 import { useQuery } from "react-query";
-import { DocumentIcon, MegaphoneIcon, StarIcon } from "@heroicons/react/24/outline";
+import {
+  DocumentIcon,
+  MegaphoneIcon,
+  StarIcon,
+} from "@heroicons/react/24/outline";
 import FeedItem from "../Feeds/FeedItem/FeedItem";
 
 export function AvailableBookmarks() {
@@ -35,24 +39,26 @@ export function AvailableBookmarks() {
   return (
     <div className="basis-2/4">
       <div className="rounded-lg bg-sky-500">
-        <div className="px-3 py-3 mx-auto rounded-lg max-w-7xl sm:px-6 lg:px-8">
-          <div className="flex flex-wrap ustify-between s-center">
-            <div className="flex w-0 lex-1 s-center ">
+        {/* 메뉴바*/}
+        <div className="px-3 py-3 mx-auto rounded-lg max-w-7xl">
+          <div className="flex flex-wrap items-center ">
+            <div className="flex items-center flex-1 w-0 ">
               <span className="flex p-2 mr-1 -ml-3 rounded-lg bg-sky-500">
                 <StarIcon
-                  className="w-6 h-6 text-white"
+                  className="w-6 h-6 ml-3 text-white"
                   aria-hidden="true"
                 />
-                <p className="ml-3 text-xl font-bold text-white truncate">
-                  <span className="">북마크</span>
-                </p>
               </span>
+              <p className="text-xl font-bold text-white truncate">
+                <span className="md:hidden">즐겨찾기</span>
+                <span className="hidden md:inline">즐겨찾기</span>
+              </p>
             </div>
           </div>
         </div>
       </div>
-      <div className="mt-5 rounded-md xl:overflow-y-scroll xl:h-5/6">
-        <ul className="">
+      <div className="mt-5 rounded-md shadow-lg xl:overflow-y-auto xl:scrollbar-hide xl:h-full">
+        <ul className="space-y-4">
           {isSuccess &&
             feedsBookmark &&
             feedsBookmark.map((feed: any) => (

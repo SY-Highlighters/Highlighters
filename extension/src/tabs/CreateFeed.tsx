@@ -1,8 +1,8 @@
 import { ArrowRightCircleIcon } from "@heroicons/react/24/outline";
-import { TableHTMLAttributes, useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef } from "react";
 import { TagItem } from "../components/TagItem";
 import { useSetRecoilState, useRecoilState } from "recoil";
-import { tagsInFeedState } from "../states/atom";
+import { feedGenerateState, tagsInFeedState } from "../states/atom";
 import TagData from "../models/tag";
 import Swal from "sweetalert2";
 import { TagEditItem } from "../components/TagEditItem";
@@ -28,6 +28,8 @@ export default function CreateFeed(this: any) {
   const [ogTitle, setOgTitle] = useState<string>("");
   const [ogImage, setOgimage] = useState<string>("");
   const [ogDescription, setOgDescription] = useState<string>("");
+  const setFeedGenerate = useSetRecoilState(feedGenerateState);
+
   // const [first, setFirst] = useState(1);
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -75,12 +77,7 @@ export default function CreateFeed(this: any) {
   };
 
   const titleInputChangeHandler = (event: any) => {
-    // if (first === 1) {
-    //   setTitleInput("");
-    //   setFirst(0);
-    // } else {
     setTitleInput(event.target.value);
-    // }
   };
 
   const tagInputChangeHandler = (event: any) => {
@@ -128,6 +125,7 @@ export default function CreateFeed(this: any) {
           title: "피드 생성 성공!",
         });
         setTitleInput("");
+        setFeedGenerate(true);
       }
     );
   };

@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
-// import CreateFeed from "./tabs/CreateFeed";
-// import SendNoti from "./tabs/SendNoti";
-// import NotiBox from "./tabs/NotiBox";
+import { useRecoilState } from "recoil";
+import { feedGenerateState } from "./states/atom";
 import Tabs from "./tabs/Tabs";
 
 export default function Popups() {
   const [loadComplete, setLoadComplete] = useState(false);
   const [feed, setFeed] = useState(null);
+  const [feedGenerate, setFeedGenerate] = useRecoilState(feedGenerateState);
 
   useEffect(() => {
     async function getFeed() {
@@ -19,7 +19,7 @@ export default function Popups() {
       setLoadComplete(true);
     }
     getFeed();
-  }, []);
+  }, [feedGenerate]);
 
   return <div>{loadComplete ? <Tabs feed={feed}></Tabs> : null}</div>;
 }

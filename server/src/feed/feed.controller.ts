@@ -1,7 +1,13 @@
 import { GetUser } from './../auth/get-user.decorator';
 import { ApiResponse, ApiOperation } from '@nestjs/swagger';
 import { FeedService } from './feed.service';
-import { Controller, Get, Post, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Delete,
+  CacheInterceptor,
+} from '@nestjs/common';
 import { Feed, User } from '@prisma/client';
 import {
   Body,
@@ -17,6 +23,7 @@ import { SuccessInterceptor } from 'src/common/interceptors/success.interceptors
 import { HttpExceptionFilter } from 'src/common/exceptions/http-exception.filter';
 
 @Controller('api/feed')
+// @UseInterceptors(CacheInterceptor) // get요청만 cache 할 수 있음
 @UseInterceptors(SuccessInterceptor)
 @UseFilters(HttpExceptionFilter)
 @UseGuards(AuthGuard('jwt'))

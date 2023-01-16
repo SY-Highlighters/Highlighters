@@ -2,7 +2,6 @@ import { useSetRecoilState } from "recoil";
 import { tagsInFeedState } from "../states/atom";
 import React from "react";
 export function TagItem(props: any) {
-  // console.log("여기는 태그아이템");
   const setFeedTags = useSetRecoilState(tagsInFeedState);
   const [disable, setDisabled] = React.useState(false);
 
