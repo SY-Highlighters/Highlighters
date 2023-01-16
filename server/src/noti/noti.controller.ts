@@ -10,6 +10,7 @@ import {
   Put,
   UseFilters,
   UseInterceptors,
+  Query,
 } from '@nestjs/common/decorators';
 import { HttpExceptionFilter } from 'src/common/exceptions/http-exception.filter';
 import { SuccessInterceptor } from 'src/common/interceptors/success.interceptors';
@@ -51,8 +52,12 @@ export class NotiController {
   @ApiResponse({ status: 200, description: 'success', type: ShowNotiDto })
   @ApiOperation({ summary: '웹에서의 노티 조회(송신자, isread true 포함)' })
   @Get('/web')
-  async findNotiWeb(@GetUser() user: User): Promise<ShowNotiDto[]> {
-    return this.notiService.findNotiWeb(user);
+  async findNotiWeb(
+    @GetUser() user: User,
+    @Query('page') page: number,
+    @Query('take') take: number,
+  ) {
+    return this.notiService.findNotiWeb(user, page, take);
   }
 
   // 익스텐션에서의 노티 조회(송신자, isread true 제외)
