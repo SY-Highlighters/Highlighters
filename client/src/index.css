@@ -20,8 +20,6 @@ body {
   /* background-color: #f8f4ea; */
   background-color: #f3f4f6;
   /* font-family: "Spoqa Han Sans Neo", "sans-serif"; */
-
-
 }
 
 /* body {
@@ -32,3 +30,16 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 } */
+
+.fade-out {
+  animation: fadeOut 1s;
+}
+
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}

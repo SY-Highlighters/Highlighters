@@ -30,20 +30,16 @@ export default function GroupJoined(props: any) {
             </h3>
           </div>
         </div>
-
+      
         {/* 그룹 초대 버튼 만들기 */}
         <div className="relative flex items-end justify-end">
-          {/* <button
-            onClick={handleGroupInvite}
-            className="inline-flex mr-2 mt-2 px-3 py-0.5 rounded-full text-sm font-medium bg-sky-100 text-sky-500 hover:bg-sky-600"
-          >
-            그룹원 초대
-          </button> */}
-
           <UserPlusIcon
             onClick={handleGroupInvite}
             className="cursor-pointer w-10 h-10 px-2.5 py-2.5 mt-2 mr-2 text-sm font-medium rounded-full bg-sky-100 text-sky-500 hover:bg-sky-300 hover:scale-85"
           ></UserPlusIcon>
+        </div>
+        <div>
+          durl
         </div>
       </div>
     </div>
