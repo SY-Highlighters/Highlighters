@@ -1,10 +1,14 @@
+// const { getEventListeners } = require("events");
+
 /* 코드시작 */
 let selectionText;
+let selectedImage = null;
 let highlightStr = "null";
 let highlightColor;
 let highlights;
 let userImage;
 let curNode;
+// let mouseOverImgButton = {};
 
 const toolBarCSS = `
     width: 111px !important;
@@ -75,6 +79,7 @@ function makeXPath(node, currentPath) {
 }
 
 async function highlightDone(range, id) {
+  console.log("highlightdone: ", id);
   const newNode = document.createElement("span");
   newNode.setAttribute("class", `highlighter`);
   newNode.setAttribute("id", id);
@@ -142,7 +147,7 @@ async function postHighlight(range, highlightStr) {
 }
 
 /* 하이라이트 Get */
-function getHighlight(url) {
+async function getHighlight(url) {
   chrome.runtime.sendMessage(
     {
       greeting: "getHighlight",
@@ -155,24 +160,24 @@ function getHighlight(url) {
       console.log("[contentscript] getHighlight", highlights);
 
       if (highlightsMeta.success === false) {
-        throw new Error(
-          `[${highlightsMeta.statusCode}] ${highlightsMeta.message}`
-        );
-      }
-
-      for (const highlight of highlights) {
-        try {
-          if (highlight.type === 1) {
-            rehighlightText(highlight);
-          } else if (highlight.type === 2) {
-            rehighlightImage(highlight);
+        console.log(`[${highlightsMeta.statusCode}] ${highlightsMeta.message}`);
+      } else {
+        for (const highlight of highlights) {
+          try {
+            if (highlight.type === 1) {
+              rehighlightText(highlight);
+            } else if (highlight.type === 2) {
+              rehighlightImage(highlight);
+            }
+          } catch (e) {
+            console.log("하이라이트 복원 실패", e);
           }
-        } catch (e) {
-          console.log("하이라이트 복원 실패", e);
         }
       }
+      makeEventOnImage();
     }
   );
+  return;
 }
 
 function rehighlightText(highlight) {
@@ -224,6 +229,12 @@ function rehighlightImage(highlight) {
   ).singleNodeValue;
 
   img.style.border = `8px solid ${highlight.color}`;
+  img.setAttribute("id", highlight.id);
+  img.classList.add("highlighted");
+
+  img.addEventListener("click", (event) =>
+    showToolBar(event, img, highlight.user.image)
+  );
 }
 
 function deleteHighlight(node) {
@@ -242,8 +253,8 @@ function deleteHighlight(node) {
 
 function showToolBar(event, node, user) {
   const html = document.querySelector("html");
-  const toolBar = document.getElementById("toolBar-highlighters");
   const userImageDiv = document.getElementById("userImageDiv-highlighters");
+  const toolBar = document.getElementById("toolBar-highlighters");
 
   curNode = node; // 현재 선택된 하이라이트 업데이트
   userImageDiv.setAttribute("src", user); // 현재 선택된 하이라이트의 유저 이미지로 설정
@@ -282,34 +293,48 @@ function getUserInfo() {
   );
 }
 
-let selectedImage = null;
+const mouseOverImgBtnHandler =
+  (button, image, position, scrollY, scrollX) => () => {
+    button.style.top = position.top + scrollY + 10 + "px";
+    button.style.left = position.left + scrollX + 10 + "px";
+    button.style.transform = "rotate(270deg)";
+    button.style.zIndex = "2147483647";
+    button.style.display = "block";
+    button.style.position = "absolute";
+
+    selectedImage = image;
+  };
+
+const mouseOnImgBtn = () => {
+  const button = document.getElementById("btn_image_highlighters");
+  button.style.display = "none";
+};
 
 function makeEventOnImage() {
   const button = document.getElementById("btn_image_highlighters");
   const images = document.querySelectorAll("img");
 
   for (const image of images) {
+    console.log(image.classList);
+    if (image.classList.contains("highlighted")) {
+      continue;
+    }
+
     const position = image.getBoundingClientRect();
 
     if (position.height > 150 || position.width > 150) {
       const scrollY = window.scrollY;
       const scrollX = window.scrollX;
 
-      // eslint-disable-next-line no-loop-func
-      image.addEventListener("mouseover", () => {
-        button.style.top = position.top + scrollY + 10 + "px";
-        button.style.left = position.left + scrollX + 10 + "px";
-        button.style.transform = "rotate(270deg)";
-        button.style.zIndex = "2147483647";
-        button.style.display = "block";
-        button.style.position = "absolute";
-
-        selectedImage = image;
-      });
-
-      image.addEventListener("mouseout", () => {
-        button.style.display = "none";
-      });
+      const mouseOverImgBtn = mouseOverImgBtnHandler(
+        button,
+        image,
+        position,
+        scrollY,
+        scrollX
+      );
+      image.addEventListener("mouseover", mouseOverImgBtn);
+      image.addEventListener("mouseout", mouseOnImgBtn);
     }
   }
 }
@@ -317,8 +342,6 @@ function makeEventOnImage() {
 function highlightImage() {
   const uri = window.location.href;
   const decodeuri = decodeURI(uri);
-
-  selectedImage.style.border = `8px solid ${highlightColor.highlightColor}`;
 
   const rangeObject = {
     XPath: makeXPath(selectedImage),
@@ -352,6 +375,12 @@ function highlightImage() {
       } else {
         console.log("Post Highlight Image Success", response.data);
         highlights.push(response.data.data);
+        const highlightedImage = selectedImage.cloneNode(true);
+        highlightedImage.style.border = `8px solid ${highlightColor.highlightColor}`;
+        selectedImage.parentNode.replaceChild(highlightedImage, selectedImage);
+        selectedImage = null;
+        const ImageButton = document.getElementById("btn_image_highlighters");
+        ImageButton.style.display = "none";
       }
     }
   );
@@ -459,7 +488,8 @@ async function onWindowReady() {
   getUserInfo();
 
   setTimeout(() => getHighlight(decodeuri), 0);
-  makeEventOnImage();
+  // setTimeout(() => makeEventOnImage(), 1);
+  // setTimeout(() => , 0);
 }
 //
 /* contentscript 시작 */
