@@ -1,5 +1,10 @@
 import { User } from '@prisma/client';
-import { Injectable, NotFoundException, HttpException } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  HttpException,
+  CACHE_MANAGER,
+} from '@nestjs/common';
 import { PrismaService } from 'src/repository/prisma.service';
 import { Highlight } from '.prisma/client';
 import { CreateHighlightDto, UpdateHighlightDto } from './dto/highlight.dto';
@@ -13,7 +18,7 @@ import { fetchandsave, deleteS3 } from 'src/util/fetch';
 export class HighlightService {
   constructor(
     private readonly prismaService: PrismaService,
-
+    @Inject(CACHE_MANAGER) private readonly cacheManager: Cache,
     @Inject(forwardRef(() => FeedService))
     private readonly feedService: FeedService,
   ) {}
