@@ -35,7 +35,6 @@ import { Delete } from "../../Func/Delete";
 const FeedItem = (props: any) => {
   const [commentIsClicked, setCommentIsClicked] = useState(false);
   const setCurrentFeedId = useSetRecoilState(currentFeedIdState);
-  const [userImages, setUserImages] = useState<{ [key: string]: string }>({});
   // const [img, setImgUrl] = useState("");
 
   // const [firstHighlight, setFirstHighlight] = useState(
@@ -162,9 +161,7 @@ const FeedItem = (props: any) => {
       );
     });
   }
-  
 
-  console.log(props.highlight);
   // 태그 파싱
   const tags = props.tag.map((tagItem: any, index: number) => (
     <li key={index}>

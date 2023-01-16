@@ -15,7 +15,6 @@ export const useNoti = () => {
         Authorization: `Bearer ${cookies.logCookie}`,
       },
     });
-    console.log("첫데이터", res.data);
     return {
       // 실제 데이터
       board_page: res.data,

@@ -14,7 +14,16 @@ export function TagItem(props: any) {
   const currentFeedId = useRecoilValue(currentFeedIdState);
   const [tagList, setTagList] = useRecoilState(tagsInFeedState);
   const [cookies, setCookie, removeCookie] = useCookies(["logCookie"]);
-
+  const tags =
+    props.count && props.count ? (
+      <span className="inline-flex items-center mr-2 px-3 py-0.5 rounded-full text-sm font-medium bg-sky-100 text-sky-800 hover:bg-sky-300 hover:scale-95">
+        {`#${props.name} `} <span className="ml-1 font-bold text-sky-500">{` ${props.count}`}</span>
+      </span>
+    ) : (
+      <span className="inline-flex items-center mr-2 px-3 py-0.5 rounded-full text-sm font-medium bg-sky-100 text-sky-800 hover:bg-sky-300 hover:scale-95">
+        {props.name}
+      </span>
+    );
   const tagClickHandler = () => {
     console.log("tag clicked");
     if (props.onFunc) {
@@ -66,9 +75,7 @@ export function TagItem(props: any) {
 
   return (
     <button onClick={tagClickHandler} className="mt-2">
-      <span className="inline-flex items-center mr-2 px-3 py-0.5 rounded-full text-sm font-medium bg-sky-100 text-sky-800 hover:bg-sky-300 hover:scale-95">
-        #{props.name}
-      </span>
+      {tags}
     </button>
   );
 }

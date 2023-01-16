@@ -12,7 +12,6 @@ export default function Noti() {
   // const [noti.dataData, setNotiData] = useState<NotiData[]>([]);
   const { getBoard, getNextPage, getBoardIsSuccess, getNextPageIsPossible } =
     useNoti();
-  console.log(getBoard);
   useEffect(() => {
     // 맨 마지막 요소를 보고있고 페이지가 존재하면
     // 다음 페이지 데이터를 가져옴
@@ -75,7 +74,6 @@ export default function Noti() {
               // 데이터를 불러오는데 성공하고 데이터가 0개가 아닐 때 렌더링
               getBoardIsSuccess && getBoard!.pages
                 ? getBoard!.pages.map((page_data, page_num) => {
-                    console.log("여기에요", page_data.board_page.data);
                     const board_page = page_data.board_page;
                     return board_page.data.data.map((noti: any, idx: any) => {
                       if (
