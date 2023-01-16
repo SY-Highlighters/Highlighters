@@ -36,11 +36,7 @@ export class TagService {
               id: feed_id,
             },
           },
-          group: {
-            connect: {
-              id: user.group_id,
-            },
-          },
+          group_id: user.group_id,
         },
       });
       return tag;
