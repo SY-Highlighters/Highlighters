@@ -1,10 +1,14 @@
 import { ElasticsearchService } from './../repository/connection';
 import { User } from '@prisma/client';
 import { Injectable } from '@nestjs/common';
+import { PrismaService } from 'src/repository/prisma.service';
 
 @Injectable()
 export class SearchService {
-  constructor(private readonly elasticsearchService: ElasticsearchService) {}
+  constructor(
+    private readonly elasticsearchService: ElasticsearchService,
+    private readonly prismaService: PrismaService,
+  ) {}
 
   async find(word: string, user: User): Promise<object[] | void> {
     const client = this.elasticsearchService.getClient();
@@ -91,4 +95,8 @@ export class SearchService {
       return result;
     }
   }
+
+  // async findtest(word: string, user: User): Promise<object[] | void> {
+
+  // }
 }
