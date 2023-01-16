@@ -1,7 +1,7 @@
 import { useInfiniteQuery } from "react-query";
 import axios from "axios";
 import { useCookies } from "react-cookie";
-export const useFeedsInDay = (date: any) => {
+export const useNoti = () => {
   const [cookies] = useCookies(["logCookie"]);
 
   const getPageBoard = async ({ pageParam = 1 }) => {
@@ -9,7 +9,7 @@ export const useFeedsInDay = (date: any) => {
       method: "get",
       url: `${
         process.env.REACT_APP_HOST
-      }/api/calender=${pageParam}&take=${4}&date=${date}`,
+      }/api/noti/web?page=${pageParam}&take=${4}`,
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${cookies.logCookie}`,
@@ -30,7 +30,7 @@ export const useFeedsInDay = (date: any) => {
     fetchNextPage: getNextPage,
     isSuccess: getBoardIsSuccess,
     hasNextPage: getNextPageIsPossible,
-  } = useInfiniteQuery(["feedsInDay"], getPageBoard, {
+  } = useInfiniteQuery(["Noti"], getPageBoard, {
     getNextPageParam: (lastPage, pages) => {
       // lastPage와 pages는 콜백함수에서 리턴한 값을 의미한다!!
       // lastPage: 직전에 반환된 리턴값, pages: 여태 받아온 전체 페이지

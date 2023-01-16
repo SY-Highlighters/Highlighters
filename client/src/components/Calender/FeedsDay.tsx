@@ -5,14 +5,15 @@ import { useInView } from "react-intersection-observer";
 import { useInfiniteFeed } from "../../hooks/useInfiniteFeed";
 import { useRecoilValue } from "recoil";
 import { selectedDayState } from "../../states/atom";
-export function FeedsDay(props: any) {
-  const { getBoard, getNextPage, getBoardIsSuccess, getNextPageIsPossible } =
-    useInfiniteFeed();
-  const [ref, isView] = useInView();
+import { useFeedsInDay } from "../../hooks/useFeedsInDay";
 
+export function FeedsDay(props: any) {
+  const [ref, isView] = useInView();
   const selectedDay = useRecoilValue(selectedDayState);
-  // 날짜 문자로 변환
   const date = new Date(selectedDay);
+  const { getBoard, getNextPage, getBoardIsSuccess, getNextPageIsPossible } =
+    useFeedsInDay(date);
+  // // 날짜 문자로 변환
   const year = date.getFullYear();
   const month = date.getMonth() + 1;
   const day = date.getDate();

@@ -43,7 +43,7 @@ export function Main() {
         {isSuccess && user.group_id && MainSection(mainSectionNum)}
         {isSuccess && user.group_id && <Noti></Noti>}
       </div>
-
+      
       {tagModal === 1 && <FeedTagEditModal></FeedTagEditModal>}
       {/* {tagModal === 2 && <GroupTagEditModal></GroupTagEditModal>} */}
     </Fragment>
