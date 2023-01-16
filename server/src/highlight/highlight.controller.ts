@@ -37,9 +37,6 @@ export class HighlightController {
     createHighlightDto.user_email = user.email;
     createHighlightDto.group_id = user.group_id;
 
-    // createHighlightDto.user_email = 'siaksiak@jungle.com';
-    // createHighlightDto.group_id = 1;
-
     return this.highlightService.createHighlight(createHighlightDto, user);
   }
 
