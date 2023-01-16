@@ -13,6 +13,7 @@ import { CreateFeedDto } from 'src/feed/dto/feed.dto';
 import { forwardRef } from '@nestjs/common/utils';
 import { Inject } from '@nestjs/common/decorators';
 import { fetchandsave, deleteS3 } from 'src/util/fetch';
+import { Cache } from 'cache-manager';
 
 @Injectable()
 export class HighlightService {
