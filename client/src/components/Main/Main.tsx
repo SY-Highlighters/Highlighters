@@ -9,7 +9,7 @@ import Noti from "../Noti/Noti";
 import User from "../User/User";
 import { useCookies } from "react-cookie";
 import { useUserData } from "../../hooks/useUserData";
-import { FeedsDay } from "../Cal/FeedsDay";
+import { FeedsDay } from "../Calender/FeedsDay";
 export function Main() {
   const [cookies, setCookie, removeCookie] = useCookies(["logCookie"]);
 

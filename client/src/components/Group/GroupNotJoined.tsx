@@ -26,7 +26,7 @@ export default function GroupNotJoined() {
     setGroupJoin(true);
   };
   return (
-    <div className="w-full mt-10 bg-white rounded-lg shadow-lg">
+    <div className="w-full mt-4 bg-white rounded-lg shadow-lg">
       <div className="relative p-6 rounded-3xl">
         <h3 className="mt-3 mb-3 antialiased font-bold text-gray-600 text-1xl">
           그룹에 참가하세요!

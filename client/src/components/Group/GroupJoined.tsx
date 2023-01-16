@@ -20,7 +20,7 @@ export default function GroupJoined(props: any) {
     setGroupInvite(true);
   };
   return (
-    <div className="w-full mt-10 bg-white rounded-lg shadow-lg">
+    <div className="w-full mt-4 bg-white rounded-lg shadow-lg">
       <div className="relative p-6 rounded-3xl">
         <div>
           <p className="text-sm text-gray-600">그룹명</p>
