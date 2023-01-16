@@ -37,13 +37,13 @@ export function FeedTagEditModal(props: any) {
   const resetTagsInFeedState = useResetRecoilState(tagsInFeedState);
   const [imgUrl, setImgUrl] = useState("");
 
-  // s3 설정
-  const s3 = new AWS.S3();
+  // // s3 설정
+  // const s3 = new AWS.S3();
 
-  const params = {
-    Bucket: "highlighters-s3",
-    Key: "picture/345.jpg",
-  };
+  // const params = {
+  //   Bucket: "highlighters-s3",
+  //   Key: "picture/345.jpg",
+  // };
   // s3.getObject(params, function (err, data) {
   //   if (err) {
   //     console.log(err, err.stack);
@@ -237,7 +237,7 @@ export function FeedTagEditModal(props: any) {
             >
               Go to Scroll Position
             </a> */}
-            {/* <img src={imgUrl} className="w-full h-full"></img> */}
+            <img src={imgUrl} className="w-full h-full"></img>
           </div>
         </div>
       </div>

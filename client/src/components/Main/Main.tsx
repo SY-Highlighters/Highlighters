@@ -10,6 +10,7 @@ import User from "../User/User";
 import { useCookies } from "react-cookie";
 import { useUserData } from "../../hooks/useUserData";
 import { FeedsDay } from "../Calender/FeedsDay";
+import { Squares2X2Icon } from "@heroicons/react/24/outline";
 export function Main() {
   const [cookies, setCookie, removeCookie] = useCookies(["logCookie"]);
 
@@ -43,7 +44,9 @@ export function Main() {
         {isSuccess && user.group_id && MainSection(mainSectionNum)}
         {isSuccess && user.group_id && <Noti></Noti>}
       </div>
-      
+      <Squares2X2Icon
+        className="absolute w-8 h-8 cursor-pointer top-24 left-20 text-sky-500 hover:text-sky-600 hover:scale-95"
+      ></Squares2X2Icon>
       {tagModal === 1 && <FeedTagEditModal></FeedTagEditModal>}
       {/* {tagModal === 2 && <GroupTagEditModal></GroupTagEditModal>} */}
     </Fragment>

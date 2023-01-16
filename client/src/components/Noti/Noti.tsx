@@ -3,18 +3,16 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { useCookies } from "react-cookie";
 import NotiItem from "./NotiItem/NotiItem";
-import { NotiData } from "../../models/notiData";
 import Calender from "../Calender/Calender";
 import { useNoti } from "../../hooks/useNoti";
 import { useInView } from "react-intersection-observer";
 
 export default function Noti() {
-  const [cookies] = useCookies(["logCookie"]);
   const [ref, isView] = useInView();
-  // const [notiData, setNotiData] = useState<NotiData[]>([]);
-  const [notiVisible, setNotiVisible] = useState(false);
+  // const [noti.dataData, setNotiData] = useState<NotiData[]>([]);
   const { getBoard, getNextPage, getBoardIsSuccess, getNextPageIsPossible } =
     useNoti();
+  console.log(getBoard);
   useEffect(() => {
     // 맨 마지막 요소를 보고있고 페이지가 존재하면
     // 다음 페이지 데이터를 가져옴
@@ -23,7 +21,7 @@ export default function Noti() {
     }
   }, [isView, getNextPage, getNextPageIsPossible]);
   // 피드리스트에 피드아이템 넣기
-  // const notiAdd = (data: any) => {
+  // const noti.dataAdd = (data: any) => {
   //   data.map((item: any) => {
   //     const newNoti = {
   //       id: item.id,
@@ -37,7 +35,7 @@ export default function Noti() {
   //     setNotiData((prev) => [...prev, newNoti]);
   //   });
   // };
-  // const notiList = notiData.map((noti: any) => (
+  // const noti.dataList = noti.dataData.map((noti.data: any) => (
   //   <div key={noti.id}>
   //     <NotiItem
   //       sender={noti.nickname}
@@ -73,16 +71,17 @@ export default function Noti() {
         <div className="m-5">
           {/* 카드박스 내용 */}
           <ul className="">
-            {/* {
+            {
               // 데이터를 불러오는데 성공하고 데이터가 0개가 아닐 때 렌더링
               getBoardIsSuccess && getBoard!.pages
                 ? getBoard!.pages.map((page_data, page_num) => {
+                    console.log("여기에요", page_data.board_page.data);
                     const board_page = page_data.board_page;
-                    return board_page.map((noti: any, idx: any) => {
+                    return board_page.data.data.map((noti: any, idx: any) => {
                       if (
                         // 마지막 요소에 ref 달아주기
                         getBoard!.pages.length - 1 === page_num &&
-                        board_page.length - 1 === idx
+                        board_page.data.data.length - 1 === idx
                       ) {
                         return (
                           // 마지막 요소에 ref 넣기 위해 div로 감싸기
@@ -110,7 +109,7 @@ export default function Noti() {
                     });
                   })
                 : null
-            } */}
+            }
           </ul>
         </div>
       </div>
