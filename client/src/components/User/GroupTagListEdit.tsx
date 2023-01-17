@@ -33,7 +33,7 @@ export function GrouptagListEdit(props: any) {
     }
   );
   return (
-    <div>
+    <div className="">
       {isSuccess &&
         tagEditList &&
         tagEditList.map((tag: any) => (

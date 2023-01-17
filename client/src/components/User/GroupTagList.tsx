@@ -40,7 +40,7 @@ export function GrouptagList(props: any) {
   );
   useEffect(() => {}, []);
   return (
-    <div>
+    <div className="">
       {isSuccess &&
         tagList &&
         tagList.map((tag: any) => (

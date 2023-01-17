@@ -197,7 +197,7 @@ const FeedItem = (props: any) => {
             <img
               className="object-cover w-5 h-5 ml-1 rounded-full border-circle "
               src={props.writerImg}
-              alt="Flower and sky"
+              alt="../../assets/highlighters.png"
             />
           </div>
         </div>
@@ -221,7 +221,7 @@ const FeedItem = (props: any) => {
             <img
               className="object-cover w-full h-48"
               src={props.og_image}
-              alt="Flower and sky"
+              alt=""
             />
           </div>
           <div className="flex-1 px-6 py-4">
