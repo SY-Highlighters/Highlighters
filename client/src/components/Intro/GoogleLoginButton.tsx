@@ -35,13 +35,13 @@ export function GoogleLoginButton() {
         <GoogleLogin
           // useOneTap={true}
           onSuccess={async (creRes) => {
-            console.log(creRes);
+            // console.log(creRes);
             await axios
               .post(`${process.env.REACT_APP_HOST}/api/auth/google/login`, {
                 accessToken: creRes.credential,
               })
               .then(function (response) {
-                console.log("이건머고,?", response);
+                // console.log("이건머고,?", response);
                 if (response) {
                   axios.defaults.headers.common[
                     "Authorization"
@@ -59,7 +59,7 @@ export function GoogleLoginButton() {
                 }
               })
               .catch((error) => {
-                console.log(error);
+                // console.log(error);
                 // Swal.fire({
                 //   icon: "error",
                 //   title: "Oops...",
@@ -69,7 +69,7 @@ export function GoogleLoginButton() {
               });
           }}
           onError={() => {
-            console.log("Login Failed");
+            // console.log("Login Failed");
           }}
         />
       </GoogleOAuthProvider>

@@ -25,7 +25,7 @@ export default function SignIn() {
   // 폼 데이터 받기 -> 이건 건들지 않는게 낫겠다.
   const formSubmitHandler = async (event: any) => {
     event.preventDefault();
-    console.log(event);
+    // console.log(event);
     // form에서 email, password 받아오기
     const email = event.target[0].value;
     const password = event.target[1].value;
@@ -36,7 +36,7 @@ export default function SignIn() {
         password: password,
       })
       .then(function (response) {
-        console.log(response);
+        // console.log(response);
         if (response) {
           axios.defaults.headers.common[
             "Authorization"
@@ -54,7 +54,7 @@ export default function SignIn() {
         }
       })
       .catch((error) => {
-        console.log(error);
+        // console.log(error);
         Swal.fire({
           icon: "error",
           title: "Oops...",

@@ -3,7 +3,7 @@ import axios from "axios";
 import { useCookies } from "react-cookie";
 export const useFeedsInDay = (date: any) => {
   const [cookies] = useCookies(["logCookie"]);
-  console.log(date);
+  // console.log(date);
   const getPageBoard = async ({ pageParam = 1 }) => {
     const res = await axios({
       method: "get",

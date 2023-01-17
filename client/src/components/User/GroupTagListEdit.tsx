@@ -25,7 +25,7 @@ export function GrouptagListEdit(props: any) {
             },
           }
         );
-        console.log(res.data.data);
+        // console.log(res.data.data);
         return res.data.data;
       } catch (err) {
         console.error(err);

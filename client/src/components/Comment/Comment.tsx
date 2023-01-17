@@ -35,7 +35,7 @@ export function Comment(props: any) {
       setCommentList(response.data.data);
     }
     fetchData();
-    console.log("코멘트에서 유저", user);
+    // console.log("코멘트에서 유저", user);
   }, [commentReload]);
 
   return (

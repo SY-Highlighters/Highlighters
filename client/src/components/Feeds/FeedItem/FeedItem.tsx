@@ -245,7 +245,7 @@ const FeedItem = (props: any) => {
 
           {/* 댓글 버튼 (토글식)*/}
           <div>
-            <div className="flex flex-row space-x-5">
+            <div className="flex flex-row">
               {" "}
               {/* 즐겨찾기 section */}
               {!props.bookmarked ? (
@@ -253,7 +253,7 @@ const FeedItem = (props: any) => {
               ) : (
                 <UnBookmarked bookmarkId={props.bookmarkId}></UnBookmarked>
               )}
-              <span className="mr-2 ">{props.commentLen}</span>
+              <span className="ml-5 mr-1">{props.commentLen}</span>
               <button onClick={commentToggleHandler} className="">
                 {/* <button className=""> */}
                 <ChatBubbleBottomCenterIcon className="w-5 h-5 text-gray-400 hover:text-gray-700 " />
