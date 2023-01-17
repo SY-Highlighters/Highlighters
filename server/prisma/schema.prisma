@@ -68,10 +68,8 @@ model Og {
   title       String
   image       String @db.Text
   description String
-  feed_id     Int
   feed        Feed[] @relation("FeedToOg")
 
-  @@index([feed_id], map: "OG_feed_id_fkey")
   @@map("OG")
 }
 

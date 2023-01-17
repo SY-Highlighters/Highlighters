@@ -29,6 +29,16 @@ export class FeedService {
       },
     });
 
+    if (!_Og) {
+      _Og = await this.prismaService.og.create({
+        data: {
+          title: og_title,
+          image: image,
+          description: description,
+        },
+      });
+    }
+
     const _Feed = await this.prismaService.feed.create({
       data: {
         user_email: user.email,
@@ -38,17 +48,6 @@ export class FeedService {
         og_id: _Og.id,
       },
     });
-
-    if (!_Og) {
-      _Og = await this.prismaService.og.create({
-        data: {
-          title: og_title,
-          image: image,
-          description: description,
-          feed_id: _Feed.id,
-        },
-      });
-    }
 
     // tag 부분
     if (tag_name) {
