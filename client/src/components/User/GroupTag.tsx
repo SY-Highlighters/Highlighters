@@ -10,8 +10,6 @@ import { ArchiveBoxXMarkIcon } from "@heroicons/react/24/outline";
 import { GrouptagList } from "./GroupTagList";
 import { GrouptagListEdit } from "./GroupTagListEdit";
 const GroupTag = (props: any) => {
-  const [grouptagList, setGroupTagList] = useRecoilState(feedsTagListState);
-  const [cookies, setCookie, removeCookie] = useCookies(["logCookie"]);
   const [clickedGroupTagDel, setclickedGroupTagDel] = useRecoilState(
     clickedGroupTagDelState
   );

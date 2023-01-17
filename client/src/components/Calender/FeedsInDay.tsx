@@ -6,7 +6,7 @@ import { useRecoilValue } from "recoil";
 import { selectedDayState } from "../../states/atom";
 import { useFeedsInDay } from "../../hooks/useFeedsInDay";
 
-export function FeedsDay(props: any) {
+export function FeedsInDay(props: any) {
   const [ref, isView] = useInView();
   const selectedDay = useRecoilValue(selectedDayState);
   const date = new Date(selectedDay);
@@ -55,8 +55,10 @@ export function FeedsDay(props: any) {
         </div>
       </div>
       {/* feedslist section */}
-      <div className="mt-5 rounded-md shadow-lg xl:overflow-y-auto xl:scrollbar-hide xl:h-full"
-        style={{ height: "80vh" }}>
+      <div
+        className="mt-5 rounded-md shadow-lg xl:overflow-y-auto xl:scrollbar-hide xl:h-full"
+        style={{ height: "80vh" }}
+      >
         <ul className="space-y-4 ">
           {
             // 데이터를 불러오는데 성공하고 데이터가 0개가 아닐 때 렌더링

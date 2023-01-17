@@ -129,34 +129,50 @@ const FeedItem = (props: any) => {
     highlights = props.highlight.map((hl: any, index: number) => {
       if (firstHighlight !== hl.user.nickname || index === 0) {
         firstHighlight = hl.user.nickname;
+        const highContent =
+          hl.type === 1 ? (
+            <span
+              className="ml-1 text-xs lg:text-base"
+              style={{ backgroundColor: hl.color }}
+            >
+              {hl.contents}
+            </span>
+          ) : (
+            <img
+              src={hl.contents}
+              className="w-5/6 ml-2 h-5/6 outline outline-yellow-400 outline-4"
+            ></img>
+          );
         return (
           <div key={index}>
-            <ul>
-              <li className="flex flex-row" key={index}>
-                {" "}
+            <li className="" key={index}>
+              {" "}
+              <div className="flex flex-row mt-4">
                 <img
                   src={hl.user.image}
                   className="w-5 h-5 mr-1 rounded-full"
                 ></img>
-                <span
-                  className="text-xs lg:text-base"
-                  style={{ backgroundColor: hl.color }}
-                >
-                  {hl.contents}
-                </span>
-              </li>
-            </ul>
+                {highContent}
+              </div>
+            </li>
           </div>
         );
       }
       return (
         <li className="ml-6" key={index}>
-          <span
-            className="text-xs lg:text-base"
-            style={{ backgroundColor: hl.color }}
-          >
-            {hl.contents}
-          </span>
+          {hl.type === 1 ? (
+            <span
+              className="ml-1 text-xs lg:text-base"
+              style={{ backgroundColor: hl.color }}
+            >
+              {hl.contents}
+            </span>
+          ) : (
+            <img
+              src={hl.contents}
+              className="w-5/6 ml-2 h-5/6 outline outline-yellow-400 outline-4"
+            ></img>
+          )}
         </li>
       );
     });

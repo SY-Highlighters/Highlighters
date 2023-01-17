@@ -3,7 +3,11 @@ import { useEffect, useState } from "react";
 
 import { useCookies } from "react-cookie";
 import axios from "axios";
-import { DocumentIcon, MegaphoneIcon } from "@heroicons/react/24/outline";
+import {
+  DocumentIcon,
+  DocumentPlusIcon,
+  MegaphoneIcon,
+} from "@heroicons/react/24/outline";
 import { QueryCache, useQuery, QueryClient, useQueryClient } from "react-query";
 import { useInView } from "react-intersection-observer";
 import { useFeedsInGroup } from "../../hooks/useFeedsInGroup";
@@ -18,9 +22,10 @@ const AvailableFeeds = () => {
       getNextPage();
     }
   }, [isView, getNextPage, getNextPageIsPossible]);
-
+  console.log("피드정보", getBoard);
   return (
     // <div className="xl:ml-20 justify-self-center xl:w-3/6">
+
     <div className="basis-2/4 ">
       {/* 위에 여백 두고 그룹피드 타이틀 만들기 */}
       {/* 그룹 피드 타이틀 ver1*/}
@@ -47,6 +52,26 @@ const AvailableFeeds = () => {
           </div>
         </div>
       </div>
+
+      {/* 위에 피드가 생성이 안됐을때 없다는 효과를 주기 */}
+      {getBoardIsSuccess && getBoard!.pages[0].board_page.length === 0 ? (
+        <div
+          className="flex justify-center w-full h-full pt-10 mt-5 bg-white rounded-md shadow-md "
+          style={{ height: "80vh" }}
+        >
+          <div className="flex flex-col items-center justify-center opacity-75 ">
+            <div className="flex items-center justify-center w-20 h-20 mb-3 rounded-full bg-sky-500">
+              <DocumentPlusIcon
+                className="w-10 h-10 text-white"
+                aria-hidden="true"
+              />
+            </div>
+            <p className="text-2xl font-bold text-gray-500 ">
+              아직 피드가 없어요 😂
+            </p>
+          </div>
+        </div>
+      ) : null}
       {/* feedslist section */}
       <div
         className="mt-5 rounded-md shadow-lg xl:overflow-y-auto xl:scrollbar-hide xl:h-full "
@@ -116,22 +141,6 @@ const AvailableFeeds = () => {
                 })
               : null
           }
-          {/* 위에 피드가 생성이 안됐을때 없다는 효과를 주기 */}
-          {getBoardIsSuccess && getBoard!.pages.length === 0 ? null : (
-            <div className="flex justify-center w-full h-full pt-10 mt-20 bg-white">
-              <div className="flex flex-col items-center justify-center">
-                <div className="flex items-center justify-center w-20 h-20 mb-3 rounded-full bg-sky-500">
-                  <DocumentIcon
-                    className="w-10 h-10 text-white"
-                    aria-hidden="true"
-                  />
-                </div>
-                <p className="text-2xl font-bold text-gray-500 ">
-                  아직 피드가 없어요😂
-                </p>
-              </div>
-            </div>
-          )}
         </ul>
       </div>
     </div>
