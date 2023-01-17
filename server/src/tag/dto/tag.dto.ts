@@ -12,7 +12,7 @@ export class RequestTagWebDeleteDto {
 }
 
 export class RequestTagPost {
-  survive_tag_id: number[];
+  delete_tag_id: number[];
   create_tag_name: string[];
   feed_id: number;
 }

@@ -199,12 +199,12 @@ export class TagService {
     requestTagPost: RequestTagPost,
     user: User,
   ): Promise<boolean> {
-    const { survive_tag_id, create_tag_name, feed_id } = requestTagPost;
+    const { delete_tag_id, create_tag_name, feed_id } = requestTagPost;
     try {
       await this.prismaService.tag.deleteMany({
         where: {
           id: {
-            notIn: survive_tag_id,
+            in: delete_tag_id,
           },
         },
       });
