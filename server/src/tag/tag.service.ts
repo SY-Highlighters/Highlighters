@@ -208,19 +208,19 @@ export class TagService {
           },
         },
       });
-      await this.prismaService.tag.createMany({
-        data: create_tag_name.map((tag) => {
-          return {
-            tag_name: tag,
+      for (let i = 0; i < create_tag_name.length; i++) {
+        await this.prismaService.tag.create({
+          data: {
+            tag_name: create_tag_name[i],
             group_id: user.group_id,
             feed: {
               connect: {
                 id: feed_id,
               },
             },
-          };
-        }),
-      });
+          },
+        });
+      }
       return true;
     } catch (e) {
       throw new HttpException('Internal Server Error', 500);
