@@ -8,6 +8,10 @@ const host_url = is_production
   ? "https://highlighters.site"
   : "http://localhost:3001";
 
+const websocket_url = is_production
+  ? "wss://highlighters.site"
+  : "ws://localhost:3001";
+
 function getCookieToken() {
   return chrome.cookies.get({ name: "logCookie", url: cookie_url });
 }
@@ -68,7 +72,7 @@ async function initHighlightColor() {
 // let push_id = 1;
 let userInfo;
 
-const socket = new WebSocket("ws://localhost:3001");
+const socket = new WebSocket(`${websocket_url}/api/ws`);
 socket.onopen = () => {
   console.log("소켓 연결 성공");
   socket.addEventListener("message", (message) => {

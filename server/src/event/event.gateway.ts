@@ -2,7 +2,7 @@ import { WebSocketGateway, WebSocketServer } from '@nestjs/websockets';
 import { Server } from 'ws';
 import { OnModuleInit } from '@nestjs/common';
 
-@WebSocketGateway()
+@WebSocketGateway({ path: '/api/ws' })
 export class EventGateway implements OnModuleInit {
   @WebSocketServer()
   server: Server;
