@@ -7,7 +7,7 @@ import {
 import { Fragment, useState } from "react";
 import { HomeIcon } from "@heroicons/react/24/outline";
 import { useRecoilState } from "recoil";
-import { mainSectionState, optionModalToggleState } from "../../states/atom";
+import { mainSectionState, optionModalToggleState, searchKeywordState } from "../../states/atom";
 import { useCookies } from "react-cookie";
 import axios from "axios";
 import { useQuery } from "react-query";
@@ -17,7 +17,10 @@ import { useQueryClient } from "react-query";
 import { useUserData } from "../../hooks/useUserData";
 import Swal from "sweetalert2";
 export default function Header() {
-  const [navbarOpen, setNavbarOpen] = React.useState(false);
+  const [navbarOpen, setNavbarOpen] = useState(false);
+  const [searchKeyword, setSearchKeyword] = useRecoilState(searchKeywordState);
+
+  const [searchInput, setSearchInput] = useState("");
   // const [bookmark, setBookmark] = useRecoilState(bookmarkState);
   const [mainSectionNum, setMainSectionNum] = useRecoilState(mainSectionState);
   const [cookies, setCookie, removeCookie] = useCookies(["logCookie"]);
@@ -56,14 +59,19 @@ export default function Header() {
   };
 
   const searchButtonClicked = () => {
-        Swal.fire({
-          icon: "warning",
-          title: "공사중",
-          text: "검색 기능은 지원 예정입니다.",
-          showConfirmButton: false,
-          timer: 1000,
-        });
-    // setMainSectionNum(4);
+    // Swal.fire({
+    //   icon: "warning",
+    //   title: "공사중",
+    //   text: "검색 기능은 지원 예정입니다.",
+    //   showConfirmButton: false,
+    //   timer: 1000,
+    // });
+    setSearchKeyword(searchInput);
+    setMainSectionNum(4);
+  };
+
+  const handleSearchInputChange = (event: any) => {
+    setSearchInput(event?.target.value);
   };
 
   // enter event handler
@@ -75,7 +83,7 @@ export default function Header() {
       searchButtonClicked();
     }
   };
-  
+
   return (
     <>
       <nav className="sticky flex px-2 py-3 bg-sky-600">
@@ -136,6 +144,7 @@ export default function Header() {
                   placeholder="검색어를 입력하세요!"
                   type="search"
                   onKeyDown={activeEnter}
+                  onChange={handleSearchInputChange}
                 ></input>
               </div>
             </div>

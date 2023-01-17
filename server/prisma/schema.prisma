@@ -11,7 +11,7 @@ model User {
   email        String        @id @db.Char(50)
   group_id     Int?
   nickname     String?       @db.Char(20)
-  image        String
+  image        String        @db.Text
   password     String
   new_noti     Boolean       @default(false)
   bookmark     Bookmark[]
@@ -30,7 +30,7 @@ model User {
 model Group {
   id         Int         @id @default(autoincrement())
   name       String      @db.Char(20)
-  group_code String      @db.Char(100)
+  group_code String      @unique @db.Char(20)
   Feed       Feed[]
   highlight  Highlight[]
   tag        Tag[]       @relation("GroupToTag")
@@ -45,12 +45,12 @@ model Feed {
   group_id   Int
   id         Int         @id @default(autoincrement())
   updatedAt  DateTime    @default(now()) @updatedAt
-  url        String
+  url        String      @db.Text
   user_email String
   og_id      Int
   bookmark   Bookmark[]
   comment    Comment[]
-  group      Group       @relation(fields: [group_id], references: [id])
+  group      Group       @relation(fields: [group_id], references: [id], onDelete: Cascade)
   og         Og          @relation("FeedToOg", fields: [og_id], references: [id])
   user       User        @relation(fields: [user_email], references: [email])
   highlight  Highlight[]
@@ -66,7 +66,7 @@ model Feed {
 model Og {
   id          Int    @id @default(autoincrement())
   title       String
-  image       String
+  image       String @db.Text
   description String
   feed        Feed[] @relation("FeedToOg")
 
@@ -104,7 +104,7 @@ model Tag {
   id       Int    @id @default(autoincrement())
   tag_name String @db.Char(20)
   group_id Int
-  group    Group  @relation("GroupToTag", fields: [group_id], references: [id])
+  group    Group  @relation("GroupToTag", fields: [group_id], references: [id], onDelete: Cascade)
   feed     Feed[] @relation("FeedToTag")
 
   @@index([group_id], map: "TAG_group_id_fkey")
@@ -117,7 +117,7 @@ model Highlight {
   id          Int           @id @default(autoincrement())
   selection   Json
   user_email  String
-  contents    String
+  contents    String        @db.Text
   type        Int
   color       String        @db.Char(10)
   group_id    Int

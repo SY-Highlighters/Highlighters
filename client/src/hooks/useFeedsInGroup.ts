@@ -1,8 +1,8 @@
 import { useInfiniteQuery } from "react-query";
 import axios from "axios";
 import { useCookies } from "react-cookie";
-export const useInfiniteFeed = () => {
-  const [cookies, setCookie, removeCookie] = useCookies(["logCookie"]);
+export const useFeedsInGroup = () => {
+  const [cookies] = useCookies(["logCookie"]);
 
   const getPageBoard = async ({ pageParam = 1 }) => {
     const res = await axios({

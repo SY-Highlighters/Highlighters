@@ -6,10 +6,10 @@ import axios from "axios";
 import { DocumentIcon, MegaphoneIcon } from "@heroicons/react/24/outline";
 import { QueryCache, useQuery, QueryClient, useQueryClient } from "react-query";
 import { useInView } from "react-intersection-observer";
-import { useInfiniteFeed } from "../../hooks/useInfiniteFeed";
+import { useFeedsInGroup } from "../../hooks/useFeedsInGroup";
 const AvailableFeeds = () => {
   const { getBoard, getNextPage, getBoardIsSuccess, getNextPageIsPossible } =
-    useInfiniteFeed();
+    useFeedsInGroup();
   const [ref, isView] = useInView();
 
   useEffect(() => {
@@ -49,7 +49,10 @@ const AvailableFeeds = () => {
         </div>
       </div>
       {/* feedslist section */}
-      <div className="mt-5 rounded-md shadow-lg xl:overflow-y-auto xl:scrollbar-hide xl:h-full ">
+      <div
+        className="mt-5 rounded-md shadow-lg xl:overflow-y-auto xl:scrollbar-hide xl:h-full "
+        style={{ height: "80vh" }}
+      >
         <ul className="space-y-4 ">
           {
             // 데이터를 불러오는데 성공하고 데이터가 0개가 아닐 때 렌더링
@@ -57,6 +60,7 @@ const AvailableFeeds = () => {
               ? getBoard!.pages.map((page_data, page_num) => {
                   const board_page = page_data.board_page;
                   return board_page.map((feed: any, idx: any) => {
+                    console.log(feed);
                     if (
                       // 마지막 요소에 ref 달아주기
                       getBoard!.pages.length - 1 === page_num &&

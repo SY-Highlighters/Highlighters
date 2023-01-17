@@ -28,6 +28,7 @@ export class FeedService {
         },
       },
     });
+
     if (!_Og) {
       _Og = await this.prismaService.og.create({
         data: {
