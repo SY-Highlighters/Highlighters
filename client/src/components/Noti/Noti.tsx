@@ -19,6 +19,7 @@ export default function Noti() {
       getNextPage();
     }
   }, [isView, getNextPage, getNextPageIsPossible]);
+  console.log("노티", getBoard);
   // 피드리스트에 피드아이템 넣기
   // const noti.dataAdd = (data: any) => {
   //   data.map((item: any) => {
@@ -44,6 +45,7 @@ export default function Noti() {
   //     />
   //   </div>
   // ));
+  // console.log(getBoard === undefined ? "undefined" : getBoard.pages[0]);
   return (
     // <div className="w-1/5 xl:fixed right-24 xl:overflow-auto ">
     <div className="hidden pr-16 basis-1/4 xl:block">
@@ -66,8 +68,17 @@ export default function Noti() {
         </div>
       </div>
       {/* 아래로 긴 카드박스 */}
-      <div className="mt-5 overflow-y-auto bg-white rounded-lg shadow-lg xl:scrollbar-hide h-1/3">
+      <div className="mt-5 overflow-y-auto bg-white rounded-lg shadow-lg xl:scrollbar-hide h-1/3 box-shadow-bottom-only ">
         <div className="m-5">
+          {getBoardIsSuccess &&
+            getBoard!.pages[0].board_page.data.data.length === 0 && (
+              <div className="flex flex-col items-center justify-center">
+                <div className="flex items-center justify-center w-20 h-20 mb-3 rounded-full "></div>
+                <p className="text-base font-bold text-gray-500 opacity-50 ">
+                  알림이 없습니다.
+                </p>
+              </div>
+            )}
           {/* 카드박스 내용 */}
           <ul className="">
             {

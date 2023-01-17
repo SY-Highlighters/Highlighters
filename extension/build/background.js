@@ -1,4 +1,4 @@
-const is_production = true; // true: 배포용, false: 로컬용
+const is_production = false; // true: 배포용, false: 로컬용
 
 const cookie_url = is_production
   ? "https://highlighters.site"
@@ -7,6 +7,10 @@ const cookie_url = is_production
 const host_url = is_production
   ? "https://highlighters.site"
   : "http://localhost:3001";
+
+const websocket_url = is_production
+  ? "wss://highlighters.site"
+  : "ws://localhost:3001";
 
 function getCookieToken() {
   return chrome.cookies.get({ name: "logCookie", url: cookie_url });
@@ -65,54 +69,68 @@ async function initHighlightColor() {
 }
 
 /********************************************** 코드 시작 *********************************************************/
-let push_id = 1;
+// let push_id = 1;
+let userInfo;
 
-const socket = new WebSocket("ws://localhost:3001");
+const socket = new WebSocket(`${websocket_url}/api/ws`);
 socket.onopen = () => {
   console.log("소켓 연결 성공");
-  socket.send(
-    JSON.stringify({
-      event: "events",
-      data: "HELLO THERE",
-    })
-  );
+  socket.addEventListener("message", (message) => {
+    const msg = JSON.parse(message.data);
 
-  socket.onmessage = (event) => {
-    const data = JSON.parse(event.data);
-    console.log(data);
-  };
+    if (msg.event === "push") {
+      chrome.action.setBadgeText({ text: "new" });
+      chrome.action.setBadgeBackgroundColor({ color: "#0000FF" });
+    }
+  });
 };
 
 async function BackgroundStart() {
   await initHighlightColor();
 
-  chrome.alarms.create("checkNoti", {
-    periodInMinutes: 1 / 6,
-    when: Date.now(),
-  });
+  // chrome.alarms.create("checkNoti", {
+  //   periodInMinutes: 1 / 6,
+  //   when: Date.now(),
+  // });
 
-  chrome.alarms.onAlarm.addListener(async (alarm) => {
-    if (alarm.name === "checkNoti") {
-      const cookie = await getCookieToken();
-      const token = cookie?.value;
+  // chrome.alarms.onAlarm.addListener(async (alarm) => {
+  //   if (alarm.name === "checkNoti") {
+  //     const cookie = await getCookieToken();
+  //     const token = cookie?.value;
 
-      const isNewNotiCreateURL = `${host_url}/api/noti/push`;
-      const changeNewNotiInUserURL = `${host_url}/api/noti/check`;
+  //     const isNewNotiCreateURL = `${host_url}/api/noti/push`;
+  //     const changeNewNotiInUserURL = `${host_url}/api/noti/check`;
 
-      const check = await sendHTTPRequest("GET", isNewNotiCreateURL, token);
+  //     const check = await sendHTTPRequest("GET", isNewNotiCreateURL, token);
 
-      if (check.data) {
-        chrome.action.setBadgeText({ text: "new" });
-        chrome.action.setBadgeBackgroundColor({ color: "#0000FF" });
-        createPush(
-          `push_${push_id}`,
-          "새로운 알림이 있습니다.",
-          "알림을 확인해주세요"
-        );
-        push_id++;
-        sendHTTPRequest("GET", changeNewNotiInUserURL, token);
-      }
-    }
+  //     if (check.data) {
+  //       chrome.action.setBadgeText({ text: "new" });
+  //       chrome.action.setBadgeBackgroundColor({ color: "#0000FF" });
+  //       createPush(
+  //         `push_${push_id}`,
+  //         "새로운 알림이 있습니다.",
+  //         "알림을 확인해주세요"
+  //       );
+  //       push_id++;
+  //       sendHTTPRequest("GET", changeNewNotiInUserURL, token);
+  //     }
+  //   }
+  // });
+
+  await getCookieToken().then(async (cookie) => {
+    const token = cookie?.value;
+    userInfo = await sendHTTPRequest(
+      "GET",
+      `${host_url}/api/user/signin`,
+      token
+    );
+
+    socket.send(
+      JSON.stringify({
+        event: "userinfo",
+        userInfo,
+      })
+    );
   });
 
   chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
