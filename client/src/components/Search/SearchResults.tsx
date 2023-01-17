@@ -18,6 +18,7 @@ const SearchResults = () => {
 
   useEffect(() => {
     console.log("검색창");
+    setSearchResultFeeds([]);
     // setSearchKeyword("");
     async function getSearchResultsAsync() {
       const response = await axios({
@@ -34,7 +35,7 @@ const SearchResults = () => {
     }
 
     getSearchResultsAsync();
-  }, []);
+  }, [searchKeyword]);
 
   const searchResultFeedsAdd = (data: []) => {
     data.map((item: any) => {
@@ -45,7 +46,9 @@ const SearchResults = () => {
         createdAt: item.createdAt,
         updatedAt: item.updatedAt,
         url: item.url,
-        // write:
+        resultinfo: item.resultinfo,
+        username: item.user.nickname,
+        userimage: item.user.image,
       };
       setSearchResultFeeds((oldFeeds: any) => [...oldFeeds, newFeed]);
     });
@@ -65,9 +68,7 @@ const SearchResults = () => {
                 />
               </span>
               <p className="text-xl font-bold text-white truncate">
-                <span className="md:hidden">
-                  "{searchKeyword}" 검색 결과
-                </span>
+                <span className="md:hidden">"{searchKeyword}" 검색 결과</span>
                 <span className="hidden md:inline">
                   "{searchKeyword}" 검색 결과
                 </span>
@@ -88,11 +89,12 @@ const SearchResults = () => {
                   title={feed.title}
                   url={feed.url}
                   date={feed.createdAt}
+                  resultinfo={feed.resultinfo}
                   // description={""}
                   // og_image={null}
                   // highlight={null}
-                  // witer={""}
-                  // writerImage={null}
+                  writer={feed.username}
+                  writerImage={feed.userimage}
                   // commentLen={0}
                   // bookmarked={false}
                   // bookmarkId={null}

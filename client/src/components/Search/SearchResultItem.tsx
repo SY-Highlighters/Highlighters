@@ -19,74 +19,146 @@ import {
   currentFeedIdState,
   tagModalVisble,
   commentReloadState,
+  searchKeywordState,
 } from "../../states/atom";
-import { useRecoilValue, useSetRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import { Bookmarked } from "../Bookmarks/BookmarkItem/Bookmarked";
 import { UnBookmarked } from "../Bookmarks/BookmarkItem/UnBookmarked";
 import { Delete } from "../Func/Delete";
 
 const SearchResultItem = (props: any) => {
-//   const [commentIsClicked, setCommentIsClicked] = useState(false);
-//   const setCurrentFeedId = useSetRecoilState(currentFeedIdState);
-  
+  const [searchKeyword, setSearchKeyword] = useRecoilState(searchKeywordState);
+
+  //   const [commentIsClicked, setCommentIsClicked] = useState(false);
+  //   const setCurrentFeedId = useSetRecoilState(currentFeedIdState);
+
   const date = new Date(props.date);
   const year = date.getFullYear();
   const month = date.getMonth() + 1;
   const day = date.getDate();
+  let titleDiv;
+  let resultinfosDiv;
 
-  
-//   let highlights;
-//   if (props.highlight.length > 0) {
-//     let firstHighlight = props.highlight[0].user.nickname;
-//     highlights = props.highlight.map((hl: any, index: number) => {
-//       if (firstHighlight !== hl.user.nickname || index === 0) {
-//         firstHighlight = hl.user.nickname;
-//         return (
-//           <div key={index}>
-//             <ul>
-//               <li className="flex flex-row" key={index}>
-//                 {" "}
-//                 <img
-//                   src={hl.user.image}
-//                   className="w-5 h-5 mr-1 rounded-full"
-//                 ></img>
-//                 <span
-//                   className="text-xs lg:text-base"
-//                   style={{ backgroundColor: hl.color }}
-//                 >
-//                   {hl.contents}
-//                 </span>
-//               </li>
-//             </ul>
-//           </div>
-//         );
-//       }
-//       return (
-//         <li className="ml-6" key={index}>
-//           <span
-//             className="text-xs lg:text-base"
-//             style={{ backgroundColor: hl.color }}
-//           >
-//             {hl.contents}
-//           </span>
-//         </li>
-//       );
-//     });
-//   }
+  console.log(props);
+  // type : 1(title), 2(highlight), 3(tag_name)
+  const title = props.title;
+  const i = title.toUpperCase().indexOf(searchKeyword.toUpperCase());
 
-//   // 태그 파싱
-//   const tags = props.tag.map((tagItem: any, index: number) => (
-//     <li key={index}>
-//       <TagItem name={tagItem.tag_name} tag_id={tagItem.id}></TagItem>
-//     </li>
-//   ));
+  console.log(searchKeyword.length);
 
-//   function commentToggleHandler() {
-//     if (!commentIsClicked) {
-//       setCurrentFeedId(props.id);
-//     }
-//     setCommentIsClicked(!commentIsClicked);
-//   }
+  if (i !== -1) {
+    const j = i + searchKeyword.length;
+    titleDiv = (
+      <div>
+        {title.substring(0, i)}
+        <span className="text-sky-600">{title.substring(i, j)}</span>
+        {title.substring(j)}
+      </div>
+    );
+  } else {
+    titleDiv = <div>{title}</div>;
+  }
+
+  if (props.resultinfo.length > 0) {
+    resultinfosDiv = props.resultinfo.map((info: any, index: number) => {
+      let infoContent;
+      switch (info.type) {
+        case 1:
+          const content = info.highlight.contents;
+          if (content.length < 200) {
+            infoContent = (
+              <span style={{ backgroundColor: info.highlight.color }}>
+                {content.substring(0, info.includeStart)}
+                <span className="text-sky-600 font-bold">
+                  {content.substring(info.includeStart, info.includeEnd)}
+                </span>
+                {content.substring(info.includeEnd)}
+              </span>
+            );
+          } else {
+            if (content.length - info.includeEnd < 200)
+              infoContent = (
+                <span style={{ backgroundColor: info.highlight.color }}>
+                  {"..."}
+                  <span className="text-sky-600 font-bold">
+                    {content.substring(info.includeStart, info.includeEnd)}
+                  </span>
+                  {content.substring(info.includeEnd) + "..."}
+                </span>
+              );
+            else {
+              infoContent = (
+                <span style={{ backgroundColor: info.highlight.color }}>
+                  {"..."}
+                  <span className="text-sky-600 font-bold">
+                    {content.substring(info.includeStart, info.includeEnd)}
+                  </span>
+                  {content.substr(info.includeEnd, 200) + "..."}
+                </span>
+              );
+            }
+          }
+          break;
+        default:
+          infoContent = "error";
+          break;
+      }
+      return <div>{infoContent}</div>;
+    });
+  }
+
+  //   let highlights;
+  //   if (props.highlight.length > 0) {
+  //     let firstHighlight = props.highlight[0].user.nickname;
+  //     highlights = props.highlight.map((hl: any, index: number) => {
+  //       if (firstHighlight !== hl.user.nickname || index === 0) {
+  //         firstHighlight = hl.user.nickname;
+  //         return (
+  //           <div key={index}>
+  //             <ul>
+  //               <li className="flex flex-row" key={index}>
+  //                 {" "}
+  //                 <img
+  //                   src={hl.user.image}
+  //                   className="w-5 h-5 mr-1 rounded-full"
+  //                 ></img>
+  //                 <span
+  //                   className="text-xs lg:text-base"
+  //                   style={{ backgroundColor: hl.color }}
+  //                 >
+  //                   {hl.contents}
+  //                 </span>
+  //               </li>
+  //             </ul>
+  //           </div>
+  //         );
+  //       }
+  //       return (
+  //         <li className="ml-6" key={index}>
+  //           <span
+  //             className="text-xs lg:text-base"
+  //             style={{ backgroundColor: hl.color }}
+  //           >
+  //             {hl.contents}
+  //           </span>
+  //         </li>
+  //       );
+  //     });
+  //   }
+
+  //   // 태그 파싱
+  //   const tags = props.tag.map((tagItem: any, index: number) => (
+  //     <li key={index}>
+  //       <TagItem name={tagItem.tag_name} tag_id={tagItem.id}></TagItem>
+  //     </li>
+  //   ));
+
+  //   function commentToggleHandler() {
+  //     if (!commentIsClicked) {
+  //       setCurrentFeedId(props.id);
+  //     }
+  //     setCommentIsClicked(!commentIsClicked);
+  //   }
 
   return (
     // <li className="py-5">
@@ -101,12 +173,13 @@ const SearchResultItem = (props: any) => {
           {`${month}월 ${day}일, ${year}년 `}
         </div>
         <div className="flex flex-row items-center px-3 mt-3 mr-1 text-sm text-gray-500 ">
+          <div className="text-xs">{props.writer}</div>
           <div>
-            {/* <img
+            <img
               className="object-cover w-5 h-5 ml-1 rounded-full border-circle "
-            //   src={props.writerImg}
+              src={props.writerImage}
               alt="../../assets/highlighters.png"
-            /> */}
+            />
           </div>
         </div>
       </div>
@@ -114,11 +187,12 @@ const SearchResultItem = (props: any) => {
         <a href={props.url} target="_blank" rel="noreferrer">
           <span>
             <h2 className="mb-5 font-bold leading-6 text-gray-900 text-mg xl:text-xl hover:text-gray-600">
-              {props.title}
+              {titleDiv}
             </h2>
           </span>
         </a>
         <div className="mb-5 ">
+          <ul className="space-y-1.5">{resultinfosDiv}</ul>
         </div>
         {/* 태그 section */}
         {/* <div className="flex flex-wrap mt-2">{tags}</div> */}
@@ -143,10 +217,10 @@ const SearchResultItem = (props: any) => {
               {/* <span className="mr-2 ">{props.commentLen}</span>
               <button onClick={commentToggleHandler} className="">
                 {/* <button className=""> */}
-                {/* <ChatBubbleBottomCenterIcon className="w-5 h-5 text-gray-400 hover:text-gray-700 " /> */}
-                {/* </button> */}
-                {/* ChevronDownIcon 클릭시 댓글창  */}
-                {/* } */}
+              {/* <ChatBubbleBottomCenterIcon className="w-5 h-5 text-gray-400 hover:text-gray-700 " /> */}
+              {/* </button> */}
+              {/* ChevronDownIcon 클릭시 댓글창  */}
+              {/* } */}
               {/* </button> */}
             </div>
           </div>

@@ -7,7 +7,11 @@ import {
 import { Fragment, useState } from "react";
 import { HomeIcon } from "@heroicons/react/24/outline";
 import { useRecoilState } from "recoil";
-import { mainSectionState, optionModalToggleState, searchKeywordState } from "../../states/atom";
+import {
+  mainSectionState,
+  optionModalToggleState,
+  searchKeywordState,
+} from "../../states/atom";
 import { useCookies } from "react-cookie";
 import axios from "axios";
 import { useQuery } from "react-query";
@@ -42,8 +46,6 @@ export default function Header() {
     }
   };
   const logout = async () => {
-    // resetFeeds();
-    // 쿼리 삭제
     queryClient.removeQueries();
     removeCookie("logCookie");
   };
@@ -66,6 +68,7 @@ export default function Header() {
     //   showConfirmButton: false,
     //   timer: 1000,
     // });
+    console.log(searchInput);
     setSearchKeyword(searchInput);
     setMainSectionNum(4);
   };
