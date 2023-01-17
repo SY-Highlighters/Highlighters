@@ -4,6 +4,8 @@ import {
   mainSectionState,
   currentFeedIdState,
   tagsInFeedState,
+  tagsCreateState,
+  tagsDelState,
 } from "../../../states/atom";
 import axios from "axios";
 import { useCookies } from "react-cookie";
@@ -13,7 +15,8 @@ export function TagItem(props: any) {
   const setMainSectionNum = useSetRecoilState(mainSectionState);
   const currentFeedId = useRecoilValue(currentFeedIdState);
   const [tagList, setTagList] = useRecoilState(tagsInFeedState);
-  const [cookies, setCookie, removeCookie] = useCookies(["logCookie"]);
+  const [tagsCreate, setTagsCreate] = useRecoilState(tagsCreateState);
+  const [tagsDel, setTagsDel] = useRecoilState(tagsDelState);
   const tags =
     props.count && props.count ? (
       <span className="inline-flex items-center mr-2 px-3 py-0.5 rounded-full text-sm font-medium bg-sky-100 text-sky-800 hover:bg-sky-300 hover:scale-95">
@@ -26,11 +29,12 @@ export function TagItem(props: any) {
       </span>
     );
   const tagClickHandler = () => {
-    // console.log("tag clicked");
+    // 태그 생성 모드일 때
     if (props.onFunc) {
-      // console.log("설마여기?");
       tagAddFunC();
-    } else {
+    }
+    // 태그에 해당하는 피드 보여주기
+    else {
       setMainSectionNum(2);
       // console.log("태그아이템 클릭", props.name, props.id);
       setclickedTag({
@@ -39,46 +43,70 @@ export function TagItem(props: any) {
       });
     }
   };
-  async function tagAddFunC() {
-    // 태그 중복 체크
-    for (let i = 0; i < tagList.length; i++) {
-      if (tagList[i].tag_name === props.name) {
-        Swal.fire({
-          icon: "error",
-          title: "태그 중복",
-          text: "이미 존재하는 태그입니다.",
-        });
-        return;
+  function tagAddFunC() {
+    //현재 태그리스트에 있는지 확인
+    if (tagList.find((item: any) => item.tag_name === props.name)) {
+      Swal.fire({
+        icon: "error",
+        title: "태그 중복",
+        text: "이미 존재하는 태그입니다.",
+        showConfirmButton: false,
+        timer: 500,
+      });
+    } else {
+      // 1. 삭제된 태그 리스트에 있는지 확인
+      const delTag = tagsDel.find((item: any) => item.tag_name === props.name);
+      console.log("delTag입니다.", delTag);
+      // 1-1. 있으면 삭제된 태그 리스트에서 삭제하고, 현재 태그 리스트에 추가
+      if (delTag) {
+        setTagsDel(tagsDel.filter((item: any) => item.tag_name !== props.name));
+        setTagList([...tagList, delTag]);
+      } else {
+        console.log("여긴옴?");
+        // 2. 생성된 태그 리스트에 있는지 확인
+        console.log();
+
+        const createTag = tagsCreate.find(
+          (item: any) => item.tag_name === props.name
+        );
+        console.log("createTag", createTag);
+        // 2-1. 없으면 생성된 태그 리스트에 추가
+        if (!createTag) {
+          console.log("여긴옴2?");
+          const newTagItem = {
+            tag_name: props.name,
+          };
+          setTagList([...tagList, newTagItem]);
+          setTagsCreate([...tagsCreate, newTagItem]);
+        }
+        // 2-2. 있으면 생성된 태그 리스트에서 삭제
+        else {
+          console.log("여긴옴3?");
+          Swal.fire({
+            icon: "error",
+            title: "태그 중복",
+            text: "이미 존재하는 태그입니다.",
+            showConfirmButton: false,
+            timer: 500,
+          });
+        }
       }
+
+      // Swal.fire({
+      //   icon: "error",
+      //   title: "태그 중복",
+      //   text: "이미 존재하는 태그입니다.",
+      //   showConfirmButton: false,
+      //   timer: 500,
+      // });
     }
-    // const host_url = `${process.env.REACT_APP_HOST}/api/tag/create`;
-    // console.log("태그 추가 함수 실행", props.name, currentFeedId);
-    // await axios
-    //   .post(
-    //     host_url,
-    //     {
-    //       tag_name: props.name,
-    //       feed_id: currentFeedId,
-    //     },
-    //     {
-    //       headers: {
-    //         Authorization: `Bearer ${cookies.logCookie}`,
-    //       },
-    //     }
-    //   )
-    //   .then(function (response) {
-    //     if (response) {
-    //       Swal.fire({
-    //         icon: "success",
-    //         title: "태그 생성 성공!",
-    //         text: "태그 생성에 성공했습니다.",
-    //       });
-    // console.log(response);
-    const newTagItem = {
-      tag_name: props.name,
-      // tag_id: response.data.id,
-    };
-    setTagList([...tagList, newTagItem]);
+
+    // const newTagItem = {
+    //   tag_name: props.name,
+    // };
+    // console.log(newTagItem);
+    // 생성 태그 리스트에 추가
+    // setTagsCreate([...tagsCreate, newTagItem]);
     // } else {
     //   alert("태그 생성 실패!");
     // }

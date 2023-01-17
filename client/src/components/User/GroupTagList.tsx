@@ -18,26 +18,20 @@ export function GrouptagList(props: any) {
     isSuccess,
     isLoading,
     error,
-  } = useQuery(
-    ["tagList"],
-    async () => {
-      try {
-        const res = await axios.get(
-          `${process.env.REACT_APP_HOST}/api/tag/web`,
-          {
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${cookies.logCookie}`,
-            },
-          }
-        );
-        // console.log(res.data.data);
-        return res.data.data;
-      } catch (err) {
-        console.error(err);
-      }
-    },
-  );
+  } = useQuery(["tagList"], async () => {
+    try {
+      const res = await axios.get(`${process.env.REACT_APP_HOST}/api/tag/web`, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${cookies.logCookie}`,
+        },
+      });
+      console.log(res.data.data);
+      return res.data.data;
+    } catch (err) {
+      console.error(err);
+    }
+  });
   useEffect(() => {}, []);
   return (
     <div className="">
