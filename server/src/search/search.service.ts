@@ -1,5 +1,5 @@
 import { ElasticsearchService } from './../repository/connection';
-import { User } from '@prisma/client';
+import { User, Highlight } from '@prisma/client';
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/repository/prisma.service';
 
@@ -113,20 +113,6 @@ export class SearchService {
             },
           },
           {
-            og: {
-              title: {
-                contains: word,
-              },
-            },
-          },
-          {
-            og: {
-              description: {
-                contains: word,
-              },
-            },
-          },
-          {
             user_email: {
               contains: word,
             },
@@ -151,7 +137,44 @@ export class SearchService {
           },
         ],
       },
+      include: {
+        bookmark: true,
+        highlight: true,
+        tag: true,
+      },
     });
-    return result;
+    // console.log(result[0]);
+    const real_result = [];
+    for (let i = 0; i < result.length; i++) {
+      const resultinfo = [];
+      if (result[i].title.includes(word)) {
+        resultinfo.push({ title: result[i].title });
+      }
+      if (result[i].user_email.includes(word)) {
+        resultinfo.push({ user_email: result[i].user_email });
+      }
+      for (let j = 0; j < result[i].highlight.length; j++) {
+        if (result[i].highlight[j].contents.includes(word)) {
+          resultinfo.push({ highlight: result[i].highlight[j].contents });
+        }
+      }
+      for (let j = 0; j < result[i].tag.length; j++) {
+        if (result[i].tag[j].tag_name.includes(word)) {
+          resultinfo.push({ tag_name: result[i].tag[j].tag_name });
+        }
+      }
+      real_result.push({
+        createdAt: result[i].createdAt,
+        title: result[i].title,
+        group_id: result[i].group_id,
+        id: result[i].id,
+        updatedAt: result[i].updatedAt,
+        url: result[i].url,
+        user_email: result[i].user_email,
+        bookmark: result[i].bookmark,
+        resultinfo: resultinfo,
+      });
+    }
+    return real_result;
   }
 }
