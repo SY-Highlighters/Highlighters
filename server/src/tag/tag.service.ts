@@ -230,15 +230,15 @@ export class TagService {
             },
           },
         });
-        await this.prismaService.feed.update({
-          where: {
-            id: feed_id,
-          },
-          data: {
-            updatedAt: new Date(),
-          },
-        });
       }
+      await this.prismaService.feed.update({
+        where: {
+          id: feed_id,
+        },
+        data: {
+          updatedAt: new Date(),
+        },
+      });
       return true;
     } catch (e) {
       throw new HttpException('Internal Server Error', 500);
