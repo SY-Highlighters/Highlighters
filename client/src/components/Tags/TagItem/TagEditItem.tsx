@@ -18,7 +18,6 @@ export function TagEditItem(props: any) {
       };
   // Todo : 태그 삭제 기능
   const tagEditHandler = async () => {
-    console.log("함보자..");
     // 서버에 태그 삭제 요청
     await axios.delete(host_url, {
       headers: {
@@ -29,8 +28,9 @@ export function TagEditItem(props: any) {
     });
     // 태그 삭제 후 태그 리스트 업데이트(클라사이드 -> 서버사이드 변경 예정)
     setTagList(tagList.filter((tag: any) => tag.tag_id !== props.tagId));
+    window.location.reload();
   };
-  
+
   const delClickHandler = () => {
     Swal.fire({
       title: "태그를 삭제하시겠습니까?",
