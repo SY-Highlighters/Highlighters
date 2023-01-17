@@ -6,10 +6,10 @@ import axios from "axios";
 import { DocumentIcon, MegaphoneIcon } from "@heroicons/react/24/outline";
 import { QueryCache, useQuery, QueryClient, useQueryClient } from "react-query";
 import { useInView } from "react-intersection-observer";
-import { useInfiniteFeed } from "../../hooks/useInfiniteFeed";
+import { useFeedsInGroup } from "../../hooks/useFeedsInGroup";
 const AvailableFeeds = () => {
   const { getBoard, getNextPage, getBoardIsSuccess, getNextPageIsPossible } =
-    useInfiniteFeed();
+    useFeedsInGroup();
   const [ref, isView] = useInView();
 
   useEffect(() => {

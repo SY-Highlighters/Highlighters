@@ -2,7 +2,6 @@ import FeedItem from "../Feeds/FeedItem/FeedItem";
 import { useEffect, useState } from "react";
 import { CalendarDaysIcon } from "@heroicons/react/24/outline";
 import { useInView } from "react-intersection-observer";
-import { useInfiniteFeed } from "../../hooks/useInfiniteFeed";
 import { useRecoilValue } from "recoil";
 import { selectedDayState } from "../../states/atom";
 import { useFeedsInDay } from "../../hooks/useFeedsInDay";
