@@ -1,5 +1,8 @@
 module.exports = {
   content: ["./src/**/*.{js,jsx,ts,tsx}"],
+  variants: {
+    textTruncate: ["responsive"],
+  },
   theme: {
     extend: {
       borderRadius: {
@@ -52,5 +55,16 @@ module.exports = {
   plugins: [
     require("tailwind-scrollbar-hide"),
     require("@tailwindcss/aspect-ratio"),
+    function ({ addVariant, e }) {
+      addVariant("textTruncate", ({ modifySelectors, separator }) => {
+        modifySelectors(({ className }) => {
+          return `.${e(`textTruncate${separator}${className}`)} {
+              overflow: hidden;
+              text-overflow: ellipsis;
+              white-space: nowrap;
+            }`;
+        });
+      });
+    },
   ],
 };

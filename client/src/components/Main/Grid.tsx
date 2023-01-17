@@ -44,19 +44,92 @@ const products = [
     imageAlt: "Front of men's Basic Tee in black.",
     color: "Desc",
   },
+  {
+    id: 1,
+    name: "피드 타이틀",
+    href: "#",
+    imageSrc:
+      "https://tailwindui.com/img/ecommerce-images/product-page-01-related-product-01.jpg",
+    imageAlt: "Front of men's Basic Tee in black.",
+    color: "Desc",
+  },
+  {
+    id: 1,
+    name: "피드 타이틀",
+    href: "#",
+    imageSrc:
+      "https://tailwindui.com/img/ecommerce-images/product-page-01-related-product-01.jpg",
+    imageAlt: "Front of men's Basic Tee in black.",
+    color: "Desc",
+  },
+  {
+    id: 1,
+    name: "피드 타이틀",
+    href: "#",
+    imageSrc:
+      "https://tailwindui.com/img/ecommerce-images/product-page-01-related-product-01.jpg",
+    imageAlt: "Front of men's Basic Tee in black.",
+    color: "Desc",
+  },
+  {
+    id: 1,
+    name: "피드 타이틀",
+    href: "#",
+    imageSrc:
+      "https://tailwindui.com/img/ecommerce-images/product-page-01-related-product-01.jpg",
+    imageAlt: "Front of men's Basic Tee in black.",
+    color: "Desc",
+  },
+  {
+    id: 1,
+    name: "피드 타이틀",
+    href: "#",
+    imageSrc:
+      "https://tailwindui.com/img/ecommerce-images/product-page-01-related-product-01.jpg",
+    imageAlt: "Front of men's Basic Tee in black.",
+    color: "Desc",
+  },
+  {
+    id: 1,
+    name: "피드 타이틀",
+    href: "#",
+    imageSrc:
+      "https://tailwindui.com/img/ecommerce-images/product-page-01-related-product-01.jpg",
+    imageAlt: "Front of men's Basic Tee in black.",
+    color: "Desc",
+  },
+  {
+    id: 1,
+    name: "피드 타이틀",
+    href: "#",
+    imageSrc:
+      "https://tailwindui.com/img/ecommerce-images/product-page-01-related-product-01.jpg",
+    imageAlt: "Front of men's Basic Tee in black.",
+    color: "Desc",
+  },
+  {
+    id: 1,
+    name: "피드 타이틀",
+    href: "#",
+    imageSrc:
+      "https://tailwindui.com/img/ecommerce-images/product-page-01-related-product-01.jpg",
+    imageAlt: "Front of men's Basic Tee in black.",
+    color: "Desc",
+  },
+  
   // More products...
 ];
 
 export function Grid() {
   return (
     // 사진첩 만들기
-    <div className="box-border w-full h-full gap-3 p-5 pb-5 xl:overflow-hidden xl:px-16 xl:flex-row xl:flex animate-fade-in-down">
+    <div className="box-border w-full h-full gap-3 p-5 pb-5 xl:overflow-y-auto xl:overflow-hidden xl:px-16 xl:flex-row xl:flex animate-fade-in-down ">
       {/* 사진 갤러리 만들기 */}{" "}
       <div className="w-full bg-white rounded-lg shadow-md">
         {/* <h2 className="text-2xl font-bold tracking-tight text-gray-900 ml-14">
           공사중 입니다.
         </h2> */}
-        <div className="max-w-2xl px-4 py-16 mx-auto sm:py-24 sm:px-6 lg:max-w-7xl lg:px-8">
+        <div className="px-4 py-16 mx-auto  sm:py-24 sm:px-6 lg:max-w-7xl lg:px-8">
           <div className="grid grid-cols-1 mt-6 gap-y-10 gap-x-6 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8">
             {products.map((product) => (
               <div key={product.id} className="relative group">

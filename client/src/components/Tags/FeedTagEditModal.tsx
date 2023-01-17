@@ -83,7 +83,7 @@ export function FeedTagEditModal(props: any) {
       tagAddHandler();
     }
   };
-
+  const tagEditHandler = async () => {};
   const tagAddHandler = async () => {
     // 태그 중복 체크
     for (let i = 0; i < tagList.length; i++) {
