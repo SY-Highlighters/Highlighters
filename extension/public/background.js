@@ -1,4 +1,4 @@
-const is_production = true; // true: 배포용, false: 로컬용
+const is_production = false; // true: 배포용, false: 로컬용
 
 const cookie_url = is_production
   ? "https://highlighters.site"
@@ -65,9 +65,9 @@ async function initHighlightColor() {
 }
 
 /********************************************** 코드 시작 *********************************************************/
-let push_id = 1;
+// let push_id = 1;
 
-const socket = new WebSocket("ws://localhost:3001");
+const socket = new WebSocket("ws://localhost:4000");
 socket.onopen = () => {
   console.log("소켓 연결 성공");
   socket.send(
@@ -77,43 +77,42 @@ socket.onopen = () => {
     })
   );
 
-  socket.onmessage = (event) => {
-    const data = JSON.parse(event.data);
-    console.log(data);
-  };
+  socket.addEventListener("message", (event) => {
+    console.log(event);
+  });
 };
 
 async function BackgroundStart() {
   await initHighlightColor();
 
-  chrome.alarms.create("checkNoti", {
-    periodInMinutes: 1 / 6,
-    when: Date.now(),
-  });
+  // chrome.alarms.create("checkNoti", {
+  //   periodInMinutes: 1 / 6,
+  //   when: Date.now(),
+  // });
 
-  chrome.alarms.onAlarm.addListener(async (alarm) => {
-    if (alarm.name === "checkNoti") {
-      const cookie = await getCookieToken();
-      const token = cookie?.value;
+  // chrome.alarms.onAlarm.addListener(async (alarm) => {
+  //   if (alarm.name === "checkNoti") {
+  //     const cookie = await getCookieToken();
+  //     const token = cookie?.value;
 
-      const isNewNotiCreateURL = `${host_url}/api/noti/push`;
-      const changeNewNotiInUserURL = `${host_url}/api/noti/check`;
+  //     const isNewNotiCreateURL = `${host_url}/api/noti/push`;
+  //     const changeNewNotiInUserURL = `${host_url}/api/noti/check`;
 
-      const check = await sendHTTPRequest("GET", isNewNotiCreateURL, token);
+  //     const check = await sendHTTPRequest("GET", isNewNotiCreateURL, token);
 
-      if (check.data) {
-        chrome.action.setBadgeText({ text: "new" });
-        chrome.action.setBadgeBackgroundColor({ color: "#0000FF" });
-        createPush(
-          `push_${push_id}`,
-          "새로운 알림이 있습니다.",
-          "알림을 확인해주세요"
-        );
-        push_id++;
-        sendHTTPRequest("GET", changeNewNotiInUserURL, token);
-      }
-    }
-  });
+  //     if (check.data) {
+  //       chrome.action.setBadgeText({ text: "new" });
+  //       chrome.action.setBadgeBackgroundColor({ color: "#0000FF" });
+  //       createPush(
+  //         `push_${push_id}`,
+  //         "새로운 알림이 있습니다.",
+  //         "알림을 확인해주세요"
+  //       );
+  //       push_id++;
+  //       sendHTTPRequest("GET", changeNewNotiInUserURL, token);
+  //     }
+  //   }
+  // });
 
   chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     getCookieToken().then((cookie) => {

@@ -1,11 +1,15 @@
 import { Injectable, HttpException } from '@nestjs/common';
 import { User } from '@prisma/client';
+import { EventGateway } from 'src/event/event.gateway';
 import { PrismaService } from 'src/repository/prisma.service';
 import { CreateNotiDto, DeleteNotiDto, ShowNotiDto } from './dto/noti.dto';
 
 @Injectable()
 export class NotiService {
-  constructor(private readonly prismaService: PrismaService) {}
+  constructor(
+    private readonly prismaService: PrismaService,
+    private event: EventGateway,
+  ) {}
 
   async createNoti(createNotiDto: CreateNotiDto): Promise<number> {
     const { user_email, group_id, nickname, contents, url } = createNotiDto;
@@ -39,6 +43,20 @@ export class NotiService {
         });
         result += 1;
       }
+
+      this.event.group_room[group_id].forEach((client) => {
+        client.send(
+          JSON.stringify({
+            event: 'push',
+            data: {
+              group_id: group_id,
+              nickname: nickname,
+              contents: contents,
+              url: url,
+            },
+          }),
+        );
+      });
     } catch (e) {
       throw new HttpException('Internal Server Error', 500);
     }
