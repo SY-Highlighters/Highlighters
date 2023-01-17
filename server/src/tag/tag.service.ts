@@ -37,6 +37,11 @@ export class TagService {
         data: {
           tag_name: tag_name,
           group_id: user.group_id,
+          feed: {
+            connect: {
+              id: feed_id,
+            },
+          },
         },
       });
       return tag;
