@@ -579,7 +579,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     case "getOG":
       const ogTitle = document.querySelector("meta[property = 'og:title']");
       const title =
-        document.title == null && ogTitle != ""
+        document.title == null && ogTitle !== ""
           ? ogTitle.content
           : document.title;
       const ogImage = document.querySelector("meta[property='og:image']");
