@@ -5,6 +5,7 @@ import { getUrlMeta } from 'src/util/geturlmeta';
 import {
   RequestTagCreateDto,
   RequestTagDeleteDto,
+  RequestTagPost,
   RequestTagWebDeleteDto,
 } from './dto/tag.dto';
 
@@ -192,5 +193,37 @@ export class TagService {
       },
     });
     return tags.map((tag) => tag.tag_name);
+  }
+
+  async updateTag(
+    requestTagPost: RequestTagPost,
+    user: User,
+  ): Promise<boolean> {
+    const { survive_tag_id, create_tag_name, feed_id } = requestTagPost;
+    try {
+      await this.prismaService.tag.deleteMany({
+        where: {
+          id: {
+            notIn: survive_tag_id,
+          },
+        },
+      });
+      await this.prismaService.tag.createMany({
+        data: create_tag_name.map((tag) => {
+          return {
+            tag_name: tag,
+            group_id: user.group_id,
+            feed: {
+              connect: {
+                id: feed_id,
+              },
+            },
+          };
+        }),
+      });
+      return true;
+    } catch (e) {
+      throw new HttpException('Internal Server Error', 500);
+    }
   }
 }

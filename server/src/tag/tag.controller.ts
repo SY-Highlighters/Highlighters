@@ -18,6 +18,7 @@ import { SuccessInterceptor } from 'src/common/interceptors/success.interceptors
 import {
   RequestTagCreateDto,
   RequestTagDeleteDto,
+  RequestTagPost,
   RequestTagWebDeleteDto,
 } from './dto/tag.dto';
 import { TagService } from './tag.service';
@@ -89,22 +90,22 @@ export class TagController {
     );
   }
 
-  // // 태그에 따라 피드 검색
-  // @ApiResponse({ status: 200, description: 'success', type: [Object] })
-  // @ApiOperation({ summary: '태그에 따라 피드 검색' })
-  // @Get('/search/:tag_name')
-  // async searchTag(
-  //   @GetUser() user: User,
-  //   @Param('tag_name') tag_name: string,
-  // ): Promise<object[]> {
-  //   return this.tagService.searchTag(tag_name, user);
-  // }
-
   // 피드에 해당하는 태그 조회
   @ApiResponse({ status: 200, description: 'success', type: [String] })
   @ApiOperation({ summary: '피드에 해당하는 태그 조회' })
   @Get('/feed/:feed_id')
   async getTagByFeedId(@Param('feed_id') id: number): Promise<string[]> {
     return this.tagService.getTagByFeedId(id);
+  }
+
+  // 태그 리스트로 수정
+  @ApiResponse({ status: 200, description: 'success', type: Number })
+  @ApiOperation({ summary: '태그 리스트로 수정' })
+  @Post('/update')
+  async updateTag(
+    @Body() requestTagPost: RequestTagPost,
+    @GetUser() user: User,
+  ): Promise<boolean> {
+    return this.tagService.updateTag(requestTagPost, user);
   }
 }
