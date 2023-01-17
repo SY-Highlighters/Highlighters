@@ -45,6 +45,16 @@ export class TagService {
           },
         },
       });
+
+      await this.prismaService.feed.update({
+        where: {
+          id: feed_id,
+        },
+        data: {
+          updatedAt: new Date(),
+        },
+      });
+
       return tag;
     } catch (e) {
       console.log(e);
@@ -218,6 +228,14 @@ export class TagService {
                 id: feed_id,
               },
             },
+          },
+        });
+        await this.prismaService.feed.update({
+          where: {
+            id: feed_id,
+          },
+          data: {
+            updatedAt: new Date(),
           },
         });
       }
