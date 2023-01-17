@@ -16,6 +16,7 @@ import { useUserData } from "../../hooks/useUserData";
 import { FeedsDay } from "../Calender/FeedsDay";
 import { Squares2X2Icon } from "@heroicons/react/24/outline";
 import { Grid } from "./Grid";
+import SearchResults from "../Search/SearchResults";
 export function Main() {
   const [cookies] = useCookies(["logCookie"]);
   const [changeMainSection, setChangeMainSection] = useRecoilState(
@@ -35,6 +36,8 @@ export function Main() {
         return <AvailableTags></AvailableTags>;
       case 3:
         return <FeedsDay></FeedsDay>;
+      case 4:
+        return <SearchResults></SearchResults>;
       default:
         return <AvailableFeeds></AvailableFeeds>;
     }

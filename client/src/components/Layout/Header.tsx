@@ -15,6 +15,7 @@ import React from "react";
 import { OptionModal } from "./OptionModal";
 import { useQueryClient } from "react-query";
 import { useUserData } from "../../hooks/useUserData";
+import Swal from "sweetalert2";
 export default function Header() {
   const [navbarOpen, setNavbarOpen] = React.useState(false);
   // const [bookmark, setBookmark] = useRecoilState(bookmarkState);
@@ -53,6 +54,28 @@ export default function Header() {
   const optionClicked = () => {
     setOptionModalToggle(!optionModalToggle);
   };
+
+  const searchButtonClicked = () => {
+        Swal.fire({
+          icon: "warning",
+          title: "공사중",
+          text: "검색 기능은 지원 예정입니다.",
+          showConfirmButton: false,
+          timer: 1000,
+        });
+    // setMainSectionNum(4);
+  };
+
+  // enter event handler
+  const activeEnter = (e: any) => {
+    if (e.nativeEvent.isComposing) {
+      return;
+    }
+    if (e.key === "Enter") {
+      searchButtonClicked();
+    }
+  };
+  
   return (
     <>
       <nav className="sticky flex px-2 py-3 bg-sky-600">
@@ -100,7 +123,10 @@ export default function Header() {
                 Search
               </label>
 
-              <MagnifyingGlassCircleIcon className="w-8 h-8 mt-1 text-white"></MagnifyingGlassCircleIcon>
+              <MagnifyingGlassCircleIcon
+                className="w-8 h-8 mt-1 text-white cursor-pointer"
+                onClick={searchButtonClicked}
+              ></MagnifyingGlassCircleIcon>
               <div className="w-full text-white focus-within:text-gray-600">
                 <div className="flex items-center">{/* 검색 icon */}</div>
                 <input
@@ -109,6 +135,7 @@ export default function Header() {
                   className="block w-full py-2 pl-8 pr-3 text-sm text-white placeholder-gray-400 border border-transparent rounded-md bg-sky-600 focus:outline-none focus:placeholder-gray-400 focus:bg-white focus:text-gray-900 focus:border-white focus:ring-0 sm:text-sm"
                   placeholder="검색어를 입력하세요!"
                   type="search"
+                  onKeyDown={activeEnter}
                 ></input>
               </div>
             </div>
@@ -128,8 +155,8 @@ export default function Header() {
                   <button
                     onClick={handleBookmarkClick}
                     className="p-1 text-white rounded-full bg-sky-600 hover:bg-sky-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-sky-500 "
-                    >
-                      <StarIcon className="w-6 h-6"></StarIcon>
+                  >
+                    <StarIcon className="w-6 h-6"></StarIcon>
                   </button>
                 )}
               </li>

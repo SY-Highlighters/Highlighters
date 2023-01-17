@@ -136,3 +136,8 @@ export const groupMemberVisibleState = atom<boolean>({
   key: "groupMemberVisibleState",
   default: false,
 });
+
+export const searchKeyWordState = atom<string>({
+  key: "searchKeyWordState",
+  default: "",
+});
