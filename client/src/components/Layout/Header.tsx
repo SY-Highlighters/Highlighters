@@ -30,7 +30,7 @@ export default function Header() {
   const { data: user, isSuccess } = useUserData(cookies);
 
   const handleBookmarkClick = () => {
-    console.log("bookmark click");
+    // console.log("bookmark click");
     // setBookmark(!bookmark);
     if (mainSectionNum === 1) {
       setMainSectionNum(0);

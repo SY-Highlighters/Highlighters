@@ -24,7 +24,7 @@ const AvailableFeeds = () => {
           Authorization: `Bearer ${cookies.logCookie}`,
         },
       });
-      console.log(response.data.data);
+      // console.log(response.data.data);
       return response.data.data;
     },
     {

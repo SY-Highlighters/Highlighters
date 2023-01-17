@@ -19,7 +19,7 @@ export function CommentInput() {
   // 코멘트가 입력되었을때 다른 컴포넌트를 리렌더링 시키기위한 상태
   const setcommentReload = useSetRecoilState(commentReloadState);
   const handleChange = (e: any) => {
-    console.log(e.target.value);
+    // console.log(e.target.value);
     setInputValue(e.target.value);
   };
   // 엔터

@@ -14,7 +14,7 @@ export default function SignUp() {
   // 폼 데이터 받기 -> 이건 건들지 않는게 낫겠다.
   const formSubmitHandler = async (event: any) => {
     event.preventDefault();
-    console.log(event);
+    // console.log(event);
     // form에서 email, password 받아오기
     const nickname = event.target[0].value;
     const email = event.target[1].value;
@@ -26,7 +26,7 @@ export default function SignUp() {
         password: password,
       })
       .then(function (response) {
-        console.log(response);
+        // console.log(response);
         if (response) {
           setSignUp(!sighch);
           // alert("회원가입 성공");

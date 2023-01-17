@@ -62,7 +62,7 @@ const Headerasd: React.FC = () => {
             },
           }
         );
-        console.log(res.data);
+        // console.log(res.data);
         return res.data;
       } catch (err) {
         console.error(err);
@@ -81,7 +81,7 @@ const Headerasd: React.FC = () => {
     }
   );
   const handleBookmarkClick = () => {
-    console.log("bookmark click");
+    // console.log("bookmark click");
     // setBookmark(!bookmark);
     if (mainSectionNum === 1) {
       setMainSectionNum(0);

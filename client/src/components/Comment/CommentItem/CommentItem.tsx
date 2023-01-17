@@ -13,7 +13,7 @@ export function CommentItem(props: any) {
   const day = date.getDate();
   const hours = date.getHours();
   const min = date.getMinutes();
-  console.log(props.writer, props.userId);
+  // console.log(props.writer, props.userId);
   return (
     <div className="flex flex-col mt-7">
       <div className="flex flex-row">

@@ -8,7 +8,7 @@ export function UnBookmarked(props: any) {
 
   // 서버에 북마크 삭제 요청
   async function bookmarkToggleHandler() {
-    console.log(props.bookmarkId);
+    // console.log(props.bookmarkId);
     const host_url = `${process.env.REACT_APP_HOST}/api/bookmark/delete/${props.bookmarkId.id}`;
     await axios
       .delete(host_url, {

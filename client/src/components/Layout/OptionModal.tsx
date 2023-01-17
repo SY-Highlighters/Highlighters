@@ -50,7 +50,7 @@ export function OptionModal(props: any) {
   //   ));
 
   const handleChange = (e: any) => {
-    console.log(e.target.value);
+    // console.log(e.target.value);
     setInputValue(e.target.value);
   };
 
@@ -80,7 +80,7 @@ export function OptionModal(props: any) {
             tag_name: inputValue,
             tag_id: response.data.id,
           };
-          console.log(response);
+          // console.log(response);
           setTagList([...tagList, newTagItem]);
         } else {
           alert("태그 생성 실패!");
