@@ -249,8 +249,7 @@ function rehighlightImage(highlight) {
 }
 
 function deleteHighlight(node) {
-
-  const nodeid = (curNodeID == null) ? node.id : curNodeID;
+  const nodeid = curNodeID == null ? node.id : curNodeID;
 
   chrome.runtime.sendMessage(
     {
@@ -259,32 +258,31 @@ function deleteHighlight(node) {
     },
     (response) => {
       node.removeAttribute("style");
-        if (curNodeType === 2) {
-          const deletedImageNode = node.cloneNode(true);
-          node.parentNode.replaceChild(deletedImageNode, node);
-          const button = document.getElementById("btn_image_highlighters");
+      if (curNodeType === 2) {
+        const deletedImageNode = node.cloneNode(true);
+        node.parentNode.replaceChild(deletedImageNode, node);
+        const button = document.getElementById("btn_image_highlighters");
 
-          const position = deletedImageNode.getBoundingClientRect();
+        const position = deletedImageNode.getBoundingClientRect();
 
-          const scrollY = window.scrollY;
-          const scrollX = window.scrollX;
+        const scrollY = window.scrollY;
+        const scrollX = window.scrollX;
 
-          const mouseOverImgBtn = mouseOverImgBtnHandler(
-            button,
-            deletedImageNode,
-            position,
-            scrollY,
-            scrollX
-          );
-          deletedImageNode.addEventListener("mouseover", mouseOverImgBtn);
-          deletedImageNode.addEventListener("mouseout", mouseOnImgBtn);
-        }
+        const mouseOverImgBtn = mouseOverImgBtnHandler(
+          button,
+          deletedImageNode,
+          position,
+          scrollY,
+          scrollX
+        );
+        deletedImageNode.addEventListener("mouseover", mouseOverImgBtn);
+        deletedImageNode.addEventListener("mouseout", mouseOnImgBtn);
+      }
     }
   );
 
   hideToolBar();
 }
-
 
 function showToolBar(event, node, user, nodetype, nodeID) {
   const html = document.querySelector("html");
@@ -579,11 +577,23 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   switch (request.greeting) {
     // 웹페이지의 하이라이팅을 디비로 전송
     case "getOG":
+      const ogTitle = document.querySelector("meta[property = 'og:title']");
+      const title =
+        document.title == null && ogTitle != null
+          ? ogTitle.content
+          : document.title;
+      const ogImage = document.querySelector("meta[property='og:image']");
+      const image = ogImage != null ? ogImage.content : null;
+      const ogDescription = document.querySelector(
+        "meta[property='og:description']"
+      );
+      const description = ogDescription != null ? ogDescription.content : null;
+
+      console.log(title, image, description);
       sendResponse({
-        title: document.title,
-        image: document.querySelector("meta[property='og:image']").content,
-        description: document.querySelector("meta[property='og:description']")
-          .content,
+        title: title,
+        image: image,
+        description: description,
       });
       break;
 
