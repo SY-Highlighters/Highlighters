@@ -216,23 +216,25 @@ const FeedItem = (props: any) => {
         </div>
 
         {/* 노션 북마크처럼 만들기 프로젝트 */}
-        <div className="flex w-full mb-3 overflow-hidden rounded-lg shadow-lg w-50">
-          <div className="w-1/4">
-            <img
-              className="object-cover w-full h-48"
-              src={props.og_image}
-              alt=""
-            />
+        <a href={props.url} target="_blank" rel="noreferrer">
+          <div className="flex w-5/6 h-20 mb-2 overflow-hidden rounded-lg shadow-sm cursor-pointer">
+            <div className="w-20 h-full">
+              <img
+                className="object-cover w-full h-full rounded-sm"
+                src={props.og_image}
+                alt=""
+              />
+            </div>
+            <div className="flex-1 px-6 py-3 mb-4">
+              <h4 className="mb-2 text-sm font-semibold tracking-tight text-gray-700">
+                {props.title}
+              </h4>
+              <p className="text-xs leading-normal text-gray-500 textTruncate">
+                {props.description.substring(0, 70)}...
+              </p>
+            </div>
           </div>
-          <div className="flex-1 px-6 py-4">
-            <h4 className="mb-3 text-lg font-semibold tracking-tight text-gray-800">
-              {props.title}
-            </h4>
-            <p className="text-xs leading-normal text-gray-700">
-              {props.description}
-            </p>
-          </div>
-        </div>
+        </a>
         {/* 태그 section */}
         <div className="flex flex-wrap mt-2">{tags}</div>
         {/* 태그 수정 section */}
