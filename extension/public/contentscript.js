@@ -579,15 +579,18 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     case "getOG":
       const ogTitle = document.querySelector("meta[property = 'og:title']");
       const title =
-        document.title == null && ogTitle != null
+        document.title == null && ogTitle !== ""
           ? ogTitle.content
           : document.title;
       const ogImage = document.querySelector("meta[property='og:image']");
-      const image = ogImage != null ? ogImage.content : null;
+      const image =
+        ogImage != null
+          ? ogImage.content
+          : "https://www.salonlfc.com/wp-content/uploads/2018/01/image-not-found-1-scaled-1150x647.png";
       const ogDescription = document.querySelector(
         "meta[property='og:description']"
       );
-      const description = ogDescription != null ? ogDescription.content : null;
+      const description = ogDescription != null ? ogDescription.content : "";
 
       console.log(title, image, description);
       sendResponse({
