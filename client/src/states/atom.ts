@@ -131,3 +131,8 @@ export const changeMainSectionState = atom<boolean>({
   key: "changeMainSectionState",
   default: false,
 });
+
+export const groupMemberVisibleState = atom<boolean>({
+  key: "groupMemberVisibleState",
+  default: false,
+});

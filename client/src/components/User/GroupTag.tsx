@@ -24,7 +24,7 @@ const GroupTag = (props: any) => {
   return (
     <div
       className={
-        props.onCss ? props.onCss : "mt-3 bg-white rounded-lg shadow-lg h-full"
+        props.onCss ? props.onCss : "mt-5 bg-white rounded-lg shadow-lg h-full"
       }
     >
       <div className="m-5">
