@@ -66,7 +66,7 @@ export default function Noti() {
         </div>
       </div>
       {/* 아래로 긴 카드박스 */}
-      <div className="mt-5 overflow-y-auto bg-white rounded-lg shadow-lg xl:scrollbar-hide h-1/3">
+      <div className="mt-5 overflow-y-auto bg-white rounded-lg shadow-lg xl:scrollbar-hide h-1/3 box-shadow-bottom-only ">
         <div className="m-5">
           {/* 카드박스 내용 */}
           <ul className="">

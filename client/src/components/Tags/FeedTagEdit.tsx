@@ -13,11 +13,13 @@ export function FeedTagEdit(props: any) {
   const tagEditHandler = () => {
     console.log("tagEditHandler");
     console.log(props.tag);
+    
     tagAdd(props.tag);
+    // 해당 피드의 id를 전역으로 저장
     setCurrentFeedId(props.feed_id);
     setTagModal(1);
   };
-
+  // 해당 피드에 대한 태그 리스트를 전역으로 저장
   const tagAdd = (data: []) => {
     data.map((item: any) => {
       const newTag = {

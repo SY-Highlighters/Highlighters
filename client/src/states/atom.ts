@@ -141,3 +141,13 @@ export const searchKeywordState = atom<string>({
   key: "searchKeywordState",
   default: "",
 });
+
+export const tagsCreateState = atom<any>({
+  key: "tagsCreateState",
+  default: [],
+});
+
+export const tagsDelState = atom<any>({
+  key: "tagsDelState",
+  default: [],
+});

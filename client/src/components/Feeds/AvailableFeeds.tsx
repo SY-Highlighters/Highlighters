@@ -11,7 +11,6 @@ const AvailableFeeds = () => {
   const { getBoard, getNextPage, getBoardIsSuccess, getNextPageIsPossible } =
     useFeedsInGroup();
   const [ref, isView] = useInView();
-
   useEffect(() => {
     // 맨 마지막 요소를 보고있고 페이지가 존재하면
     // 다음 페이지 데이터를 가져옴
@@ -117,27 +116,22 @@ const AvailableFeeds = () => {
                 })
               : null
           }
-          {/* {feedsInGroup &&
-            feedsInGroup.map((feed: any) => (
-              <div key={feed.id} className="mb-4">
-                <FeedItem
-                  id={feed.id}
-                  key={feed.id}
-                  title={feed.title}
-                  description={feed.og.description}
-                  og_image={feed.og.image}
-                  url={feed.url}
-                  highlight={feed.highlight}
-                  date={feed.createdAt}
-                  tag={feed.tag}
-                  writer={feed.user.nickname}
-                  writerImg={feed.user.image}
-                  commentLen={feed.comment.length}
-                  bookmarked={feed.bookmark.length !== 0 ? true : false}
-                  bookmarkId={feed.bookmark[0]}
-                />
+          {/* 위에 피드가 생성이 안됐을때 없다는 효과를 주기 */}
+          {getBoardIsSuccess && getBoard!.pages.length === 0 ? null : (
+            <div className="flex justify-center w-full h-full pt-10 mt-20 bg-white">
+              <div className="flex flex-col items-center justify-center">
+                <div className="flex items-center justify-center w-20 h-20 mb-3 rounded-full bg-sky-500">
+                  <DocumentIcon
+                    className="w-10 h-10 text-white"
+                    aria-hidden="true"
+                  />
+                </div>
+                <p className="text-2xl font-bold text-gray-500 ">
+                  아직 피드가 없어요😂
+                </p>
               </div>
-            ))} */}
+            </div>
+          )}
         </ul>
       </div>
     </div>
@@ -145,7 +139,3 @@ const AvailableFeeds = () => {
 };
 
 export default AvailableFeeds;
-
-function getUserData() {
-  return;
-}

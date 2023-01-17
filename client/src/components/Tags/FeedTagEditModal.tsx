@@ -9,6 +9,8 @@ import {
   tagsInFeedState,
   userInfoState,
   currentFeedIdState,
+  tagsCreateState,
+  tagsDelState,
 } from "../../states/atom";
 import { useCookies } from "react-cookie";
 import { useEffect, useState } from "react";
@@ -18,14 +20,8 @@ import Swal from "sweetalert2";
 import { ArrowRightCircleIcon } from "@heroicons/react/24/outline";
 import GroupTag from "../User/GroupTag";
 import { GrouptagList } from "../User/GroupTagList";
-import AWS from "aws-sdk";
-AWS.config.update({
-  region: "ap-northeast-2",
-  credentials: {
-    accessKeyId: `${process.env.REACT_APP_S3_ACCESS_KEY_ID}`,
-    secretAccessKey: `${process.env.REACT_APP_S3_SECRET_ACCESS_KEY}`,
-  },
-});
+import { useQuery } from "react-query";
+
 export function FeedTagEditModal(props: any) {
   const setTagModal = useSetRecoilState(tagModalVisble);
   const currentFeedId = useRecoilValue(currentFeedIdState);
@@ -34,41 +30,16 @@ export function FeedTagEditModal(props: any) {
   const [inputValue, setInputValue] = useState("");
   // const tagName = useRecoilValue(tagNameState);
   const [tagList, setTagList] = useRecoilState(tagsInFeedState);
+  const [tagsCreate, setTagsCreate] = useRecoilState(tagsCreateState);
+  const [tagsDel, setTagsDel] = useRecoilState(tagsDelState);
   const resetTagsInFeedState = useResetRecoilState(tagsInFeedState);
   const [imgUrl, setImgUrl] = useState("");
 
-  // // s3 설정
-  // const s3 = new AWS.S3();
-
-  // const params = {
-  //   Bucket: "highlighters-s3",
-  //   Key: "picture/345.jpg",
-  // };
-  // s3.getObject(params, function (err, data) {
-  //   if (err) {
-  //     console.log(err, err.stack);
-  //   } else {
-  //     const imgUrl = URL.createObjectURL(
-  //       new Blob([data.Body], { type: "image/png" })
-  //     );
-  //     setImgUrl(imgUrl);
-  //     console.log(imgUrl);
-  //     console.log("suc", data);
-  //   }
-  // });
   const closeModal = () => {
     setTagModal(0);
     resetTagsInFeedState();
-    window.location.reload();
+    // 새로고침하고 원래 스크롤로 이동함
   };
-  // const [userData, setUserInfo] = useRecoilState(userInfo); test1 -> 현재 로그인시 유저데이터 받는중
-
-  // const gropuId = userData.groupId;
-  // // 렌더링된 후 바로 실행
-  //   console.log("여기는 태그모달임", props.tag);
-  //   const tagLists = props.tag.map((tagItem: any) => (
-  //     <TagEditItem tagName={tagItem.tag_name} />
-  //   ));
 
   const handleChange = (e: any) => {
     setInputValue(e.target.value);
@@ -83,7 +54,8 @@ export function FeedTagEditModal(props: any) {
       tagAddHandler();
     }
   };
-  const tagEditHandler = async () => {};
+
+  // 엔터나 버튼 클릭시 태그 추가
   const tagAddHandler = async () => {
     // 태그 중복 체크
     for (let i = 0; i < tagList.length; i++) {
@@ -95,49 +67,19 @@ export function FeedTagEditModal(props: any) {
           showConfirmButton: false,
           timer: 500,
         });
-        setInputValue("");
         return;
       }
     }
-
-    // const host_url = `${process.env.REACT_APP_HOST}/api/tag/create`;
-    // await axios
-    //   .post(
-    //     host_url,
-    //     {
-    //       tag_name: inputValue,
-    //       feed_id: currentFeedId,
-    //     },
-    //     {
-    //       headers: {
-    //         Authorization: `Bearer ${cookies.logCookie}`,
-    //       },
-    //     }
-    //   )
-    //   .then(function (response) {
-    //     if (response) {
-    //       Swal.fire({
-    //         icon: "success",
-    //         title: "태그 생성 성공!",
-    //         text: "태그 생성에 성공했습니다.",
-    //       });
-    //       const newTagItem = {
-    //         tag_name: inputValue,
-    //         tag_id: response.data.id,
-    //       };
-    //       setInputValue("");
-    //       setTagList([...tagList, newTagItem]);
-    //     } else {
-    //       alert("태그 생성 실패!");
-    //     }
-    //   });
+    // if
     const newTagItem = {
       tag_name: inputValue,
     };
-    setInputValue("");
+    // 생성 태그 리스트에 추가
     setTagList([...tagList, newTagItem]);
+    setTagsCreate([...tagsCreate, newTagItem]);
+    setInputValue("");
   };
-
+  console.log("태그리스트", tagList);
   const tagLists = tagList.map((tagItem: any) => (
     <div key={tagItem.tag_id}>
       <TagEditItem
@@ -150,9 +92,41 @@ export function FeedTagEditModal(props: any) {
     </div>
   ));
 
-  // s3에서 이미지 가져오기
-  // const [imgUrl, setImgUrl] = useState("");
-  // const s3 = new AWS.S3();
+  // tagsDel의 id 값만 리스트로 만들기
+  const tagDelList = tagsDel.map((tagItem: any) => tagItem.tag_id);
+  const tagCreList = tagsCreate.map((tagItem: any) => tagItem.tag_name);
+
+  const tagSaveHandler = async () => {
+    if (tagCreList.length === 0 && tagDelList.length === 0) {
+      closeModal();
+    } else {
+      const host_url = `${process.env.REACT_APP_HOST}/api/tag/update`;
+      await axios
+        .post(
+          host_url,
+          {
+            delete_tag_id: tagDelList,
+            create_tag_name: tagCreList,
+            feed_id: currentFeedId,
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${cookies.logCookie}`,
+            },
+          }
+        )
+        .then(function (response) {
+          if (response) {
+            // 모달 닫기
+            closeModal();
+            // 편집 안했을때는 새고 안하기
+            window.location.reload();
+          } else {
+            alert("태그 편집 실패!");
+          }
+        });
+    }
+  };
 
   return (
     <div
@@ -233,6 +207,18 @@ export function FeedTagEditModal(props: any) {
                 ></GrouptagList>
               </div>
             </div>
+            {/* 태그 저장 버튼 */}
+            <div className="flex flex-wrap mt-5">
+              <div className="w-full px-2">
+                <button
+                  onClick={tagSaveHandler}
+                  className="w-full px-4 py-2 text-white rounded-lg bg-sky-500 hover:bg-sky-600 focus:outline-none"
+                >
+                  태그 저장
+                </button>
+              </div>
+            </div>
+
             {/* <a
               href="#"
               onClick={() => {

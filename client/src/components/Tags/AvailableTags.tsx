@@ -45,7 +45,10 @@ const AvailableTags = () => {
         </h1>
       </div>
       {/* feedslist section */}
-      <div className="mt-5 rounded-md shadow-lg xl:overflow-y-auto xl:scrollbar-hide xl:h-full ">
+      <div
+        className="mt-5 rounded-md shadow-lg xl:overflow-y-auto xl:scrollbar-hide xl:h-full "
+        style={{ height: "80vh" }}
+      >
         <ul className="space-y-4 ">
           {
             // 데이터를 불러오는데 성공하고 데이터가 0개가 아닐 때 렌더링

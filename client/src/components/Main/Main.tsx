@@ -13,7 +13,7 @@ import Noti from "../Noti/Noti";
 import User from "../User/User";
 import { useCookies } from "react-cookie";
 import { useUserData } from "../../hooks/useUserData";
-import { FeedsDay } from "../Calender/FeedsDay";
+import { FeedsDay } from "../Calender/FeedsInDay";
 import { Squares2X2Icon } from "@heroicons/react/24/outline";
 import { Grid } from "./Grid";
 import SearchResults from "../Search/SearchResults";

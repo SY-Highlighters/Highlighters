@@ -15,7 +15,6 @@ const GroupTag = (props: any) => {
   const [clickedGroupTagDel, setclickedGroupTagDel] = useRecoilState(
     clickedGroupTagDelState
   );
-
   // 그룹 태그 삭제 버튼 클릭 핸들러
   function groupTagDeleteHandler() {
     // console.log("그룹 태그 삭제 버튼 클릭");
