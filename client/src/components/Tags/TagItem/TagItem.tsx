@@ -51,38 +51,38 @@ export function TagItem(props: any) {
         return;
       }
     }
-    const host_url = `${process.env.REACT_APP_HOST}/api/tag/create`;
-    console.log("태그 추가 함수 실행", props.name, currentFeedId);
-    await axios
-      .post(
-        host_url,
-        {
-          tag_name: props.name,
-          feed_id: currentFeedId,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${cookies.logCookie}`,
-          },
-        }
-      )
-      .then(function (response) {
-        if (response) {
-          Swal.fire({
-            icon: "success",
-            title: "태그 생성 성공!",
-            text: "태그 생성에 성공했습니다.",
-          });
-          console.log(response);
-          const newTagItem = {
-            tag_name: props.name,
-            tag_id: response.data.id,
-          };
-          setTagList([...tagList, newTagItem]);
-        } else {
-          alert("태그 생성 실패!");
-        }
-      });
+    // const host_url = `${process.env.REACT_APP_HOST}/api/tag/create`;
+    // console.log("태그 추가 함수 실행", props.name, currentFeedId);
+    // await axios
+    //   .post(
+    //     host_url,
+    //     {
+    //       tag_name: props.name,
+    //       feed_id: currentFeedId,
+    //     },
+    //     {
+    //       headers: {
+    //         Authorization: `Bearer ${cookies.logCookie}`,
+    //       },
+    //     }
+    //   )
+    //   .then(function (response) {
+    //     if (response) {
+    //       Swal.fire({
+    //         icon: "success",
+    //         title: "태그 생성 성공!",
+    //         text: "태그 생성에 성공했습니다.",
+    //       });
+    // console.log(response);
+    const newTagItem = {
+      tag_name: props.name,
+      // tag_id: response.data.id,
+    };
+    setTagList([...tagList, newTagItem]);
+    // } else {
+    //   alert("태그 생성 실패!");
+    // }
+    // });
   }
 
   return (

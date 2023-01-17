@@ -76,8 +76,11 @@ export function FeedTagEditModal(props: any) {
 
   // 엔터 입력시 태그 추가
   const handleKeyPress = (e: any) => {
+    if (e.nativeEvent.isComposing) {
+      return;
+    }
     if (e.key === "Enter") {
-      if (!tagList.some((tag:any) => tag.tag_name === inputValue)) tagAddHandler();
+      tagAddHandler();
     }
   };
 
@@ -89,42 +92,50 @@ export function FeedTagEditModal(props: any) {
           icon: "error",
           title: "태그 중복",
           text: "이미 존재하는 태그입니다.",
+          showConfirmButton: false,
+          timer: 500,
         });
+        setInputValue("");
         return;
       }
     }
 
-    const host_url = `${process.env.REACT_APP_HOST}/api/tag/create`;
-    await axios
-      .post(
-        host_url,
-        {
-          tag_name: inputValue,
-          feed_id: currentFeedId,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${cookies.logCookie}`,
-          },
-        }
-      )
-      .then(function (response) {
-        if (response) {
-          Swal.fire({
-            icon: "success",
-            title: "태그 생성 성공!",
-            text: "태그 생성에 성공했습니다.",
-          });
-          const newTagItem = {
-            tag_name: inputValue,
-            tag_id: response.data.id,
-          };
-          setInputValue("");
-          setTagList([...tagList, newTagItem]);
-        } else {
-          alert("태그 생성 실패!");
-        }
-      });
+    // const host_url = `${process.env.REACT_APP_HOST}/api/tag/create`;
+    // await axios
+    //   .post(
+    //     host_url,
+    //     {
+    //       tag_name: inputValue,
+    //       feed_id: currentFeedId,
+    //     },
+    //     {
+    //       headers: {
+    //         Authorization: `Bearer ${cookies.logCookie}`,
+    //       },
+    //     }
+    //   )
+    //   .then(function (response) {
+    //     if (response) {
+    //       Swal.fire({
+    //         icon: "success",
+    //         title: "태그 생성 성공!",
+    //         text: "태그 생성에 성공했습니다.",
+    //       });
+    //       const newTagItem = {
+    //         tag_name: inputValue,
+    //         tag_id: response.data.id,
+    //       };
+    //       setInputValue("");
+    //       setTagList([...tagList, newTagItem]);
+    //     } else {
+    //       alert("태그 생성 실패!");
+    //     }
+    //   });
+    const newTagItem = {
+      tag_name: inputValue,
+    };
+    setInputValue("");
+    setTagList([...tagList, newTagItem]);
   };
 
   const tagLists = tagList.map((tagItem: any) => (

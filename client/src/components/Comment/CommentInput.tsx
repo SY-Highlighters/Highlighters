@@ -24,6 +24,10 @@ export function CommentInput() {
   };
   // 엔터
   const handleKeyPress = (e: any) => {
+    if (e.nativeEvent.isComposing) {
+      return;
+    }
+
     if (e.key === "Enter") {
       commentAddHandler();
     }

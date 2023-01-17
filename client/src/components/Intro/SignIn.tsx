@@ -2,11 +2,7 @@ import axios from "axios";
 import { Fragment } from "react";
 import { useSetRecoilState, useRecoilState, constSelector } from "recoil";
 import SignUp from "./SignUp";
-import {
-  logModalVisble,
-  sighUpCheck,
-  userInfoState,
-} from "../../../states/atom";
+import { logModalVisble, sighUpCheck, userInfoState } from "../../states/atom";
 import { useCookies } from "react-cookie";
 import Swal from "sweetalert2";
 import { GoogleLoginButton } from "./GoogleLoginButton";

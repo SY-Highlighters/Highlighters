@@ -1,11 +1,7 @@
 import axios from "axios";
 import { Fragment } from "react";
 import { useSetRecoilState, useRecoilState } from "recoil";
-import {
-  logModalVisble,
-  sighUpCheck,
-  userInfoState,
-} from "../../../states/atom";
+import { logModalVisble, sighUpCheck, userInfoState } from "../../states/atom";
 import { useCookies } from "react-cookie";
 import Swal from "sweetalert2";
 
