@@ -112,11 +112,11 @@ export class SearchService {
               contains: word,
             },
           },
-          {
-            user_email: {
-              contains: word,
-            },
-          },
+          // {
+          //   user_email: {
+          //     contains: word,
+          //   },
+          // },
           {
             highlight: {
               some: {
@@ -126,43 +126,58 @@ export class SearchService {
               },
             },
           },
-          {
-            tag: {
-              some: {
-                tag_name: {
-                  contains: word,
-                },
-              },
-            },
-          },
+          // {
+          // tag: {
+          //   some: {
+          //     tag_name: {
+          //       contains: word,
+          //     },
+          //   },
+          // },
+          // },
         ],
       },
       include: {
         bookmark: true,
         highlight: true,
-        tag: true,
+        // tag: true,
+        user: true,
       },
     });
     // console.log(result[0]);
     const real_result = [];
     for (let i = 0; i < result.length; i++) {
-      const resultinfo = [];
-      if (result[i].title.includes(word)) {
-        resultinfo.push({ title: result[i].title });
-      }
-      if (result[i].user_email.includes(word)) {
-        resultinfo.push({ user_email: result[i].user_email });
-      }
+      const resultinfo = []; // type : 1(highlight)
+      // if (result[i].title.toUpperCase().includes(word.toUpperCase())) {
+      //   resultinfo.push({
+      //     type: 1,
+      //     content: result[i].title,
+      //   });
+      // }
+      // if (result[i].user_email.includes(word)) {
+      //   resultinfo.push({ content: result[i].user_email });
+      // }
       for (let j = 0; j < result[i].highlight.length; j++) {
-        if (result[i].highlight[j].contents.includes(word)) {
-          resultinfo.push({ highlight: result[i].highlight[j].contents });
+        const includeIdx = result[i].highlight[j].contents
+          .toUpperCase()
+          .indexOf(word.toUpperCase());
+        if (includeIdx != -1) {
+          resultinfo.push({
+            type: 1,
+            includeStart: includeIdx,
+            includeEnd: includeIdx + word.length,
+            highlight: result[i].highlight[j],
+          });
         }
       }
-      for (let j = 0; j < result[i].tag.length; j++) {
-        if (result[i].tag[j].tag_name.includes(word)) {
-          resultinfo.push({ tag_name: result[i].tag[j].tag_name });
-        }
-      }
+      // for (let j = 0; j < result[i].tag.length; j++) {
+      //   if (result[i].tag[j].tag_name.includes(word)) {
+      //     resultinfo.push({
+      //       type: 3,
+      //       content: result[i].tag[j].tag_name,
+      //     });
+      //   }
+      // }
       real_result.push({
         createdAt: result[i].createdAt,
         title: result[i].title,
@@ -170,7 +185,7 @@ export class SearchService {
         id: result[i].id,
         updatedAt: result[i].updatedAt,
         url: result[i].url,
-        user_email: result[i].user_email,
+        user: result[i].user,
         bookmark: result[i].bookmark,
         resultinfo: resultinfo,
       });

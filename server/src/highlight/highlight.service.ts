@@ -80,7 +80,7 @@ export class HighlightService {
             group_id: group_id,
             user_email: user_email,
             selection: selection,
-            contents: url, // image source url
+            contents: contents, // image source url
             type: 2,
             color: color,
           },
