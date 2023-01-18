@@ -19,8 +19,8 @@ export default function Noti() {
       getNextPage();
     }
   }, [isView, getNextPage, getNextPageIsPossible]);
-  console.log("노티", getBoard);
-  // 피드리스트에 피드아이템 넣기
+
+  console.log(getBoard);
   // const noti.dataAdd = (data: any) => {
   //   data.map((item: any) => {
   //     const newNoti = {
@@ -63,6 +63,11 @@ export default function Noti() {
               <p className="text-xl font-bold text-white truncate">
                 <span className="">알림</span>
               </p>
+              {/* 모두읽음 오른쪽 구석에 작게 */}
+              <div className="flex items-center justify-center flex-shrink-0 w-6 h-6 ml-2 text-xs font-medium text-white rounded-full opacity-75 bg-sky-600">
+                {getBoardIsSuccess &&
+                  getBoard!.pages[0].board_page.data.totalcount}
+              </div>
             </div>
           </div>
         </div>

@@ -23,8 +23,9 @@ export function GroupMember() {
       <div className="flex mx-2 mb-1">
         {isSuccess &&
           groupMember &&
-          groupMember.map((member: any) => (
+          groupMember.map((member: any, index: number) => (
             <img
+              key={index}
               className="ml-1 rounded-full w-7 h-7"
               src={member.image}
               alt=""
