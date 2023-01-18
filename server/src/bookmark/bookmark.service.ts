@@ -20,6 +20,14 @@ export class BookmarkService {
           user_email: user.email,
         },
       });
+      await this.prismaService.feed.update({
+        where: {
+          id: feed_id,
+        },
+        data: {
+          updatedAt: new Date(),
+        },
+      });
     } catch (e) {
       console.log(e);
       throw new HttpException('Internal Server Error', 500);
