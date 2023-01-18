@@ -73,12 +73,30 @@ async function initHighlightColor() {
 let userInfo;
 
 const socket = new WebSocket(`${websocket_url}/api/ws`);
-socket.onopen = () => {
+socket.onopen = async () => {
   console.log("소켓 연결 성공");
+
+  await getCookieToken().then(async (cookie) => {
+    const token = cookie?.value;
+    userInfo = await sendHTTPRequest(
+      "GET",
+      `${host_url}/api/user/signin`,
+      token
+    );
+
+    socket.send(
+      JSON.stringify({
+        event: "userinfo",
+        userInfo,
+      })
+    );
+  });
+
   socket.addEventListener("message", (message) => {
     const msg = JSON.parse(message.data);
 
     if (msg.event === "push") {
+      console.log("push", msg.data);
       chrome.action.setBadgeText({ text: "new" });
       chrome.action.setBadgeBackgroundColor({ color: "#0000FF" });
     }
@@ -116,22 +134,6 @@ async function BackgroundStart() {
   //     }
   //   }
   // });
-
-  await getCookieToken().then(async (cookie) => {
-    const token = cookie?.value;
-    userInfo = await sendHTTPRequest(
-      "GET",
-      `${host_url}/api/user/signin`,
-      token
-    );
-
-    socket.send(
-      JSON.stringify({
-        event: "userinfo",
-        userInfo,
-      })
-    );
-  });
 
   chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     getCookieToken().then((cookie) => {

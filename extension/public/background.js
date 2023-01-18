@@ -96,6 +96,7 @@ socket.onopen = async () => {
     const msg = JSON.parse(message.data);
 
     if (msg.event === "push") {
+      console.log("push", msg.data);
       chrome.action.setBadgeText({ text: "new" });
       chrome.action.setBadgeBackgroundColor({ color: "#0000FF" });
     }
