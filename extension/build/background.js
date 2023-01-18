@@ -124,6 +124,10 @@ socket.onopen = async () => {
       });
     }
   });
+
+  socket.onclose = () => {
+    console.log("소켓 연결 종료");
+  };
 };
 
 async function BackgroundStart() {

@@ -8,10 +8,12 @@ export class EventGateway implements OnModuleInit {
   server: Server;
 
   public group_room = {};
+  public user_client;
 
   onModuleInit() {
     this.server.on('connection', (client) => {
       console.log('===== client connected =====');
+      this.user_client = client;
 
       client.on('message', (message) => {
         const msg = JSON.parse(message.toString());
