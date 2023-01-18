@@ -1,12 +1,13 @@
 import { useState, useRef, useEffect } from "react";
-import { useInView } from "react-intersection-observer";
-import { useFeedsInGrid } from "../../hooks/useFeedsInGrid";
 import axios from "axios";
 import { useCookies } from "react-cookie";
-import { QueryCache, useQuery, QueryClient, useQueryClient } from "react-query";
 import { useUserData } from "../../hooks/useUserData";
+import LazyImage from "./LazyImage";
 export function Grid() {
   const [cookies] = useCookies(["logCookie"]);
+  // const [ref, inView] = useInView({
+  //   threshold: 0.5,
+  // });
 
   const { data: user } = useUserData(cookies);
   const [heavyList, setHeavyList] = useState([]);
@@ -41,30 +42,45 @@ export function Grid() {
             style={{ height: "80vh" }}
           >
             {heavyList &&
-              heavyList.map((feed: any) => (
-                <div key={feed.id} className="relative group">
-                  <div className="overflow-hidden bg-gray-200 rounded-md min-h-80 aspect-w-1 aspect-h-1 group-hover:opacity-75 lg:aspect-none lg:h-40">
-                    <img
-                      src={feed.og.image}
-                      alt=""
-                      className="object-cover object-center w-full h-full lg:h-full lg:w-full"
-                    />
-                  </div>
-                  <div className="flex justify-between mt-2">
-                    <div>
-                      <h3 className="text-sm font-bold text-gray-700">
-                        <a href={feed.url}>
-                          <span
-                            aria-hidden="true"
-                            className="absolute inset-0"
-                          />
-                          {feed.title}
-                        </a>
-                      </h3>
+              heavyList.map((feed: any, index: number) => {
+                return (
+                  <div key={feed.id} className="relative group">
+                    <div className="overflow-hidden bg-gray-200 rounded-md min-h-80 aspect-w-1 aspect-h-1 group-hover:opacity-75 lg:aspect-none lg:h-40">
+                      {/* // 레이지 로딩 적용 */}
+                      {/* {index < 15 ? (
+                        <img
+                          src={feed.og.image}
+                          className="object-cover object-center w-full h-full lg:h-full lg:w-full"
+                        />
+                      ) : (
+                        <LazyImage
+                          src={feed.og.image}
+                          className="object-cover object-center w-full h-full lg:h-full lg:w-full"
+                          // threshold={200}
+                          // effect="blur"
+                        />
+                      )} */}
+                      <img
+                        src={feed.og.image}
+                        className="object-cover object-center w-full h-full lg:h-full lg:w-full"
+                      />
+                    </div>
+                    <div className="flex justify-between mt-2">
+                      <div>
+                        <h3 className="text-sm font-bold text-gray-700">
+                          <a href={feed.url} target="_blank" rel="noreferrer">
+                            <span
+                              aria-hidden="true"
+                              className="absolute inset-0"
+                            />
+                            {feed.title}
+                          </a>
+                        </h3>
+                      </div>
                     </div>
                   </div>
-                </div>
-              ))}
+                );
+              })}
           </div>
         </div>
       </div>

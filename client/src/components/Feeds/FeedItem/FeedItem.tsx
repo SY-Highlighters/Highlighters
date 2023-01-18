@@ -140,7 +140,8 @@ const FeedItem = (props: any) => {
           ) : (
             <img
               src={hl.contents}
-              className="w-5/6 ml-2 h-5/6 outline outline-yellow-400 outline-4"
+              className="w-5/6 ml-2 h-5/6 outline-4"
+              style={{ outlineStyle: "solid", outlineColor: hl.color }}
             ></img>
           );
         return (
@@ -159,7 +160,7 @@ const FeedItem = (props: any) => {
         );
       }
       return (
-        <li className="ml-6" key={index}>
+        <li className="mt-3 ml-6" key={index}>
           {hl.type === 1 ? (
             <span
               className="ml-1 text-xs lg:text-base"
@@ -170,7 +171,8 @@ const FeedItem = (props: any) => {
           ) : (
             <img
               src={hl.contents}
-              className="w-5/6 ml-2 h-5/6 outline outline-yellow-400 outline-4"
+              className="w-5/6 ml-2 h-5/6 outline-4"
+              style={{ outlineStyle: "solid", outlineColor: hl.color }}
             ></img>
           )}
         </li>

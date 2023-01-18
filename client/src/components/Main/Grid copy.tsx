@@ -2,7 +2,7 @@ import { useState, useRef, useEffect } from "react";
 import { useInView } from "react-intersection-observer";
 import { useFeedsInGrid } from "../../hooks/useFeedsInGrid";
 
-export function Grid() {
+export function TestGrid() {
   const { getBoard, getNextPage, getBoardIsSuccess, getNextPageIsPossible } =
     useFeedsInGrid();
   const [ref, isView] = useInView();
