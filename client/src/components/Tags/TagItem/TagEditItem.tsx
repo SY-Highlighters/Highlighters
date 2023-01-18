@@ -49,8 +49,6 @@ export function TagEditItem(props: any) {
     }
   };
 
-  // }
-  // });
   return (
     <span className="mt-2 inline-flex items-center mr-2 px-3 py-0.5 rounded-full text-sm font-medium bg-red-100 text-red-800 hover:bg-red-300">
       #{props.tagName}

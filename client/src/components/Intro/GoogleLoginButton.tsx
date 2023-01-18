@@ -1,6 +1,5 @@
 import { GoogleOAuthProvider, GoogleLogin } from "@react-oauth/google";
 
-import { useGoogleLogin } from "@react-oauth/google";
 import axios from "axios";
 import { useCookies } from "react-cookie";
 import Swal from "sweetalert2";
@@ -34,6 +33,7 @@ export function GoogleLoginButton() {
       <GoogleOAuthProvider clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID!}>
         <GoogleLogin
           // useOneTap={true}
+
           onSuccess={async (creRes) => {
             // console.log(creRes);
             await axios
@@ -71,7 +71,7 @@ export function GoogleLoginButton() {
           onError={() => {
             // console.log("Login Failed");
           }}
-        />
+        ></GoogleLogin>
       </GoogleOAuthProvider>
     </div>
   );

@@ -135,7 +135,9 @@ const FeedItem = (props: any) => {
               className="ml-1 text-xs lg:text-base"
               style={{ backgroundColor: hl.color }}
             >
-              {hl.contents}
+              {/* hl.contents에서 개행문자 처리 */}
+              {hl.contents.trim()}
+              {/* {hl.contents} */}
             </span>
           ) : (
             <img
