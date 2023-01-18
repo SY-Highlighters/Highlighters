@@ -1,4 +1,4 @@
-const is_production = false; // true: 배포용, false: 로컬용
+const is_production = true; // true: 배포용, false: 로컬용
 
 const cookie_url = is_production
   ? "https://highlighters.site"
@@ -73,8 +73,25 @@ async function initHighlightColor() {
 let userInfo;
 
 const socket = new WebSocket(`${websocket_url}/api/ws`);
-socket.onopen = () => {
+socket.onopen = async () => {
   console.log("소켓 연결 성공");
+
+  await getCookieToken().then(async (cookie) => {
+    const token = cookie?.value;
+    userInfo = await sendHTTPRequest(
+      "GET",
+      `${host_url}/api/user/signin`,
+      token
+    );
+
+    socket.send(
+      JSON.stringify({
+        event: "userinfo",
+        userInfo,
+      })
+    );
+  });
+
   socket.addEventListener("message", (message) => {
     const msg = JSON.parse(message.data);
 
@@ -116,22 +133,6 @@ async function BackgroundStart() {
   //     }
   //   }
   // });
-
-  await getCookieToken().then(async (cookie) => {
-    const token = cookie?.value;
-    userInfo = await sendHTTPRequest(
-      "GET",
-      `${host_url}/api/user/signin`,
-      token
-    );
-
-    socket.send(
-      JSON.stringify({
-        event: "userinfo",
-        userInfo,
-      })
-    );
-  });
 
   chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     getCookieToken().then((cookie) => {
