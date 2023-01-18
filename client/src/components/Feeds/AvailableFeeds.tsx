@@ -22,11 +22,10 @@ const AvailableFeeds = () => {
       getNextPage();
     }
   }, [isView, getNextPage, getNextPageIsPossible]);
-  console.log("피드정보", getBoard);
   return (
     // <div className="xl:ml-20 justify-self-center xl:w-3/6">
 
-    <div className="basis-2/4 ">
+    <div className="basis-2/4">
       {/* 위에 여백 두고 그룹피드 타이틀 만들기 */}
       {/* 그룹 피드 타이틀 ver1*/}
       {/* <div className="relative p-3 rounded-3xl">
