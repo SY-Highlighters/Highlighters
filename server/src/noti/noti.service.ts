@@ -51,8 +51,8 @@ export class NotiService {
           JSON.stringify({
             event: 'push',
             data: {
+              user_email,
               group_id: group_id,
-              nickname: nickname,
               contents: contents,
               url: url,
             },

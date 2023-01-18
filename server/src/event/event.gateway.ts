@@ -37,13 +37,6 @@ export class EventGateway implements OnModuleInit {
           }
         }
       });
-
-      // client.send(
-      //   JSON.stringify({
-      //     event: 'push',
-      //     data: 'HELLO THERE!!!',
-      //   }),
-      // );
     });
   }
 }
