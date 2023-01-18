@@ -1,7 +1,6 @@
 import { CommentInput } from "./CommentInput";
 import { CommentItem } from "./CommentItem/CommentItem";
 import { useEffect, useState } from "react";
-// import { useRecoilState, useRecoilValue } from "recoil";
 // import {
 //   groupFeedListState,
 //   userInfoState,
@@ -19,13 +18,13 @@ import {
   currentFeedIdState,
   commentReloadState,
 } from "../../states/atom";
-import { useRecoilValue } from "recoil";
+import { useRecoilValue, useRecoilState } from "recoil";
 import { useUserData } from "../../hooks/useUserData";
 export function Comment(props: any) {
   const currentFeedId = useRecoilValue(currentFeedIdState);
-  const [cookies, setCookie, removeCookie] = useCookies(["logCookie"]);
+  const [cookies] = useCookies(["logCookie"]);
   const [commentList, setCommentList] = useState([]);
-  const commentReload = useRecoilValue(commentReloadState);
+  const [commentReload, setcommentReload] = useRecoilState(commentReloadState);
 
   const { data: user, isSuccess, isLoading, error } = useUserData(cookies);
 
@@ -33,6 +32,7 @@ export function Comment(props: any) {
     async function fetchData() {
       const response = await getFeedComment(currentFeedId, cookies);
       setCommentList(response.data.data);
+      setcommentReload((prev) => !prev);
     }
     fetchData();
     // console.log("코멘트에서 유저", user);
@@ -45,6 +45,7 @@ export function Comment(props: any) {
         {commentList.map((commentItem: any) => (
           <CommentItem
             key={commentItem.id}
+            id={commentItem.id}
             content={commentItem.contents}
             writer={commentItem.nickname}
             date={commentItem.createdAt}

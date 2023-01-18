@@ -174,7 +174,7 @@ const FeedItem = (props: any) => {
       }
       return (
         <div key={index}>
-          <li className="mt-3 ml-6" key={index}>
+          <li className="ml-6 " key={index}>
             {hl.type === 1 ? (
               <span
                 className="ml-1 text-xs lg:text-base"
@@ -267,9 +267,9 @@ const FeedItem = (props: any) => {
         {props.url.includes("https://n.news.naver.com") && (
           <span
             onClick={threeTriHandler}
-            className="px-3 mr-1 text-sm text-gray-500 cursor-pointer hover:text-gray-700"
+            className="text-sm font-bold text-gray-500 cursor-pointer hover:text-gray-700"
           >
-            3줄로 요약해줘
+            <span className="mr-1 text-xl">🤖</span> "3줄로 요약해줘"
           </span>
         )}
         <div className="">
@@ -284,7 +284,7 @@ const FeedItem = (props: any) => {
             ))}
         </div>
         <div className="mb-5 ">
-          <ul className="space-y-1.5">{highlights}</ul>
+          <ul className="space-y-0.5">{highlights}</ul>
         </div>
 
         {/* 노션 북마크처럼 만들기 프로젝트 */}
