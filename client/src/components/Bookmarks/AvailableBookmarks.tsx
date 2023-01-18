@@ -62,10 +62,7 @@ export function AvailableBookmarks() {
         >
           <div className="flex flex-col items-center justify-center opacity-75 ">
             <div className="flex items-center justify-center w-20 h-20 mb-3 rounded-full bg-sky-500">
-              <StarIcon
-                className="w-10 h-10 text-white"
-                aria-hidden="true"
-              />
+              <StarIcon className="w-10 h-10 text-white" aria-hidden="true" />
             </div>
             <p className="text-2xl font-bold text-gray-500 ">
               아직 북마크가 없어요 😂
@@ -74,7 +71,10 @@ export function AvailableBookmarks() {
         </div>
       ) : null}
       {/* feedslist section */}
-      <div className="mt-5 rounded-md shadow-lg xl:overflow-y-auto xl:scrollbar-hide xl:h-full ">
+      <div
+        className="mt-5 rounded-md shadow-lg xl:overflow-y-auto xl:scrollbar-hide xl:h-full "
+        style={{ height: "80vh" }}
+      >
         <ul className="space-y-4 ">
           {
             // 데이터를 불러오는데 성공하고 데이터가 0개가 아닐 때 렌더링
