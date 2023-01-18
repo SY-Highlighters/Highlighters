@@ -95,15 +95,17 @@ function connectWebsocket() {
       const msg = JSON.parse(message.data);
       const data = msg.data;
 
-      console.log("email", data.email);
-      console.log("email", userInfo.email);
       if (data.email === userInfo.email) return;
 
       if (msg.event === "push") {
         console.log("push", msg.data);
         chrome.action.setBadgeText({ text: "new" });
         chrome.action.setBadgeBackgroundColor({ color: "#0000FF" });
-        createPush(`push_${push_id}`, "새로운 알림이 있습니다.", data.contents);
+        createPush(
+          `push_${push_id}`,
+          `${data.nickname}으로부터 알림이 왔습니다.`,
+          data.contents
+        );
         push_id++;
       }
 
@@ -230,15 +232,7 @@ async function BackgroundStart() {
           console.log("[background] postHighlight");
           const postHighlightURL = `${host_url}/api/highlight/create`;
           sendHTTPRequest("POST", postHighlightURL, token, request.data) //
-            .then((data) => {
-              sendResponse({ data });
-              createPush(
-                `highlight_${push_id}`,
-                "하이라이트가 저장되었습니다",
-                `${String(request.data.contents).substring(0, 30)}...`
-              );
-              push_id++;
-            })
+            .then((data) => sendResponse({ data }))
             .catch((error) => console.log(`fetch 실패: ${error}`));
           break;
 
@@ -247,15 +241,7 @@ async function BackgroundStart() {
           console.log("[background] postHighlightImage");
           const postHighlightImageURL = `${host_url}/api/highlight/create`;
           sendHTTPRequest("POST", postHighlightImageURL, token, request.data)
-            .then((data) => {
-              sendResponse({ data });
-              createPush(
-                `highlight_${push_id}`,
-                "하이라이트가 저장되었습니다",
-                ""
-              );
-              push_id++;
-            })
+            .then((data) => sendResponse({ data }))
             .catch((error) => console.log(`fetch 실패: ${error}`));
           break;
 

@@ -91,6 +91,7 @@ export class CalendarService {
         },
       });
       return {
+        totalcount: count,
         currentPage: page,
         totalPage: Math.ceil(count / take),
         feeds,

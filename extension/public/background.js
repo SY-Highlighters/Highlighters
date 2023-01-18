@@ -232,15 +232,7 @@ async function BackgroundStart() {
           console.log("[background] postHighlight");
           const postHighlightURL = `${host_url}/api/highlight/create`;
           sendHTTPRequest("POST", postHighlightURL, token, request.data) //
-            .then((data) => {
-              sendResponse({ data });
-              createPush(
-                `highlight_${push_id}`,
-                "하이라이트가 저장되었습니다",
-                `${String(request.data.contents).substring(0, 30)}...`
-              );
-              push_id++;
-            })
+            .then((data) => sendResponse({ data }))
             .catch((error) => console.log(`fetch 실패: ${error}`));
           break;
 

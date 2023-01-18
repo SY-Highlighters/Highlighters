@@ -50,7 +50,7 @@ export function GrouptagList(props: any) {
       {isSuccess &&
         tagList &&
         tagList.map((tag: any) => (
-          <span key={tag.id}>
+          <span key={tag.tag_name}>
             <TagItem
               name={tag.tag_name}
               count={tag._count.tag_name}

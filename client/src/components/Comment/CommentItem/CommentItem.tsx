@@ -29,6 +29,7 @@ export function CommentItem(props: any) {
         Authorization: `Bearer ${cookies.logCookie}`,
       },
     });
+    props.onFunc("del");
     setcommentReload((prev) => !prev);
     // 리액트쿼리에 저장된 태그리스트 업데이트
 
@@ -37,8 +38,8 @@ export function CommentItem(props: any) {
 
   const delClickHandler = () => {
     Swal.fire({
-      title: "피드를 삭제하시겠습니까?",
-      text: "삭제된 피드는 복구할 수 없습니다.",
+      title: "댓글를 삭제하시겠습니까?",
+      text: "삭제된 댓글는 복구할 수 없습니다.",
       icon: "warning",
 
       showCancelButton: true, // cancel버튼 보이기. 기본은 원래 없음

@@ -8,7 +8,7 @@ import {
 import { useGroupMember } from "../../hooks/useGroupMember";
 export function GroupMember() {
   const { data: groupMember, isSuccess } = useGroupMember();
-  console.log(groupMember);
+  // console.log(groupMember);
   return (
     <div className="px-2 overflow-y-auto h-15 xl:scrollbar-hide ">
       {/* <ul className="flex flex-col space-y-2"> */}
@@ -23,8 +23,9 @@ export function GroupMember() {
       <div className="flex mx-2 mb-1">
         {isSuccess &&
           groupMember &&
-          groupMember.map((member: any) => (
+          groupMember.map((member: any, index: number) => (
             <img
+              key={index}
               className="ml-1 rounded-full w-7 h-7"
               src={member.image}
               alt=""

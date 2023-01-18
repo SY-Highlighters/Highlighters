@@ -1,7 +1,6 @@
 import { MegaphoneIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { useCookies } from "react-cookie";
 import NotiItem from "./NotiItem/NotiItem";
 import Calender from "../Calender/Calender";
 import { useNoti } from "../../hooks/useNoti";
@@ -12,6 +11,10 @@ export default function Noti() {
   // const [noti.dataData, setNotiData] = useState<NotiData[]>([]);
   const { getBoard, getNextPage, getBoardIsSuccess, getNextPageIsPossible } =
     useNoti();
+
+  const [notiCount, setNotiCount] = useState(
+    getBoardIsSuccess && getBoard!.pages[0].board_page.data.totalcount
+  );
   useEffect(() => {
     // 맨 마지막 요소를 보고있고 페이지가 존재하면
     // 다음 페이지 데이터를 가져옴
@@ -19,36 +22,14 @@ export default function Noti() {
       getNextPage();
     }
   }, [isView, getNextPage, getNextPageIsPossible]);
-  console.log("노티", getBoard);
-  // 피드리스트에 피드아이템 넣기
-  // const noti.dataAdd = (data: any) => {
-  //   data.map((item: any) => {
-  //     const newNoti = {
-  //       id: item.id,
-  //       contents: item.contents,
-  //       nickname: item.nickname,
-  //       feed_id: item.feed_id,
-  //       title: item.title,
-  //       url: item.url,
-  //     };
-  //     // // NotiList에 NotiItem 추가
-  //     setNotiData((prev) => [...prev, newNoti]);
-  //   });
-  // };
-  // const noti.dataList = noti.dataData.map((noti.data: any) => (
-  //   <div key={noti.id}>
-  //     <NotiItem
-  //       sender={noti.nickname}
-  //       title={noti.title}
-  //       contents={noti.contents}
-  //       url={noti.url}
-  //     />
-  //   </div>
-  // ));
-  // console.log(getBoard === undefined ? "undefined" : getBoard.pages[0]);
+
+  // 노티 모두 읽음
+  const clickedAllRead = () => {
+    setNotiCount(0);
+  };
   return (
     // <div className="w-1/5 xl:fixed right-24 xl:overflow-auto ">
-    <div className="hidden pr-20 basis-1/4 xl:block">
+    <div className="hidden pr-14 basis-1/4 xl:block">
       <div className="rounded-lg bg-sky-500">
         {/* 메뉴바*/}
         <div className="px-3 py-3 mx-auto rounded-lg max-w-7xl">
@@ -63,6 +44,18 @@ export default function Noti() {
               <p className="text-xl font-bold text-white truncate">
                 <span className="">알림</span>
               </p>
+              {/* 알림 카운트 */}
+              <div className="flex items-center justify-center flex-shrink-0 w-6 h-6 ml-2 text-xs font-medium text-white rounded-full opacity-75 bg-sky-600">
+                {notiCount}
+              </div>
+
+              {/* 모두읽음 구석에 배치 */}
+              <span
+                onClick={clickedAllRead}
+                className="flex items-end justify-end flex-1 w-0 mt-6 ml-2 text-xs text-gray-300 cursor-pointer opacity-70 hover:text-gray-500"
+              >
+                모두읽음
+              </span>
             </div>
           </div>
         </div>

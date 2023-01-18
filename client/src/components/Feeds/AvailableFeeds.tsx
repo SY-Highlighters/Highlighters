@@ -22,7 +22,7 @@ const AvailableFeeds = () => {
       getNextPage();
     }
   }, [isView, getNextPage, getNextPageIsPossible]);
-  console.log(getBoard);
+  // console.log(getBoard);
   return (
     // <div className="xl:ml-20 justify-self-center xl:w-3/6">
 
@@ -84,7 +84,7 @@ const AvailableFeeds = () => {
               ? getBoard!.pages.map((page_data, page_num) => {
                   const board_page = page_data.board_page;
                   return board_page.map((feed: any, idx: any) => {
-                    console.log(feed);
+                    // console.log(feed);
                     if (
                       // 마지막 요소에 ref 달아주기
                       getBoard!.pages.length - 1 === page_num &&

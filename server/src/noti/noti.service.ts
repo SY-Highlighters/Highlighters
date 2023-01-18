@@ -116,6 +116,7 @@ export class NotiService {
         });
       }
       return {
+        totalcount: count,
         currentPage: page,
         totalPage: Math.ceil(count / take),
         data: result,
