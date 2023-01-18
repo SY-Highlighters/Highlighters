@@ -14,11 +14,13 @@ import { forwardRef } from '@nestjs/common/utils';
 import { Inject } from '@nestjs/common/decorators';
 import { fetchandsave, deleteS3 } from 'src/util/fetch';
 import { Cache } from 'cache-manager';
+import { EventGateway } from 'src/event/event.gateway';
 
 @Injectable()
 export class HighlightService {
   constructor(
     private readonly prismaService: PrismaService,
+    private event: EventGateway,
     // @Inject(CACHE_MANAGER) private readonly cacheManager: Cache,
     @Inject(forwardRef(() => FeedService))
     private readonly feedService: FeedService,
@@ -105,6 +107,19 @@ export class HighlightService {
           },
         });
       }
+
+      // websocket으로 보내기
+      this.event.group_room[group_id].forEach((client) => {
+        client.send(
+          JSON.stringify({
+            event: 'highlight',
+            data: {
+              ...result,
+              feed_url: find_feed.url,
+            },
+          }),
+        );
+      });
 
       return result;
     } catch (error) {
