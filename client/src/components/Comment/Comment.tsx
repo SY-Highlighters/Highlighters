@@ -1,24 +1,9 @@
 import { CommentInput } from "./CommentInput";
 import { CommentItem } from "./CommentItem/CommentItem";
 import { useEffect, useState } from "react";
-// import {
-//   groupFeedListState,
-//   userInfoState,
-//   tagModalVisble,
-// } from "../../states/atom";
 import { useCookies } from "react-cookie";
-// import { useEffect } from "react";
 import axios from "axios";
-import { DocumentIcon, MegaphoneIcon } from "@heroicons/react/24/outline";
-// import { TagEditModal } from "../Tags/TagEditModal";
-import { QueryCache, useQuery, QueryClient, useQueryClient } from "react-query";
-import {
-  tagsInFeedState,
-  userInfoState,
-  currentFeedIdState,
-  commentReloadState,
-  commentDelReloadState,
-} from "../../states/atom";
+import { currentFeedIdState, commentReloadState } from "../../states/atom";
 import { useRecoilValue, useRecoilState } from "recoil";
 import { useUserData } from "../../hooks/useUserData";
 export function Comment(props: any) {
@@ -26,11 +11,9 @@ export function Comment(props: any) {
   const [cookies] = useCookies(["logCookie"]);
   const [commentList, setCommentList] = useState([]);
   const [commentReload, setcommentReload] = useRecoilState(commentReloadState);
-  const [commentDelReload, setcommentDelReload] = useRecoilState(
-    commentDelReloadState
-  );
+  // 유저 데이터 가져오기
   const { data: user, isSuccess, isLoading, error } = useUserData(cookies);
-
+  // 코멘트 변경시 리로드
   useEffect(() => {
     async function fetchData() {
       const response = await getFeedComment(currentFeedId, cookies);
@@ -39,7 +22,7 @@ export function Comment(props: any) {
     }
     fetchData();
     // console.log("코멘트에서 유저", user);
-  }, [commentReload, commentDelReload]);
+  }, [commentReload]);
 
   return (
     <div>

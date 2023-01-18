@@ -12,9 +12,7 @@ export default function Noti() {
   const { getBoard, getNextPage, getBoardIsSuccess, getNextPageIsPossible } =
     useNoti();
 
-  const [notiCount, setNotiCount] = useState(
-    getBoardIsSuccess && getBoard!.pages[0].board_page.data.totalcount
-  );
+  const [notiCount, setNotiCount] = useState(0);
   useEffect(() => {
     // 맨 마지막 요소를 보고있고 페이지가 존재하면
     // 다음 페이지 데이터를 가져옴
@@ -22,7 +20,7 @@ export default function Noti() {
       getNextPage();
     }
   }, [isView, getNextPage, getNextPageIsPossible]);
-  console.log(getBoard);
+  // console.log(getBoard);
   // 노티 모두 읽음
   const clickedAllRead = () => {
     setNotiCount(0);

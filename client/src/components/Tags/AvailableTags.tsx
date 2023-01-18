@@ -34,7 +34,7 @@ const AvailableTags = () => {
     }
   }, [isView, getNextPage, getNextPageIsPossible, clickedTag.tag_name]);
   // clickTag가 변경시 새로운 쿼리를 요청
-
+  console.log("태그가져오기", getBoard);
   return (
     <div className="basis-2/4">
       <div className="relative p-3 rounded-3xl">
@@ -46,7 +46,7 @@ const AvailableTags = () => {
       </div>
       {/* feedslist section */}
       <div
-        className="mt-5 rounded-md shadow-lg xl:overflow-y-auto xl:scrollbar-hide xl:h-full "
+        className="rounded-md shadow-lg mt-7 xl:overflow-y-auto xl:scrollbar-hide xl:h-full "
         style={{ height: "80vh" }}
       >
         <ul className="space-y-4 ">

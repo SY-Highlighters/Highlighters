@@ -116,11 +116,7 @@ export const commentReloadState = atom<boolean>({
   key: "commentReloadState",
   default: false,
 });
-// 코멘트 삭제 코멘트 리스트 리로드 state
-export const commentDelReloadState = atom<boolean>({
-  key: "commentDelReloadState",
-  default: false,
-});
+
 
 export const optionModalToggleState = atom<boolean>({
   key: "optionModalToggleState",

@@ -3,7 +3,6 @@ import {
   userInfoState,
   currentFeedIdState,
   commentReloadState,
-  commentDelReloadState,
 } from "../../../states/atom";
 import { useSetRecoilState, useRecoilState, useRecoilValue } from "recoil";
 import { useCookies } from "react-cookie";
@@ -21,7 +20,8 @@ export function CommentItem(props: any) {
   const min = date.getMinutes();
   // console.log(props.writer, props.userId);
   const host_url = `${process.env.REACT_APP_HOST}/api/comment/delete/${props.id}`;
-  const setcommentDelReload = useSetRecoilState(commentDelReloadState);
+  const setCommentReload = useSetRecoilState(commentReloadState);
+
   const commentDelHandler = async () => {
     // 서버에 태그 삭제 요청
     await axios
@@ -32,7 +32,7 @@ export function CommentItem(props: any) {
       })
       .then(function (response) {
         if (response) {
-          setcommentDelReload((prev) => !prev);
+          setCommentReload((prev) => !prev);
           props.onFunc("del");
 
           //   const newTagItem = {
