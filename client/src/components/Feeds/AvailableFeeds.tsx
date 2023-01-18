@@ -22,6 +22,7 @@ const AvailableFeeds = () => {
       getNextPage();
     }
   }, [isView, getNextPage, getNextPageIsPossible]);
+  console.log(getBoard);
   return (
     // <div className="xl:ml-20 justify-self-center xl:w-3/6">
 
@@ -109,6 +110,7 @@ const AvailableFeeds = () => {
                               feed.bookmark.length !== 0 ? true : false
                             }
                             bookmarkId={feed.bookmark[0]}
+                            summary={feed.summary}
                           />
                         </div>
                       );

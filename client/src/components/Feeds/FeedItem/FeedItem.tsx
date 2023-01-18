@@ -24,6 +24,9 @@ import { useRecoilValue, useSetRecoilState } from "recoil";
 import { Bookmarked } from "../../Bookmarks/BookmarkItem/Bookmarked";
 import { UnBookmarked } from "../../Bookmarks/BookmarkItem/UnBookmarked";
 import { Delete } from "../../Func/Delete";
+import { useGetThree } from "../../../hooks/useGetThree";
+import { useCookies } from "react-cookie";
+
 // import AWS from "aws-sdk";
 // AWS.config.update({
 //   region: "ap-northeast-2",
@@ -32,9 +35,15 @@ import { Delete } from "../../Func/Delete";
 //     secretAccessKey: `${process.env.REACT_APP_S3_SECRET_ACCESS_KEY}`,
 //   },
 // });
+import axios from "axios";
+
+const dummary = "현재 네이버 뉴스만 지원합니다 😂";
 const FeedItem = (props: any) => {
   const [commentIsClicked, setCommentIsClicked] = useState(false);
   const setCurrentFeedId = useSetRecoilState(currentFeedIdState);
+  const [cookies] = useCookies(["logCookie"]);
+  const [threeTrigger, setThreeTrigger] = useState(false);
+  const [summary, setSummary] = useState(dummary);
   // const [img, setImgUrl] = useState("");
 
   // const [firstHighlight, setFirstHighlight] = useState(
@@ -131,14 +140,16 @@ const FeedItem = (props: any) => {
         firstHighlight = hl.user.nickname;
         const highContent =
           hl.type === 1 ? (
-            <span
-              className="ml-1 text-xs lg:text-base"
-              style={{ backgroundColor: hl.color }}
-            >
-              {/* hl.contents에서 개행문자 처리 */}
-              {hl.contents.trim()}
-              {/* {hl.contents} */}
-            </span>
+            <div>
+              <span
+                className="ml-1 text-xs lg:text-base"
+                style={{ backgroundColor: hl.color }}
+              >
+                {/* hl.contents에서 개행문자 처리 */}
+                {hl.contents.trim()}
+                {/* {hl.contents} */}
+              </span>
+            </div>
           ) : (
             <img
               src={hl.contents}
@@ -162,22 +173,24 @@ const FeedItem = (props: any) => {
         );
       }
       return (
-        <li className="mt-3 ml-6" key={index}>
-          {hl.type === 1 ? (
-            <span
-              className="ml-1 text-xs lg:text-base"
-              style={{ backgroundColor: hl.color }}
-            >
-              {hl.contents}
-            </span>
-          ) : (
-            <img
-              src={hl.contents}
-              className="w-5/6 ml-2 h-5/6 outline-4"
-              style={{ outlineStyle: "solid", outlineColor: hl.color }}
-            ></img>
-          )}
-        </li>
+        <div key={index}>
+          <li className="mt-3 ml-6" key={index}>
+            {hl.type === 1 ? (
+              <span
+                className="ml-1 text-xs lg:text-base"
+                style={{ backgroundColor: hl.color }}
+              >
+                {hl.contents.trim()}
+              </span>
+            ) : (
+              <img
+                src={hl.contents}
+                className="w-5/6 ml-2 h-5/6 outline-4"
+                style={{ outlineStyle: "solid", outlineColor: hl.color }}
+              ></img>
+            )}
+          </li>
+        </div>
       );
     });
   }
@@ -196,9 +209,28 @@ const FeedItem = (props: any) => {
     setCommentIsClicked(!commentIsClicked);
   }
   // useEffect(() => {
-  //   setImgUrl("");
+
   // }, []);
 
+  const threeTriHandler = async () => {
+    if (!threeTrigger && props.url.includes("https://n.news.naver.com")) {
+      console.log("여기옴?", props.url);
+      const three = await axios({
+        method: "post",
+        url: `${process.env.REACT_APP_HOST}/api/summary`,
+        data: {
+          url: props.url,
+        },
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${cookies.logCookie}`,
+        },
+      });
+      console.log(three.data.data.summary);
+      setSummary(three.data.data.summary);
+    }
+    setThreeTrigger(!threeTrigger);
+  };
   return (
     // <li className="py-5">
     <div className="overflow-hidden bg-white rounded-lg shadow-lg">
@@ -211,6 +243,7 @@ const FeedItem = (props: any) => {
           />
           {`${month}월 ${day}일, ${year}년 `}
         </div>
+
         <div className="flex flex-row items-center px-3 mt-3 mr-1 text-sm text-gray-500 ">
           <div className="text-xs">{props.writer}</div>
           <div>
@@ -230,7 +263,26 @@ const FeedItem = (props: any) => {
             </h2>
           </span>
         </a>
-
+        {/* 세줄요약 -> 현재 네이버 뉴스만 가능 */}
+        {props.url.includes("https://n.news.naver.com") && (
+          <span
+            onClick={threeTriHandler}
+            className="px-3 mr-1 text-sm text-gray-500 cursor-pointer hover:text-gray-700"
+          >
+            3줄로 요약해줘
+          </span>
+        )}
+        <div className="">
+          {threeTrigger &&
+            summary.split("\n").map((line, index) => (
+              <div
+                className="mt-1 text-sm font-bold ml-7 text-sky-400 animate-fade-in-down"
+                key={index}
+              >
+                {index + 1}. {line} <br />
+              </div>
+            ))}
+        </div>
         <div className="mb-5 ">
           <ul className="space-y-1.5">{highlights}</ul>
         </div>

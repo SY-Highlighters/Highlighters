@@ -197,12 +197,12 @@ export default function Header() {
           <div className="relative">
             <div className="absolute right-0 z-10 w-56 mt-4 origin-top-right bg-white border rounded-md shadow-lg">
               <div className="p-2">
-                <span
+                {/* <span
                   onClick={optionClicked}
                   className="block px-4 py-2 text-sm text-gray-500 rounded-lg cursor-pointer hover:bg-gray-50 hover:text-gray-700"
                 >
                   설정
-                </span>
+                </span> */}
                 <span
                   onClick={logout}
                   className="block px-4 py-2 text-sm text-gray-500 rounded-lg cursor-pointer hover:bg-gray-50 hover:text-gray-700"

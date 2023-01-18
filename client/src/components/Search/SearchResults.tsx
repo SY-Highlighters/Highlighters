@@ -77,6 +77,18 @@ const SearchResults = () => {
           </div>
         </div>
       </div>
+      {searchResultFeeds.length === 0 ? (
+        <div
+          className="flex justify-center w-full h-full pt-10 mt-5 bg-white rounded-md shadow-md "
+          style={{ height: "80vh" }}
+        >
+          <div className="flex flex-col items-center justify-center opacity-75 ">
+            <p className="text-2xl font-bold text-gray-500 ">
+              "{searchKeyword}" 에 해당하는  검색 결과가 없습니다.
+            </p>
+          </div>
+        </div>
+      ) : null}
       {/* feedslist section */}
       <div className="mt-5 rounded-md shadow-lg xl:overflow-y-auto xl:scrollbar-hide xl:h-full ">
         <ul className="space-y-4 ">
