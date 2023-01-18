@@ -9,7 +9,7 @@ export const useFeedsInGrid = () => {
       method: "get",
       url: `${
         process.env.REACT_APP_HOST
-      }/api/feed/sep/feed?page=${pageParam}&take=${30}`,
+      }/api/feed/sep/feed?page=${pageParam}&take=${45}`,
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${cookies.logCookie}`,
