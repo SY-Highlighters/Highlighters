@@ -233,10 +233,11 @@ async function BackgroundStart() {
             .then((data) => {
               sendResponse({ data });
               createPush(
-                `${request.greeting}: ${data.id}`,
-                `${String(data.contents).substring(0, 30)}...`,
-                "하이라이트가 저장되었습니다"
+                `highlight_${push_id}`,
+                "하이라이트가 저장되었습니다",
+                `${String(request.data.contents).substring(0, 30)}...`
               );
+              push_id++;
             })
             .catch((error) => console.log(`fetch 실패: ${error}`));
           break;
@@ -249,10 +250,11 @@ async function BackgroundStart() {
             .then((data) => {
               sendResponse({ data });
               createPush(
-                `${request.greeting}: ${data.id}`,
-                `${String(data.contents).substring(0, 30)}...`,
-                "하이라이트가 저장되었습니다"
+                `highlight_${push_id}`,
+                "하이라이트가 저장되었습니다",
+                ""
               );
+              push_id++;
             })
             .catch((error) => console.log(`fetch 실패: ${error}`));
           break;
