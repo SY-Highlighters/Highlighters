@@ -31,7 +31,7 @@ module.exports = {
       },
     },
     animation: {
-      "fade-in-down": "fade-in-down 1.5s ease-out",
+      "fade-in-down": "fade-in-down 0.5s ease-out",
     },
 
     screens: {

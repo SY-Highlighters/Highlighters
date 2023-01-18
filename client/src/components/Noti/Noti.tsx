@@ -48,7 +48,7 @@ export default function Noti() {
   // console.log(getBoard === undefined ? "undefined" : getBoard.pages[0]);
   return (
     // <div className="w-1/5 xl:fixed right-24 xl:overflow-auto ">
-    <div className="hidden pr-16 basis-1/4 xl:block">
+    <div className="hidden pr-20 basis-1/4 xl:block">
       <div className="rounded-lg bg-sky-500">
         {/* 메뉴바*/}
         <div className="px-3 py-3 mx-auto rounded-lg max-w-7xl">

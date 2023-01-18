@@ -151,3 +151,8 @@ export const tagsDelState = atom<any>({
   key: "tagsDelState",
   default: [],
 });
+
+export const testDelState = atom<any>({
+  key: "testDelState",
+  default: [],
+});

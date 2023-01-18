@@ -13,7 +13,7 @@ const User = () => {
   const { data: user, isSuccess } = useUserData(cookies);
 
   return (
-    <div className="hidden pl-16 basis-1/4 xl:block ">
+    <div className="hidden pl-20 basis-1/4 xl:block">
       {/* <div className="hidden xl:w-1/5 xl:fixed xl:left-30 xl:block"> */}
       <aside className="grid grid-col-2">
         {/* ui ver1  */}
