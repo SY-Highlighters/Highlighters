@@ -145,7 +145,7 @@ const FeedItem = (props: any) => {
   // 세줄요약 api
   const threeTriHandler = async () => {
     if (!threeTrigger && props.url.includes("https://n.news.naver.com")) {
-      console.log("여기옴?", props.url);
+      // console.log("여기옴?", props.url);
       const three = await axios({
         method: "post",
         url: `${process.env.REACT_APP_HOST}/api/summary`,
@@ -157,7 +157,7 @@ const FeedItem = (props: any) => {
           Authorization: `Bearer ${cookies.logCookie}`,
         },
       });
-      console.log(three.data.data.summary);
+      // console.log(three.data.data.summary);
       setSummary(three.data.data.summary);
     }
     setThreeTrigger(!threeTrigger);

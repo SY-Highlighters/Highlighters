@@ -1,11 +1,11 @@
-import UserInfo from "./UserInfo";
+import UserInfo from "../User/UserInfo";
 import Group from "../Group/Group";
-import GroupTag from "./GroupTag";
+import GroupTag from "../User/GroupTag";
 import { UserIcon } from "@heroicons/react/24/outline";
 import { useUserData } from "../../hooks/useUserData";
 import { useCookies } from "react-cookie";
 
-const User = () => {
+const Laside = () => {
   //Todo: 후에 유저정보가 변경되었을때 useEffect함수가 작동해서 다시 유저정보를 리로드해야함
   const [cookies] = useCookies(["logCookie"]);
 
@@ -13,7 +13,7 @@ const User = () => {
   const { data: user, isSuccess } = useUserData(cookies);
 
   return (
-    <div className="hidden pl-14 basis-1/4 xl:block">
+    <div className="hidden pl-20 basis-1/4 xl:block">
       {/* <div className="hidden xl:w-1/5 xl:fixed xl:left-30 xl:block"> */}
       <aside className="grid grid-col-2">
         {/* ui ver1  */}
@@ -40,4 +40,4 @@ const User = () => {
   );
 };
 
-export default User;
+export default Laside;

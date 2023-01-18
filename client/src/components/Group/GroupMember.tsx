@@ -8,7 +8,7 @@ import {
 import { useGroupMember } from "../../hooks/useGroupMember";
 export function GroupMember() {
   const { data: groupMember, isSuccess } = useGroupMember();
-  console.log(groupMember);
+  // console.log(groupMember);
   return (
     <div className="px-2 overflow-y-auto h-15 xl:scrollbar-hide ">
       {/* <ul className="flex flex-col space-y-2"> */}
