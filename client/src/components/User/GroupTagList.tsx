@@ -32,6 +32,7 @@ export function GrouptagList(props: any) {
       console.error(err);
     }
   });
+  console.log(tagList);
   useEffect(() => {}, []);
   return (
     <div className="">
