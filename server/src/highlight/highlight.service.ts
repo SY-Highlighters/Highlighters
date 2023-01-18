@@ -187,7 +187,7 @@ export class HighlightService {
   async deleteHighlight(id: number): Promise<boolean> {
     try {
       await this.prismaService.highlight.delete({ where: { id: id } });
-      await deleteS3(id);
+      // await deleteS3(id);
       return true;
     } catch (error) {
       throw new HttpException('Internal Server Error', 500);
