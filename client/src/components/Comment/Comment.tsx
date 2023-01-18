@@ -17,6 +17,7 @@ import {
   userInfoState,
   currentFeedIdState,
   commentReloadState,
+  commentDelReloadState,
 } from "../../states/atom";
 import { useRecoilValue, useRecoilState } from "recoil";
 import { useUserData } from "../../hooks/useUserData";
@@ -25,18 +26,20 @@ export function Comment(props: any) {
   const [cookies] = useCookies(["logCookie"]);
   const [commentList, setCommentList] = useState([]);
   const [commentReload, setcommentReload] = useRecoilState(commentReloadState);
-
+  const [commentDelReload, setcommentDelReload] = useRecoilState(
+    commentDelReloadState
+  );
   const { data: user, isSuccess, isLoading, error } = useUserData(cookies);
 
   useEffect(() => {
     async function fetchData() {
       const response = await getFeedComment(currentFeedId, cookies);
       setCommentList(response.data.data);
-      setcommentReload((prev) => !prev);
+      // setcommentReload((prev) => !prev);
     }
     fetchData();
     // console.log("코멘트에서 유저", user);
-  }, [commentReload]);
+  }, [commentReload, commentDelReload]);
 
   return (
     <div>

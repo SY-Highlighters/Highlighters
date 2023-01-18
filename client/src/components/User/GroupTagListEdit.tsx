@@ -42,7 +42,7 @@ export function GrouptagListEdit(props: any) {
     }
   );
 
-  const { mutate } = useMutation(async (data: any) => {
+  const { mutate, data } = useMutation(async (data: any) => {
     try {
       const res = await axios.delete(
         `${process.env.REACT_APP_HOST}/api/tag/web/delete`,

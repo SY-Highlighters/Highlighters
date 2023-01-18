@@ -9,7 +9,6 @@ import {
   MapPinIcon,
   PencilIcon,
 } from "@heroicons/react/20/solid";
-import CartContext from "../../../states/back/cart-context";
 
 const BookmarkItem = (props: any) => {
   // 여러개의 하이라이트를 받아서 하나의 리스트로 만들어준다.

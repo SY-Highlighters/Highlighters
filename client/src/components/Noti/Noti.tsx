@@ -22,7 +22,7 @@ export default function Noti() {
       getNextPage();
     }
   }, [isView, getNextPage, getNextPageIsPossible]);
-
+  console.log(getBoard);
   // 노티 모두 읽음
   const clickedAllRead = () => {
     setNotiCount(0);
@@ -46,7 +46,7 @@ export default function Noti() {
               </p>
               {/* 알림 카운트 */}
               <div className="flex items-center justify-center flex-shrink-0 w-6 h-6 ml-2 text-xs font-medium text-white rounded-full opacity-75 bg-sky-600">
-                {notiCount}
+                {notiCount > 99 ? "99+" : notiCount}
               </div>
 
               {/* 모두읽음 구석에 배치 */}
