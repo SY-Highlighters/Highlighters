@@ -109,6 +109,7 @@ export class HighlightService {
       }
 
       // websocket으로 보내기
+      console.log('===== 하이라이트 =====');
       this.event.group_room[group_id].forEach((client) => {
         client.send(
           JSON.stringify({

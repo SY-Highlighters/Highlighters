@@ -16,6 +16,6 @@ import * as redisStore from 'cache-manager-redis-store';
     // }),
   ],
   controllers: [FeedController],
-  providers: [FeedService, HighlightService, TagService],
+  providers: [FeedService, TagService],
 })
 export class FeedModule {}
