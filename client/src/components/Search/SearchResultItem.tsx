@@ -83,7 +83,7 @@ const SearchResultItem = (props: any) => {
                   <span className="text-sky-600 font-bold">
                     {content.substring(info.includeStart, info.includeEnd)}
                   </span>
-                  {content.substring(info.includeEnd) + "..."}
+                  {content.substring(info.includeEnd)}
                 </span>
               );
             else {
