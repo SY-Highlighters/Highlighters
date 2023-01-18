@@ -2,10 +2,15 @@ import {
   tagsInFeedState,
   userInfoState,
   currentFeedIdState,
+  commentReloadState,
 } from "../../../states/atom";
 import { useSetRecoilState, useRecoilState, useRecoilValue } from "recoil";
-
+import { useCookies } from "react-cookie";
+import { useEffect, useState } from "react";
+import axios from "axios";
+import Swal from "sweetalert2";
 export function CommentItem(props: any) {
+  const [cookies] = useCookies(["logCookie"]);
   const currentFeedId = useRecoilValue(currentFeedIdState);
   const date = new Date(props.date);
   const year = date.getFullYear();
@@ -14,6 +19,44 @@ export function CommentItem(props: any) {
   const hours = date.getHours();
   const min = date.getMinutes();
   // console.log(props.writer, props.userId);
+  const host_url = `${process.env.REACT_APP_HOST}/api/comment/delete/${props.id}`;
+  const setcommentReload = useSetRecoilState(commentReloadState);
+
+  const commentDelHandler = () => {
+    // 서버에 태그 삭제 요청
+    axios.delete(host_url, {
+      headers: {
+        Authorization: `Bearer ${cookies.logCookie}`,
+      },
+    });
+    props.onFunc("del");
+    setcommentReload((prev) => !prev);
+    // 리액트쿼리에 저장된 태그리스트 업데이트
+
+    // setTestDel(!testDel);
+  };
+
+  const delClickHandler = () => {
+    Swal.fire({
+      title: "댓글를 삭제하시겠습니까?",
+      text: "삭제된 댓글는 복구할 수 없습니다.",
+      icon: "warning",
+
+      showCancelButton: true, // cancel버튼 보이기. 기본은 원래 없음
+      confirmButtonColor: "#d33", // confrim 버튼 색깔 지정
+      cancelButtonColor: "#3085d6", // cancel 버튼 색깔 지정
+      confirmButtonText: "삭제", // confirm 버튼 텍스트 지정
+      cancelButtonText: "취소", // cancel 버튼 텍스트 지정
+
+      reverseButtons: true, // 버튼 순서 거꾸로
+    }).then((result) => {
+      // 만약 Promise리턴을 받으면,
+      if (result.isConfirmed) {
+        // 만약 모달창에서 confirm 버튼을 눌렀다면
+        commentDelHandler();
+      }
+    });
+  };
   return (
     <div className="flex flex-col mt-7">
       <div className="flex flex-row">
@@ -35,10 +78,13 @@ export function CommentItem(props: any) {
               </div> */}
           {props.userId === props.writer && (
             <div className="-mt-1">
-              <button className="text-xs text-gray-500 hover:text-gray-600">
+              {/* <button className="text-xs text-gray-500 hover:text-gray-600">
                 수정
-              </button>
-              <button className="ml-1 text-xs text-gray-500 hover:text-gray-600">
+              </button> */}
+              <button
+                onClick={delClickHandler}
+                className="text-xs text-gray-500 hover:text-gray-600"
+              >
                 삭제
               </button>
             </div>

@@ -12,7 +12,7 @@ import axios from "axios";
 import Swal from "sweetalert2";
 import { useQuery } from "react-query";
 import { useUserData } from "../../hooks/useUserData";
-export function CommentInput() {
+export function CommentInput(props: any) {
   const [inputValue, setInputValue] = useState("");
   const [cookies, setCookie, removeCookie] = useCookies(["logCookie"]);
   const currentFeedId = useRecoilValue(currentFeedIdState);
@@ -55,6 +55,7 @@ export function CommentInput() {
       .then(function (response) {
         if (response) {
           setInputValue(" ");
+          props.onFunc("add");
           setcommentReload((prev) => !prev);
 
           //   const newTagItem = {

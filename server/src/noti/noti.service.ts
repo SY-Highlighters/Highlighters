@@ -53,6 +53,7 @@ export class NotiService {
             data: {
               user_email,
               group_id: group_id,
+              nickname,
               contents: contents,
               url: url,
             },
