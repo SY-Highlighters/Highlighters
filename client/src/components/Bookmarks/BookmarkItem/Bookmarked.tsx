@@ -24,22 +24,7 @@ export function Bookmarked(props: any) {
         }
       )
       .then(function (response) {
-        if (response) {
-          Toast.fire({
-            icon: "success",
-            title: "북마크에 등록되었습니다.",
-          });
-          setTimeout(() => {
-            window.location.reload();
-          }, 500);
-          //   const newTagItem = {
-          //     tag_name: inputValue,
-          //     tag_id: response.data.tag_id,
-          //   };
-          //   setTagList([...tagList, newTagItem]);
-        } else {
-          alert("북마크 등록 실패!");
-        }
+        props.onFunc();
       });
   }
 

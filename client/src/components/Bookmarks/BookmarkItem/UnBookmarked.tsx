@@ -19,18 +19,7 @@ export function UnBookmarked(props: any) {
         },
       })
       .then(function (response) {
-        if (response) {
-          Toast.fire({
-            icon: "error",
-            title: "북마크에서 삭제되었습니다.",
-          });
-          // 시간 지나고 리로드
-          setTimeout(() => {
-            window.location.reload();
-          }, 500);
-        } else {
-          alert("북마크 삭제 실패!");
-        }
+        props.onFunc();
       });
   }
 

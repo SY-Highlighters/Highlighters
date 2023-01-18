@@ -44,6 +44,8 @@ const FeedItem = (props: any) => {
   const [cookies] = useCookies(["logCookie"]);
   const [threeTrigger, setThreeTrigger] = useState(false);
   const [summary, setSummary] = useState(dummary);
+  const [commentLen, setCommentLen] = useState(props.commentLen);
+  const [isBookmarked, setIsBookmarked] = useState(props.bookmarked);
   // const [img, setImgUrl] = useState("");
 
   // const [firstHighlight, setFirstHighlight] = useState(
@@ -208,10 +210,12 @@ const FeedItem = (props: any) => {
     }
     setCommentIsClicked(!commentIsClicked);
   }
+
   // useEffect(() => {
 
   // }, []);
 
+  // 세줄요약 api
   const threeTriHandler = async () => {
     if (!threeTrigger && props.url.includes("https://n.news.naver.com")) {
       console.log("여기옴?", props.url);
@@ -230,6 +234,19 @@ const FeedItem = (props: any) => {
       setSummary(three.data.data.summary);
     }
     setThreeTrigger(!threeTrigger);
+  };
+
+  // 북마크 콜백
+  const bookmarkCallback = () => {
+    setIsBookmarked(!isBookmarked);
+  };
+  // 댓글 수 콜백
+  const commentCountCallback = (action: any) => {
+    if (action === "add") {
+      setCommentLen(commentLen + 1);
+    } else if (action === "del") {
+      setCommentLen(commentLen - 1);
+    }
   };
   return (
     // <li className="py-5">
@@ -317,17 +334,21 @@ const FeedItem = (props: any) => {
             feed_id={props.id}
           ></FeedTagEdit>
 
-          {/* 댓글 버튼 (토글식)*/}
+          {/* 댓글 , 즐겨찾기 section*/}
           <div>
             <div className="flex flex-row">
               {" "}
               {/* 즐겨찾기 section */}
-              {!props.bookmarked ? (
-                <Bookmarked feedId={props.id} />
+              {!isBookmarked ? (
+                <Bookmarked onFunc={bookmarkCallback} feedId={props.id} />
               ) : (
-                <UnBookmarked bookmarkId={props.bookmarkId}></UnBookmarked>
+                <UnBookmarked
+                  onFunc={bookmarkCallback}
+                  bookmarkId={props.bookmarkId}
+                ></UnBookmarked>
               )}
-              <span className="ml-5 mr-1">{props.commentLen}</span>
+              {/* 댓글 길이 */}
+              <span className="ml-5 mr-1">{commentLen}</span>
               <button onClick={commentToggleHandler} className="">
                 {/* <button className=""> */}
                 <ChatBubbleBottomCenterIcon className="w-5 h-5 text-gray-400 hover:text-gray-700 " />
@@ -339,7 +360,12 @@ const FeedItem = (props: any) => {
           </div>
         </div>
         {/* 숨김 코멘트창 */}
-        {commentIsClicked && <Comment reset={commentIsClicked}></Comment>}
+        {commentIsClicked && (
+          <Comment
+            onFunc={commentCountCallback}
+            reset={commentIsClicked}
+          ></Comment>
+        )}
       </div>
     </div>
     // </li>

@@ -40,10 +40,11 @@ export function Comment(props: any) {
 
   return (
     <div>
-      <CommentInput></CommentInput>
+      <CommentInput onFunc={props.onFunc}></CommentInput>
       <ul>
         {commentList.map((commentItem: any) => (
           <CommentItem
+            onFunc={props.onFunc}
             key={commentItem.id}
             id={commentItem.id}
             content={commentItem.contents}
