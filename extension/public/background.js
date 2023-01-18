@@ -84,6 +84,7 @@ socket.onopen = async () => {
       token
     );
 
+    // push 보내기
     socket.send(
       JSON.stringify({
         event: "userinfo",
@@ -92,6 +93,7 @@ socket.onopen = async () => {
     );
   });
 
+  // push 받기
   socket.addEventListener("message", (message) => {
     const msg = JSON.parse(message.data);
 
@@ -99,6 +101,27 @@ socket.onopen = async () => {
       console.log("push", msg.data);
       chrome.action.setBadgeText({ text: "new" });
       chrome.action.setBadgeBackgroundColor({ color: "#0000FF" });
+    }
+
+    if (msg.event === "highlight") {
+      console.log("[bakcground]: realtime highlight message 받음");
+      // websocket으로 넘겨받은 highlight한 url이 현재 나의 url과 같다면 highlight를 치기.
+      const data = msg.data;
+      const feed_url = data.feed_url;
+      chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
+        if (tabs.length !== "undefined" && tabs.length === 1) {
+          const currentURL = decodeURI(tabs[0].url);
+          console.log("[background]: realtime highlight 현재탭 확인");
+          if (currentURL === feed_url) {
+            // 넘겨받은 url과 현재 url이 같다면 contentscript에서 highlight 치기
+            console.log("[background]: realtime highlight 실행");
+            chrome.tabs.sendMessage(tabs[0].id, {
+              greeting: "realtimehighlight",
+              data,
+            });
+          }
+        }
+      });
     }
   });
 };
