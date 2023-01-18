@@ -22,6 +22,7 @@
   "dependencies": {
     "@elastic/elasticsearch": "^8.5.0",
     "@faker-js/faker": "^7.6.0",
+    "@nestjs/axios": "^1.0.1",
     "@nestjs/common": "^9.0.0",
     "@nestjs/config": "^2.2.0",
     "@nestjs/core": "^9.0.0",
@@ -53,6 +54,7 @@
     "google-auth-library": "^8.7.0",
     "nestjs-elastic-apm": "^1.2.0",
     "node": "^19.3.0",
+    "node-html-parser": "^6.1.4",
     "passport-google-oauth20": "^2.0.0",
     "passport-jwt": "^4.0.1",
     "prisma": "^4.8.0",
