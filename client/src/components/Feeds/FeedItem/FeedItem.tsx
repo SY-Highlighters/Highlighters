@@ -60,7 +60,7 @@ const FeedItem = (props: any) => {
   const day = date.getDate();
 
   
-  // 원본
+  // 하이라이트 section 
   let highlights;
   if (props.highlight.length > 0) {
     let firstHighlight = props.highlight[0].user.nickname;
@@ -82,7 +82,7 @@ const FeedItem = (props: any) => {
           ) : (
             <img
               src={hl.contents}
-              className="w-5/6 ml-2 h-5/6 outline-4"
+              className="w-5/6 mb-1 ml-1 h-5/6 outline-4"
               style={{ outlineStyle: "solid", outlineColor: hl.color }}
             ></img>
           );
@@ -114,7 +114,7 @@ const FeedItem = (props: any) => {
             ) : (
               <img
                 src={hl.contents}
-                className="w-5/6 ml-2 h-5/6 outline-4"
+                className="w-5/6 ml-1 h-5/6 outline-4"
                 style={{ outlineStyle: "solid", outlineColor: hl.color }}
               ></img>
             )}

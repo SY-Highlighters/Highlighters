@@ -48,6 +48,7 @@ const AvailableFeeds = () => {
                 <span className="md:hidden">그룹 피드</span>
                 <span className="hidden md:inline">그룹 피드</span>
               </p>
+              
             </div>
           </div>
         </div>
