@@ -23,7 +23,7 @@ export class SummaryService {
         'content-type': 'application/json',
       },
     };
-    console.log(url);
+    // console.log(url);
 
     const full_text = await fetch(url).then((res) => res.text());
     const temp = parse(full_text);
@@ -35,7 +35,7 @@ export class SummaryService {
     text = text.replace(/\n+/g, '');
     text = text.replace(/\t+/g, '');
     title = title.replace(regExp[0], '');
-    console.log(title);
+    // console.log(title);
 
     const data = {
       document: {
