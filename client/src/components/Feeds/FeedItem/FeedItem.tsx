@@ -90,7 +90,7 @@ const FeedItem = (props: any) => {
           <div key={index}>
             <li className="" key={index}>
               {" "}
-              <div className="flex flex-row mt-4">
+              <div className="flex flex-row mt-2">
                 <img
                   src={hl.user.image}
                   className="w-5 h-5 mr-1 rounded-full"

@@ -81,7 +81,7 @@ export function CommentItem(props: any) {
             {/* extra */}
             {/* 날짜는 위로, 시간은 아래로 표시 */}
             <div className="mt-1 ml-2 text-xs text-gray-500">
-              {` ${year}년 ${month}월 ${day}일. ${hours}시 ${min}분`}
+              {` ${year}년 ${month}월 ${day}일 ${hours}시 ${min}분`}
             </div>
           </div>
           <div className="text-sm text-gray-700">{props.content}</div>

@@ -84,13 +84,16 @@ const SearchResults = () => {
         >
           <div className="flex flex-col items-center justify-center opacity-75 ">
             <p className="text-2xl font-bold text-gray-500 ">
-              "{searchKeyword}" 에 해당하는  검색 결과가 없습니다.
+              "{searchKeyword}" 에 해당하는 검색 결과가 없습니다.
             </p>
           </div>
         </div>
       ) : null}
       {/* feedslist section */}
-      <div className="mt-5 rounded-md shadow-lg xl:overflow-y-auto xl:scrollbar-hide xl:h-full ">
+      <div
+        className="mt-5 rounded-md shadow-lg xl:overflow-y-auto xl:scrollbar-hide xl:h-full "
+        style={{ height: "80vh" }}
+      >
         <ul className="space-y-4 ">
           {searchResultFeeds &&
             searchResultFeeds.map((feed: any) => (
