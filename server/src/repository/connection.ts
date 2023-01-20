@@ -1,6 +1,7 @@
 import { Highlight } from '@prisma/client';
 import * as elasticsearch from '@elastic/elasticsearch';
 import { Global, Injectable } from '@nestjs/common';
+import { elasticFeedDto } from './dto/elastic.dto';
 
 @Global()
 @Injectable()
@@ -23,12 +24,16 @@ export class ElasticsearchService {
     return this.client;
   }
 
-  async inputFeed() {
+  async inputFeed(elasticfeed: elasticFeedDto) {
     await this.client.index({
       index: 'search-highlighter',
       document: {
-        title: `[웹소켓] WebSocket의 개념 및 사용이유, 작동원리, 문제점`,
-        url: 'https://www.naver.com',
+        feed_id: elasticfeed.feed_id,
+        user_nickname: elasticfeed.user_nickname,
+        group_id: elasticfeed.group_id,
+        title: elasticfeed.title,
+        url: elasticfeed.url,
+        contents: elasticfeed.contents,
       },
     });
   }
