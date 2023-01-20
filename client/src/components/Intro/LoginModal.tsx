@@ -2,6 +2,7 @@ import { useSetRecoilState } from "recoil";
 import { logModalVisble, sighUpCheck } from "../../states/atom";
 import SignIn from "./SignIn";
 import SignUp from "./SignUp";
+import { GoogleOAuthProvider, GoogleLogin } from "@react-oauth/google";
 function LoginModal() {
   const logModalDisable = useSetRecoilState(logModalVisble);
   const setSign = useSetRecoilState(sighUpCheck);

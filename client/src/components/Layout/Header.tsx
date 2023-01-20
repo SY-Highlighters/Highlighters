@@ -4,7 +4,7 @@ import {
   MagnifyingGlassCircleIcon,
   StarIcon,
 } from "@heroicons/react/24/outline";
-import { Fragment, useState } from "react";
+import { Fragment, useState, useCallback } from "react";
 import { HomeIcon } from "@heroicons/react/24/outline";
 import { useRecoilState } from "recoil";
 import {
@@ -68,13 +68,35 @@ export default function Header() {
     //   showConfirmButton: false,
     //   timer: 1000,
     // });
-    console.log(searchInput);
+    if (searchKeyword === "") {
+      Swal.fire({
+        icon: "warning",
+        title: "검색어를 입력해주세요",
+        showConfirmButton: false,
+        timer: 1000,
+      });
+      return;
+    }
+    if (mainSectionNum !== 4) {
+      setMainSectionNum(4);
+    }
     setSearchKeyword(searchInput);
-    setMainSectionNum(4);
+    console.log(searchInput);
   };
-
+  // 검색 인풋
   const handleSearchInputChange = (event: any) => {
-    setSearchInput(event?.target.value);
+    // 자동완성
+    if (event?.target.value === "") {
+      setSearchKeyword("");
+      setMainSectionNum(0);
+      return;
+    }
+
+    if (mainSectionNum !== 4) {
+      setMainSectionNum(4);
+    }
+    setSearchKeyword(event?.target.value);
+    // setSearchInput(event?.target.value);
   };
 
   // enter event handler
@@ -222,3 +244,12 @@ export default function Header() {
     </>
   );
 }
+
+// 디바운싱 함수 라이브러리없이 구현하기
+const debounce = (callback: any, duration: any) => {
+  let timer: any;
+  return (...args: any) => {
+    clearTimeout(timer);
+    timer = setTimeout(() => callback(...args), duration);
+  };
+};

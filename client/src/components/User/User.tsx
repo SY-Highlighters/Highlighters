@@ -17,8 +17,8 @@ const User = () => {
       {/* <div className="hidden xl:w-1/5 xl:fixed xl:left-30 xl:block"> */}
       <aside className="grid grid-col-2">
         {/* ui ver1  */}
-        <div className="mb-5 rounded-lg bg-sky-500">
-          <div className="px-3 py-3 mx-auto rounded-lg max-w-7xl sm:px-6 lg:px-8">
+        <div className="mb-5 rounded-md opacity-90 bg-sky-500">
+          <div className="px-3 py-2 mx-auto rounded-lg max-w-7xl sm:px-6 lg:px-8">
             <div className="flex flex-wrap items-center justify-between ">
               <div className="flex items-center flex-1 w-0 ">
                 <span className="flex p-2 mr-1 -ml-3 rounded-lg bg-sky-500 ">

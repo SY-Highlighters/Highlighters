@@ -69,7 +69,7 @@ const SearchResultItem = (props: any) => {
             infoContent = (
               <span style={{ backgroundColor: info.highlight.color }}>
                 {content.substring(0, info.includeStart)}
-                <span className="text-sky-600 font-bold">
+                <span className="font-bold text-sky-600">
                   {content.substring(info.includeStart, info.includeEnd)}
                 </span>
                 {content.substring(info.includeEnd)}
@@ -80,7 +80,7 @@ const SearchResultItem = (props: any) => {
               infoContent = (
                 <span style={{ backgroundColor: info.highlight.color }}>
                   {"..."}
-                  <span className="text-sky-600 font-bold">
+                  <span className="font-bold text-sky-600">
                     {content.substring(info.includeStart, info.includeEnd)}
                   </span>
                   {content.substring(info.includeEnd)}
@@ -90,7 +90,7 @@ const SearchResultItem = (props: any) => {
               infoContent = (
                 <span style={{ backgroundColor: info.highlight.color }}>
                   {"..."}
-                  <span className="text-sky-600 font-bold">
+                  <span className="font-bold text-sky-600">
                     {content.substring(info.includeStart, info.includeEnd)}
                   </span>
                   {content.substr(info.includeEnd, 200) + "..."}
@@ -191,9 +191,12 @@ const SearchResultItem = (props: any) => {
             </h2>
           </span>
         </a>
-        <div className="mb-5 ">
-          <ul className="space-y-1.5">{resultinfosDiv}</ul>
-        </div>
+        {/* 여기가 문제다.. */}
+        {/* <div className="mb-5 ">
+          <ul className="space-y-1.5">
+            {resultinfosDiv}
+          </ul>
+        </div> */}
         {/* 태그 section */}
         {/* <div className="flex flex-wrap mt-2">{tags}</div> */}
         {/* 태그 수정 section */}

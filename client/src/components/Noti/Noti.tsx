@@ -28,9 +28,9 @@ export default function Noti() {
   return (
     // <div className="w-1/5 xl:fixed right-24 xl:overflow-auto ">
     <div className="hidden pr-14 basis-1/4 xl:block">
-      <div className="rounded-lg bg-sky-500">
+      <div className="rounded-md opacity-90 bg-sky-500">
         {/* 메뉴바*/}
-        <div className="px-3 py-3 mx-auto rounded-lg max-w-7xl">
+        <div className="px-3 py-2 mx-auto rounded-lg max-w-7xl">
           <div className="flex flex-wrap items-center ">
             <div className="flex items-center flex-1 w-0">
               <span className="flex p-2 mr-1 -ml-3 rounded-lg bg-sky-500">
@@ -42,10 +42,10 @@ export default function Noti() {
               <p className="text-xl font-bold text-white truncate">
                 <span className="">알림</span>
               </p>
-              {/* 알림 카운트 */}
+              {/* 알림 카운트
               <div className="flex items-center justify-center flex-shrink-0 w-6 h-6 ml-2 text-xs font-medium text-white rounded-full opacity-75 bg-sky-600">
                 {notiCount > 99 ? "99+" : notiCount}
-              </div>
+              </div> */}
 
               {/* 모두읽음 구석에 배치 */}
               <span

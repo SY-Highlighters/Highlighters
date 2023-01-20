@@ -15,7 +15,7 @@ const SearchResults = () => {
   const [cookies, setCookie, removeCookie] = useCookies(["logCookie"]);
   const [searchKeyword, setSearchKeyword] = useRecoilState(searchKeywordState);
   const [searchResultFeeds, setSearchResultFeeds] = useState<object[]>([]);
-
+  let timeoutId: NodeJS.Timeout;
   useEffect(() => {
     console.log("검색창");
     setSearchResultFeeds([]);
@@ -34,8 +34,29 @@ const SearchResults = () => {
       searchResultFeedsAdd(data);
     }
 
-    getSearchResultsAsync();
+    clearTimeout(timeoutId);
+    timeoutId = setTimeout(() => {
+      getSearchResultsAsync();
+    }, 1000);
   }, [searchKeyword]);
+
+  // const autoSearchHandler = async(e: any) => {
+  //    const response = await axios({
+  //       method: "get",
+  //       url: `${process.env.REACT_APP_HOST}/api/search/bar/${e.target.value}`,
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //         Authorization: `Bearer ${cookies.logCookie}`,
+  //       },
+  //     });
+  //     const data = response.data.data;
+  //     console.log("searchresult: ", data);
+  //   // setSearchResultFeeds(data);
+  //   searchResultFeedsAdd(data);
+
+  //   }
+  //   // setSearchKeyword(e.target.value);
+  // };
 
   const searchResultFeedsAdd = (data: []) => {
     data.map((item: any) => {
@@ -60,8 +81,8 @@ const SearchResults = () => {
         {/* 메뉴바*/}
         <div className="px-3 py-3 mx-auto rounded-lg max-w-7xl">
           <div className="flex flex-wrap items-center ">
-            <div className="flex items-center flex-1 w-0 ">
-              <span className="flex p-2 mr-1 -ml-3 rounded-lg bg-sky-500">
+            <div className="flex items-center">
+              <span className="p-2 mr-1 -ml-3 rounded-lg bg-sky-500">
                 <DocumentIcon
                   className="w-6 h-6 ml-3 text-white"
                   aria-hidden="true"
@@ -77,6 +98,7 @@ const SearchResults = () => {
           </div>
         </div>
       </div>
+      {/*  검색결과 업승ㄹ떄 */}
       {searchResultFeeds.length === 0 ? (
         <div
           className="flex justify-center w-full h-full pt-10 mt-5 bg-white rounded-md shadow-md "
@@ -97,7 +119,7 @@ const SearchResults = () => {
         <ul className="space-y-4 ">
           {searchResultFeeds &&
             searchResultFeeds.map((feed: any) => (
-              <div key={feed.id} className="mb-4">
+              <div key={feed.id} className="">
                 <SearchResultItem
                   id={feed.id}
                   key={feed.id}
