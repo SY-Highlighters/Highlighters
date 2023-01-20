@@ -90,4 +90,10 @@ export class FeedController {
   async deleteFeedById(@Param('id') id: number): Promise<Feed> {
     return this.feedService.deleteFeedById(id);
   }
+
+  // Feed test 생성
+  @Post('/ela')
+  async inputFeed() {
+    return this.feedService.inputFeed();
+  }
 }

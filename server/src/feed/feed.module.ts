@@ -5,6 +5,7 @@ import { TagService } from 'src/tag/tag.service';
 import { FeedController } from './feed.controller';
 import { FeedService } from './feed.service';
 import * as redisStore from 'cache-manager-redis-store';
+import { ElasticsearchService } from 'src/repository/connection';
 
 @Module({
   imports: [
@@ -16,6 +17,6 @@ import * as redisStore from 'cache-manager-redis-store';
     // }),
   ],
   controllers: [FeedController],
-  providers: [FeedService, TagService],
+  providers: [FeedService, TagService, ElasticsearchService],
 })
 export class FeedModule {}

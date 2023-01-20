@@ -6,6 +6,7 @@ import { HighlightController } from './highlight.controller';
 import { HighlightService } from './highlight.service';
 import * as redisStore from 'cache-manager-redis-store';
 import { EventModule } from 'src/event/event.module';
+import { ElasticsearchService } from 'src/repository/connection';
 
 @Module({
   imports: [
@@ -18,6 +19,6 @@ import { EventModule } from 'src/event/event.module';
     // }),
   ],
   controllers: [HighlightController],
-  providers: [HighlightService, FeedService, TagService],
+  providers: [HighlightService, FeedService, TagService, ElasticsearchService],
 })
 export class HighlightModule {}

@@ -1,3 +1,4 @@
+import { ElasticsearchService } from 'src/repository/connection';
 import { TagService } from './../tag/tag.service';
 import { Feed, User } from '@prisma/client';
 import { CACHE_MANAGER, Inject, Injectable } from '@nestjs/common';
@@ -11,6 +12,7 @@ export class FeedService {
   constructor(
     private readonly prismaService: PrismaService,
     private readonly tagService: TagService, // @Inject(CACHE_MANAGER) private readonly cacheManager: Cache,
+    private readonly client: ElasticsearchService,
   ) {}
 
   async createFeed(createFeedDto: CreateFeedDto, user: User): Promise<Feed> {
@@ -201,5 +203,9 @@ export class FeedService {
       },
     });
     return result ? true : false;
+  }
+
+  async inputFeed() {
+    this.client.inputFeed();
   }
 }
