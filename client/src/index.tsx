@@ -1,4 +1,5 @@
 import ReactDOM from "react-dom/client";
+import { GoogleOAuthProvider, GoogleLogin } from "@react-oauth/google";
 
 import "./index.css";
 import App from "./App";
@@ -26,7 +27,9 @@ root.render(
   <CookiesProvider>
     <RecoilRoot>
       <QueryClientProvider client={queryClient}>
-        <App />
+        <GoogleOAuthProvider clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID!}>
+          <App />
+        </GoogleOAuthProvider>
       </QueryClientProvider>
     </RecoilRoot>
   </CookiesProvider>

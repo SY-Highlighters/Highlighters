@@ -24,8 +24,8 @@ export default function Intro() {
         </button>
       </div>
       {/* 소개문*/}
-      <div className="gap-4 p-10 mt-20 xl:grid xl:grid-cols-3 animate-fade-in-down-slow">
-        <div className="flex flex-col justify-center">
+      <div className="gap-4 p-10 mt-20 space-y-10 xl:grid xl:grid-cols-3 animate-fade-in-down-slow">
+        <div className="flex flex-col justify-center ">
           <img
             src="https://img.icons8.com/ios/100/000000/link--v1.png"
             alt="like"
