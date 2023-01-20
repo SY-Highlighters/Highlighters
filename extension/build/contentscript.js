@@ -5,7 +5,7 @@ let selectionText;
 let selectedImage = null;
 let highlightStr = "null";
 let highlightColor;
-let highlights;
+let highlights = [];
 let userImage;
 let curNode;
 let curNodeType;
@@ -69,7 +69,7 @@ function makeXPath(node, currentPath) {
           (currentPath ? "/" + currentPath : "")
       );
     case 9:
-      return "/" + currentPath;
+      return "/";
     default:
       return "";
   }
@@ -106,6 +106,8 @@ async function postHighlight(range, highlightStr) {
     endOffset: range.endOffset,
   };
 
+  console.log("rangeobj: ", rangeobj);
+
   const og_image = document.querySelector("meta[property='og:image']");
   const og_description = document.querySelector("meta[property='og:description']");
 
@@ -136,40 +138,6 @@ async function postHighlight(range, highlightStr) {
       }
     }
   );
-}
-
-/* 하이라이트 Get */
-async function getHighlight(url) {
-  chrome.runtime.sendMessage(
-    {
-      greeting: "getHighlight",
-      data: { url },
-    },
-    async (response) => {
-      const highlightsMeta = response.data;
-
-      highlights = highlightsMeta.data ? highlightsMeta.data : [];
-      console.log("[contentscript] getHighlight", highlights);
-
-      if (highlightsMeta.success === false) {
-        console.log(`[${highlightsMeta.statusCode}] ${highlightsMeta.message}`);
-      } else {
-        for (const highlight of highlights) {
-          try {
-            if (highlight.type === 1) {
-              rehighlightText(highlight);
-            } else if (highlight.type === 2) {
-              rehighlightImage(highlight);
-            }
-          } catch (e) {
-            console.log("하이라이트 복원 실패", e);
-          }
-        }
-      }
-      makeEventOnImage();
-    }
-  );
-  return;
 }
 
 function rehighlightText(highlight) {
@@ -481,15 +449,7 @@ async function onWindowReady() {
   highlightColor = await chrome.storage.sync.get("highlightColor");
 
   // 하이라이트 가져오기
-  const uri = window.location.href;
-  const decodeuri = decodeURI(uri);
-
   getUserInfo();
-
-  console.log("decodeuri : ", decodeuri);
-  setTimeout(() => getHighlight(decodeuri), 50);
-  // setTimeout(() => makeEventOnImage(), 1);
-  // setTimeout(() => , 0);
 }
 //
 /* contentscript 시작 */
@@ -525,6 +485,23 @@ document.onmouseup = function (e) {
 
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   switch (request.greeting) {
+    case "getHighlight":
+      const highlights = request.data ? request.data : [];
+      console.log("[cs] getHighlight", highlights);
+
+      for (const highlight of highlights) {
+        try {
+          if (highlight.type === 1) rehighlightText(highlight);
+          else if (highlight.type === 2) rehighlightImage(highlight);
+        } catch (e) {
+          console.log("하이라이트 복원 실패", e);
+        }
+      }
+
+      makeEventOnImage();
+      sendResponse({ farewell: "good" });
+      break;
+
     // 웹페이지의 하이라이팅을 디비로 전송
     case "getOG":
       const ogTitle = document.querySelector("meta[property = 'og:title']");

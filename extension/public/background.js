@@ -130,35 +130,24 @@ async function BackgroundStart() {
 
   await initHighlightColor();
 
-  // chrome.alarms.create("checkNoti", {
-  //   periodInMinutes: 1 / 6,
-  //   when: Date.now(),
-  // });
+  const cookie = await getCookieToken();
+  const token = cookie ? cookie.value : null;
 
-  // chrome.alarms.onAlarm.addListener(async (alarm) => {
-  //   if (alarm.name === "checkNoti") {
-  //     const cookie = await getCookieToken();
-  //     const token = cookie?.value;
+  chrome.tabs.onUpdated.addListener(async (tabId, changeInfo, tab) => {
+    if (changeInfo.status === "complete") {
+      const url = decodeURI(tab.url);
+      const getHighlightURL = `${host_url}/api/highlight/feed`;
+      setTimeout(async () => {
+        const data = await sendHTTPRequest("POST", getHighlightURL, token, { url });
+        chrome.tabs.sendMessage(tabId, {
+          greeting: "getHighlight",
+          data: data.data,
+        });
+      }, 500);
+    }
+  });
 
-  //     const isNewNotiCreateURL = `${host_url}/api/noti/push`;
-  //     const changeNewNotiInUserURL = `${host_url}/api/noti/check`;
-
-  //     const check = await sendHTTPRequest("GET", isNewNotiCreateURL, token);
-
-  //     if (check.data) {
-  //       chrome.action.setBadgeText({ text: "new" });
-  //       chrome.action.setBadgeBackgroundColor({ color: "#0000FF" });
-  //       createPush(
-  //         `push_${push_id}`,
-  //         "새로운 알림이 있습니다.",
-  //         "알림을 확인해주세요"
-  //       );
-  //       push_id++;
-  //       sendHTTPRequest("GET", changeNewNotiInUserURL, token);
-  //     }
-  //   }
-  // });
-
+  // 새로운 url이 열리고 모든 DOM이 완성된 후에 현재 url에 대한 모든 하이라이트 정보 요청
   chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     getCookieToken().then((cookie) => {
       const token = cookie?.value;
