@@ -12,7 +12,8 @@
     "cookies",
     "notifications",
     "alarms",
-    "action"
+    "action",
+    "webNavigation"
   ],
   "host_permissions": ["<all_urls>", "http://localhost/"],
   "action": {

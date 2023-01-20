@@ -47,13 +47,8 @@ function makeXPath(node, currentPath) {
       return makeXPath(
         node.parentNode,
         "text()[" +
-          (document.evaluate(
-            "preceding-sibling::text()",
-            node,
-            null,
-            XPathResult.ORDERED_NODE_SNAPSHOT_TYPE,
-            null
-          ).snapshotLength +
+          (document.evaluate("preceding-sibling::text()", node, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null)
+            .snapshotLength +
             1) +
           "]"
       );
@@ -91,9 +86,7 @@ async function highlightDone(range, id) {
   range.surroundContents(newNode);
 
   // 툴바표시 이벤트리스너 추가
-  newNode.addEventListener("click", (event) =>
-    showToolBar(event, newNode, userImage, 1)
-  );
+  newNode.addEventListener("click", (event) => showToolBar(event, newNode, userImage, 1));
 
   // 펜 버튼 숨기기
   const button = document.getElementById("btn_text_highlighters");
@@ -114,9 +107,7 @@ async function postHighlight(range, highlightStr) {
   };
 
   const og_image = document.querySelector("meta[property='og:image']");
-  const og_description = document.querySelector(
-    "meta[property='og:description']"
-  );
+  const og_description = document.querySelector("meta[property='og:description']");
 
   chrome.runtime.sendMessage(
     {
@@ -136,13 +127,8 @@ async function postHighlight(range, highlightStr) {
     },
     (response) => {
       if (response.data.statusCode === 401) {
-        console.log(
-          "unauthorized error status code: ",
-          response.data.statusCode
-        );
-        alert(
-          "Highlighters: 로그인이 필요한 서비스입니다.\n(확인을 누르면 웹사이트로 이동합니다)"
-        );
+        console.log("unauthorized error status code: ", response.data.statusCode);
+        alert("Highlighters: 로그인이 필요한 서비스입니다.\n(확인을 누르면 웹사이트로 이동합니다)");
         window.open("https://highlighters.site/");
       } else {
         highlights.push(response.data.data);
@@ -222,9 +208,7 @@ function rehighlightText(highlight) {
   range.surroundContents(newNode);
 
   // 툴바 표시 이벤트리스너 추가
-  newNode.addEventListener("click", (event) =>
-    showToolBar(event, newNode, highlight.user.image, 1)
-  );
+  newNode.addEventListener("click", (event) => showToolBar(event, newNode, highlight.user.image, 1));
 }
 
 function rehighlightImage(highlight) {
@@ -243,9 +227,7 @@ function rehighlightImage(highlight) {
   img.classList.add("highlighted");
 
   // 툴바 표시 이벤트리스너 추가
-  img.addEventListener("click", (event) =>
-    showToolBar(event, img, highlight.user.image, 2)
-  );
+  img.addEventListener("click", (event) => showToolBar(event, img, highlight.user.image, 2));
 }
 
 function deleteHighlight(node) {
@@ -268,13 +250,7 @@ function deleteHighlight(node) {
         const scrollY = window.scrollY;
         const scrollX = window.scrollX;
 
-        const mouseOverImgBtn = mouseOverImgBtnHandler(
-          button,
-          deletedImageNode,
-          position,
-          scrollY,
-          scrollX
-        );
+        const mouseOverImgBtn = mouseOverImgBtnHandler(button, deletedImageNode, position, scrollY, scrollX);
         deletedImageNode.addEventListener("mouseover", mouseOverImgBtn);
         deletedImageNode.addEventListener("mouseout", mouseOnImgBtn);
       }
@@ -332,17 +308,16 @@ function getUserInfo() {
   );
 }
 
-const mouseOverImgBtnHandler =
-  (button, image, position, scrollY, scrollX) => () => {
-    button.style.top = position.top + scrollY + 10 + "px";
-    button.style.left = position.left + scrollX + 10 + "px";
-    button.style.transform = "rotate(270deg)";
-    button.style.zIndex = "2147483647";
-    button.style.display = "block";
-    button.style.position = "absolute";
+const mouseOverImgBtnHandler = (button, image, position, scrollY, scrollX) => () => {
+  button.style.top = position.top + scrollY + 10 + "px";
+  button.style.left = position.left + scrollX + 10 + "px";
+  button.style.transform = "rotate(270deg)";
+  button.style.zIndex = "2147483647";
+  button.style.display = "block";
+  button.style.position = "absolute";
 
-    selectedImage = image;
-  };
+  selectedImage = image;
+};
 
 const mouseOnImgBtn = () => {
   const button = document.getElementById("btn_image_highlighters");
@@ -365,13 +340,7 @@ function makeEventOnImage() {
       const scrollY = window.scrollY;
       const scrollX = window.scrollX;
 
-      const mouseOverImgBtn = mouseOverImgBtnHandler(
-        button,
-        image,
-        position,
-        scrollY,
-        scrollX
-      );
+      const mouseOverImgBtn = mouseOverImgBtnHandler(button, image, position, scrollY, scrollX);
       image.addEventListener("mouseover", mouseOverImgBtn);
       image.addEventListener("mouseout", mouseOnImgBtn);
     }
@@ -395,21 +364,15 @@ function highlightImage() {
         selection: rangeObject,
         title: document.title,
         image: document.querySelector("meta[property='og:image']").content,
-        description: document.querySelector("meta[property='og:description']")
-          .content,
+        description: document.querySelector("meta[property='og:description']").content,
         color: highlightColor.highlightColor,
         type: 2,
       },
     },
     (response) => {
       if (response.data.statusCode === 401) {
-        console.log(
-          "unauthorized error status code: ",
-          response.data.statusCode
-        );
-        alert(
-          "Highlighters: 로그인이 필요한 서비스입니다.\n(확인을 누르면 웹사이트로 이동합니다)"
-        );
+        console.log("unauthorized error status code: ", response.data.statusCode);
+        alert("Highlighters: 로그인이 필요한 서비스입니다.\n(확인을 누르면 웹사이트로 이동합니다)");
         window.open("https://highlighters.site/");
       } else {
         console.log("Post Highlight Image Success", response.data);
@@ -440,10 +403,7 @@ function makeButton(name) {
   const button = document.createElement("input");
   button.setAttribute("id", `btn_${name}_highlighters`);
   button.setAttribute("type", "image");
-  button.setAttribute(
-    "src",
-    "https://cdn-icons-png.flaticon.com/512/3237/3237124.png"
-  );
+  button.setAttribute("src", "https://cdn-icons-png.flaticon.com/512/3237/3237124.png");
   button.style.height = "35px";
   button.style.width = "35px";
   button.style.display = "none";
@@ -461,10 +421,7 @@ function makeToolBar() {
   const userImageDiv = document.createElement("input");
   userImageDiv.setAttribute("type", "image");
   userImageDiv.setAttribute("id", "userImageDiv-highlighters");
-  userImageDiv.setAttribute(
-    "src",
-    "https://cdn-icons-png.flaticon.com/512/1946/1946429.png"
-  );
+  userImageDiv.setAttribute("src", "https://cdn-icons-png.flaticon.com/512/1946/1946429.png");
   userImageDiv.style.height = "22px";
   userImageDiv.style.width = "22px";
   userImageDiv.style.position = "relative";
@@ -476,10 +433,7 @@ function makeToolBar() {
   const deleteButton = document.createElement("input");
   deleteButton.setAttribute("type", "image");
   deleteButton.setAttribute("id", "deleteButton-highlighters");
-  deleteButton.setAttribute(
-    "src",
-    "https://cdn-icons-png.flaticon.com/512/484/484662.png"
-  );
+  deleteButton.setAttribute("src", "https://cdn-icons-png.flaticon.com/512/484/484662.png");
   deleteButton.style.height = "20px";
   deleteButton.style.width = "20px";
   deleteButton.style.position = "relative";
@@ -491,18 +445,13 @@ function makeToolBar() {
   const homeButton = document.createElement("input");
   homeButton.setAttribute("type", "image");
   homeButton.setAttribute("id", "homeButton-highlighters");
-  homeButton.setAttribute(
-    "src",
-    "https://cdn-icons-png.flaticon.com/512/1946/1946488.png"
-  );
+  homeButton.setAttribute("src", "https://cdn-icons-png.flaticon.com/512/1946/1946488.png");
   homeButton.style.height = "20px";
   homeButton.style.width = "20px";
   homeButton.style.position = "relative";
   homeButton.style.top = "8px";
   homeButton.style.left = "35px";
-  homeButton.addEventListener("click", () =>
-    window.open("https://highlighters.site/")
-  );
+  homeButton.addEventListener("click", () => window.open("https://highlighters.site/"));
 
   rootDiv.appendChild(userImageDiv);
   rootDiv.appendChild(deleteButton);
@@ -537,6 +486,7 @@ async function onWindowReady() {
 
   getUserInfo();
 
+  console.log("decodeuri : ", decodeuri);
   setTimeout(() => getHighlight(decodeuri), 50);
   // setTimeout(() => makeEventOnImage(), 1);
   // setTimeout(() => , 0);
@@ -578,18 +528,13 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     // 웹페이지의 하이라이팅을 디비로 전송
     case "getOG":
       const ogTitle = document.querySelector("meta[property = 'og:title']");
-      const title =
-        document.title == null && ogTitle !== ""
-          ? ogTitle.content
-          : document.title;
+      const title = document.title == null && ogTitle !== "" ? ogTitle.content : document.title;
       const ogImage = document.querySelector("meta[property='og:image']");
       const image =
         ogImage != null
           ? ogImage.content
           : "https://www.salonlfc.com/wp-content/uploads/2018/01/image-not-found-1-scaled-1150x647.png";
-      const ogDescription = document.querySelector(
-        "meta[property='og:description']"
-      );
+      const ogDescription = document.querySelector("meta[property='og:description']");
       const description = ogDescription != null ? ogDescription.content : "";
 
       console.log(title, image, description);

@@ -47,10 +47,10 @@ export class HighlightController {
   }
 
   // URL로 찾은 Feed에 있는 모든 highlight 찾기
-  @Get('/feed/endpoint')
+  @Post('/feed')
   async findHighlightAll(
     @GetUser() user: User,
-    @Query('url') url: string,
+    @Body('url') url: string,
   ): Promise<any> {
     return this.highlightService.findAllHighlightInFeed(user.group_id, url);
   }
