@@ -6,6 +6,7 @@ import { PrismaService } from 'src/repository/prisma.service';
 import { CreateFeedDto } from './dto/feed.dto';
 import { HttpException } from '@nestjs/common/exceptions';
 import { Cache } from 'cache-manager';
+import { elasticFeedDto } from 'src/repository/dto/elastic.dto';
 
 @Injectable()
 export class FeedService {
@@ -205,7 +206,7 @@ export class FeedService {
     return result ? true : false;
   }
 
-  async inputFeed() {
-    this.client.inputFeed();
+  async inputFeed(elasticfeed: elasticFeedDto) {
+    this.client.inputFeed(elasticfeed);
   }
 }
