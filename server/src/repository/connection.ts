@@ -28,7 +28,7 @@ export class ElasticsearchService {
       index: 'search-highlighter',
       document: {
         title: `[웹소켓] WebSocket의 개념 및 사용이유, 작동원리, 문제점`,
-        body: 'https://www.naver.com',
+        url: 'https://www.naver.com',
       },
     });
   }
