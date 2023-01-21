@@ -228,8 +228,7 @@ export class HighlightService {
         });
       }
       // await deleteS3(id);
-      console.log(high_contents);
-      console.log('type: ', type);
+      // console.log(high_contents);
       await this.elastic.deleteHighlight(
         String(high_contents.feed_id),
         high_contents.contents,
