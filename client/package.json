@@ -21,6 +21,7 @@
     "gapi": "^0.0.3",
     "gapi-script": "^1.2.0",
     "http-proxy-middleware": "^2.0.6",
+    "lodash": "^4.17.21",
     "react": "^18.2.0",
     "react-cookie": "^4.1.1",
     "react-copy-to-clipboard": "^5.1.0",
@@ -64,6 +65,7 @@
     ]
   },
   "devDependencies": {
+    "@types/lodash": "^4.14.191",
     "@types/react-copy-to-clipboard": "^5.0.4",
     "@types/react-lazy-load-image-component": "^1.5.2",
     "autoprefixer": "^10.4.13",

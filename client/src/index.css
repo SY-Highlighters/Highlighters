@@ -2,12 +2,12 @@
 @tailwind components;
 @tailwind utilities;
 /* 토스폰트 수정예정 */
-@import url("//spoqa.github.io/spoqa-han-sans/css/SpoqaHanSansNeo.css");
+/* @import url("//spoqa.github.io/spoqa-han-sans/css/SpoqaHanSansNeo.css"); */
 @import url("https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&display=swap");
 
 * {
   box-sizing: border-box;
-  font-family: "Spoqa Han Sans Neo", "sans-serif";
+  /* font-family: "Spoqa Han Sans Neo", "sans-serif"; */
 }
 
 html {

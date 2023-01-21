@@ -43,7 +43,7 @@ export function Delete(props: any) {
   return (
     <TrashIcon
       onClick={delClickHandler}
-      className="flex-shrink-0 w-3 h-3 mr-3 text-gray-400 cursor-pointer xl:h-5 xl:w-5 "
+      className="flex-shrink-0 w-3 h-4 mr-4 text-gray-400 cursor-pointer xl:h-5 xl:w-5 "
     ></TrashIcon>
   );
 }
