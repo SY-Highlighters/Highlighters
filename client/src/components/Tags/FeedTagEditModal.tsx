@@ -19,7 +19,7 @@ import { TagEditItem } from "./TagItem/TagEditItem";
 import Swal from "sweetalert2";
 import { ArrowRightCircleIcon } from "@heroicons/react/24/outline";
 import GroupTag from "../User/GroupTag";
-import { GrouptagList } from "../User/GroupTagList";
+import GroupTagList from "../User/GroupTagList";
 import { useQuery } from "react-query";
 
 export function FeedTagEditModal(props: any) {
@@ -204,12 +204,12 @@ export function FeedTagEditModal(props: any) {
             {/* 검색창 미리보기 형식으로 태그 리스트 */}
             <div>
               <div className="flex justify-center mt-5">
-                <GrouptagList
+                <GroupTagList
                   onFunc={() => {
                     console.log("test");
                   }}
                   onCss={"w-full mt-10 bg-white"}
-                ></GrouptagList>
+                ></GroupTagList>
               </div>
             </div>
             {/* 태그 저장 버튼 */}

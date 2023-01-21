@@ -2,19 +2,22 @@ import FeedItem from "../Feeds/FeedItem/FeedItem";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { feedsTagListState, clickedGroupTagDelState } from "../../states/atom";
 import { useCookies } from "react-cookie";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState, Suspense, lazy } from "react";
 import axios from "axios";
 import { TagItem } from "../Tags/TagItem/TagItem";
 import { useQuery } from "react-query";
 import { ArchiveBoxXMarkIcon } from "@heroicons/react/24/outline";
-import { GrouptagList } from "./GroupTagList";
-import { GrouptagListEdit } from "./GroupTagListEdit";
+import GroupTagSkeleton from "../UI/GroupTagSkeleton";
+// import  GroupTagList from "./GroupTagList";
+// import { GroupTagListEdit } from "./GroupTagListEdit";
+const GroupTagList = lazy(() => import("./GroupTagList"));
+
+const GroupTagListEdit = lazy(() => import("./GroupTagListEdit"));
 
 const GroupTag = (props: any) => {
   const [clickedGroupTagDel, setclickedGroupTagDel] = useRecoilState(
     clickedGroupTagDelState
   );
-
 
   // 그룹 태그 삭제 버튼 클릭 핸들러
   function groupTagDeleteHandler() {
@@ -41,9 +44,13 @@ const GroupTag = (props: any) => {
       <div className="px-2 m-2 overflow-y-auto h-2/3 xl:scrollbar-hide ">
         <ul>
           {clickedGroupTagDel ? (
-            <GrouptagListEdit></GrouptagListEdit>
+            <Suspense fallback={<GroupTagSkeleton />}>
+              <GroupTagListEdit></GroupTagListEdit>
+            </Suspense>
           ) : (
-            <GrouptagList onFunc={props.onFunc}></GrouptagList>
+            <Suspense fallback={<GroupTagSkeleton />}>
+              <GroupTagList onFunc={props.onFunc}></GroupTagList>
+            </Suspense>
           )}
         </ul>
       </div>
