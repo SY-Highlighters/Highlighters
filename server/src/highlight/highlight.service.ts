@@ -7,7 +7,11 @@ import {
 } from '@nestjs/common';
 import { PrismaService } from 'src/repository/prisma.service';
 import { Highlight } from '.prisma/client';
-import { CreateHighlightDto, UpdateHighlightDto } from './dto/highlight.dto';
+import {
+  CreateHighlightDto,
+  DeleteHighlightDto,
+  UpdateHighlightDto,
+} from './dto/highlight.dto';
 import { FeedService } from 'src/feed/feed.service';
 import { CreateFeedDto } from 'src/feed/dto/feed.dto';
 import { forwardRef } from '@nestjs/common/utils';
@@ -202,20 +206,30 @@ export class HighlightService {
     return result;
   }
 
-  async deleteHighlight(id: number): Promise<boolean> {
+  async deleteHighlight(
+    deleteHighlightDto: DeleteHighlightDto,
+  ): Promise<boolean> {
+    const { id, type } = deleteHighlightDto;
     try {
-      const high_contents = await this.prismaService.highlight.update({
-        where: { id: id },
-        select: { contents: true, feed_id: true },
-        data: { contents: '', color: '-1' }, // 삭제된 하이라이트는 color를 -1로 변경
-      });
-
-      // const high_contents = await this.prismaService.highlight.delete({
-      //   where: { id: id },
-      //   select: { contents: true, feed_id: true },
-      // });
+      // 하이라이트 삭제
+      let high_contents;
+      if (type === 1) {
+        // 텍스트 하이라이트 삭제
+        high_contents = await this.prismaService.highlight.update({
+          where: { id: id },
+          select: { contents: true, feed_id: true },
+          data: { contents: '', color: '-1' }, // 삭제된 하이라이트는 color를 -1로 변경
+        });
+      } else if (type === 2) {
+        // 사진 하이라이트 삭제
+        high_contents = await this.prismaService.highlight.delete({
+          where: { id: id },
+          select: { contents: true, feed_id: true },
+        });
+      }
       // await deleteS3(id);
-      // console.log(high_contents);
+      console.log(high_contents);
+      console.log('type: ', type);
       await this.elastic.deleteHighlight(
         String(high_contents.feed_id),
         high_contents.contents,

@@ -421,7 +421,7 @@ function deleteHighlight(node) {
   chrome.runtime.sendMessage(
     {
       greeting: "deleteHighlight",
-      data: { id: +nodeId },
+      data: { id: +nodeId, type: curNodeType },
     },
     (response) => {
       if (curNodeType === 1) {

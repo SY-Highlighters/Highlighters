@@ -421,12 +421,12 @@ function deleteHighlight(node) {
   chrome.runtime.sendMessage(
     {
       greeting: "deleteHighlight",
-      data: { id: +nodeId },
+      data: { id: +nodeId, type: curNodeType },
     },
     (response) => {
       if (curNodeType === 1) {
         const NodeList = document.querySelectorAll(`highlight`);
-        // console.log(NodeList);
+        console.log(NodeList);
         NodeList.forEach((nodeInList) => {
           if (nodeInList.className === nodeId) {
             nodeInList.removeAttribute("style");

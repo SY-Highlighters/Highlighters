@@ -32,4 +32,12 @@ export class CreateHighlightDto {
   type?: number;
 }
 
+export class DeleteHighlightDto {
+  @IsNumber()
+  id: number;
+
+  @IsNumber()
+  type: number;
+}
+
 export class UpdateHighlightDto extends PartialType(CreateHighlightDto) {}
