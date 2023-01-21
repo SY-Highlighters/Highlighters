@@ -18,6 +18,8 @@ import {
 import { Fragment, useState } from "react";
 import { useSetRecoilState } from "recoil";
 import { selectedDayState, mainSectionState } from "../../states/atom";
+import { throttle } from "lodash";
+
 const meetings = [
   {
     id: 1,
@@ -90,7 +92,12 @@ export default function Calender() {
   let selectedDayMeetings = meetings.filter((meeting) =>
     isSameDay(parseISO(meeting.startDatetime), selectedDay)
   );
-
+  // const throttledClickedDay = (day: any) => thrrottle(clickedDay(day), 10000);
+  function clickedDay(day: Date) {
+    setSelectedDay(day);
+    setGlobalSelectedDay(day);
+    setMainSectionNum(3);
+  }
   return (
     <div className="w-full mt-3 bg-white rounded-lg shadow-lg h-15">
       <div className="m-5">
@@ -138,9 +145,7 @@ export default function Calender() {
                   <button
                     type="button"
                     onClick={() => {
-                      setSelectedDay(day);
-                      setGlobalSelectedDay(day);
-                      setMainSectionNum(3);
+                      // throttle(clickedDay(day), 10000);
                     }}
                     className={classNames(
                       isEqual(day, selectedDay) && "text-white",
@@ -275,3 +280,16 @@ let colStartClasses = [
   "col-start-6",
   "col-start-7",
 ];
+
+// function thrrottle(callback: any, limit: any) {
+//   let wait = false;
+//   return function () {
+//     if (!wait) {
+//       callback.apply(null, arguments);
+//       wait = true;
+//       setTimeout(function () {
+//         wait = false;
+//       }, limit);
+//     }
+//   };
+// }

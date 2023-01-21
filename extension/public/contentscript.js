@@ -1,11 +1,8 @@
-// const { getEventListeners } = require("events");
-
-/* 코드시작 */
 let selectionText;
 let selectedImage = null;
 let highlightStr = "null";
 let highlightColor;
-let highlights;
+let highlights = [];
 let userImage;
 let curNode;
 let curNodeType;
@@ -191,6 +188,8 @@ async function postHighlight(range, highlightStr) {
     endOffset: range.endOffset,
   };
 
+  console.log("rangeobj: ", rangeobj);
+
   const og_image = document.querySelector("meta[property='og:image']");
   const og_description = document.querySelector(
     "meta[property='og:description']"
@@ -228,48 +227,6 @@ async function postHighlight(range, highlightStr) {
       }
     }
   );
-}
-
-/* 하이라이트 Get */
-async function getHighlight(url) {
-  // const timestamp1 = +new Date();
-  // console.log("getHighlight 1", timestamp1);
-  chrome.runtime.sendMessage(
-    {
-      greeting: "getHighlight",
-      data: { url },
-    },
-    async (response) => {
-      const highlightsMeta = response.data;
-
-      highlights = highlightsMeta.data ? highlightsMeta.data : [];
-      console.log("[contentscript] getHighlight", highlights);
-      // const timestamp2 = +new Date();
-      // console.log("getHighlight 2", timestamp2);
-      // console.log("getHighlight timegap", timestamp2 - timestamp1);
-
-      if (highlightsMeta.success === false) {
-        console.log(`[${highlightsMeta.statusCode}] ${highlightsMeta.message}`);
-      } else {
-        for (const highlight of highlights) {
-          try {
-            if (highlight.type === 1) {
-              rehighlightText(highlight);
-            } else if (highlight.type === 2) {
-              rehighlightImage(highlight);
-            }
-          } catch (e) {
-            console.log("하이라이트 복원 실패", e);
-          }
-        }
-        // const timestamp3 = +new Date();
-        // console.log("getHighlight 2", timestamp3);
-      }
-      makeEventOnImage();
-    }
-  );
-
-  return;
 }
 
 function rehighlightText(highlight) {
@@ -718,33 +675,7 @@ async function onWindowReady() {
   highlightColor = await chrome.storage.sync.get("highlightColor");
 
   // 하이라이트 가져오기
-  const uri = window.location.href;
-  const decodeuri = decodeURI(uri);
-
   getUserInfo();
-
-  // let body = document.querySelector(".content");
-  // if (body == null) {
-  // let body = document.getElementById("dic_area");
-  // // }
-  // let text = body.innerHTML;
-
-  // // const reg = /<[^>]*>?/g;
-  // var regExp = /<\/?[^>]+>/gi;
-  // function replaceTags(html) {
-  //   text = html.replace(regExp, "");
-  //   return text;
-  // }
-  // let replace_text = replaceTags(text);
-  // // text = text.replace(/<(\/)?([a-zA-Z]*)(\s[a-zA-Z]*=[^>]*)?(\s)*(\/)   ?>/gi, "");
-  // console.log(replace_text);
-  // const timestamp2 = +new Date();
-  // console.log("onWindowReady 2", timestamp2);
-  setTimeout(() => getHighlight(decodeuri), 0);
-  // setTimeout(() => makeEventOnImage(), 1);
-  // setTimeout(() => , 0);
-  // const timestamp3 = +new Date();
-  // console.log("onWindowReady 3", timestamp3);
 }
 //
 /* contentscript 시작 */
@@ -780,6 +711,23 @@ document.onmouseup = function (e) {
 
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   switch (request.greeting) {
+    case "getHighlight":
+      const highlights = request.data ? request.data : [];
+      console.log("[cs] getHighlight", highlights);
+
+      for (const highlight of highlights) {
+        try {
+          if (highlight.type === 1) rehighlightText(highlight);
+          else if (highlight.type === 2) rehighlightImage(highlight);
+        } catch (e) {
+          console.log("하이라이트 복원 실패", e);
+        }
+      }
+
+      makeEventOnImage();
+      sendResponse({ farewell: "good" });
+      break;
+
     // 웹페이지의 하이라이팅을 디비로 전송
     case "getOG":
       const ogTitle = document.querySelector("meta[property = 'og:title']");

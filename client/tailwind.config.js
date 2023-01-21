@@ -29,10 +29,20 @@ module.exports = {
           transform: "translateY(0)",
         },
       },
+      pulse: {
+        "0%, 100%": {
+          opacity: 1,
+        },
+        "50%": {
+          opacity: 0.5,
+        },
+      },
     },
     animation: {
       "fade-in-down": "fade-in-down 0.5s ease-out",
       "fade-in-down-slow": "fade-in-down 2s ease-out",
+      pulse: "pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite",
+      "pulse-slow": "pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite",
     },
 
     screens: {

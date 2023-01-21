@@ -4,7 +4,7 @@ import { CalendarDaysIcon } from "@heroicons/react/24/outline";
 import { useInView } from "react-intersection-observer";
 import { useRecoilValue } from "recoil";
 import { selectedDayState } from "../../states/atom";
-import { useFeedsInDay } from "../../hooks/useFeedsInDay";
+import { useFeedsInDay } from "../../hooks/useFeedsInDay"; 
 
 export function FeedsInDay(props: any) {
   const [ref, isView] = useInView();
@@ -12,6 +12,8 @@ export function FeedsInDay(props: any) {
   const date = new Date(selectedDay);
   // 9시간 뺴서 한국 시간으로 변환
   date.setHours(date.getHours() - 9);
+  // 쓰로틀 적용
+
   const { getBoard, getNextPage, getBoardIsSuccess, getNextPageIsPossible } =
     useFeedsInDay(date);
   // // 날짜 문자로 변환
@@ -22,6 +24,7 @@ export function FeedsInDay(props: any) {
   useEffect(() => {
     // 맨 마지막 요소를 보고있고 페이지가 존재하면
     // 다음 페이지 데이터를 가져옴
+
     if (isView && getNextPageIsPossible) {
       getNextPage();
     }
@@ -165,4 +168,16 @@ export function FeedsInDay(props: any) {
       </div>
     </div>
   );
+}
+function thrrottle(callback: any, limit: any) {
+  let wait = false;
+  return function () {
+    if (!wait) {
+      callback.apply(null, arguments);
+      wait = true;
+      setTimeout(function () {
+        wait = false;
+      }, limit);
+    }
+  };
 }

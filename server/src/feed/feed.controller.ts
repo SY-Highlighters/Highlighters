@@ -21,6 +21,7 @@ import { AuthGuard } from '@nestjs/passport';
 import { CreateFeedDto } from './dto/feed.dto';
 import { SuccessInterceptor } from 'src/common/interceptors/success.interceptors';
 import { HttpExceptionFilter } from 'src/common/exceptions/http-exception.filter';
+import { elasticFeedDto } from 'src/repository/dto/elastic.dto';
 
 @Controller('api/feed')
 // @UseInterceptors(CacheInterceptor) // get요청만 cache 할 수 있음
@@ -93,7 +94,7 @@ export class FeedController {
 
   // Feed test 생성
   @Post('/ela')
-  async inputFeed() {
-    return this.feedService.inputFeed();
+  async inputFeed(elasticfeed: elasticFeedDto) {
+    return this.feedService.inputFeed(elasticfeed);
   }
 }

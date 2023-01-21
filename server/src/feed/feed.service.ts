@@ -6,18 +6,26 @@ import { PrismaService } from 'src/repository/prisma.service';
 import { CreateFeedDto } from './dto/feed.dto';
 import { HttpException } from '@nestjs/common/exceptions';
 import { Cache } from 'cache-manager';
+import { elasticFeedDto } from 'src/repository/dto/elastic.dto';
 
 @Injectable()
 export class FeedService {
   constructor(
     private readonly prismaService: PrismaService,
     private readonly tagService: TagService, // @Inject(CACHE_MANAGER) private readonly cacheManager: Cache,
-    private readonly client: ElasticsearchService,
+    private readonly elastic: ElasticsearchService,
   ) {}
 
   async createFeed(createFeedDto: CreateFeedDto, user: User): Promise<Feed> {
-    const { url, feed_title, og_title, image, description, tag_name } =
-      createFeedDto;
+    const {
+      url,
+      feed_title,
+      og_title,
+      image,
+      description,
+      tag_name,
+      high_content,
+    } = createFeedDto;
 
     // og 부분
     let _Og = await this.prismaService.og.findFirst({
@@ -50,6 +58,18 @@ export class FeedService {
         og_id: _Og.id,
       },
     });
+
+    // elastic input
+    const elasticFeed = new elasticFeedDto();
+    elasticFeed.feed_id = String(_Feed.id);
+    elasticFeed.user_nickname = user.nickname;
+    elasticFeed.group_id = user.group_id;
+    elasticFeed.title = feed_title;
+    elasticFeed.url = url;
+    elasticFeed.description = description;
+    elasticFeed.contents = high_content;
+
+    await this.elastic.inputFeed(elasticFeed);
 
     // tag 부분
     if (tag_name) {
@@ -191,7 +211,7 @@ export class FeedService {
     const result = await this.prismaService.feed.delete({
       where: { id },
     });
-
+    this.elastic.deleteFeed(String(id));
     return result;
   }
 
@@ -205,7 +225,7 @@ export class FeedService {
     return result ? true : false;
   }
 
-  async inputFeed() {
-    this.client.inputFeed();
+  async inputFeed(elasticfeed: elasticFeedDto) {
+    this.elastic.inputFeed(elasticfeed);
   }
 }

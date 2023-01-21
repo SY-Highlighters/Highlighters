@@ -3,15 +3,10 @@ import { GoogleOAuthProvider, GoogleLogin } from "@react-oauth/google";
 import axios from "axios";
 import { useCookies } from "react-cookie";
 import Swal from "sweetalert2";
-import { logModalVisble } from "../../states/atom";
-import { useSetRecoilState } from "recoil";
+
 export function GoogleLoginButton() {
   const [cookies, setCookie, removeCookie] = useCookies(["logCookie"]);
-  const logModalDisable = useSetRecoilState(logModalVisble);
 
-  const closeModal = () => {
-    logModalDisable(!logModalVisble);
-  };
   // const googleSocialLogin = async() => {
 
   //   },
@@ -38,7 +33,10 @@ export function GoogleLoginButton() {
       <GoogleOAuthProvider clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID!}>
         <GoogleLogin
           // useOneTap={true}
-
+          size="large"
+          type="standard"
+          
+          
           onSuccess={async (creRes) => {
             // console.log(creRes);
             await axios
@@ -59,7 +57,7 @@ export function GoogleLoginButton() {
                   //   groupName: response.data.group_name,
                   // });
                   // 쿠키저장
-                  closeModal();
+
                   handleCookie(response.data.data.accessToken);
                 }
               })

@@ -26,30 +26,35 @@ const UserInfo = () => {
             </div>
           </div>
         </div>
+        {/* <div className="h-24 mx-auto mt-20 border-2 rounded-md opacity-50 w-60">
+          <div className="flex flex-row items-center justify-center h-full space-x-5 animate-pulse">
+            <div className="bg-gray-300 rounded-full w-14 h-14 "></div>
+            <div className="flex flex-col space-y-3">
+              <div className="w-20 h-4 bg-gray-300 rounded-md "></div>
+              <div className="w-24 h-6 bg-gray-300 rounded-md "></div>
+            </div>
+          </div>
+        </div> */}
       </div>
     );
   } else {
-    // 로딩 중 또는 에러 발생 시 화면 빈 크기의 div를 반환
+    // 로딩 중 또는 에러 발생 시 스켈레톤 UI 보여줌
     return (
-      <div className="w-full bg-white rounded-lg shadow-lg erflow-hidden">
+      <div className="w-full bg-white rounded-lg shadow-lg animate-pulse">
         <div className="h-10" />
         <div className="relative p-6 rounded-3xl -top-5">
           <div className="relative flex items-end px-3 justify-left -top-1">
-            <img
-              className="rounded-full w-14 h-14"
-              src={"https://via.placeholder.com/150"}
-              alt=""
-            />
-            <div className="flex flex-col px-5">
-              <span className="font-bold text-left text-sky-500"> </span>
-              <span className="text-2xl font-medium text-left"> </span>
+            <div className="bg-gray-300 rounded-full w-14 h-14 "></div>
+
+            <div className="flex flex-col ml-2 space-y-2 ">
+              <div className="w-20 h-4 bg-gray-300 rounded-md "></div>
+              <div className="w-24 h-6 bg-gray-300 rounded-md "></div>
             </div>
           </div>
         </div>
       </div>
     );
   }
-
 };
 
 export default UserInfo;
