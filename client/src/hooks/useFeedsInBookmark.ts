@@ -30,6 +30,7 @@ export const useFeedsInBookmark = () => {
     fetchNextPage: getNextPage,
     isSuccess: getBoardIsSuccess,
     hasNextPage: getNextPageIsPossible,
+    status: status,
   } = useInfiniteQuery(["feedsBookmark"], getPageBoard, {
     getNextPageParam: (lastPage, pages) => {
       // lastPage와 pages는 콜백함수에서 리턴한 값을 의미한다!!
@@ -40,5 +41,5 @@ export const useFeedsInBookmark = () => {
     },
   });
 
-  return { getBoard, getNextPage, getBoardIsSuccess, getNextPageIsPossible };
+  return { getBoard, getNextPage, getBoardIsSuccess, getNextPageIsPossible, status };
 };

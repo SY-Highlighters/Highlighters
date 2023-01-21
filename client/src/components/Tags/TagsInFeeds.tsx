@@ -14,14 +14,14 @@ import { useQuery } from "react-query";
 import { useEffect } from "react";
 import { useFeedsInTag } from "../../hooks/useFeedsInTag";
 import { useInView } from "react-intersection-observer";
+import FeedSkeleton from "../UI/FeedSkeleton";
 
-const AvailableTags = () => {
+const TagsInFeeds = () => {
   // const [tagFeedList, setTagFeedList] = useRecoilState(feedsTagListState);
   // const [feedsTagList, setFeedsTagList] = useState([]);
-  const [cookies, setCookie, removeCookie] = useCookies(["logCookie"]);
   const clickedTag = useRecoilValue(clickedTagState);
   const [ref, isView] = useInView();
-  const { getBoard, getNextPage, getBoardIsSuccess, getNextPageIsPossible } =
+  const { getBoard, getNextPage, getBoardIsSuccess, getNextPageIsPossible,status } =
     useFeedsInTag(clickedTag.tag_name);
 
   const resetClickedTag = useResetRecoilState(clickedTagState);
@@ -35,18 +35,14 @@ const AvailableTags = () => {
   }, [isView, getNextPage, getNextPageIsPossible, clickedTag.tag_name]);
   // clickTag가 변경시 새로운 쿼리를 요청
   // console.log("태그가져오기", getBoard);
+  if (status === "loading") {
+    return <FeedSkeleton></FeedSkeleton>;
+  }
   return (
-    <div className="basis-2/4">
-      <div className="relative p-3 rounded-3xl">
-        <h1 className="text-2xl antialiased font-bold text-whtie">
-          <span className="inline-flex items-center mr-2 px-3 py-0.5 rounded-full text-xl font-bold bg-sky-100 text-sky-800">
-            # {clickedTag.tag_name}
-          </span>
-        </h1>
-      </div>
+    <div className="">
       {/* feedslist section */}
       <div
-        className="rounded-md shadow-lg mt-7 xl:overflow-y-auto xl:scrollbar-hide xl:h-full "
+        className="mt-5 rounded-md shadow-lg xl:overflow-y-auto xl:scrollbar-hide xl:h-full "
         style={{ height: "80vh" }}
       >
         <ul className="space-y-4 ">
@@ -118,4 +114,4 @@ const AvailableTags = () => {
   );
 };
 
-export default AvailableTags;
+export default TagsInFeeds;

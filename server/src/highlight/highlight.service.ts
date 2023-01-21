@@ -16,12 +16,12 @@ import { FeedService } from 'src/feed/feed.service';
 import { CreateFeedDto } from 'src/feed/dto/feed.dto';
 import { forwardRef } from '@nestjs/common/utils';
 import { Inject } from '@nestjs/common/decorators';
-import { fetchandsave, deleteS3 } from 'src/util/fetch';
+// import { fetchandsave, deleteS3 } from 'src/util/fetch';
 import { Cache } from 'cache-manager';
 import { EventGateway } from 'src/event/event.gateway';
 import { ElasticsearchService } from 'src/repository/connection';
 import { elasticFeedDto } from 'src/repository/dto/elastic.dto';
-
+import { fetchandsave } from 'src/util/s3Fetch';
 @Injectable()
 export class HighlightService {
   constructor(
@@ -111,6 +111,7 @@ export class HighlightService {
         });
 
         // // url에서 이미지를 fetch 이후 s3에 업로드
+        // await fetchandsave(contents, result.id);
         // await fetchandsave(contents, result.id);
         // // s3 url을 db에 업데이트
         // result = await this.prismaService.highlight.update({
