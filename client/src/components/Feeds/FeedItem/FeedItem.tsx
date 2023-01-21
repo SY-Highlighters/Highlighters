@@ -64,6 +64,7 @@ const FeedItem = (props: any) => {
   if (props.highlight.length > 0) {
     let firstHighlight = props.highlight[0].user.nickname;
     highlights = props.highlight.map((hl: any, index: number) => {
+      // 하이라이트 색상 없을때 -> 하이라이트 안함
       if (hl.color === "-1") {
         return;
       }

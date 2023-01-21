@@ -139,9 +139,11 @@ export function FeedTagEditModal(props: any) {
       aria-modal="true"
     >
       <div className="flex items-end justify-center min-h-screen px-4 pt-4 pb-20 text-center sm:block sm:p-0">
+        {/* 모달 배경 */}
         <div
           className="fixed inset-0 transition-opacity bg-transparent bg-opacity-75"
           aria-hidden="true"
+          onClick={closeModal}
         ></div>
         <span
           className="hidden sm:inline-block sm:align-middle sm:h-screen"
@@ -221,22 +223,6 @@ export function FeedTagEditModal(props: any) {
                 </button>
               </div>
             </div>
-
-            {/* <a
-              href="#"
-              onClick={() => {
-                const newWindow = window.open(
-                  "https://search.naver.com/search.naver?ie=UTF-8&sm=whl_hty&query=%E3%85%9C%E3%85%81%E3%85%8D",
-                  "new window"
-                );
-                newWindow!.onload = () => {
-                  newWindow!.scrollTo(0, 15);
-                };
-              }}
-            >
-              Go to Scroll Position
-            </a> */}
-            {/* <img src={imgUrl} className="w-full h-full"></img> */}
           </div>
         </div>
       </div>
