@@ -9,7 +9,7 @@ export default function Intro() {
 
   return (
     <div>
-      <div className="grid p-10 space-y-5 justify-items-center bg-sky-600">
+      <div className="grid p-10 space-y-5 justify-items-center bg-sky-600 animate-fade-in-down-slow">
         <h1 className="mb-3 text-3xl font-bold text-gray-200 xl:text-5xl ">
           "Highlighters "
         </h1>

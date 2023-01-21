@@ -51,6 +51,7 @@ export function Grid() {
                         <img
                           src={feed.og.image}
                           className="object-cover object-center w-full h-full lg:h-full lg:w-full"
+                          alt=""
                         />
                       ) : (
                         <LazyImage

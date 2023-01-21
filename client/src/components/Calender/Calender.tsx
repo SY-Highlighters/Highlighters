@@ -145,7 +145,8 @@ export default function Calender() {
                   <button
                     type="button"
                     onClick={() => {
-                      // throttle(clickedDay(day), 10000);
+                      clickedDay(day);
+                      // _.throttle(clickedDay(day), 10000);
                     }}
                     className={classNames(
                       isEqual(day, selectedDay) && "text-white",

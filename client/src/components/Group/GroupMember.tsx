@@ -20,13 +20,13 @@ export function GroupMember() {
         </div>
       )}
 
-      <div className="flex mx-2 mb-1">
+      <div className="flex mb-1 mr-1 -mx-1">
         {isSuccess &&
           groupMember &&
           groupMember.map((member: any, index: number) => (
             <img
               key={index}
-              className="ml-1 rounded-full w-7 h-7"
+              className="ml-1 rounded-full shadow-md w-7 h-7"
               src={member.image}
               alt=""
             />
