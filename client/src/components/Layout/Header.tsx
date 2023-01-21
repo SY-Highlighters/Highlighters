@@ -68,7 +68,7 @@ export default function Header() {
     //   showConfirmButton: false,
     //   timer: 1000,
     // });
-    if (searchKeyword === "") {
+    if (searchInput === "") {
       Swal.fire({
         icon: "warning",
         title: "검색어를 입력해주세요",
@@ -85,18 +85,18 @@ export default function Header() {
   };
   // 검색 인풋
   const handleSearchInputChange = (event: any) => {
-    // 자동완성
-    if (event?.target.value === "") {
-      setSearchKeyword("");
-      setMainSectionNum(0);
-      return;
-    }
+    // // 자동완성
+    // if (event?.target.value === "") {
+    //   setSearchKeyword("");
+    //   setMainSectionNum(0);
+    //   return;
+    // }
 
-    if (mainSectionNum !== 4) {
-      setMainSectionNum(4);
-    }
-    setSearchKeyword(event?.target.value);
-    // setSearchInput(event?.target.value);
+    // if (mainSectionNum !== 4) {
+    //   setMainSectionNum(4);
+    // }
+    // setSearchKeyword(event?.target.value);
+    setSearchInput(event?.target.value);
   };
 
   // enter event handler

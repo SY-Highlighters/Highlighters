@@ -15,9 +15,11 @@ const SearchResults = () => {
   const [cookies, setCookie, removeCookie] = useCookies(["logCookie"]);
   const [searchKeyword, setSearchKeyword] = useRecoilState(searchKeywordState);
   const [searchResultFeeds, setSearchResultFeeds] = useState<object[]>([]);
-  let timeoutId: NodeJS.Timeout;
+
+  // let timeoutId: NodeJS.Timeout;
   useEffect(() => {
     console.log("검색창");
+    console.log(searchKeyword);
     setSearchResultFeeds([]);
     // setSearchKeyword("");
     async function getSearchResultsAsync() {
@@ -29,15 +31,16 @@ const SearchResults = () => {
           Authorization: `Bearer ${cookies.logCookie}`,
         },
       });
+      console.log(response);
       const data = response.data.data;
       console.log("searchresult: ", data);
       searchResultFeedsAdd(data);
     }
 
-    clearTimeout(timeoutId);
-    timeoutId = setTimeout(() => {
-      getSearchResultsAsync();
-    }, 1000);
+    // clearTimeout(timeoutId);
+    // timeoutId = setTimeout(() => {
+    getSearchResultsAsync();
+    // }, 1000);
   }, [searchKeyword]);
 
   // const autoSearchHandler = async(e: any) => {
@@ -98,7 +101,7 @@ const SearchResults = () => {
           </div>
         </div>
       </div>
-      {/*  검색결과 업승ㄹ떄 */}
+      {/*  검색결과 없을 */}
       {searchResultFeeds.length === 0 ? (
         <div
           className="flex justify-center w-full h-full pt-10 mt-5 bg-white rounded-md shadow-md "
@@ -118,8 +121,8 @@ const SearchResults = () => {
       >
         <ul className="space-y-4 ">
           {searchResultFeeds &&
-            searchResultFeeds.map((feed: any) => (
-              <div key={feed.id} className="">
+            searchResultFeeds.map((feed: any, index: number) => (
+              <div key={index} className="">
                 <SearchResultItem
                   id={feed.id}
                   key={feed.id}

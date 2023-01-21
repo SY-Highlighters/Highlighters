@@ -28,6 +28,7 @@ import { Delete } from "../Func/Delete";
 
 const SearchResultItem = (props: any) => {
   const [searchKeyword, setSearchKeyword] = useRecoilState(searchKeywordState);
+  const [searchInput, setSearchInput] = useState("");
 
   //   const [commentIsClicked, setCommentIsClicked] = useState(false);
   //   const setCurrentFeedId = useSetRecoilState(currentFeedIdState);
@@ -44,7 +45,7 @@ const SearchResultItem = (props: any) => {
   const title = props.title;
   const i = title.toUpperCase().indexOf(searchKeyword.toUpperCase());
 
-  console.log(searchKeyword.length);
+  // console.log(searchKeyword.length);
 
   if (i !== -1) {
     const j = i + searchKeyword.length;
@@ -192,11 +193,9 @@ const SearchResultItem = (props: any) => {
           </span>
         </a>
         {/* 여기가 문제다.. */}
-        {/* <div className="mb-5 ">
-          <ul className="space-y-1.5">
-            {resultinfosDiv}
-          </ul>
-        </div> */}
+        <div className="mb-5 ">
+          <ul className="space-y-1.5">{resultinfosDiv}</ul>
+        </div>
         {/* 태그 section */}
         {/* <div className="flex flex-wrap mt-2">{tags}</div> */}
         {/* 태그 수정 section */}

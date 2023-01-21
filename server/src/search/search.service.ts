@@ -35,6 +35,9 @@ export class SearchService {
                 contents: {
                   contains: word,
                 },
+                type: {
+                  not: 2,
+                },
               },
             },
           },
@@ -60,9 +63,14 @@ export class SearchService {
     const real_result = [];
     for (let i = 0; i < result.length; i++) {
       const resultinfo = []; // type : 1(highlight)
-      // if (result[i].title.toUpperCase().includes(word.toUpperCase())) {
+      // const includeIdx = result[i].title
+      //   .toUpperCase()
+      //   .indexOf(word.toUpperCase());
+      // if (includeIdx != -1) {
       //   resultinfo.push({
       //     type: 1,
+      //     includeStart: includeIdx,
+      //     includeEnd: includeIdx + word.length,
       //     content: result[i].title,
       //   });
       // }
@@ -70,16 +78,18 @@ export class SearchService {
       //   resultinfo.push({ content: result[i].user_email });
       // }
       for (let j = 0; j < result[i].highlight.length; j++) {
-        const includeIdx = result[i].highlight[j].contents
-          .toUpperCase()
-          .indexOf(word.toUpperCase());
-        if (includeIdx != -1) {
-          resultinfo.push({
-            type: 1,
-            includeStart: includeIdx,
-            includeEnd: includeIdx + word.length,
-            highlight: result[i].highlight[j],
-          });
+        if (result[i].highlight[j].type == 1) {
+          const includeIdx = result[i].highlight[j].contents
+            .toUpperCase()
+            .indexOf(word.toUpperCase());
+          if (includeIdx != -1) {
+            resultinfo.push({
+              type: 1,
+              includeStart: includeIdx,
+              includeEnd: includeIdx + word.length,
+              highlight: result[i].highlight[j],
+            });
+          }
         }
       }
       // for (let j = 0; j < result[i].tag.length; j++) {
