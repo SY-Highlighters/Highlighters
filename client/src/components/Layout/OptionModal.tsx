@@ -19,7 +19,7 @@ import {
   ArrowRightCircleIcon,
 } from "@heroicons/react/24/outline";
 import GroupTag from "../User/GroupTag";
-import { GrouptagList } from "../User/GroupTagList";
+import GrouptagList from "../User/GroupTagList";
 import { optionModalToggleState } from "../../states/atom";
 import { useRef } from "react";
 export function OptionModal(props: any) {

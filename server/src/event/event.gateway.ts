@@ -25,6 +25,11 @@ export class EventGateway implements OnModuleInit {
           if (this.group_room[this.userInfo.group_id])
             this.group_room[this.userInfo.group_id].push(client);
           else this.group_room[this.userInfo.group_id] = [client];
+
+          console.log(`GROUP ${this.userInfo.group_id} USER LIST`);
+          this.group_room[this.userInfo.group_id].forEach((cl) => {
+            console.log(cl['email']);
+          });
         }
       });
 
@@ -33,8 +38,12 @@ export class EventGateway implements OnModuleInit {
         for (const group_id in this.group_room) {
           const index = this.group_room[group_id].indexOf(client);
           if (index > -1) {
-            if (client['email'] !== this.userInfo.email) console.log('ERROR');
             this.group_room[group_id].splice(index, 1);
+
+            console.log(`GROUP ${this.userInfo.group_id} USER LIST`);
+            this.group_room[group_id].forEach((cl) => {
+              console.log(cl['email']);
+            });
           }
         }
       });

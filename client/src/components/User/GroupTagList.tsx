@@ -8,7 +8,7 @@ import { TagItem } from "../Tags/TagItem/TagItem";
 import { useQuery } from "react-query";
 import { TagEditItem } from "../Tags/TagItem/TagEditItem";
 import { ArchiveBoxXMarkIcon, HashtagIcon } from "@heroicons/react/24/outline";
-export function GrouptagList(props: any) {
+const GroupTagList = (props: any) => {
   const [grouptagList, setGroupTagList] = useRecoilState(feedsTagListState);
   const [cookies, setCookie, removeCookie] = useCookies(["logCookie"]);
   const [clickedTagEdit, setClickedTagEdit] = useState(false);
@@ -18,20 +18,29 @@ export function GrouptagList(props: any) {
     isSuccess,
     isLoading,
     error,
-  } = useQuery(["tagList"], async () => {
-    try {
-      const res = await axios.get(`${process.env.REACT_APP_HOST}/api/tag/web`, {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${cookies.logCookie}`,
-        },
-      });
-      console.log(res.data.data);
-      return res.data.data;
-    } catch (err) {
-      console.error(err);
+  } = useQuery(
+    ["tagList"],
+    async () => {
+      try {
+        const res = await axios.get(
+          `${process.env.REACT_APP_HOST}/api/tag/web`,
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${cookies.logCookie}`,
+            },
+          }
+        );
+        console.log(res.data.data);
+        return res.data.data;
+      } catch (err) {
+        console.error(err);
+      }
+    },
+    {
+      suspense: true,
     }
-  });
+  );
   console.log(tagList);
   useEffect(() => {}, []);
   return (
@@ -61,4 +70,6 @@ export function GrouptagList(props: any) {
         ))}
     </div>
   );
-}
+};
+
+export default GroupTagList;

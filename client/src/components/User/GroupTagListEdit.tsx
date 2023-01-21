@@ -9,7 +9,7 @@ import { TagEditItem } from "../Tags/TagItem/TagEditItem";
 import { ArchiveBoxXMarkIcon, HashtagIcon } from "@heroicons/react/24/outline";
 import { useMutation } from "react-query";
 
-export function GrouptagListEdit(props: any) {
+const GroupTagListEdit = (props: any) => {
   const [grouptagList, setGroupTagList] = useRecoilState(feedsTagListState);
   const [cookies] = useCookies(["logCookie"]);
   const [clickedTagEdit, setClickedTagEdit] = useState(false);
@@ -39,6 +39,7 @@ export function GrouptagListEdit(props: any) {
     },
     {
       staleTime: 0,
+      suspense: true,
     }
   );
 
@@ -101,3 +102,4 @@ export function GrouptagListEdit(props: any) {
     </div>
   );
 }
+export default GroupTagListEdit;

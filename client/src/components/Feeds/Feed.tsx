@@ -2,8 +2,8 @@ import { DocumentIcon } from "@heroicons/react/24/outline";
 import AvailableFeeds from "./AvailableFeeds";
 import { Suspense, lazy } from "react";
 import FeedSkeleton from "../UI/FeedSkeleton";
-// const AvailableFeeds = lazy(() => import("./AvailableFeeds"));
 
+// const AvailableFeeds = lazy(() => import("./AvailableFeeds"));
 const Feed = () => {
   return (
     <div className="basis-2/4">
