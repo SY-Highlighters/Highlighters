@@ -25,6 +25,7 @@ export function useUserData(cookies: any) {
       refetchOnMount: false,
       refetchOnWindowFocus: false,
       enabled: !!cookies.logCookie,
+      suspense: true,
     }
   );
 }

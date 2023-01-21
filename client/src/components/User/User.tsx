@@ -11,7 +11,6 @@ const User = () => {
 
   // react-query 사용 시 server state
   const { data: user, isSuccess } = useUserData(cookies);
-
   return (
     <div className="hidden pl-14 basis-1/4 xl:block">
       {/* <div className="hidden xl:w-1/5 xl:fixed xl:left-30 xl:block"> */}
@@ -32,8 +31,12 @@ const User = () => {
             </div>
           </div>
         </div>
+        {/* {isSuccess && <UserInfo user={user}></UserInfo>} */}
         <UserInfo></UserInfo>
-        <Group></Group>
+        {isSuccess && (
+          <Group groupName={user.group_name} groupId={user.group_id}></Group>
+        )}
+        {/* <Group groupName={user.group_name} groupId={user.group_id}></Group> */}
         {isSuccess && user.group_id && <GroupTag></GroupTag>}
       </aside>
     </div>

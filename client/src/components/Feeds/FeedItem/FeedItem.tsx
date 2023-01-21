@@ -93,7 +93,7 @@ const FeedItem = (props: any) => {
               <div className="flex flex-row mt-2">
                 <img
                   src={hl.user.image}
-                  className="w-5 h-5 mr-1 rounded-full"
+                  className="w-5 h-5 mr-1 rounded-full shadow-md"
                 ></img>
                 {highContent}
               </div>
@@ -192,7 +192,7 @@ const FeedItem = (props: any) => {
           <div className="text-xs">{props.writer}</div>
           <div>
             <img
-              className="object-cover w-5 h-5 ml-1 rounded-full border-circle "
+              className="object-cover w-5 h-5 ml-1 rounded-full shadow-sm border-circle"
               src={props.writerImg}
               alt="../../assets/highlighters.png"
             />

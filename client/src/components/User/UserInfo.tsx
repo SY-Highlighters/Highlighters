@@ -15,7 +15,7 @@ const UserInfo = () => {
         <div className="h-10" />
         <div className="relative p-6 rounded-3xl -top-5">
           <div className="relative flex items-end px-3 justify-left -top-1">
-            <img className="rounded-full w-14 h-14" src={user.image} alt="" />
+            <img className="rounded-full shadow-lg w-14 h-14" src={user.image} alt="" />
             <div className="flex flex-col px-5">
               <span className="text-sm font-bold text-left text-sky-500">
                 {user.group_name ? user.group_name : "그룹 없음"}
