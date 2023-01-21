@@ -47,8 +47,13 @@ function makeXPath(node, currentPath) {
       return makeXPath(
         node.parentNode,
         "text()[" +
-          (document.evaluate("preceding-sibling::text()", node, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null)
-            .snapshotLength +
+          (document.evaluate(
+            "preceding-sibling::text()",
+            node,
+            null,
+            XPathResult.ORDERED_NODE_SNAPSHOT_TYPE,
+            null
+          ).snapshotLength +
             1) +
           "]"
       );
@@ -78,15 +83,95 @@ function makeXPath(node, currentPath) {
 async function highlightDone(range, id) {
   console.log("highlightdone: ", id);
 
-  //하이라이팅
-  const newNode = document.createElement("span");
-  newNode.setAttribute("class", `highlighter`);
-  newNode.setAttribute("id", id);
-  newNode.style.backgroundColor = highlightColor.highlightColor;
-  range.surroundContents(newNode);
+  if (range.startContainer !== range.endContainer) {
+    const startxpath = makeXPath(range.startContainer);
+    const endxpath = makeXPath(range.endContainer);
+    const startxpatharray = startxpath.split("/");
+    const endxpatharray = endxpath.split("/");
 
-  // 툴바표시 이벤트리스너 추가
-  newNode.addEventListener("click", (event) => showToolBar(event, newNode, userImage, 1));
+    let commonxpath = [];
+    for (let i = 0; startxpatharray[i] === endxpatharray[i]; i++) {
+      commonxpath.push(startxpatharray[i]);
+    }
+
+    const commonxpathstr = commonxpath.join("/");
+
+    const commonnode = document.evaluate(
+      commonxpathstr,
+      document,
+      null,
+      XPathResult.FIRST_ORDERED_NODE_TYPE,
+      null
+    ).singleNodeValue;
+
+    const childs = [...commonnode.childNodes];
+
+    const stk = [];
+    while (childs.length !== 0) {
+      stk.push(childs.pop());
+    }
+
+    let flag = 0;
+    while (stk.length !== 0) {
+      const current = stk.pop();
+      if (current === range.startContainer) {
+        const newrange = document.createRange();
+        newrange.setStart(current, range.startOffset);
+        newrange.setEnd(current, current.textContent.length);
+        const newNode = document.createElement("highlight");
+        newNode.setAttribute("class", `highlighter`);
+        newNode.setAttribute("id", id);
+        newNode.style.backgroundColor = highlightColor.highlightColor;
+        newrange.surroundContents(newNode);
+        newNode.addEventListener("click", (event) =>
+          showToolBar(event, newNode, userImage, 1)
+        );
+        flag = 1;
+      } else if (current === range.endContainer) {
+        const newrange = document.createRange();
+        newrange.setStart(current, 0);
+        newrange.setEnd(current, range.endOffset);
+        const newNode = document.createElement("highlight");
+        newNode.setAttribute("class", `highlighter`);
+        newNode.setAttribute("id", id);
+        newNode.style.backgroundColor = highlightColor.highlightColor;
+        newrange.surroundContents(newNode);
+        newNode.addEventListener("click", (event) =>
+          showToolBar(event, newNode, userImage, 1)
+        );
+        break;
+      } else {
+        const curchilds = [...current.childNodes];
+        if (flag && curchilds.length === 0) {
+          const newrange = document.createRange();
+          newrange.setStart(current, 0);
+          newrange.setEnd(current, current.textContent.length);
+          const newNode = document.createElement("highlight");
+          newNode.setAttribute("class", `highlighter`);
+          newNode.setAttribute("id", id);
+          newNode.style.backgroundColor = highlightColor.highlightColor;
+          newrange.surroundContents(newNode);
+          newNode.addEventListener("click", (event) =>
+            showToolBar(event, newNode, userImage, 1)
+          );
+        }
+        while (curchilds.length !== 0) {
+          stk.push(curchilds.pop());
+        }
+      }
+    }
+  } else {
+    //하이라이팅
+    const newNode = document.createElement("highlight");
+    newNode.setAttribute("class", `highlighter`);
+    newNode.setAttribute("id", id);
+    newNode.style.backgroundColor = highlightColor.highlightColor;
+    range.surroundContents(newNode);
+    // 툴바표시 이벤트리스너 추가
+    newNode.addEventListener("click", (event) =>
+      showToolBar(event, newNode, userImage, 1)
+    );
+  }
 
   // 펜 버튼 숨기기
   const button = document.getElementById("btn_text_highlighters");
@@ -107,7 +192,9 @@ async function postHighlight(range, highlightStr) {
   };
 
   const og_image = document.querySelector("meta[property='og:image']");
-  const og_description = document.querySelector("meta[property='og:description']");
+  const og_description = document.querySelector(
+    "meta[property='og:description']"
+  );
 
   chrome.runtime.sendMessage(
     {
@@ -127,8 +214,13 @@ async function postHighlight(range, highlightStr) {
     },
     (response) => {
       if (response.data.statusCode === 401) {
-        console.log("unauthorized error status code: ", response.data.statusCode);
-        alert("Highlighters: 로그인이 필요한 서비스입니다.\n(확인을 누르면 웹사이트로 이동합니다)");
+        console.log(
+          "unauthorized error status code: ",
+          response.data.statusCode
+        );
+        alert(
+          "Highlighters: 로그인이 필요한 서비스입니다.\n(확인을 누르면 웹사이트로 이동합니다)"
+        );
         window.open("https://highlighters.site/");
       } else {
         highlights.push(response.data.data);
@@ -140,6 +232,8 @@ async function postHighlight(range, highlightStr) {
 
 /* 하이라이트 Get */
 async function getHighlight(url) {
+  // const timestamp1 = +new Date();
+  // console.log("getHighlight 1", timestamp1);
   chrome.runtime.sendMessage(
     {
       greeting: "getHighlight",
@@ -150,6 +244,9 @@ async function getHighlight(url) {
 
       highlights = highlightsMeta.data ? highlightsMeta.data : [];
       console.log("[contentscript] getHighlight", highlights);
+      // const timestamp2 = +new Date();
+      // console.log("getHighlight 2", timestamp2);
+      // console.log("getHighlight timegap", timestamp2 - timestamp1);
 
       if (highlightsMeta.success === false) {
         console.log(`[${highlightsMeta.statusCode}] ${highlightsMeta.message}`);
@@ -165,15 +262,20 @@ async function getHighlight(url) {
             console.log("하이라이트 복원 실패", e);
           }
         }
+        // const timestamp3 = +new Date();
+        // console.log("getHighlight 2", timestamp3);
       }
       makeEventOnImage();
     }
   );
+
   return;
 }
 
 function rehighlightText(highlight) {
   const selection = highlight.selection;
+
+  // console.log(selection);
   const range = document.createRange();
 
   // 시작 노드 복원
@@ -197,18 +299,116 @@ function rehighlightText(highlight) {
   const endOff = Number(selection.endOffset);
 
   // 복원한 시작노드, 종료 노드 기준으로 range 복원
-  range.setStart(startNode, startOff);
-  range.setEnd(endNode, endOff);
 
-  // 하이라이팅
-  const newNode = document.createElement("span");
-  newNode.setAttribute("class", "highlighter");
-  newNode.setAttribute("id", highlight.id);
-  newNode.style.backgroundColor = highlight.color;
-  range.surroundContents(newNode);
+  if (startNode !== endNode) {
+    // console.log("1");
+    const startxpath = selection.startXPath;
+    const endxpath = selection.endXPath;
+    const startxpatharray = startxpath.split("/");
+    const endxpatharray = endxpath.split("/");
 
-  // 툴바 표시 이벤트리스너 추가
-  newNode.addEventListener("click", (event) => showToolBar(event, newNode, highlight.user.image, 1));
+    let commonxpath = [];
+    for (let i = 0; startxpatharray[i] === endxpatharray[i]; i++) {
+      commonxpath.push(startxpatharray[i]);
+    }
+
+    const commonxpathstr = commonxpath.join("/");
+
+    const commonnode = document.evaluate(
+      commonxpathstr,
+      document,
+      null,
+      XPathResult.FIRST_ORDERED_NODE_TYPE,
+      null
+    ).singleNodeValue;
+
+    const childs = [...commonnode.childNodes];
+
+    // console.log(childs);
+
+    const stk = [];
+    while (childs.length !== 0) {
+      stk.push(childs.pop());
+    }
+
+    let flag = 0;
+    while (stk.length !== 0) {
+      const current = stk.pop();
+      // console.log(current);
+      if (current === startNode) {
+        const newrange = document.createRange();
+        newrange.setStart(current, startOff);
+        newrange.setEnd(current, current.textContent.length);
+        const newNode = document.createElement("highlight");
+        newNode.setAttribute("class", `highlighter`);
+        newNode.setAttribute("id", highlight.id);
+        newNode.style.backgroundColor = highlight.color;
+        newrange.surroundContents(newNode);
+        newNode.addEventListener("click", (event) =>
+          showToolBar(event, newNode, highlight.user.image, 1)
+        );
+        flag = 1;
+      } else if (current === endNode) {
+        const newrange = document.createRange();
+        newrange.setStart(current, 0);
+        newrange.setEnd(current, endOff);
+        const newNode = document.createElement("highlight");
+        newNode.setAttribute("class", `highlighter`);
+        newNode.setAttribute("id", highlight.id);
+        newNode.style.backgroundColor = highlight.color;
+        newrange.surroundContents(newNode);
+        newNode.addEventListener("click", (event) =>
+          showToolBar(event, newNode, highlight.user.image, 1)
+        );
+        break;
+      } else {
+        const curchilds = [...current.childNodes];
+        if (flag && curchilds.length === 0) {
+          const newrange = document.createRange();
+          newrange.setStart(current, 0);
+          newrange.setEnd(current, current.textContent.length);
+          const newNode = document.createElement("highlight");
+          newNode.setAttribute("class", `highlighter`);
+          newNode.setAttribute("id", highlight.id);
+          newNode.style.backgroundColor = highlight.color;
+          newrange.surroundContents(newNode);
+          newNode.addEventListener("click", (event) =>
+            showToolBar(event, newNode, highlight.user.image, 1)
+          );
+        }
+        while (curchilds.length !== 0) {
+          stk.push(curchilds.pop());
+        }
+      }
+    }
+  } else {
+    //하이라이팅
+    // console.log("2");
+
+    range.setStart(startNode, startOff);
+    range.setEnd(endNode, endOff);
+    const newNode = document.createElement("highlight");
+    newNode.setAttribute("class", `highlighter`);
+    newNode.setAttribute("id", highlight.id);
+    newNode.style.backgroundColor = highlight.color;
+    range.surroundContents(newNode);
+    // 툴바표시 이벤트리스너 추가
+    newNode.addEventListener("click", (event) =>
+      showToolBar(event, newNode, highlight.user.image, 1)
+    );
+  }
+
+  // // 하이라이팅
+  // const newNode = document.createElement("span");
+  // newNode.setAttribute("class", "highlighter");
+  // newNode.setAttribute("id", highlight.id);
+  // newNode.style.backgroundColor = highlight.color;
+  // range.surroundContents(newNode);
+
+  // // 툴바 표시 이벤트리스너 추가
+  // newNode.addEventListener("click", (event) =>
+  //   showToolBar(event, newNode, highlight.user.image, 1)
+  // );
 }
 
 function rehighlightImage(highlight) {
@@ -227,7 +427,9 @@ function rehighlightImage(highlight) {
   img.classList.add("highlighted");
 
   // 툴바 표시 이벤트리스너 추가
-  img.addEventListener("click", (event) => showToolBar(event, img, highlight.user.image, 2));
+  img.addEventListener("click", (event) =>
+    showToolBar(event, img, highlight.user.image, 2)
+  );
 }
 
 function deleteHighlight(node) {
@@ -250,7 +452,13 @@ function deleteHighlight(node) {
         const scrollY = window.scrollY;
         const scrollX = window.scrollX;
 
-        const mouseOverImgBtn = mouseOverImgBtnHandler(button, deletedImageNode, position, scrollY, scrollX);
+        const mouseOverImgBtn = mouseOverImgBtnHandler(
+          button,
+          deletedImageNode,
+          position,
+          scrollY,
+          scrollX
+        );
         deletedImageNode.addEventListener("mouseover", mouseOverImgBtn);
         deletedImageNode.addEventListener("mouseout", mouseOnImgBtn);
       }
@@ -308,16 +516,17 @@ function getUserInfo() {
   );
 }
 
-const mouseOverImgBtnHandler = (button, image, position, scrollY, scrollX) => () => {
-  button.style.top = position.top + scrollY + 10 + "px";
-  button.style.left = position.left + scrollX + 10 + "px";
-  button.style.transform = "rotate(270deg)";
-  button.style.zIndex = "2147483647";
-  button.style.display = "block";
-  button.style.position = "absolute";
+const mouseOverImgBtnHandler =
+  (button, image, position, scrollY, scrollX) => () => {
+    button.style.top = position.top + scrollY + 10 + "px";
+    button.style.left = position.left + scrollX + 10 + "px";
+    button.style.transform = "rotate(270deg)";
+    button.style.zIndex = "2147483647";
+    button.style.display = "block";
+    button.style.position = "absolute";
 
-  selectedImage = image;
-};
+    selectedImage = image;
+  };
 
 const mouseOnImgBtn = () => {
   const button = document.getElementById("btn_image_highlighters");
@@ -340,7 +549,13 @@ function makeEventOnImage() {
       const scrollY = window.scrollY;
       const scrollX = window.scrollX;
 
-      const mouseOverImgBtn = mouseOverImgBtnHandler(button, image, position, scrollY, scrollX);
+      const mouseOverImgBtn = mouseOverImgBtnHandler(
+        button,
+        image,
+        position,
+        scrollY,
+        scrollX
+      );
       image.addEventListener("mouseover", mouseOverImgBtn);
       image.addEventListener("mouseout", mouseOnImgBtn);
     }
@@ -364,15 +579,21 @@ function highlightImage() {
         selection: rangeObject,
         title: document.title,
         image: document.querySelector("meta[property='og:image']").content,
-        description: document.querySelector("meta[property='og:description']").content,
+        description: document.querySelector("meta[property='og:description']")
+          .content,
         color: highlightColor.highlightColor,
         type: 2,
       },
     },
     (response) => {
       if (response.data.statusCode === 401) {
-        console.log("unauthorized error status code: ", response.data.statusCode);
-        alert("Highlighters: 로그인이 필요한 서비스입니다.\n(확인을 누르면 웹사이트로 이동합니다)");
+        console.log(
+          "unauthorized error status code: ",
+          response.data.statusCode
+        );
+        alert(
+          "Highlighters: 로그인이 필요한 서비스입니다.\n(확인을 누르면 웹사이트로 이동합니다)"
+        );
         window.open("https://highlighters.site/");
       } else {
         console.log("Post Highlight Image Success", response.data);
@@ -403,7 +624,10 @@ function makeButton(name) {
   const button = document.createElement("input");
   button.setAttribute("id", `btn_${name}_highlighters`);
   button.setAttribute("type", "image");
-  button.setAttribute("src", "https://cdn-icons-png.flaticon.com/512/3237/3237124.png");
+  button.setAttribute(
+    "src",
+    "https://cdn-icons-png.flaticon.com/512/3237/3237124.png"
+  );
   button.style.height = "35px";
   button.style.width = "35px";
   button.style.display = "none";
@@ -421,7 +645,10 @@ function makeToolBar() {
   const userImageDiv = document.createElement("input");
   userImageDiv.setAttribute("type", "image");
   userImageDiv.setAttribute("id", "userImageDiv-highlighters");
-  userImageDiv.setAttribute("src", "https://cdn-icons-png.flaticon.com/512/1946/1946429.png");
+  userImageDiv.setAttribute(
+    "src",
+    "https://cdn-icons-png.flaticon.com/512/1946/1946429.png"
+  );
   userImageDiv.style.height = "22px";
   userImageDiv.style.width = "22px";
   userImageDiv.style.position = "relative";
@@ -433,7 +660,10 @@ function makeToolBar() {
   const deleteButton = document.createElement("input");
   deleteButton.setAttribute("type", "image");
   deleteButton.setAttribute("id", "deleteButton-highlighters");
-  deleteButton.setAttribute("src", "https://cdn-icons-png.flaticon.com/512/484/484662.png");
+  deleteButton.setAttribute(
+    "src",
+    "https://cdn-icons-png.flaticon.com/512/484/484662.png"
+  );
   deleteButton.style.height = "20px";
   deleteButton.style.width = "20px";
   deleteButton.style.position = "relative";
@@ -445,13 +675,18 @@ function makeToolBar() {
   const homeButton = document.createElement("input");
   homeButton.setAttribute("type", "image");
   homeButton.setAttribute("id", "homeButton-highlighters");
-  homeButton.setAttribute("src", "https://cdn-icons-png.flaticon.com/512/1946/1946488.png");
+  homeButton.setAttribute(
+    "src",
+    "https://cdn-icons-png.flaticon.com/512/1946/1946488.png"
+  );
   homeButton.style.height = "20px";
   homeButton.style.width = "20px";
   homeButton.style.position = "relative";
   homeButton.style.top = "8px";
   homeButton.style.left = "35px";
-  homeButton.addEventListener("click", () => window.open("https://highlighters.site/"));
+  homeButton.addEventListener("click", () =>
+    window.open("https://highlighters.site/")
+  );
 
   rootDiv.appendChild(userImageDiv);
   rootDiv.appendChild(deleteButton);
@@ -462,6 +697,8 @@ function makeToolBar() {
 
 async function onWindowReady() {
   // 버튼 만들어 놓기
+  // const timestamp1 = +new Date();
+  // console.log("onWindowReady 1", timestamp1);
   const html = document.querySelector("html");
 
   const textPenButton = makeButton("text");
@@ -486,10 +723,28 @@ async function onWindowReady() {
 
   getUserInfo();
 
-  console.log("decodeuri : ", decodeuri);
-  setTimeout(() => getHighlight(decodeuri), 50);
+  // let body = document.querySelector(".content");
+  // if (body == null) {
+  // let body = document.getElementById("dic_area");
+  // // }
+  // let text = body.innerHTML;
+
+  // // const reg = /<[^>]*>?/g;
+  // var regExp = /<\/?[^>]+>/gi;
+  // function replaceTags(html) {
+  //   text = html.replace(regExp, "");
+  //   return text;
+  // }
+  // let replace_text = replaceTags(text);
+  // // text = text.replace(/<(\/)?([a-zA-Z]*)(\s[a-zA-Z]*=[^>]*)?(\s)*(\/)   ?>/gi, "");
+  // console.log(replace_text);
+  // const timestamp2 = +new Date();
+  // console.log("onWindowReady 2", timestamp2);
+  setTimeout(() => getHighlight(decodeuri), 0);
   // setTimeout(() => makeEventOnImage(), 1);
   // setTimeout(() => , 0);
+  // const timestamp3 = +new Date();
+  // console.log("onWindowReady 3", timestamp3);
 }
 //
 /* contentscript 시작 */
@@ -528,13 +783,18 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     // 웹페이지의 하이라이팅을 디비로 전송
     case "getOG":
       const ogTitle = document.querySelector("meta[property = 'og:title']");
-      const title = document.title == null && ogTitle !== "" ? ogTitle.content : document.title;
+      const title =
+        document.title == null && ogTitle !== ""
+          ? ogTitle.content
+          : document.title;
       const ogImage = document.querySelector("meta[property='og:image']");
       const image =
         ogImage != null
           ? ogImage.content
           : "https://www.salonlfc.com/wp-content/uploads/2018/01/image-not-found-1-scaled-1150x647.png";
-      const ogDescription = document.querySelector("meta[property='og:description']");
+      const ogDescription = document.querySelector(
+        "meta[property='og:description']"
+      );
       const description = ogDescription != null ? ogDescription.content : "";
 
       console.log(title, image, description);
