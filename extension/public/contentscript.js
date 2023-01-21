@@ -653,9 +653,13 @@ function makeToolBar() {
 }
 
 async function onWindowReady() {
-  // 버튼 만들어 놓기
-  // const timestamp1 = +new Date();
-  // console.log("onWindowReady 1", timestamp1);
+  if (
+    window.location.href === "https://highlighters.site" ||
+    "http://localhost:3000"
+  ) {
+    return;
+  }
+
   const html = document.querySelector("html");
 
   const textPenButton = makeButton("text");
@@ -683,6 +687,12 @@ window.onload = onWindowReady;
 
 // 드래그하고 마우스를 떼면 selection 객체 생성
 document.onmouseup = function (e) {
+  if (
+    window.location.href === "https://highlighters.site" ||
+    "http://localhost:3000"
+  ) {
+    return;
+  }
   const button = document.getElementById("btn_text_highlighters");
   const sel = document.getSelection();
 
