@@ -222,6 +222,7 @@ async function postHighlight(range, highlightStr) {
         );
         window.open("https://highlighters.site/");
       } else {
+        console.log(response);
         highlights.push(response.data.data);
         highlightDone(range, response.data.data.id);
       }
@@ -299,39 +300,57 @@ function rehighlightText(highlight) {
         const newNode = document.createElement("highlight");
         newNode.setAttribute("class", `highlighter`);
         newNode.setAttribute("id", highlight.id);
-        newNode.style.backgroundColor = highlight.color;
-        newrange.surroundContents(newNode);
-        newNode.addEventListener("click", (event) =>
-          showToolBar(event, newNode, highlight.user.image, 1)
-        );
-        flag = 1;
-      } else if (current === endNode) {
-        const newrange = document.createRange();
-        newrange.setStart(current, 0);
-        newrange.setEnd(current, endOff);
-        const newNode = document.createElement("highlight");
-        newNode.setAttribute("class", `highlighter`);
-        newNode.setAttribute("id", highlight.id);
-        newNode.style.backgroundColor = highlight.color;
-        newrange.surroundContents(newNode);
-        newNode.addEventListener("click", (event) =>
-          showToolBar(event, newNode, highlight.user.image, 1)
-        );
-        break;
-      } else {
-        const curchilds = [...current.childNodes];
-        if (flag && curchilds.length === 0) {
-          const newrange = document.createRange();
-          newrange.setStart(current, 0);
-          newrange.setEnd(current, current.textContent.length);
-          const newNode = document.createElement("highlight");
-          newNode.setAttribute("class", `highlighter`);
-          newNode.setAttribute("id", highlight.id);
+        if (highlight.color === "-1") {
+          // 색상이 없는 경우 style과 eventListener를 지워준다.
+          newNode.removeAttribute("style");
+          newrange.surroundContents(newNode);
+        } else {
           newNode.style.backgroundColor = highlight.color;
           newrange.surroundContents(newNode);
           newNode.addEventListener("click", (event) =>
             showToolBar(event, newNode, highlight.user.image, 1)
           );
+        }
+        flag = 1;
+      } else if (current === endNode) {
+        const newrange = document.createRange();
+        newrange.setStart(current, startOff);
+        newrange.setEnd(current, current.textContent.length);
+        const newNode = document.createElement("highlight");
+        newNode.setAttribute("class", `highlighter`);
+        newNode.setAttribute("id", highlight.id);
+        if (highlight.color === "-1") {
+          // 색상이 없는 경우 style과 eventListener를 지워준다.
+          newNode.removeAttribute("style");
+          newrange.surroundContents(newNode);
+        } else {
+          newNode.style.backgroundColor = highlight.color;
+          newrange.surroundContents(newNode);
+          newNode.addEventListener("click", (event) =>
+            showToolBar(event, newNode, highlight.user.image, 1)
+          );
+        }
+        break;
+      } else {
+        const curchilds = [...current.childNodes];
+        if (flag && curchilds.length === 0) {
+          const newrange = document.createRange();
+          newrange.setStart(current, startOff);
+          newrange.setEnd(current, current.textContent.length);
+          const newNode = document.createElement("highlight");
+          newNode.setAttribute("class", `highlighter`);
+          newNode.setAttribute("id", highlight.id);
+          if (highlight.color === "-1") {
+            // 색상이 없는 경우 style과 eventListener를 지워준다.
+            newNode.removeAttribute("style");
+            newrange.surroundContents(newNode);
+          } else {
+            newNode.style.backgroundColor = highlight.color;
+            newrange.surroundContents(newNode);
+            newNode.addEventListener("click", (event) =>
+              showToolBar(event, newNode, highlight.user.image, 1)
+            );
+          }
         }
         while (curchilds.length !== 0) {
           stk.push(curchilds.pop());
@@ -347,12 +366,17 @@ function rehighlightText(highlight) {
     const newNode = document.createElement("highlight");
     newNode.setAttribute("class", `highlighter`);
     newNode.setAttribute("id", highlight.id);
-    newNode.style.backgroundColor = highlight.color;
-    range.surroundContents(newNode);
-    // 툴바표시 이벤트리스너 추가
-    newNode.addEventListener("click", (event) =>
-      showToolBar(event, newNode, highlight.user.image, 1)
-    );
+    if (highlight.color === "-1") {
+      // 색상이 없는 경우 style과 eventListener를 지워준다.
+      newNode.removeAttribute("style");
+      range.surroundContents(newNode);
+    } else {
+      newNode.style.backgroundColor = highlight.color;
+      range.surroundContents(newNode);
+      newNode.addEventListener("click", (event) =>
+        showToolBar(event, newNode, highlight.user.image, 1)
+      );
+    }
   }
 
   // // 하이라이팅

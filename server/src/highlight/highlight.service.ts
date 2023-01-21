@@ -204,10 +204,16 @@ export class HighlightService {
 
   async deleteHighlight(id: number): Promise<boolean> {
     try {
-      const high_contents = await this.prismaService.highlight.delete({
+      const high_contents = await this.prismaService.highlight.update({
         where: { id: id },
         select: { contents: true, feed_id: true },
+        data: { contents: '', color: '-1' }, // 삭제된 하이라이트는 color를 -1로 변경
       });
+
+      // const high_contents = await this.prismaService.highlight.delete({
+      //   where: { id: id },
+      //   select: { contents: true, feed_id: true },
+      // });
       // await deleteS3(id);
       // console.log(high_contents);
       await this.elastic.deleteHighlight(
