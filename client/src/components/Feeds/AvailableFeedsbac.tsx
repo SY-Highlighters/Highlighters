@@ -5,6 +5,7 @@ import axios from "axios";
 import { DocumentIcon, MegaphoneIcon } from "@heroicons/react/24/outline";
 import { QueryCache, useQuery, QueryClient, useQueryClient } from "react-query";
 import { useUserData } from "../../hooks/useUserData";
+import { useEffect } from "react";
 const AvailableFeeds = () => {
   const [cookies] = useCookies(["logCookie"]);
 
@@ -13,6 +14,10 @@ const AvailableFeeds = () => {
 
   const groupId = user?.group_id;
 
+  useEffect(() => {
+    console.log("groupId: ", groupId);
+  }, [groupId]);
+  
   const { data: feedsInGroup, isSuccess } = useQuery(
     "feedsInGroup",
     async () => {

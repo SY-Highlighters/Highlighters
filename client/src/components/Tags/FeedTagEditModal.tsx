@@ -201,7 +201,7 @@ export function FeedTagEditModal(props: any) {
             </div>
             {/* 검색창 미리보기 형식으로 태그 리스트 */}
             <div>
-              <div className="flex flex-wrap mt-5">
+              <div className="flex justify-center mt-5">
                 <GrouptagList
                   onFunc={() => {
                     console.log("test");

@@ -27,7 +27,7 @@ const AvailableFeeds = () => {
   // const scrollToTop = () => {
   //   listRef.current.scrollTop = 0;
   // };
-
+  console.log(getBoard);
   // const scrollToBottom = () => {
   //   listRef.current.scrollTop = listRef.current.scrollHeight;
   // };

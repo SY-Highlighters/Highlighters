@@ -59,12 +59,15 @@ const FeedItem = (props: any) => {
   const month = date.getMonth() + 1;
   const day = date.getDate();
 
-  
-  // 하이라이트 section 
+  // 하이라이트 section
   let highlights;
   if (props.highlight.length > 0) {
     let firstHighlight = props.highlight[0].user.nickname;
     highlights = props.highlight.map((hl: any, index: number) => {
+      if (hl.color === "-1") {
+        return;
+      }
+
       if (firstHighlight !== hl.user.nickname || index === 0) {
         firstHighlight = hl.user.nickname;
         const highContent =

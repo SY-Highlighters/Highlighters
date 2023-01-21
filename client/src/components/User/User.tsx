@@ -4,6 +4,7 @@ import GroupTag from "./GroupTag";
 import { UserIcon } from "@heroicons/react/24/outline";
 import { useUserData } from "../../hooks/useUserData";
 import { useCookies } from "react-cookie";
+import GroupTagSkeleton from "../UI/GroupTagSkeleton";
 
 const User = () => {
   //Todo: 후에 유저정보가 변경되었을때 useEffect함수가 작동해서 다시 유저정보를 리로드해야함

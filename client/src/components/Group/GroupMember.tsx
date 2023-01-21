@@ -20,7 +20,7 @@ export function GroupMember() {
         </div>
       )}
 
-      <div className="flex mb-1 mr-1 -mx-1">
+      <div className="flex mb-5 ml-3 -mx-1">
         {isSuccess &&
           groupMember &&
           groupMember.map((member: any, index: number) => (
