@@ -129,7 +129,7 @@ export class HighlightService {
       // websocket으로 보내기
       console.log('===== 하이라이트 =====');
       this.event.group_room[group_id].forEach((client) => {
-        if (this.event.user_client === client) return;
+        if (client['email'] === user_email) return;
         client.send(
           JSON.stringify({
             event: 'highlight',

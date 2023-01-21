@@ -46,7 +46,8 @@ export class NotiService {
 
       console.log('===== [WebSocket] Send Push =====');
       this.event.group_room[group_id].forEach((client) => {
-        if (this.event.user_client === client) return;
+        console.log(client['email'], user_email);
+        if (client['email'] === user_email) return;
         client.send(
           JSON.stringify({
             event: 'push',
