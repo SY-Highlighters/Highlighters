@@ -1,8 +1,14 @@
 const is_production = false; // true: 배포용, false: 로컬용
 
-const cookie_url = is_production ? "https://highlighters.site" : "http://localhost:3000";
-const host_url = is_production ? "https://highlighters.site" : "http://localhost:3001";
-const websocket_url = is_production ? "wss://highlighters.site" : "ws://localhost:3001";
+const cookie_url = is_production
+  ? "https://highlighters.site"
+  : "http://localhost:3000";
+const host_url = is_production
+  ? "https://highlighters.site"
+  : "http://localhost:3001";
+const websocket_url = is_production
+  ? "wss://highlighters.site"
+  : "ws://localhost:3001";
 
 function getCookieToken() {
   return chrome.cookies.get({ name: "logCookie", url: cookie_url });
@@ -67,7 +73,11 @@ function connectWebsocket() {
 
     await getCookieToken().then(async (cookie) => {
       const token = cookie?.value;
-      userInfo = await sendHTTPRequest("GET", `${host_url}/api/user/signin`, token);
+      userInfo = await sendHTTPRequest(
+        "GET",
+        `${host_url}/api/user/signin`,
+        token
+      );
 
       // push 보내기
       socket.send(
@@ -89,7 +99,11 @@ function connectWebsocket() {
         console.log("push", msg.data);
         chrome.action.setBadgeText({ text: "new" });
         chrome.action.setBadgeBackgroundColor({ color: "#0000FF" });
-        createPush(`push_${push_id}`, `${data.nickname}으로부터 알림이 왔습니다.`, data.contents);
+        createPush(
+          `push_${push_id}`,
+          `${data.nickname}으로부터 알림이 왔습니다.`,
+          data.contents
+        );
         push_id++;
       }
 
@@ -97,20 +111,23 @@ function connectWebsocket() {
         console.log("[bakcground]: realtime highlight message 받음");
         // websocket으로 넘겨받은 highlight한 url이 현재 나의 url과 같다면 highlight를 치기.
         const feed_url = data.feed_url;
-        chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
-          if (tabs.length !== "undefined" && tabs.length === 1) {
-            const currentURL = decodeURI(tabs[0].url);
-            console.log("[background]: realtime highlight 현재탭 확인");
-            if (currentURL === feed_url) {
-              // 넘겨받은 url과 현재 url이 같다면 contentscript에서 highlight 치기
-              console.log("[background]: realtime highlight 실행");
-              chrome.tabs.sendMessage(tabs[0].id, {
-                greeting: "realtimehighlight",
-                data,
-              });
+        chrome.tabs.query(
+          { active: true, currentWindow: true },
+          function (tabs) {
+            if (tabs.length !== "undefined" && tabs.length === 1) {
+              const currentURL = decodeURI(tabs[0].url);
+              console.log("[background]: realtime highlight 현재탭 확인");
+              if (currentURL === feed_url) {
+                // 넘겨받은 url과 현재 url이 같다면 contentscript에서 highlight 치기
+                console.log("[background]: realtime highlight 실행");
+                chrome.tabs.sendMessage(tabs[0].id, {
+                  greeting: "realtimehighlight",
+                  data,
+                });
+              }
             }
           }
-        });
+        );
       }
     });
 
@@ -138,7 +155,9 @@ async function BackgroundStart() {
       const url = decodeURI(tab.url);
       const getHighlightURL = `${host_url}/api/highlight/feed`;
       setTimeout(async () => {
-        const data = await sendHTTPRequest("POST", getHighlightURL, token, { url });
+        const data = await sendHTTPRequest("POST", getHighlightURL, token, {
+          url,
+        });
         chrome.tabs.sendMessage(tabId, {
           greeting: "getHighlight",
           data: data.data,
@@ -166,14 +185,17 @@ async function BackgroundStart() {
         case "getFeed":
           console.log("[background] getFeed");
           const getFeedURL = `${host_url}/api/feed/feed_url`;
-          chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
-            if (tabs.length !== "undefined" && tabs.length === 1) {
-              const currentURL = decodeURI(tabs[0].url);
-              sendHTTPRequest("POST", getFeedURL, token, { url: currentURL })
-                .then((data) => sendResponse({ data }))
-                .catch((error) => console.log(`fetch 실패: ${error}`));
+          chrome.tabs.query(
+            { active: true, currentWindow: true },
+            function (tabs) {
+              if (tabs.length !== "undefined" && tabs.length === 1) {
+                const currentURL = decodeURI(tabs[0].url);
+                sendHTTPRequest("POST", getFeedURL, token, { url: currentURL })
+                  .then((data) => sendResponse({ data }))
+                  .catch((error) => console.log(`fetch 실패: ${error}`));
+              }
             }
-          });
+          );
           break;
 
         // 피드 생성 요청
@@ -236,15 +258,18 @@ async function BackgroundStart() {
         case "postNoti":
           console.log("[background] postNoti");
           const postNotiURL = `${host_url}/api/noti/create`;
-          chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
-            if (tabs.length !== "undefined" && tabs.length === 1) {
-              const currentURL = decodeURI(tabs[0].url);
-              const body = { url: currentURL, contents: request.data };
-              sendHTTPRequest("POST", postNotiURL, token, body)
-                .then((data) => sendResponse({ data }))
-                .catch((error) => console.log(`fetch 실패: ${error}`));
+          chrome.tabs.query(
+            { active: true, currentWindow: true },
+            function (tabs) {
+              if (tabs.length !== "undefined" && tabs.length === 1) {
+                const currentURL = decodeURI(tabs[0].url);
+                const body = { url: currentURL, contents: request.data };
+                sendHTTPRequest("POST", postNotiURL, token, body)
+                  .then((data) => sendResponse({ data }))
+                  .catch((error) => console.log(`fetch 실패: ${error}`));
+              }
             }
-          });
+          );
           break;
 
         // 그룹의 태그 리스트 요청
