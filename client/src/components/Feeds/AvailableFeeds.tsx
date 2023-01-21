@@ -11,9 +11,16 @@ import {
 import { QueryCache, useQuery, QueryClient, useQueryClient } from "react-query";
 import { useInView } from "react-intersection-observer";
 import { useFeedsInGroup } from "../../hooks/useFeedsInGroup";
+import Feed from "../../models/feed";
+import FeedSkeleton from "../UI/FeedSkeleton";
 const AvailableFeeds = () => {
-  const { getBoard, getNextPage, getBoardIsSuccess, getNextPageIsPossible } =
-    useFeedsInGroup();
+  const {
+    getBoard,
+    getNextPage,
+    getBoardIsSuccess,
+    getNextPageIsPossible,
+    status,
+  } = useFeedsInGroup();
   const [ref, isView] = useInView();
   const listRef = useRef(null);
   // 스크롤 위아래ㅏ
@@ -32,37 +39,11 @@ const AvailableFeeds = () => {
     }
   }, [isView, getNextPage, getNextPageIsPossible]);
   // console.log(getBoard);
+  if (status === "loading") {
+    return <FeedSkeleton></FeedSkeleton>;
+  }
   return (
-    // <div className="xl:ml-20 justify-self-center xl:w-3/6">
-
-    <div className="basis-2/4">
-      {/* 위에 여백 두고 그룹피드 타이틀 만들기 */}
-      {/* 그룹 피드 타이틀 ver1*/}
-      {/* <div className="relative p-3 rounded-3xl">
-        <h1 className="text-2xl antialiased font-bold text-whtie">그룹 피드</h1>
-      </div> */}
-      {/* 그룹 피드 타이틀 ver2 */}
-      <div className="rounded-md opacity-90 bg-sky-500">
-        {/* 메뉴바*/}
-        <div className="px-3 py-2 mx-auto rounded-lg max-w-7xl ">
-          <div className="flex flex-wrap items-center ">
-            <div className="flex items-center flex-1 w-0 ">
-              <span className="flex p-2 mr-1 -ml-3 rounded-lg bg-sky-500">
-                <DocumentIcon
-                  className="w-6 h-6 ml-3 text-white"
-                  aria-hidden="true"
-                />
-              </span>
-              <p className="text-xl font-bold text-white truncate ">
-                <span className="md:hidden">그룹 피드</span>
-                <span className="hidden md:inline">그룹 피드</span>
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* 위에 피드가 생성이 안됐을때 없다는 효과를 주기 */}
+    <>
       {getBoardIsSuccess && getBoard!.pages[0].board_page.length === 0 ? (
         <div
           className="flex justify-center w-full h-full pt-10 mt-5 bg-white rounded-md shadow-md "
@@ -156,7 +137,7 @@ const AvailableFeeds = () => {
           }
         </ul>
       </div>
-    </div>
+    </>
   );
 };
 

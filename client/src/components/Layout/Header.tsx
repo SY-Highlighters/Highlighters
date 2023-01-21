@@ -196,16 +196,16 @@ export default function Header() {
               </li>
               <li className="nav-item">
                 {/* 유저 프로필 버튼 */}
-                <img
-                  onClick={userMenuClicked}
-                  className="rounded-full cursor-pointer w-9 h-9 hover:opacity-75 "
-                  src={
-                    isSuccess && user.image
-                      ? user.image
-                      : "https://via.placeholder.com/150"
-                  }
-                  alt=""
-                ></img>
+                {isSuccess && user.image ? (
+                  <img
+                    onClick={userMenuClicked}
+                    className="rounded-full cursor-pointer w-9 h-9 hover:opacity-75 "
+                    src={user.image}
+                    alt=""
+                  ></img>
+                ) : (
+                  <div className="bg-gray-300 rounded-full w-9 h-9 "></div>
+                )}
               </li>
             </ul>
           </div>

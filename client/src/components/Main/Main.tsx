@@ -1,6 +1,7 @@
 import { Fragment } from "react";
 import { useRecoilValue, useRecoilState } from "recoil";
 import AvailableFeeds from "../Feeds/AvailableFeeds";
+import Feed from "../Feeds/Feed";
 import AvailableTags from "../Tags/AvailableTags";
 import { FeedTagEditModal } from "../Tags/FeedTagEditModal";
 import {
@@ -17,6 +18,12 @@ import { Squares2X2Icon } from "@heroicons/react/24/outline";
 import { Grid } from "./Grid";
 import SearchResults from "../Search/SearchResults";
 import { FeedsInDay } from "../Calender/FeedsInDay";
+import {
+  DocumentIcon,
+  DocumentPlusIcon,
+  MegaphoneIcon,
+} from "@heroicons/react/24/outline";
+import FeedSkeleton from "../UI/FeedSkeleton";
 export function Main() {
   const [cookies] = useCookies(["logCookie"]);
   const [changeMainSection, setChangeMainSection] = useRecoilState(
@@ -29,7 +36,7 @@ export function Main() {
   const MainSection = (setionNum: number) => {
     switch (setionNum) {
       case 0:
-        return <AvailableFeeds></AvailableFeeds>;
+        return <Feed></Feed>;
       case 1:
         return <AvailableBookmarks></AvailableBookmarks>;
       case 2:
@@ -39,7 +46,7 @@ export function Main() {
       case 4:
         return <SearchResults></SearchResults>;
       default:
-        return <AvailableFeeds></AvailableFeeds>;
+        return <Feed></Feed>;
     }
   };
   // useEffect(() => {
@@ -63,10 +70,12 @@ export function Main() {
       ) : (
         <Grid></Grid>
       )}
+      {/* 그리드 화면 */}
       <Squares2X2Icon
         onClick={clickedMainChange}
         className="absolute hidden w-8 h-8 cursor-pointer xl:block top-24 left-20 text-sky-500 hover:text-sky-600 hover:scale-95"
       ></Squares2X2Icon>
+      {/* 태그 편집 모달 */}
       {tagModal === 1 && <FeedTagEditModal></FeedTagEditModal>}
       {/* {tagModal === 2 && <GroupTagEditModal></GroupTagEditModal>} */}
     </Fragment>
