@@ -81,7 +81,7 @@ export default function Header() {
       setMainSectionNum(4);
     }
     setSearchKeyword(searchInput);
-    console.log(searchInput);
+    // console.log(searchInput);
   };
   // 검색 인풋
   const handleSearchInputChange = (event: any) => {

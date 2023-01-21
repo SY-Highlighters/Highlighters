@@ -66,7 +66,7 @@ export function TagEditItem(props: any) {
 
   const delClickHandler = () => {
     if (props.onFunc) {
-      console.log("그룹 태그 삭제");
+      // console.log("그룹 태그 삭제");
       props.onFunc(data);
     } else {
       if (props.tagId) {

@@ -39,7 +39,7 @@ const SearchResultItem = (props: any) => {
   let titleDiv;
   let resultinfosDiv;
 
-  console.log(props);
+  // console.log(props);
   // type : 1(title), 2(highlight), 3(tag_name)
   const title = props.title;
   const i = title.toUpperCase().indexOf(searchKeyword.toUpperCase());

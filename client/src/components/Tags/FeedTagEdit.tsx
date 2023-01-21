@@ -11,8 +11,8 @@ export function FeedTagEdit(props: any) {
   const setTagModal = useSetRecoilState(tagModalVisble);
   const setCurrentFeedId = useSetRecoilState(currentFeedIdState);
   const tagEditHandler = () => {
-    console.log("tagEditHandler");
-    console.log(props.tag);
+    // console.log("tagEditHandler");
+    // console.log(props.tag);
     
     tagAdd(props.tag);
     // 해당 피드의 id를 전역으로 저장

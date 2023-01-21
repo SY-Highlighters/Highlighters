@@ -82,7 +82,7 @@ export function FeedTagEditModal(props: any) {
     setTagsCreate([...tagsCreate, newTagItem]);
     setInputValue("");
   };
-  console.log("태그리스트", tagList);
+  // console.log("태그리스트", tagList);
   const tagLists = tagList.map((tagItem: any) => (
     <div key={tagItem.tag_id}>
       <TagEditItem
@@ -206,7 +206,7 @@ export function FeedTagEditModal(props: any) {
               <div className="flex justify-center mt-5">
                 <GroupTagList
                   onFunc={() => {
-                    console.log("test");
+                    // console.log("test");
                   }}
                   onCss={"w-full mt-10 bg-white"}
                 ></GroupTagList>

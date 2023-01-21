@@ -31,7 +31,7 @@ const GroupTagList = (props: any) => {
             },
           }
         );
-        console.log(res.data.data);
+        // console.log(res.data.data);
         return res.data.data;
       } catch (err) {
         console.error(err);
@@ -41,7 +41,7 @@ const GroupTagList = (props: any) => {
       suspense: true,
     }
   );
-  console.log(tagList);
+  // console.log(tagList);
   useEffect(() => {}, []);
   return (
     <div className="">

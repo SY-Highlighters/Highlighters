@@ -34,7 +34,7 @@ const AvailableTags = () => {
     }
   }, [isView, getNextPage, getNextPageIsPossible, clickedTag.tag_name]);
   // clickTag가 변경시 새로운 쿼리를 요청
-  console.log("태그가져오기", getBoard);
+  // console.log("태그가져오기", getBoard);
   return (
     <div className="basis-2/4">
       <div className="relative p-3 rounded-3xl">
