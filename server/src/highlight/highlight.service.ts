@@ -15,6 +15,8 @@ import { Inject } from '@nestjs/common/decorators';
 import { fetchandsave, deleteS3 } from 'src/util/fetch';
 import { Cache } from 'cache-manager';
 import { EventGateway } from 'src/event/event.gateway';
+import { ElasticsearchService } from 'src/repository/connection';
+import { elasticFeedDto } from 'src/repository/dto/elastic.dto';
 
 @Injectable()
 export class HighlightService {
@@ -24,6 +26,7 @@ export class HighlightService {
     // @Inject(CACHE_MANAGER) private readonly cacheManager: Cache,
     @Inject(forwardRef(() => FeedService))
     private readonly feedService: FeedService,
+    private readonly elastic: ElasticsearchService,
   ) {}
 
   async createHighlight(
@@ -55,8 +58,23 @@ export class HighlightService {
         newFeedDto.og_title = title;
         newFeedDto.image = image;
         newFeedDto.description = description;
+        newFeedDto.high_content = contents;
 
         find_feed = await this.feedService.createFeed(newFeedDto, user);
+      } else {
+        // elastic input
+        const elasticFeed = new elasticFeedDto();
+        elasticFeed.feed_id = String(find_feed.id);
+        elasticFeed.user_nickname = user.nickname;
+        elasticFeed.group_id = user.group_id;
+        elasticFeed.title = title;
+        elasticFeed.url = url;
+        elasticFeed.description = description;
+        elasticFeed.contents = contents;
+        await this.elastic.appendFeed(
+          elasticFeed.feed_id,
+          elasticFeed.contents,
+        );
       }
 
       let result = null;
@@ -186,8 +204,16 @@ export class HighlightService {
 
   async deleteHighlight(id: number): Promise<boolean> {
     try {
-      await this.prismaService.highlight.delete({ where: { id: id } });
+      const high_contents = await this.prismaService.highlight.delete({
+        where: { id: id },
+        select: { contents: true, feed_id: true },
+      });
       // await deleteS3(id);
+      // console.log(high_contents);
+      await this.elastic.deleteHighlight(
+        String(high_contents.feed_id),
+        high_contents.contents,
+      );
       return true;
     } catch (error) {
       throw new HttpException('Internal Server Error', 500);

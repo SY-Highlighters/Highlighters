@@ -17,6 +17,8 @@ export class CreateFeedDto {
   description?: string;
 
   tag_name?: string[];
+
+  high_content?: string;
 }
 
 // export class getfeedDto {
