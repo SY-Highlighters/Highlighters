@@ -116,8 +116,8 @@ async function highlightDone(range, id) {
         newrange.setStart(current, range.startOffset);
         newrange.setEnd(current, current.textContent.length);
         const newNode = document.createElement("highlight");
-        newNode.setAttribute("class", `highlighter`);
-        newNode.setAttribute("id", id);
+        newNode.setAttribute("class", id);
+        // newNode.setAttribute("id", id);
         newNode.style.backgroundColor = highlightColor.highlightColor;
         newrange.surroundContents(newNode);
         newNode.addEventListener("click", (event) =>
@@ -129,8 +129,8 @@ async function highlightDone(range, id) {
         newrange.setStart(current, 0);
         newrange.setEnd(current, range.endOffset);
         const newNode = document.createElement("highlight");
-        newNode.setAttribute("class", `highlighter`);
-        newNode.setAttribute("id", id);
+        newNode.setAttribute("class", id);
+        // newNode.setAttribute("id", id);
         newNode.style.backgroundColor = highlightColor.highlightColor;
         newrange.surroundContents(newNode);
         newNode.addEventListener("click", (event) =>
@@ -144,8 +144,8 @@ async function highlightDone(range, id) {
           newrange.setStart(current, 0);
           newrange.setEnd(current, current.textContent.length);
           const newNode = document.createElement("highlight");
-          newNode.setAttribute("class", `highlighter`);
-          newNode.setAttribute("id", id);
+          newNode.setAttribute("class", id);
+          // newNode.setAttribute("id", id);
           newNode.style.backgroundColor = highlightColor.highlightColor;
           newrange.surroundContents(newNode);
           newNode.addEventListener("click", (event) =>
@@ -160,8 +160,8 @@ async function highlightDone(range, id) {
   } else {
     //하이라이팅
     const newNode = document.createElement("highlight");
-    newNode.setAttribute("class", `highlighter`);
-    newNode.setAttribute("id", id);
+    newNode.setAttribute("class", id);
+    // newNode.setAttribute("id", id);
     newNode.style.backgroundColor = highlightColor.highlightColor;
     range.surroundContents(newNode);
     // 툴바표시 이벤트리스너 추가
@@ -292,14 +292,13 @@ function rehighlightText(highlight) {
     let flag = 0;
     while (stk.length !== 0) {
       const current = stk.pop();
-      // console.log(current);
       if (current === startNode) {
         const newrange = document.createRange();
         newrange.setStart(current, startOff);
         newrange.setEnd(current, current.textContent.length);
         const newNode = document.createElement("highlight");
-        newNode.setAttribute("class", `highlighter`);
-        newNode.setAttribute("id", highlight.id);
+        newNode.setAttribute("class", highlight.id);
+        // newNode.setAttribute("id", highlight.id);
         if (highlight.color === "-1") {
           // 색상이 없는 경우 style과 eventListener를 지워준다.
           newNode.removeAttribute("style");
@@ -314,11 +313,11 @@ function rehighlightText(highlight) {
         flag = 1;
       } else if (current === endNode) {
         const newrange = document.createRange();
-        newrange.setStart(current, startOff);
-        newrange.setEnd(current, current.textContent.length);
+        newrange.setStart(current, 0);
+        newrange.setEnd(current, endOff);
         const newNode = document.createElement("highlight");
-        newNode.setAttribute("class", `highlighter`);
-        newNode.setAttribute("id", highlight.id);
+        newNode.setAttribute("class", highlight.id);
+        // newNode.setAttribute("id", highlight.id);
         if (highlight.color === "-1") {
           // 색상이 없는 경우 style과 eventListener를 지워준다.
           newNode.removeAttribute("style");
@@ -335,11 +334,11 @@ function rehighlightText(highlight) {
         const curchilds = [...current.childNodes];
         if (flag && curchilds.length === 0) {
           const newrange = document.createRange();
-          newrange.setStart(current, startOff);
+          newrange.setStart(current, 0);
           newrange.setEnd(current, current.textContent.length);
           const newNode = document.createElement("highlight");
-          newNode.setAttribute("class", `highlighter`);
-          newNode.setAttribute("id", highlight.id);
+          newNode.setAttribute("class", highlight.id);
+          // newNode.setAttribute("id", highlight.id);
           if (highlight.color === "-1") {
             // 색상이 없는 경우 style과 eventListener를 지워준다.
             newNode.removeAttribute("style");
@@ -364,8 +363,8 @@ function rehighlightText(highlight) {
     range.setStart(startNode, startOff);
     range.setEnd(endNode, endOff);
     const newNode = document.createElement("highlight");
-    newNode.setAttribute("class", `highlighter`);
-    newNode.setAttribute("id", highlight.id);
+    newNode.setAttribute("class", highlight.id);
+    // newNode.setAttribute("id", highlight.id);
     if (highlight.color === "-1") {
       // 색상이 없는 경우 style과 eventListener를 지워준다.
       newNode.removeAttribute("style");
@@ -404,7 +403,8 @@ function rehighlightImage(highlight) {
 
   // 하이라이팅
   img.style.border = `8px solid ${highlight.color}`;
-  img.setAttribute("id", highlight.id);
+  img.setAttribute("class", highlight.id);
+  // img.setAttribute("id", highlight.id);
   img.classList.add("highlighted");
 
   // 툴바 표시 이벤트리스너 추가
@@ -414,16 +414,28 @@ function rehighlightImage(highlight) {
 }
 
 function deleteHighlight(node) {
-  const nodeid = curNodeID == null ? node.id : curNodeID;
+  const nodeclass = curNodeID == null ? node.className : curNodeID;
+  console.log(node.classList);
+  const nodeId = node.classList[0];
 
   chrome.runtime.sendMessage(
     {
       greeting: "deleteHighlight",
-      data: { id: +nodeid },
+      data: { id: +nodeId },
     },
     (response) => {
-      node.removeAttribute("style");
-      if (curNodeType === 2) {
+      if (curNodeType === 1) {
+        const NodeList = document.querySelectorAll(`highlight`);
+        console.log(NodeList);
+        NodeList.forEach((nodeInList) => {
+          if (nodeInList.className === nodeId) {
+            nodeInList.removeAttribute("style");
+            const deletedTextNode = nodeInList.cloneNode(true);
+            nodeInList.parentNode.replaceChild(deletedTextNode, nodeInList);
+          }
+        });
+      } else if (curNodeType === 2) {
+        node.removeAttribute("style");
         const deletedImageNode = node.cloneNode(true);
         node.parentNode.replaceChild(deletedImageNode, node);
         const button = document.getElementById("btn_image_highlighters");
@@ -581,6 +593,7 @@ function highlightImage() {
         highlights.push(response.data.data);
 
         const curId = response.data.data.id; // 현재 선택된 이미지 노드아이디 백업
+        console.log(curId);
 
         // 이벤트리스너(하이라이트 버튼) 없애기
         const highlightedImage = selectedImage.cloneNode(true);
@@ -677,13 +690,10 @@ function makeToolBar() {
 }
 
 async function onWindowReady() {
-  console.log(window.location.href);
   if (
     window.location.href === "https://highlighters.site/" ||
     window.location.href === "http://localhost:3000/"
   ) {
-    console.log("highlighters");
-
     return;
   }
 
@@ -718,8 +728,6 @@ document.onmouseup = function (e) {
     window.location.href === "https://highlighters.site/" ||
     window.location.href === "http://localhost:3000/"
   ) {
-    console.log("highlighters");
-
     return;
   }
   const button = document.getElementById("btn_text_highlighters");
