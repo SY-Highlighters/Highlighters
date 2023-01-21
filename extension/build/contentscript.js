@@ -802,7 +802,13 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
 
     case "realtimehighlight": // 웹소켓으로 넘겨받은 데이터로 하이라이팅 치기 (db에 저장하지는 않음)
       console.log("[contentscript]: realtimehighlight: ", request);
-      rehighlightText(request.data);
+      try {
+        if (request.data.type === 1) rehighlightText(request.data);
+        else if (request.data.type === 2) rehighlightImage(request.data);
+      } catch (e) {
+        console.log("하이라이트 복원 실패", e);
+      }
+      // rehighlightText(request.data);
       break;
 
     default:
