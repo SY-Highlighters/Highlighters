@@ -222,6 +222,7 @@ async function postHighlight(range, highlightStr) {
         );
         window.open("https://highlighters.site/");
       } else {
+        console.log(response);
         highlights.push(response.data.data);
         highlightDone(range, response.data.data.id);
       }
@@ -676,10 +677,13 @@ function makeToolBar() {
 }
 
 async function onWindowReady() {
+  console.log(window.location.href);
   if (
-    window.location.href === "https://highlighters.site" ||
-    "http://localhost:3000"
+    window.location.href ===
+    ("https://highlighters.site" || "http://localhost:3000")
   ) {
+    console.log("highlighters");
+
     return;
   }
 
@@ -711,9 +715,11 @@ window.onload = onWindowReady;
 // 드래그하고 마우스를 떼면 selection 객체 생성
 document.onmouseup = function (e) {
   if (
-    window.location.href === "https://highlighters.site" ||
-    "http://localhost:3000"
+    window.location.href ===
+    ("https://highlighters.site" || "http://localhost:3000")
   ) {
+    console.log("highlighters");
+
     return;
   }
   const button = document.getElementById("btn_text_highlighters");
