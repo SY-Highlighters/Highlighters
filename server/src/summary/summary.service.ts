@@ -1,6 +1,6 @@
 import { map } from 'rxjs/operators';
 import { HttpService } from '@nestjs/axios';
-import { Injectable } from '@nestjs/common';
+import { Injectable, HttpException } from '@nestjs/common';
 import { User } from '@prisma/client';
 import { ElasticsearchService } from 'src/repository/connection';
 import { PrismaService } from 'src/repository/prisma.service';
@@ -37,6 +37,9 @@ export class SummaryService {
     title = title.replace(regExp[0], '');
     // console.log(title);
 
+    if (text.length > 1999) {
+      throw new HttpException('문장이 너무 길어요', 400);
+    }
     const data = {
       document: {
         title: title,
