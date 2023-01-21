@@ -135,6 +135,14 @@ export class FeedService {
           },
         },
       });
+
+      // 만약 highlight의 color가 '-1'이면 삭제된 highlight이므로 삭제
+      for (const feed of feeds) {
+        feed.highlight = feed.highlight.filter(
+          (highlight) => highlight.color !== '-1',
+        );
+      }
+
       return {
         currentPage: page,
         totalPage: Math.ceil(count / take),
