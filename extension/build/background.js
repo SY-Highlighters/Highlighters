@@ -1,4 +1,4 @@
-const is_production = false; // true: 배포용, false: 로컬용
+const is_production = true; // true: 배포용, false: 로컬용
 
 const cookie_url = is_production
   ? "https://highlighters.site"
@@ -151,19 +151,8 @@ async function BackgroundStart() {
   const token = cookie ? cookie.value : null;
 
   chrome.tabs.onUpdated.addListener(async (tabId, changeInfo, tab) => {
-    const url = decodeURI(tab.url);
+    let url = decodeURI(tab.url);
     if (changeInfo.status === "complete") {
-      const getHighlightURL = `${host_url}/api/highlight/feed`;
-      setTimeout(async () => {
-        const data = await sendHTTPRequest("POST", getHighlightURL, token, {
-          url,
-        });
-        chrome.tabs.sendMessage(tabId, {
-          greeting: "getHighlight",
-          data: data.data,
-        });
-      }, 500);
-
       if (url && url.includes("youtube.com/watch")) {
         const queryParameters = url.split("?")[1];
         const urlParameters = new URLSearchParams(queryParameters);
@@ -174,7 +163,20 @@ async function BackgroundStart() {
           greeting: "newVideo",
           videoID: urlParameters.get("v"),
         });
+
+        url = `https://www.youtube.com/watch?v=${urlParameters.get("v")}`;
       }
+
+      const getHighlightURL = `${host_url}/api/highlight/feed`;
+      setTimeout(async () => {
+        const data = await sendHTTPRequest("POST", getHighlightURL, token, {
+          url,
+        });
+        chrome.tabs.sendMessage(tabId, {
+          greeting: "getHighlight",
+          data: data.data,
+        });
+      }, 500);
     }
   });
 
