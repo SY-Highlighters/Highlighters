@@ -63,18 +63,18 @@ export class HighlightService {
         newFeedDto.image = image;
         newFeedDto.description = description;
         newFeedDto.high_content = contents;
+        newFeedDto.type = type;
 
         find_feed = await this.feedService.createFeed(newFeedDto, user);
       } else {
         // elastic input
         const elasticFeed = new elasticFeedDto();
         elasticFeed.feed_id = String(find_feed.id);
-        elasticFeed.user_nickname = user.nickname;
-        elasticFeed.group_id = user.group_id;
-        elasticFeed.title = title;
-        elasticFeed.url = url;
-        elasticFeed.description = description;
-        elasticFeed.contents = contents;
+        if (type == 1) {
+          elasticFeed.contents = contents;
+        } else {
+          elasticFeed.contents = '';
+        }
         await this.elastic.appendFeed(
           elasticFeed.feed_id,
           elasticFeed.contents,
@@ -210,6 +210,12 @@ export class HighlightService {
           select: { contents: true, feed_id: true },
           data: { contents: '', color: '-1' }, // 삭제된 하이라이트는 color를 -1로 변경
         });
+
+        // elastic 삭제
+        await this.elastic.deleteHighlight(
+          String(high_contents.feed_id),
+          high_contents.contents,
+        );
       } else if (type == 2) {
         // 사진 하이라이트 삭제
         high_contents = await this.prismaService.highlight.delete({
@@ -225,11 +231,6 @@ export class HighlightService {
       }
       console.log(high_contents);
 
-      // elastic 삭제
-      await this.elastic.deleteHighlight(
-        String(high_contents.feed_id),
-        high_contents.contents,
-      );
       return true;
     } catch (error) {
       throw new HttpException('Internal Server Error', 500);

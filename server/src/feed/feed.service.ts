@@ -25,6 +25,7 @@ export class FeedService {
       description,
       tag_name,
       high_content,
+      type,
     } = createFeedDto;
 
     // og 부분
@@ -67,8 +68,11 @@ export class FeedService {
     elasticFeed.title = feed_title;
     elasticFeed.url = url;
     elasticFeed.description = description;
-    elasticFeed.contents = high_content;
-
+    if (type == 1) {
+      elasticFeed.contents = high_content;
+    } else {
+      elasticFeed.contents = '';
+    }
     await this.elastic.inputFeed(elasticFeed);
 
     // tag 부분
