@@ -139,4 +139,48 @@ export class CalendarService {
       throw new HttpException('Internal Server Error', 500);
     }
   }
+
+  async showCalendarMonth(user: User, date: Date) {
+    const target_date = new Date(date.getFullYear(), date.getMonth());
+    const limit_date = new Date(date.getFullYear(), date.getMonth() + 1);
+    const result = [];
+    for (let i = 0; i < 31; i++) {
+      const curr_date = new Date(
+        target_date.getFullYear(),
+        target_date.getMonth(),
+      );
+      curr_date.setDate(i + 1);
+
+      if (curr_date > limit_date) {
+        break;
+      }
+
+      const count = await this.prismaService.feed.findFirst({
+        where: {
+          group_id: user.group_id,
+          createdAt: {
+            gte: new Date(
+              curr_date.getFullYear(),
+              curr_date.getMonth(),
+              curr_date.getDate(),
+              curr_date.getHours(),
+            ),
+            lte: new Date(
+              curr_date.getFullYear(),
+              curr_date.getMonth(),
+              curr_date.getDate() + 1,
+              curr_date.getHours(),
+            ),
+          },
+        },
+      });
+
+      if (count) {
+        result.push({
+          startDatetime: curr_date,
+        });
+      }
+    }
+    return result;
+  }
 }

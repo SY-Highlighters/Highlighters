@@ -36,4 +36,12 @@ export class CalendarController {
   ) {
     return this.calendarService.showCalendar(user, page, take, date);
   }
+
+  // 캘린더 월별 유무 조회
+  @ApiResponse({ status: 200, description: 'success', type: '일별 피드 숫자' })
+  @ApiOperation({ summary: '캘린더 월별 유무 조회' })
+  @Get('/month')
+  async showCalendarMonth(@GetUser() user: User, @Query('date') date: Date) {
+    return this.calendarService.showCalendarMonth(user, date);
+  }
 }

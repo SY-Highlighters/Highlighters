@@ -844,6 +844,16 @@ const deletePin = (pinNode) => {
   );
 };
 
+const pin_purple =
+  "https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2Fct9HWv%2FbtrWYMjgfIU%2FkWRkV0XxdK3ZrCBsKDIxZ0%2Fimg.png";
+const pin_blue =
+  "https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FAjfN3%2FbtrWVLE84GJ%2F54753KmbOyk5Bggf3Pkk80%2Fimg.png";
+const pin_green =
+  "https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FoBPPZ%2FbtrWXj2HIdl%2FHQ6f0fdXfNaSxizb4n13R1%2Fimg.png";
+const pin_red =
+  "https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2Fbb0RVh%2FbtrWRdDfJHx%2F9hsXVykGBMIpijZ5uufajK%2Fimg.png";
+const pin_yellow = "https://cdn-icons-png.flaticon.com/512/787/787552.png";
+
 const rehighlightVideo = (highlight) => {
   const progressBar = document.getElementsByClassName(
     "ytp-progress-bar-container"
@@ -856,14 +866,34 @@ const rehighlightVideo = (highlight) => {
 
   const barPos = (parseInt(highlight.contents) / youtubePlayer.duration) * 100;
   highlightYTP.style.left = `${barPos}%`;
-  highlightYTP.style.height = "100%";
-  highlightYTP.style.width = "4px";
-  highlightYTP.style.backgroundColor = highlight.color;
-  highlightYTP.style.cursor = "pointer";
-  highlightYTP.style.zIndex = "2147483647";
+  // highlightYTP.style.height = "100%";
+  // highlightYTP.style.width = "4px";
+  // highlightYTP.style.backgroundColor = highlight.color;
+  // highlightYTP.style.cursor = "pointer";
+  // highlightYTP.style.zIndex = "2147483647";
+
+  let pin_src;
+  switch (highlight.color) {
+    case "#e9d5ff":
+      pin_src = pin_purple;
+      break;
+    case "#bfdbfe":
+      pin_src = pin_blue;
+      break;
+    case "#bbf7d0":
+      pin_src = pin_green;
+      break;
+    case "#fecaca":
+      pin_src = pin_red;
+      break;
+
+    default:
+      pin_src = pin_yellow;
+      break;
+  }
 
   const pin = document.createElement("img");
-  pin.src = "https://cdn-icons-png.flaticon.com/512/787/787552.png";
+  pin.src = pin_src;
   pin.style.position = "absolute";
   pin.style.top = "-25px";
   pin.style.left = "-11px";
