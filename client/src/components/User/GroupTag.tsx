@@ -30,7 +30,7 @@ const GroupTag = (props: any) => {
         props.onCss ? props.onCss : "mt-5 bg-white rounded-lg shadow-lg h-full"
       }
     >
-      <div className="m-5">
+      <div className="mx-6 mt-5 mb-2">
         {/* <div className="p-6 h-1/3 rounded-3xl"> */}
         <div className="flex items-end">
           <h3 className="text-xl antialiased font-bold ">그룹 태그</h3>
@@ -41,7 +41,10 @@ const GroupTag = (props: any) => {
         </div>
       </div>
 
-      <div className="px-2 m-2 overflow-y-auto h-2/3 xl:scrollbar-hide ">
+      <div
+        className="mx-5 m-2 overflow-y-auto h-3/4 "
+        // style={{ height: "35vh" }}
+      >
         <ul>
           {clickedGroupTagDel ? (
             <Suspense fallback={<GroupTagSkeleton />}>
