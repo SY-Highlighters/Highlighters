@@ -68,14 +68,13 @@ export class NotiService {
     return result;
   }
 
-  async deleteNoti(deleteNotiDto: DeleteNotiDto[]): Promise<null> {
+  async deleteNoti(noti_id: number[]): Promise<null> {
     try {
-      for (let i = 0; i < deleteNotiDto.length; i++) {
-        console.log(deleteNotiDto[i].noti_id);
-        deleteNotiDto[i].noti_id = Number(deleteNotiDto[i].noti_id);
+      for (let i = 0; i < noti_id.length; i++) {
+        console.log(noti_id[i]);
         await this.prismaService.noti.delete({
           where: {
-            id: deleteNotiDto[i].noti_id,
+            id: noti_id[i],
           },
         });
       }
