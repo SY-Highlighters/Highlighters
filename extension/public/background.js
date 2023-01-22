@@ -1,4 +1,4 @@
-const is_production = true; // true: 배포용, false: 로컬용
+const is_production = false; // true: 배포용, false: 로컬용
 
 const cookie_url = is_production
   ? "https://highlighters.site"
@@ -151,8 +151,8 @@ async function BackgroundStart() {
   const token = cookie ? cookie.value : null;
 
   chrome.tabs.onUpdated.addListener(async (tabId, changeInfo, tab) => {
+    const url = decodeURI(tab.url);
     if (changeInfo.status === "complete") {
-      const url = decodeURI(tab.url);
       const getHighlightURL = `${host_url}/api/highlight/feed`;
       setTimeout(async () => {
         const data = await sendHTTPRequest("POST", getHighlightURL, token, {
@@ -163,6 +163,18 @@ async function BackgroundStart() {
           data: data.data,
         });
       }, 500);
+
+      if (url && url.includes("youtube.com/watch")) {
+        const queryParameters = url.split("?")[1];
+        const urlParameters = new URLSearchParams(queryParameters);
+
+        console.log(urlParameters.get("v"));
+
+        chrome.tabs.sendMessage(tabId, {
+          greeting: "newVideo",
+          videoID: urlParameters.get("v"),
+        });
+      }
     }
   });
 
@@ -220,6 +232,7 @@ async function BackgroundStart() {
         // 텍스트 하이라이트 포스트 요청
         case "postHighlight":
           console.log("[background] postHighlight");
+          console.log(request.data);
           const postHighlightURL = `${host_url}/api/highlight/create`;
           sendHTTPRequest("POST", postHighlightURL, token, request.data) //
             .then((data) => sendResponse({ data }))

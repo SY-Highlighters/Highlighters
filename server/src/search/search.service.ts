@@ -11,7 +11,7 @@ export class SearchService {
   ) {}
 
   async find(word: string, user: User): Promise<object[] | void> {
-    return await this.elastic.findFeed(word, user.group_id);
+    return await this.elastic.findFeed(word, user);
   }
 
   async findtest(word: string, user: User): Promise<object[] | void> {

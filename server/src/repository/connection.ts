@@ -1,4 +1,4 @@
-import { Highlight } from '@prisma/client';
+import { Highlight, PrismaClient, User } from '@prisma/client';
 import * as elasticsearch from '@elastic/elasticsearch';
 import { Global, Injectable } from '@nestjs/common';
 import { elasticFeedDto } from './dto/elastic.dto';
@@ -7,6 +7,7 @@ import { elasticFeedDto } from './dto/elastic.dto';
 @Injectable()
 export class ElasticsearchService {
   private readonly client: elasticsearch.Client;
+  private readonly prismaClient: PrismaClient;
 
   constructor() {
     this.client = new elasticsearch.Client({
@@ -100,7 +101,7 @@ export class ElasticsearchService {
     }
   }
 
-  async findFeed(word: string, group_id: number) {
+  async findFeed(word: string, user: User) {
     const result = await this.client.search({
       index: 'search-highlighter',
       body: {
@@ -114,7 +115,7 @@ export class ElasticsearchService {
               },
               {
                 term: {
-                  group_id: group_id,
+                  group_id: user.group_id,
                 },
               },
             ],
@@ -127,6 +128,16 @@ export class ElasticsearchService {
     for (let i = 0; i < result.hits.hits.length; i++) {
       real_result.push(result.hits.hits[i]._source);
       real_result[i].score = result.hits.hits[i]._score;
+      const image = await this.prismaClient.user.findFirst({
+        where: {
+          nickname: real_result[i].user_nickname,
+          group_id: user.group_id,
+        },
+        select: {
+          image: true,
+        },
+      });
+      real_result[i].image = image.image;
     }
     return real_result;
   }
