@@ -177,7 +177,8 @@ async function highlightDone(range, id) {
 
 /* 하이라이트 Post */
 async function postHighlight(range, highlightStr) {
-  highlightColor = await chrome.storage.sync.get("highlightColor");
+  const highlightColorInSync = await chrome.storage.sync.get("highlightColor");
+  highlightColor = highlightColorInSync.highlightColor;
   const uri = window.location.href;
   const decodeuri = decodeURI(uri);
 
@@ -574,7 +575,7 @@ function highlightImage() {
         image: document.querySelector("meta[property='og:image']").content,
         description: document.querySelector("meta[property='og:description']")
           .content,
-        color: highlightColor.highlightColor,
+        color: highlightColor,
         type: 2,
       },
     },
@@ -713,7 +714,8 @@ async function onWindowReady() {
   html.appendChild(imagePenButton);
   html.appendChild(toolBar);
 
-  highlightColor = await chrome.storage.sync.get("highlightColor");
+  const highlightColorInSync = await chrome.storage.sync.get("highlightColor");
+  highlightColor = highlightColorInSync.highlightColor;
 
   // 하이라이트 가져오기
   getUserInfo();
@@ -789,7 +791,7 @@ const postBookmark = async (videoID, time) => {
         ? og_image.content
         : "https://www.salonlfc.com/wp-content/uploads/2018/01/image-not-found-1-scaled-1150x647.png",
       description: og_description ? og_description.content : "No Description",
-      color: "youtube",
+      color: highlightColor,
       type: 3,
     },
   });
@@ -833,6 +835,7 @@ const addNewBookmarkEventHandler = async () => {
   console.log("postResponse", postResponse);
 
   const newHighlight = postResponse.data.data;
+  console.log("newHighlight", newHighlight);
   rehighlightVideo(newHighlight);
 };
 
@@ -872,12 +875,17 @@ const rehighlightVideo = (highlight) => {
 
   const barPos = (parseInt(highlight.contents) / youtubePlayer.duration) * 100;
   highlightYTP.style.left = `${barPos}%`;
+  highlightYTP.style.height = "100%";
+  highlightYTP.style.width = "4px";
+  highlightYTP.style.backgroundColor = highlightColor;
+  highlightYTP.style.cursor = "pointer";
+  highlightYTP.style.zIndex = "2147483647";
 
   const pin = document.createElement("img");
   pin.src = "https://cdn-icons-png.flaticon.com/512/787/787552.png";
   pin.style.position = "absolute";
   pin.style.top = "-25px";
-  pin.style.left = "-15px";
+  pin.style.left = "-11px";
   pin.style.height = "25px";
   pin.style.width = "25px";
 
@@ -887,11 +895,16 @@ const rehighlightVideo = (highlight) => {
   highlightYTP.addEventListener("click", () => deletePin(highlightYTP));
 };
 
-chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+chrome.runtime.onMessage.addListener(async (request, sender, sendResponse) => {
   switch (request.greeting) {
     case "getHighlight":
       const highlights = request.data ? request.data : [];
       console.log("[cs] getHighlight", highlights);
+
+      const highlightColorInSync = await chrome.storage.sync.get(
+        "highlightColor"
+      );
+      highlightColor = highlightColorInSync.highlightColor;
 
       for (const highlight of highlights) {
         try {
