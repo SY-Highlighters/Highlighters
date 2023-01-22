@@ -25,6 +25,7 @@ const SearchResults = () => {
           Authorization: `Bearer ${cookies.logCookie}`,
         },
       });
+      console.log(response);
       const data = response.data.data;
       console.log("searchresult: ", data);
       searchResultFeedsAdd(data);

@@ -65,15 +65,18 @@ const FeedItem = (props: any) => {
     let firstHighlight = props.highlight[0].user.nickname;
     highlights = props.highlight.map((hl: any, index: number) => {
       // 하이라이트 색상 없을때 -> 하이라이트 안함
+
       if (hl.color === "-1") {
         return;
       }
+
+      console.log(hl);
 
       if (firstHighlight !== hl.user.nickname || index === 0) {
         firstHighlight = hl.user.nickname;
         const highContent =
           hl.type === 1 ? (
-            <div>
+            <div className="ml-1">
               <span
                 className="text-xs lg:text-base"
                 style={{ backgroundColor: hl.color }}
@@ -84,10 +87,11 @@ const FeedItem = (props: any) => {
               </span>
             </div>
           ) : (
+            // eslint-disable-next-line jsx-a11y/alt-text
             <img
               src={hl.contents}
-              className="w-3/4 mb-1 ml-1 h-3/4 outline-4"
-              style={{ outlineStyle: "solid2", outlineColor: hl.color }}
+              className="w-3/5 mt-2 mb-1 ml-2 h-3/5 outline-4"
+              style={{ outlineStyle: "solid", outlineColor: hl.color }}
             ></img>
           );
         return (
@@ -109,16 +113,18 @@ const FeedItem = (props: any) => {
         <div key={index}>
           <li className="ml-6 " key={index}>
             {hl.type === 1 ? (
-              <span
-                className="text-xs lg:text-base"
-                style={{ backgroundColor: hl.color }}
-              >
-                {hl.contents.trim()}
-              </span>
+              <div className="ml-1">
+                <span
+                  className="text-xs lg:text-base"
+                  style={{ backgroundColor: hl.color }}
+                >
+                  {hl.contents.trim()}
+                </span>
+              </div>
             ) : (
               <img
                 src={hl.contents}
-                className="w-3/4 ml-1 h-3/4 outline-4"
+                className="w-3/5 mt-2 mb-1 ml-2 h-3/5 outline-4"
                 style={{ outlineStyle: "solid", outlineColor: hl.color }}
               ></img>
             )}
@@ -213,12 +219,12 @@ const FeedItem = (props: any) => {
         </a>
         {/* 세줄요약 -> 현재 네이버 뉴스만 가능 */}
         {props.url.includes("https://n.news.naver.com") && (
-          <span
+          <div
             onClick={threeTriHandler}
-            className="text-sm font-bold text-gray-500 cursor-pointer hover:text-gray-700"
+            className="my-1 text-sm font-bold text-gray-500 cursor-pointer hover:text-gray-700"
           >
             <span className="mr-1 text-xl">🤖</span> "3줄로 요약해줘"
-          </span>
+          </div>
         )}
         <div className="">
           {threeTrigger &&
@@ -237,7 +243,8 @@ const FeedItem = (props: any) => {
 
         {/* 노션 북마크처럼 만들기 프로젝트 */}
         <a href={props.url} target="_blank" rel="noreferrer">
-          <div className="flex w-5/6 h-20 mb-2 ml-4 overflow-hidden rounded-lg shadow-sm cursor-pointer">
+          <div className="flex h-20 mb-2 ml-4 overflow-hidden rounded-lg shadow-sm cursor-pointer"
+            style={{ width: "95%" }}>
             <div className="w-20 h-full">
               <img
                 className="object-cover w-full h-full rounded-sm"
@@ -246,10 +253,10 @@ const FeedItem = (props: any) => {
               />
             </div>
             <div className="flex-1 px-6 py-3 mb-5 ">
-              <h4 className="mb-2 text-sm font-semibold tracking-tight text-gray-700">
+              <h4 className="mb-1 text-sm font-semibold tracking-tight text-gray-700">
                 {props.title}
               </h4>
-              <p className="mb-3 text-xs text-gray-500 textTruncate">
+              <p className="text-xs text-gray-500 textTruncate">
                 {props.description.substring(0, 70)}...
               </p>
             </div>
