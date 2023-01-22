@@ -9,7 +9,6 @@ import * as redisStore from 'cache-manager-redis-store';
     AuthModule,
     CacheModule.register({
       store: redisStore,
-      // ttl: 10,
       url: process.env.REDIS_URL,
     }),
   ],

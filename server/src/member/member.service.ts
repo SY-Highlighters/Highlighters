@@ -1,11 +1,20 @@
 import { User } from '@prisma/client';
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  CACHE_MANAGER,
+  Inject,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { PrismaService } from 'src/repository/prisma.service';
 import { CreateGroupDto, showUserDto } from './dto/group.dto';
+import { Cache } from 'cache-manager';
 
 @Injectable()
 export class MemberService {
-  constructor(private readonly prismaService: PrismaService) {}
+  constructor(
+    private readonly prismaService: PrismaService,
+    @Inject(CACHE_MANAGER) private readonly cacheManager: Cache,
+  ) {}
 
   //그룹 만들고 아이디 받아서 업데이트
   async createGroup(createGroupDto: CreateGroupDto): Promise<number> {
@@ -22,6 +31,9 @@ export class MemberService {
     if (!newGroup) {
       throw new NotFoundException(`Create Group Fail`);
     }
+
+    // 그룹 생성하면 group_name을 캐시에 저장
+    await this.cacheManager.set(`group_name-${newGroup.id}`, name, 0);
 
     const joinGroup = await this.joinGroup(user_email, newGroup.group_code);
 
@@ -46,6 +58,9 @@ export class MemberService {
     if (!update_user) {
       throw new Error(`Join Group Fail`);
     }
+
+    // 그룹에 참여하면 유저 정보를 캐시에 저장
+    await this.cacheManager.set(`user-${user_email}`, update_user, 0); // ttl 0: 무한
 
     return update_user.group_id;
   }

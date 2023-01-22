@@ -88,8 +88,11 @@ export class FeedController {
 
   // Id로 Feed 찾은 후 삭제
   @Delete('/delete/:id')
-  async deleteFeedById(@Param('id') id: number): Promise<Feed> {
-    return this.feedService.deleteFeedById(id);
+  async deleteFeedById(
+    @Param('id') id: number,
+    @GetUser() user: User,
+  ): Promise<Feed> {
+    return this.feedService.deleteFeedById(id, user);
   }
 
   // Feed test 생성

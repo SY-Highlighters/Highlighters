@@ -25,7 +25,9 @@ export class CalendarService {
     // 요청 날짜가 현재 날짜와 같지 않은 경우만 캐시
     if (date.getDate() !== curr_date.getDate()) {
       const cache_result = await this.cacheManager.get(
-        `calendar-${date}-${page}`,
+        `calendar-${user.group_id}-${date.getFullYear()}-${
+          date.getMonth() + 1
+        }-${date.getDate()}-${page}`,
       );
       if (!cache_result) {
         console.log('[calendar] cache miss');
@@ -125,10 +127,12 @@ export class CalendarService {
         totalPage: Math.ceil(count / take),
         feeds,
       };
-
+      console.log('date: ', date, date.getMonth());
       if (cache_flag === 1) {
         await this.cacheManager.set(
-          `calendar-${date}-${page}`,
+          `calendar-${user.group_id}-${date.getFullYear()}-${
+            date.getMonth() + 1
+          }-${date.getDate()}-${page}`,
           result,
           60 * 60 * 24, // ttl: 24시간
         );

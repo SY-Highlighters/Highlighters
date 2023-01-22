@@ -10,11 +10,10 @@ import { ElasticsearchService } from 'src/repository/connection';
 @Module({
   imports: [
     AuthModule,
-    // CacheModule.register({
-    //   store: redisStore,
-    //   ttl: 10,
-    //   url: process.env.REDIS_URL,
-    // }),
+    CacheModule.register({
+      store: redisStore,
+      url: process.env.REDIS_URL,
+    }),
   ],
   controllers: [FeedController],
   providers: [FeedService, TagService, ElasticsearchService],

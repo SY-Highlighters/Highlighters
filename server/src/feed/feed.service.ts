@@ -12,7 +12,8 @@ import { elasticFeedDto } from 'src/repository/dto/elastic.dto';
 export class FeedService {
   constructor(
     private readonly prismaService: PrismaService,
-    private readonly tagService: TagService, // @Inject(CACHE_MANAGER) private readonly cacheManager: Cache,
+    private readonly tagService: TagService,
+    @Inject(CACHE_MANAGER) private readonly cacheManager: Cache,
     private readonly elastic: ElasticsearchService,
   ) {}
 
@@ -219,11 +220,31 @@ export class FeedService {
     return feeds;
   }
 
-  async deleteFeedById(id: number): Promise<Feed> {
+  async deleteFeedById(id: number, user: User): Promise<Feed> {
     const result = await this.prismaService.feed.delete({
       where: { id },
     });
     this.elastic.deleteFeed(String(id));
+    console.log('deleteFeedById: ', result);
+
+    let i = 1;
+    while (true) {
+      const isExist = await this.cacheManager.get(
+        `calendar-${user.group_id}-${result.createdAt.getFullYear()}-${
+          result.createdAt.getMonth() + 1
+        }-${result.createdAt.getDate()}-${i}`,
+      );
+      if (isExist === null) {
+        console.log('deleted all cache');
+        break;
+      }
+      await this.cacheManager.del(
+        `calendar-${user.group_id}-${result.createdAt.getFullYear()}-${
+          result.createdAt.getMonth() + 1
+        }-${result.createdAt.getDate()}-${i}`,
+      );
+      i++;
+    }
     return result;
   }
 
