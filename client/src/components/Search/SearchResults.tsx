@@ -3,10 +3,6 @@ import { useEffect, useState } from "react";
 import { useCookies } from "react-cookie";
 import axios from "axios";
 import { DocumentIcon, MegaphoneIcon } from "@heroicons/react/24/outline";
-import { QueryCache, useQuery, QueryClient, useQueryClient } from "react-query";
-import { useInView } from "react-intersection-observer";
-import { useFeedsInGroup } from "../../hooks/useFeedsInGroup";
-import Swal from "sweetalert2";
 import { searchKeywordState } from "../../states/atom";
 import { useRecoilState } from "recoil";
 import SearchResultItem from "./SearchResultItem";
@@ -18,8 +14,6 @@ const SearchResults = () => {
 
   // let timeoutId: NodeJS.Timeout;
   useEffect(() => {
-    console.log("검색창");
-    console.log(searchKeyword);
     setSearchResultFeeds([]);
     // setSearchKeyword("");
     async function getSearchResultsAsync() {
@@ -31,7 +25,6 @@ const SearchResults = () => {
           Authorization: `Bearer ${cookies.logCookie}`,
         },
       });
-      console.log(response);
       const data = response.data.data;
       console.log("searchresult: ", data);
       searchResultFeedsAdd(data);
@@ -80,12 +73,12 @@ const SearchResults = () => {
 
   return (
     <div className="basis-2/4 ">
-      <div className="rounded-lg bg-sky-500">
+      <div className="rounded-md opacity-90 bg-sky-500">
         {/* 메뉴바*/}
-        <div className="px-3 py-3 mx-auto rounded-lg max-w-7xl">
+        <div className="px-3 py-2 mx-auto rounded-lg max-w-7xl">
           <div className="flex flex-wrap items-center ">
             <div className="flex items-center">
-              <span className="p-2 mr-1 -ml-3 rounded-lg bg-sky-500">
+              <span className="flex p-2 mr-1 -ml-3 rounded-lg bg-sky-500">
                 <DocumentIcon
                   className="w-6 h-6 ml-3 text-white"
                   aria-hidden="true"

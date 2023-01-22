@@ -1,35 +1,9 @@
-import {
-  CalendarIcon,
-  CheckIcon,
-  ChevronDownIcon,
-  PencilIcon,
-} from "@heroicons/react/20/solid";
-import {
-  ChatBubbleBottomCenterIcon,
-  StarIcon as StarIconOutLine,
-  TrashIcon,
-} from "@heroicons/react/24/outline";
-
-import { StarIcon } from "@heroicons/react/24/solid";
-import { useEffect, useState } from "react";
-import { Comment } from "../Comment/Comment";
-import { FeedTagEdit } from "../Tags/FeedTagEdit";
-import { TagItem } from "../Tags/TagItem/TagItem";
-import {
-  currentFeedIdState,
-  tagModalVisble,
-  commentReloadState,
-  searchKeywordState,
-} from "../../states/atom";
+import { CalendarIcon } from "@heroicons/react/20/solid";
+import { searchKeywordState } from "../../states/atom";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
-import { Bookmarked } from "../Bookmarks/BookmarkItem/Bookmarked";
-import { UnBookmarked } from "../Bookmarks/BookmarkItem/UnBookmarked";
-import { Delete } from "../Func/Delete";
 
 const SearchResultItem = (props: any) => {
   const [searchKeyword, setSearchKeyword] = useRecoilState(searchKeywordState);
-  const [searchInput, setSearchInput] = useState("");
-
   //   const [commentIsClicked, setCommentIsClicked] = useState(false);
   //   const setCurrentFeedId = useSetRecoilState(currentFeedIdState);
 
@@ -40,13 +14,9 @@ const SearchResultItem = (props: any) => {
   let titleDiv;
   let resultinfosDiv;
 
-  // console.log(props);
-  // type : 1(title), 2(highlight), 3(tag_name)
+  // 타이틀에 검색어 들어있는지 검사
   const title = props.title;
   const i = title.toUpperCase().indexOf(searchKeyword.toUpperCase());
-
-  // console.log(searchKeyword.length);
-
   if (i !== -1) {
     const j = i + searchKeyword.length;
     titleDiv = (
@@ -60,6 +30,7 @@ const SearchResultItem = (props: any) => {
     titleDiv = <div>{title}</div>;
   }
 
+  // 하이라이트에 검색어 들어있는지 검사
   if (props.resultinfo.length > 0) {
     resultinfosDiv = props.resultinfo.map((info: any, index: number) => {
       let infoContent;

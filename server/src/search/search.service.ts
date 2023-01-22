@@ -41,15 +41,6 @@ export class SearchService {
               },
             },
           },
-          // {
-          // tag: {
-          //   some: {
-          //     tag_name: {
-          //       contains: word,
-          //     },
-          //   },
-          // },
-          // },
         ],
       },
       include: {
@@ -59,24 +50,10 @@ export class SearchService {
         user: true,
       },
     });
-    // console.log(result[0]);
     const real_result = [];
     for (let i = 0; i < result.length; i++) {
-      const resultinfo = []; // type : 1(highlight)
-      // const includeIdx = result[i].title
-      //   .toUpperCase()
-      //   .indexOf(word.toUpperCase());
-      // if (includeIdx != -1) {
-      //   resultinfo.push({
-      //     type: 1,
-      //     includeStart: includeIdx,
-      //     includeEnd: includeIdx + word.length,
-      //     content: result[i].title,
-      //   });
-      // }
-      // if (result[i].user_email.includes(word)) {
-      //   resultinfo.push({ content: result[i].user_email });
-      // }
+      const resultinfo = [];
+
       for (let j = 0; j < result[i].highlight.length; j++) {
         if (result[i].highlight[j].type == 1) {
           const includeIdx = result[i].highlight[j].contents
@@ -92,14 +69,7 @@ export class SearchService {
           }
         }
       }
-      // for (let j = 0; j < result[i].tag.length; j++) {
-      //   if (result[i].tag[j].tag_name.includes(word)) {
-      //     resultinfo.push({
-      //       type: 3,
-      //       content: result[i].tag[j].tag_name,
-      //     });
-      //   }
-      // }
+
       real_result.push({
         createdAt: result[i].createdAt,
         title: result[i].title,

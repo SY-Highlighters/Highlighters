@@ -61,13 +61,7 @@ export default function Header() {
   };
 
   const searchButtonClicked = () => {
-    // Swal.fire({
-    //   icon: "warning",
-    //   title: "공사중",
-    //   text: "검색 기능은 지원 예정입니다.",
-    //   showConfirmButton: false,
-    //   timer: 1000,
-    // });
+
     if (searchInput === "") {
       Swal.fire({
         icon: "warning",
@@ -81,7 +75,6 @@ export default function Header() {
       setMainSectionNum(4);
     }
     setSearchKeyword(searchInput);
-    // console.log(searchInput);
   };
   // 검색 인풋
   const handleSearchInputChange = (event: any) => {
