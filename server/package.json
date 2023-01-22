@@ -54,7 +54,7 @@
     "google-auth-library": "^8.7.0",
     "nestjs-elastic-apm": "^1.2.0",
     "node": "^19.3.0",
-    "node-fetch": "^3.3.0",
+    "node-fetch": "^2.6.7",
     "node-html-parser": "^6.1.4",
     "passport-google-oauth20": "^2.0.0",
     "passport-jwt": "^4.0.1",
