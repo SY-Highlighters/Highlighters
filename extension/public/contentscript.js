@@ -756,6 +756,96 @@ document.onmouseup = function (e) {
   }
 };
 
+let youtubeLeftControls, youtubePlayer;
+let currentVideo = "";
+let currentVideoBookmarks = [];
+
+const getBookmark = async (videoID) => {
+  const youtubeURL = `https://www.youtube.com/watch?v=${videoID}`;
+
+  return await chrome.runtime.sendMessage({
+    greeting: "getHighlight",
+    data: {
+      url: youtubeURL,
+    },
+  });
+};
+
+const postBookmark = async (videoID, time) => {
+  const youtubeURL = `https://www.youtube.com/watch?v=${videoID}`;
+  const og_image = document.querySelector("meta[property='og:image']");
+  const og_description = document.querySelector(
+    "meta[property='og:description']"
+  );
+
+  return await chrome.runtime.sendMessage({
+    greeting: "postHighlight",
+    data: {
+      url: youtubeURL,
+      contents: String(time),
+      selection: {},
+      title: document.title,
+      image: og_image
+        ? og_image.content
+        : "https://www.salonlfc.com/wp-content/uploads/2018/01/image-not-found-1-scaled-1150x647.png",
+      description: og_description ? og_description.content : "No Description",
+      color: "youtube",
+      type: 3,
+    },
+  });
+};
+
+const newVideoLoaded = async () => {
+  const bookmarkBtnExists = document.getElementsByClassName("bookmark-btn")[0];
+  const response = await getBookmark(currentVideo);
+  console.log("response", response);
+  currentVideoBookmarks = response.data.success ? response.data.data : [];
+  console.log("currentVideoBookmarks", currentVideoBookmarks);
+
+  if (!bookmarkBtnExists) {
+    const bookmarkBtn = document.createElement("img");
+
+    bookmarkBtn.src = "https://cdn-icons-png.flaticon.com/512/3237/3237124.png";
+    bookmarkBtn.className = "ytp-button bookmark-btn";
+    bookmarkBtn.title = "Click to bookmark current timestamp";
+    bookmarkBtn.style.margin = "10px";
+    bookmarkBtn.style.height = "25px";
+    bookmarkBtn.style.width = "25px";
+
+    youtubeLeftControls =
+      document.getElementsByClassName("ytp-left-controls")[0];
+    youtubePlayer = document.getElementsByClassName("video-stream")[0];
+
+    youtubeLeftControls.appendChild(bookmarkBtn);
+    bookmarkBtn.addEventListener("click", addNewBookmarkEventHandler);
+  }
+};
+
+const addNewBookmarkEventHandler = async () => {
+  console.log("CLICKED");
+
+  const getResponse = await getBookmark(currentVideo);
+  currentVideoBookmarks = getResponse.data.data;
+
+  const postResponse = await postBookmark(
+    currentVideo,
+    youtubePlayer.currentTime
+  );
+  console.log("postResponse", postResponse);
+};
+
+// const getTime = (t) => {
+//   let date = new Date(0);
+//   date.setSeconds(t);
+
+//   return date.toISOString().substr(11, 8);
+// };
+
+const rehighlightVideo = (highlight) => {
+  console.log(highlight);
+  // https://icones.pro/wp-content/uploads/2021/02/icone-de-broche-de-localisation-violette.png
+};
+
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   switch (request.greeting) {
     case "getHighlight":
@@ -766,6 +856,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
         try {
           if (highlight.type === 1) rehighlightText(highlight);
           else if (highlight.type === 2) rehighlightImage(highlight);
+          else if (highlight.type === 3) rehighlightVideo(highlight);
         } catch (e) {
           console.log("하이라이트 복원 실패", e);
         }
@@ -773,6 +864,12 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
 
       makeEventOnImage();
       sendResponse({ farewell: "good" });
+      break;
+
+    case "newVideo":
+      currentVideo = request.videoID;
+      console.log(currentVideo);
+      newVideoLoaded();
       break;
 
     // 웹페이지의 하이라이팅을 디비로 전송
