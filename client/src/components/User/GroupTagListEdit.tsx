@@ -77,7 +77,7 @@ const GroupTagListEdit = (props: any) => {
   return (
     <div className="">
       {isSuccess && tagEditList.length === 0 && (
-        <div className="flex flex-col items-center justify-center opacity-75 ">
+        <div className="flex flex-col items-center justify-center opacity-75">
           <div className="flex items-center justify-center w-20 h-20 rounded-full ">
             <HashtagIcon
               className="w-10 h-10 text-sky-400"
@@ -101,5 +101,5 @@ const GroupTagListEdit = (props: any) => {
         ))}
     </div>
   );
-}
+};
 export default GroupTagListEdit;

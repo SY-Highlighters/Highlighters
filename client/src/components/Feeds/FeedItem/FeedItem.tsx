@@ -36,6 +36,7 @@ import { useCookies } from "react-cookie";
 //   },
 // });
 import axios from "axios";
+import YoutubeTimeStamp from "./YoutubeTimeStamp";
 
 const dummary = "현재 네이버 뉴스만 지원합니다 😂";
 const FeedItem = (props: any) => {
@@ -46,6 +47,8 @@ const FeedItem = (props: any) => {
   const [summary, setSummary] = useState(dummary);
   const [commentLen, setCommentLen] = useState(props.commentLen);
   const [isBookmarked, setIsBookmarked] = useState(props.bookmarked);
+  const [youtubeTime, setYoutubeTime] = useState("");
+  const [isYoutube, setIsYoutube] = useState(false);
   // const [img, setImgUrl] = useState("");
 
   // const [firstHighlight, setFirstHighlight] = useState(
@@ -58,18 +61,25 @@ const FeedItem = (props: any) => {
   const year = date.getFullYear();
   const month = date.getMonth() + 1;
   const day = date.getDate();
-
+  const youtubeTimeSet = (time: any) => {
+    setYoutubeTime(time);
+  };
   // 하이라이트 section
   let highlights;
+  let youtubeCode;
+  let youtubes;
   if (props.highlight.length > 0) {
     let firstHighlight = props.highlight[0].user.nickname;
+
     highlights = props.highlight.map((hl: any, index: number) => {
       // 하이라이트 색상 없을때 -> 하이라이트 안함
-
       if (hl.color === "-1") {
         return;
       }
-
+      if (hl.type == "3" && index === 0) {
+        hl.contents = hl.contents.split(".")[0];
+        youtubeCode = props.url.split("v=")[1];
+      }
       if (firstHighlight !== hl.user.nickname || index === 0) {
         // 첫 하이라이트
         firstHighlight = hl.user.nickname;
@@ -100,6 +110,32 @@ const FeedItem = (props: any) => {
             );
             break;
           case 3: // 동영상 하이라이트
+            // hl.contents 소숫점 제거
+
+            highContent = (
+              // eslint-disable-next-line jsx-a11y/alt-text
+              <>
+                <YoutubeTimeStamp
+                  time={hl.contents}
+                  setTime={youtubeTimeSet}
+                ></YoutubeTimeStamp>
+              </>
+
+              // <div className="ml-1 iframeContainer iframe16To9">
+              //   <iframe
+              //     src={`https://www.youtube.com/embed/${youtubeCode}?start=${hl.contents}`}
+              //     allowFullScreen
+              //   ></iframe>
+              // </div>
+              // <iframe
+              //   src={hl.contents}
+              //   className="w-3/5 mt-2 mb-1 ml-2 h-3/5 outline-4"
+              //   style={{
+              //     outlineStyle: "solid",
+              //     outlineColor: hl.color,
+              //   }}
+              // ></iframe>
+            );
             break;
           default:
         }
@@ -127,7 +163,6 @@ const FeedItem = (props: any) => {
         return (
           <div key={index}>
             <li className="" key={index}>
-              {" "}
               <div className="flex flex-row mt-2">
                 <img
                   src={hl.user.image}
@@ -171,6 +206,14 @@ const FeedItem = (props: any) => {
             );
             break;
           case 3: // 동영상 하이라이트
+            highContent = (
+              <>
+                <YoutubeTimeStamp
+                  time={hl.contents}
+                  setTime={youtubeTimeSet}
+                ></YoutubeTimeStamp>
+              </>
+            );
             break;
           default:
         }
@@ -237,6 +280,7 @@ const FeedItem = (props: any) => {
       setCommentLen(commentLen - 1);
     }
   };
+
   return (
     // <li className="py-5">
     <div className="overflow-hidden bg-white rounded-lg shadow-lg">
@@ -289,34 +333,49 @@ const FeedItem = (props: any) => {
               </div>
             ))}
         </div>
+        {/* 하이라이트 section */}
         <div className="mb-5 ">
           <ul className="space-y-0.5">{highlights}</ul>
+          {youtubeCode && (
+            <div className="mt-2 iframeContainer iframe16To9">
+              <iframe
+                src={
+                  youtubeTime
+                    ? `https://www.youtube.com/embed/${youtubeCode}?start=${youtubeTime}&autoplay=1&mute=1}`
+                    : `https://www.youtube.com/embed/${youtubeCode}`
+                }
+                allowFullScreen
+              ></iframe>
+            </div>
+          )}
         </div>
 
         {/* 노션 북마크처럼 만들기 프로젝트 */}
-        <a href={props.url} target="_blank" rel="noreferrer">
-          <div
-            className="flex h-20 mb-2 ml-4 overflow-hidden rounded-lg shadow-sm cursor-pointer"
-            style={{ width: "95%" , height: "85px" }}
-          >
-            <div className="w-20 h-full"
-            style = {{width: "85px"}}>
-              <img
-                className="object-cover w-full h-full rounded-sm"
-                src={props.og_image}
-                alt=""
-              />
+        {!youtubeCode && (
+          <a href={props.url} target="_blank" rel="noreferrer">
+            <div
+              className="flex h-20 mb-2 ml-4 overflow-hidden rounded-lg shadow-sm cursor-pointer"
+              style={{ width: "95%", height: "85px" }}
+            >
+              <div className="w-20 h-full" style={{ width: "85px" }}>
+                <img
+                  className="object-cover w-full h-full rounded-sm"
+                  src={props.og_image}
+                  alt=""
+                />
+              </div>
+              <div className="flex-1 px-5 my-auto">
+                <h4 className="mb-1 text-sm font-semibold tracking-tight text-gray-700">
+                  {props.title}
+                </h4>
+                <p className="text-xs text-gray-500 textTruncate">
+                  {props.description.substring(0, 70)}...
+                </p>
+              </div>
             </div>
-            <div className="flex-1 my-auto px-5">
-              <h4 className="mb-1 text-sm font-semibold tracking-tight text-gray-700">
-                {props.title}
-              </h4>
-              <p className="text-xs text-gray-500 textTruncate">
-                {props.description.substring(0, 70)}...
-              </p>
-            </div>
-          </div>
-        </a>
+          </a>
+        )}
+
         {/* 태그 section */}
         <div className="flex flex-wrap mt-2">{tags}</div>
         {/* 태그 수정 section */}
