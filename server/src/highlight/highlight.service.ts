@@ -84,7 +84,7 @@ export class HighlightService {
       let result = null;
 
       // type 1 일반 글씨 하이라이트
-      if (type === 1) {
+      if (type != 2) {
         result = await this.prismaService.highlight.create({
           data: {
             feed_id: find_feed.id,
@@ -119,6 +119,7 @@ export class HighlightService {
           });
         }
       }
+
       // websocket으로 보내기
       console.log('===== 하이라이트 =====');
       this.event.group_room[group_id].forEach((client) => {
@@ -202,21 +203,26 @@ export class HighlightService {
     try {
       // 하이라이트 삭제
       let high_contents;
-      if (type === 1) {
+      if (type == 1) {
         // 텍스트 하이라이트 삭제
         high_contents = await this.prismaService.highlight.update({
           where: { id: id },
           select: { contents: true, feed_id: true },
           data: { contents: '', color: '-1' }, // 삭제된 하이라이트는 color를 -1로 변경
         });
-      } else if (type === 2) {
+      } else if (type == 2) {
         // 사진 하이라이트 삭제
         high_contents = await this.prismaService.highlight.delete({
           where: { id: id },
           select: { contents: true, feed_id: true },
         });
+        await deleteS3(id);
+      } else {
+        high_contents = await this.prismaService.highlight.delete({
+          where: { id: id },
+          select: { contents: true, feed_id: true },
+        });
       }
-      await deleteS3(id);
       console.log(high_contents);
       await this.elastic.deleteHighlight(
         String(high_contents.feed_id),
