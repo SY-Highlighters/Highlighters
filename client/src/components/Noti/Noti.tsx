@@ -6,13 +6,29 @@ import Calender from "../Calender/Calender";
 import { useNoti } from "../../hooks/useNoti";
 import { useInView } from "react-intersection-observer";
 import NotiList from "./NotiList";
+import { useCookies } from "react-cookie";
+const host_url = `${process.env.REACT_APP_HOST}/api/noti/deleteAll`;
+
 // const NotiList = lazy(() => import("./NotiList"));
 export default function Noti() {
   const [notiCount, setNotiCount] = useState(0);
+  const [cookies] = useCookies(["logCookie"]);
 
-  const clickedAllRead = () => {
-    setNotiCount(0);
-  };
+  // const clickedAllRead = () => {
+  //   setNotiCount(0);
+  // };
+  async function clickedAllRead() {
+    // Todo : 태그 삭제 기능
+    // 서버에 태그 삭제 요청
+    await axios.delete(host_url, {
+      headers: {
+        Authorization: `Bearer ${cookies.logCookie}`,
+      },
+    });
+
+    // 리액트쿼리에 저장된 태그리스트 업데이트
+    // setTestDel(!testDel);
+  }
   return (
     // <div className="w-1/5 xl:fixed right-24 xl:overflow-auto ">
     <div className="hidden pr-14 basis-1/4 xl:block">
