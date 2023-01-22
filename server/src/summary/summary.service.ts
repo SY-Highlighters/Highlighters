@@ -1,6 +1,6 @@
 import { map } from 'rxjs/operators';
 import { HttpService } from '@nestjs/axios';
-import { Injectable, HttpException } from '@nestjs/common';
+import { Injectable, HttpException, ConsoleLogger } from '@nestjs/common';
 import { User } from '@prisma/client';
 import { ElasticsearchService } from 'src/repository/connection';
 import { PrismaService } from 'src/repository/prisma.service';
@@ -27,27 +27,46 @@ export class SummaryService {
 
     const full_text = await fetch(url).then((res) => res.text());
     const temp = parse(full_text);
-    let title = temp.querySelector('#title_area').innerHTML;
-    let text = temp.querySelector('#dic_area').innerHTML;
+    const title = temp.querySelector('#title_area').innerText.trim();
+    const dic_area = temp.querySelector('#dic_area');
+    const end_photo_orgs = dic_area
+      .querySelectorAll('.end_photo_org')
+      .map((node) => {
+        return node.innerText;
+      });
 
-    const regExp = [/<\/?[^>]+>/gi];
-    text = text.replace(regExp[0], '');
-    text = text.replace(/\n+/g, '');
-    text = text.replace(/\t+/g, '');
-    title = title.replace(regExp[0], '');
-    // console.log(title);
+    const media_end_summary =
+      dic_area.querySelector('.media_end_summary').innerText;
 
-    if (text.length > 1999) {
+    let content = dic_area.innerText.replace(media_end_summary, '');
+    for (let i = 0; i < end_photo_orgs.length; i++) {
+      content = content.replace(end_photo_orgs[i], '');
+    }
+    content = content.trim();
+    // console.log(content);
+
+    // let text = temp.querySelector('#dic_area').innerText.trim();
+    // console.log(text);
+    // console.log('title: ', title);
+
+    // const regExp = [/<\/?[^>]+>/gi];
+    // text = text.replace(/(\n)/g, '');
+    // text = text.replace(/\n+/g, '');
+    // text = text.replace(/\t+/g, '');
+    // title = title.replace(regExp[0], '');
+    // console.log('text: ', text);
+
+    if (content.length > 1999) {
       throw new HttpException('문장이 너무 길어요', 400);
     }
     const data = {
       document: {
         title: title,
-        content: text,
+        content: content,
       },
       option: {
         language: 'ko',
-        // model: 'news',
+        model: 'news',
         tone: 0,
         summaryCount: 3,
       },
@@ -59,7 +78,6 @@ export class SummaryService {
       const result = await this.httpService
         .post(api_url, send_data, AxiosRequestConfig)
         .pipe(map((response) => response.data));
-
       return result;
     } catch (error) {
       console.log('error', error);

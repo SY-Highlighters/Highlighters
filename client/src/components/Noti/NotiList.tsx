@@ -16,7 +16,7 @@ const NotiList = () => {
     getNextPageIsPossible,
     status,
   } = useNoti();
-  console.log('노티 명단' ,getBoard)
+  // console.log('노티 명단' ,getBoard)
   useEffect(() => {
     // 맨 마지막 요소를 보고있고 페이지가 존재하면
     // 다음 페이지 데이터를 가져옴

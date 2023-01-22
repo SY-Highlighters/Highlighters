@@ -37,6 +37,7 @@ import { useCookies } from "react-cookie";
 // });
 import axios from "axios";
 import YoutubeTimeStamp from "./YoutubeTimeStamp";
+import ThreeLineSummary from "../../../summary/ThreeLineSummary";
 
 const dummary = "현재 네이버 뉴스만 지원합니다 😂";
 const FeedItem = (props: any) => {
@@ -74,9 +75,9 @@ const FeedItem = (props: any) => {
     highlights = props.highlight.map((hl: any, index: number) => {
       // 하이라이트 색상 없을때 -> 하이라이트 안함
       if (hl.color === "-1") {
-        return;
+        return <></>;
       }
-      if (hl.type == "3" && index === 0) {
+      if (hl.type === 3 && index === 0) {
         hl.contents = hl.contents.split(".")[0];
         youtubeCode = props.url.split("v=")[1];
       }
@@ -92,15 +93,14 @@ const FeedItem = (props: any) => {
                     <img
                       src={hl.user.image}
                       className="w-5 h-5 mr-1 rounded-full shadow-md"
+                      alt="유저"
                     ></img>
                     <div className="ml-1">
                       <span
                         className="text-xs lg:text-base"
                         style={{ backgroundColor: hl.color }}
                       >
-                        {/* hl.contents에서 개행문자 처리 */}
                         {hl.contents.trim()}
-                        {/* {hl.contents} */}
                       </span>
                     </div>
                   </div>
@@ -115,19 +115,19 @@ const FeedItem = (props: any) => {
                     <img
                       src={hl.user.image}
                       className="w-5 h-5 mr-1 rounded-full shadow-md"
+                      alt="유저"
                     ></img>
                     <img
                       src={hl.contents}
                       className="w-3/5 mt-2 mb-1 ml-2 h-3/5 outline-4"
                       style={{ outlineStyle: "solid", outlineColor: hl.color }}
+                      alt="이미지 하이라이트"
                     ></img>
                   </div>
                 </li>
               </div>
             );
-
           case 3: // 동영상 하이라이트
-            // hl.contents 소숫점 제거
             return (
               <>
                 <div></div>
@@ -137,6 +137,7 @@ const FeedItem = (props: any) => {
                       <img
                         src={hl.user.image}
                         className="w-5 h-5 mr-2 rounded-full shadow-md"
+                        alt="유저"
                       ></img>
                       <YoutubeTimeStamp
                         time={hl.contents}
@@ -151,8 +152,6 @@ const FeedItem = (props: any) => {
         }
       } else {
         // 첫 하이라이트 아닐 때
-        let highContent;
-
         switch (hl.type) {
           case 1: // 텍스트 하이라이트
             return (
@@ -163,9 +162,7 @@ const FeedItem = (props: any) => {
                       className="text-xs lg:text-base"
                       style={{ backgroundColor: hl.color }}
                     >
-                      {/* hl.contents에서 개행문자 처리 */}
                       {hl.contents.trim()}
-                      {/* {hl.contents} */}
                     </span>
                   </div>
                 </li>
@@ -182,6 +179,7 @@ const FeedItem = (props: any) => {
                       outlineStyle: "solid",
                       outlineColor: hl.color,
                     }}
+                    alt="이미지 하이라이트"
                   ></img>
                 </li>
               </div>
@@ -220,14 +218,9 @@ const FeedItem = (props: any) => {
     setCommentIsClicked(!commentIsClicked);
   }
 
-  // useEffect(() => {
-
-  // }, []);
-
   // 세줄요약 api
   const threeTriHandler = async () => {
     if (!threeTrigger && props.url.includes("https://n.news.naver.com")) {
-      // console.log("여기옴?", props.url);
       const three = await axios({
         method: "post",
         url: `${process.env.REACT_APP_HOST}/api/summary`,
@@ -239,7 +232,6 @@ const FeedItem = (props: any) => {
           Authorization: `Bearer ${cookies.logCookie}`,
         },
       });
-      // console.log(three.data.data.summary);
       setSummary(three.data.data.summary);
     }
     setThreeTrigger(!threeTrigger);
@@ -292,30 +284,34 @@ const FeedItem = (props: any) => {
         </a>
         {/* 세줄요약 -> 현재 네이버 뉴스만 가능 */}
         {props.url.includes("https://n.news.naver.com") && (
-          <div
-            onClick={threeTriHandler}
-            className="my-1 text-sm font-bold text-gray-500 cursor-pointer hover:text-gray-700"
-          >
-            <span className="mr-1 text-xl">🤖</span> "3줄로 요약해줘"
-          </div>
+          <ThreeLineSummary url={props.url}></ThreeLineSummary>
         )}
-        <div className="">
-          {threeTrigger &&
-            summary.split("\n").map((line, index) => (
-              <div
-                className="mt-1 text-sm font-bold ml-7 text-sky-400 animate-fade-in-down"
-                key={index}
-              >
-                {index + 1}. {line} <br />
-              </div>
-            ))}
-        </div>
+
+        {/*    <div
+        //     onClick={threeTriHandler}
+        //     className="my-1 text-sm font-bold text-gray-500 cursor-pointer hover:text-gray-700"
+        //   >
+        //     <span className="mr-1 text-xl">🤖</span> "3줄로 요약해줘"
+        //   </div>
+        // )}
+        // <div className="">
+        //   {threeTrigger &&
+        //     summary.split("\n").map((line, index) => (
+        //       <div
+        //         className="mt-1 text-sm font-bold ml-7 text-sky-400 animate-fade-in-down"
+        //         key={index}
+        //       >
+        //         {index + 1}. {line} <br />
+        //       </div>
+        //     ))}
+        // </div> */}
         {/* 하이라이트 section */}
         <div className="mb-5 ">
           <ul className="space-y-0.5">{highlights}</ul>
           {youtubeCode && (
             <div className="mt-3 iframeContainer iframe16To9">
               <iframe
+                title={props.title}
                 src={
                   youtubeTime
                     ? `https://www.youtube.com/embed/${youtubeCode}?start=${youtubeTime}&autoplay=1&mute=1}`
@@ -384,7 +380,6 @@ const FeedItem = (props: any) => {
                 <ChatBubbleBottomCenterIcon className="w-5 h-5 text-gray-400 hover:text-gray-700 " />
                 {/* </button> */}
                 {/* ChevronDownIcon 클릭시 댓글창  */}
-                {/* */}
               </button>
             </div>
           </div>
@@ -398,7 +393,6 @@ const FeedItem = (props: any) => {
         )}
       </div>
     </div>
-    // </li>
   );
 };
 

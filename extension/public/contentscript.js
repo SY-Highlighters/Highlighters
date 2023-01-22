@@ -935,7 +935,6 @@ chrome.runtime.onMessage.addListener(async (request, sender, sendResponse) => {
       } catch (e) {
         console.log("하이라이트 복원 실패", e);
       }
-      // rehighlightText(request.data);
       break;
 
     default:
