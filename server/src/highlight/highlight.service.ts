@@ -224,6 +224,8 @@ export class HighlightService {
         });
       }
       console.log(high_contents);
+
+      // elastic 삭제
       await this.elastic.deleteHighlight(
         String(high_contents.feed_id),
         high_contents.contents,

@@ -816,9 +816,6 @@ const newVideoLoaded = async () => {
       document.getElementsByClassName("ytp-left-controls")[0];
     youtubePlayer = document.getElementsByClassName("video-stream")[0];
 
-    console.log("youtubeLeftControls", youtubeLeftControls);
-    console.log("youtubePlayer", youtubePlayer);
-
     youtubeLeftControls.appendChild(bookmarkBtn);
     bookmarkBtn.addEventListener("click", addNewBookmarkEventHandler);
   }
@@ -835,6 +832,9 @@ const addNewBookmarkEventHandler = async () => {
     youtubePlayer.currentTime
   );
   console.log("postResponse", postResponse);
+
+  const newHighlight = postResponse.data.data;
+  rehighlightVideo(newHighlight);
 };
 
 // const getTime = (t) => {
@@ -844,9 +844,48 @@ const addNewBookmarkEventHandler = async () => {
 //   return date.toISOString().substr(11, 8);
 // };
 
+const deletePin = (pinNode) => {
+  pinNode.remove();
+
+  chrome.runtime.sendMessage(
+    {
+      greeting: "deleteHighlight",
+      data: {
+        id: +pinNode.id,
+        type: 3,
+      },
+    },
+    (response) => {
+      console.log("response", response);
+    }
+  );
+};
+
 const rehighlightVideo = (highlight) => {
-  console.log(highlight);
-  // https://icones.pro/wp-content/uploads/2021/02/icone-de-broche-de-localisation-violette.png
+  const progressBar = document.getElementsByClassName(
+    "ytp-progress-bar-container"
+  )[0];
+
+  const highlightYTP = document.createElement("highlighters");
+  highlightYTP.id = highlight.id;
+  highlightYTP.setAttribute("data-time", parseInt(highlight.contents));
+  highlightYTP.style.position = "absolute";
+
+  const barPos = (parseInt(highlight.contents) / youtubePlayer.duration) * 100;
+  highlightYTP.style.left = `${barPos}%`;
+
+  const pin = document.createElement("img");
+  pin.src = "https://cdn-icons-png.flaticon.com/512/787/787552.png";
+  pin.style.position = "absolute";
+  pin.style.top = "-25px";
+  pin.style.left = "-15px";
+  pin.style.height = "25px";
+  pin.style.width = "25px";
+
+  highlightYTP.appendChild(pin);
+  progressBar.appendChild(highlightYTP);
+
+  highlightYTP.addEventListener("click", () => deletePin(highlightYTP));
 };
 
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
