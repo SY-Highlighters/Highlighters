@@ -10,15 +10,15 @@ export default function Intro() {
   return (
     <div>
       <div className="grid p-10 space-y-5 justify-items-center bg-sky-600">
-        <h1 className="mb-3 text-3xl font-bold text-gray-200 xl:text-5xl ">
-          "Highlighters "
+        <h1 className="mb-3 text-3xl font-bold text-white xl:text-5xl ">
+          " Highlighters "
         </h1>
         <p className="text-2xl text-white">
           링크를 공유하고, 관리하고, 북마크하세요.
         </p>
         <button
           onClick={loginModalHandler}
-          className="h-12 px-6 mt-5 text-indigo-100 transition-colors duration-150 rounded-md w-1/7 selection:justify-center bg-sky-500 focus:shadow-outline hover:bg-sky-800"
+          className="h-12 px-6 mt-5 text-white transition-colors duration-150 rounded-md w-1/7 selection:justify-center bg-sky-500 focus:shadow-outline hover:bg-sky-800"
         >
           <p className="text-bold">시작하기</p>
         </button>
