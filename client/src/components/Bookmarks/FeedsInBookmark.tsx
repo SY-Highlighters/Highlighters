@@ -46,7 +46,7 @@ export function FeedsInBookmark() {
       ) : null}
       {/* feedslist section */}
       <div
-        className="mt-5 rounded-md shadow-lg xl:overflow-y-auto xl:scrollbar-hide xl:h-full "
+        className="mt-5 rounded-md xl:overflow-y-auto xl:scrollbar-hide xl:h-full "
         style={{ height: "80vh" }}
       >
         <ul className="space-y-4 ">

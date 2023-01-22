@@ -9,16 +9,13 @@ const YoutubeTimeStamp = (props: any) => {
 
   return (
     <span
-      onClick={() => {
-        props.setTime(time);
-      }}
-      className="cursor-pointer inline-flex items-center mr-2 px-3 py-0.5 rounded-md shadow-md text-sm font-medium opacity-80 bg-sky-500 hover:bg-sky-700 "
-    >
-      <span className="text-white">
+        onClick={() => {
+          props.setTime(time);
+        }}
+        className="text-indigo-500 font-bold cursor-pointer items-center px-1 py-0.5 rounded-md text-sm opacity-80 bg-indigo-100 hover:bg-blue-200"
+      >
         {min}:{sec}
       </span>
-      {/* <button onClick={delClickHandler}></button> */}
-    </span>
   );
 };
 

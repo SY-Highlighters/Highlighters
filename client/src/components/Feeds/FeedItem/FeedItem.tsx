@@ -83,148 +83,125 @@ const FeedItem = (props: any) => {
       if (firstHighlight !== hl.user.nickname || index === 0) {
         // 첫 하이라이트
         firstHighlight = hl.user.nickname;
-        let highContent;
         switch (hl.type) {
           case 1: // 텍스트 하이라이트
-            highContent = (
-              <div className="ml-1">
-                <span
-                  className="text-xs lg:text-base"
-                  style={{ backgroundColor: hl.color }}
-                >
-                  {/* hl.contents에서 개행문자 처리 */}
-                  {hl.contents.trim()}
-                  {/* {hl.contents} */}
-                </span>
+            return (
+              <div key={index}>
+                <li className="" key={index}>
+                  <div className="flex flex-row mt-2">
+                    <img
+                      src={hl.user.image}
+                      className="w-5 h-5 mr-1 rounded-full shadow-md"
+                    ></img>
+                    <div className="ml-1">
+                      <span
+                        className="text-xs lg:text-base"
+                        style={{ backgroundColor: hl.color }}
+                      >
+                        {/* hl.contents에서 개행문자 처리 */}
+                        {hl.contents.trim()}
+                        {/* {hl.contents} */}
+                      </span>
+                    </div>
+                  </div>
+                </li>
               </div>
             );
-            break;
           case 2: // 이미지 하이라이트
-            highContent = (
-              // eslint-disable-next-line jsx-a11y/alt-text
-              <img
-                src={hl.contents}
-                className="w-3/5 mt-2 mb-1 ml-2 h-3/5 outline-4"
-                style={{ outlineStyle: "solid", outlineColor: hl.color }}
-              ></img>
+            return (
+              <div key={index}>
+                <li className="" key={index}>
+                  <div className="flex flex-row mt-2">
+                    <img
+                      src={hl.user.image}
+                      className="w-5 h-5 mr-1 rounded-full shadow-md"
+                    ></img>
+                    <img
+                      src={hl.contents}
+                      className="w-3/5 mt-2 mb-1 ml-2 h-3/5 outline-4"
+                      style={{ outlineStyle: "solid", outlineColor: hl.color }}
+                    ></img>
+                  </div>
+                </li>
+              </div>
             );
-            break;
+
           case 3: // 동영상 하이라이트
             // hl.contents 소숫점 제거
-
-            highContent = (
-              // eslint-disable-next-line jsx-a11y/alt-text
+            return (
               <>
-                <YoutubeTimeStamp
-                  time={hl.contents}
-                  setTime={youtubeTimeSet}
-                ></YoutubeTimeStamp>
+                <div></div>
+                <div key={index} className="ml-1 mr-1 inline-flex">
+                  <li key={index}>
+                    <div className="flex flex-row mt-2">
+                      <img
+                        src={hl.user.image}
+                        className="w-5 h-5 mr-2 rounded-full shadow-md"
+                      ></img>
+                      <YoutubeTimeStamp
+                        time={hl.contents}
+                        setTime={youtubeTimeSet}
+                      ></YoutubeTimeStamp>
+                    </div>
+                  </li>
+                </div>
               </>
-
-              // <div className="ml-1 iframeContainer iframe16To9">
-              //   <iframe
-              //     src={`https://www.youtube.com/embed/${youtubeCode}?start=${hl.contents}`}
-              //     allowFullScreen
-              //   ></iframe>
-              // </div>
-              // <iframe
-              //   src={hl.contents}
-              //   className="w-3/5 mt-2 mb-1 ml-2 h-3/5 outline-4"
-              //   style={{
-              //     outlineStyle: "solid",
-              //     outlineColor: hl.color,
-              //   }}
-              // ></iframe>
             );
-            break;
           default:
         }
-
-        // const highContent =
-        //   hl.type === 1 ? (
-        //     <div className="ml-1">
-        //       <span
-        //         className="text-xs lg:text-base"
-        //         style={{ backgroundColor: hl.color }}
-        //       >
-        //         {/* hl.contents에서 개행문자 처리 */}
-        //         {hl.contents.trim()}
-        //         {/* {hl.contents} */}
-        //       </span>
-        //     </div>
-        //   ) : (
-        //     // eslint-disable-next-line jsx-a11y/alt-text
-        //     <img
-        //       src={hl.contents}
-        //       className="w-3/5 mt-2 mb-1 ml-2 h-3/5 outline-4"
-        //       style={{ outlineStyle: "solid", outlineColor: hl.color }}
-        //     ></img>
-        //   );
-        return (
-          <div key={index}>
-            <li className="" key={index}>
-              <div className="flex flex-row mt-2">
-                <img
-                  src={hl.user.image}
-                  className="w-5 h-5 mr-1 rounded-full shadow-md"
-                ></img>
-                {highContent}
-              </div>
-            </li>
-          </div>
-        );
       } else {
         // 첫 하이라이트 아닐 때
         let highContent;
 
         switch (hl.type) {
           case 1: // 텍스트 하이라이트
-            highContent = (
-              <div className="ml-1">
-                <span
-                  className="text-xs lg:text-base"
-                  style={{ backgroundColor: hl.color }}
-                >
-                  {/* hl.contents에서 개행문자 처리 */}
-                  {hl.contents.trim()}
-                  {/* {hl.contents} */}
-                </span>
+            return (
+              <div key={index}>
+                <li className="ml-6 " key={index}>
+                  <div className="ml-1">
+                    <span
+                      className="text-xs lg:text-base"
+                      style={{ backgroundColor: hl.color }}
+                    >
+                      {/* hl.contents에서 개행문자 처리 */}
+                      {hl.contents.trim()}
+                      {/* {hl.contents} */}
+                    </span>
+                  </div>
+                </li>
               </div>
             );
-            break;
           case 2: // 이미지 하이라이트
-            highContent = (
-              // eslint-disable-next-line jsx-a11y/alt-text
-              <img
-                src={hl.contents}
-                className="w-3/5 mt-2 mb-1 ml-2 h-3/5 outline-4"
-                style={{
-                  outlineStyle: "solid",
-                  outlineColor: hl.color,
-                }}
-              ></img>
+            return (
+              <div key={index}>
+                <li className="ml-6 " key={index}>
+                  <img
+                    src={hl.contents}
+                    className="w-3/5 mt-2 mb-1 ml-2 h-3/5 outline-4"
+                    style={{
+                      outlineStyle: "solid",
+                      outlineColor: hl.color,
+                    }}
+                  ></img>
+                </li>
+              </div>
             );
-            break;
           case 3: // 동영상 하이라이트
-            highContent = (
-              <>
-                <YoutubeTimeStamp
-                  time={hl.contents}
-                  setTime={youtubeTimeSet}
-                ></YoutubeTimeStamp>
-              </>
+            return (
+              <div key={index} className="ml-1 mr-1 inline-flex">
+                <li key={index}>
+                  <div className="flex flex-row mt-2">
+                    <div className="h-5 opacity-100"></div>
+                    <YoutubeTimeStamp
+                      time={hl.contents}
+                      setTime={youtubeTimeSet}
+                    ></YoutubeTimeStamp>
+                  </div>
+                </li>
+              </div>
             );
-            break;
           default:
         }
-
-        return (
-          <div key={index}>
-            <li className="ml-6 " key={index}>
-              {highContent}
-            </li>
-          </div>
-        );
       }
     });
   }
@@ -337,7 +314,7 @@ const FeedItem = (props: any) => {
         <div className="mb-5 ">
           <ul className="space-y-0.5">{highlights}</ul>
           {youtubeCode && (
-            <div className="mt-2 iframeContainer iframe16To9">
+            <div className="mt-3 iframeContainer iframe16To9">
               <iframe
                 src={
                   youtubeTime

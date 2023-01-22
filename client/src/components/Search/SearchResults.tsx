@@ -7,6 +7,9 @@ import { searchKeywordState } from "../../states/atom";
 import { useRecoilState } from "recoil";
 import SearchResultItem from "./SearchResultItem";
 
+const elastic_on = true;
+const searchMode = elastic_on ? "ela" : "bar";
+
 const SearchResults = () => {
   const [cookies, setCookie, removeCookie] = useCookies(["logCookie"]);
   const [searchKeyword, setSearchKeyword] = useRecoilState(searchKeywordState);
@@ -19,7 +22,7 @@ const SearchResults = () => {
     async function getSearchResultsAsync() {
       const response = await axios({
         method: "get",
-        url: `${process.env.REACT_APP_HOST}/api/search/bar/${searchKeyword}`, // [TBD]
+        url: `${process.env.REACT_APP_HOST}/api/search/${searchMode}/${searchKeyword}`, // [TBD]
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${cookies.logCookie}`,
@@ -56,20 +59,35 @@ const SearchResults = () => {
   // };
 
   const searchResultFeedsAdd = (data: []) => {
-    data.map((item: any) => {
-      const newFeed = {
-        id: item.id,
-        title: item.title,
-        description: item.description,
-        createdAt: item.createdAt,
-        updatedAt: item.updatedAt,
-        url: item.url,
-        resultinfo: item.resultinfo,
-        username: item.user.nickname,
-        userimage: item.user.image,
-      };
-      setSearchResultFeeds((oldFeeds: any) => [...oldFeeds, newFeed]);
-    });
+    if (elastic_on) {
+      data.map((item: any) => {
+        const newFeed = {
+          id: item.id,
+          title: item.title,
+          description: item.description,
+          url: item.url,
+          resultinfo: item.resultinfo,
+          username: item.user_nickname,
+          userimage: item.image,
+        };
+        setSearchResultFeeds((oldFeeds: any) => [...oldFeeds, newFeed]);
+      });
+    } else {
+      data.map((item: any) => {
+        const newFeed = {
+          id: item.id,
+          title: item.title,
+          description: item.description,
+          createdAt: item.createdAt,
+          updatedAt: item.updatedAt,
+          url: item.url,
+          resultinfo: item.resultinfo,
+          username: item.user.nickname,
+          userimage: item.user.image,
+        };
+        setSearchResultFeeds((oldFeeds: any) => [...oldFeeds, newFeed]);
+      });
+    }
   };
 
   return (
@@ -110,7 +128,7 @@ const SearchResults = () => {
       ) : null}
       {/* feedslist section */}
       <div
-        className="mt-5 rounded-md shadow-lg xl:overflow-y-auto xl:scrollbar-hide xl:h-full "
+        className="mt-5 rounded-md xl:overflow-y-auto xl:scrollbar-hide xl:h-full "
         style={{ height: "80vh" }}
       >
         <ul className="space-y-4 ">
@@ -122,7 +140,7 @@ const SearchResults = () => {
                   key={feed.id}
                   title={feed.title}
                   url={feed.url}
-                  date={feed.createdAt}
+                  // date={feed.createdAt}
                   resultinfo={feed.resultinfo}
                   // description={""}
                   // og_image={null}
