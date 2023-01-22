@@ -4,8 +4,8 @@ import { CalendarDaysIcon } from "@heroicons/react/24/outline";
 import { useInView } from "react-intersection-observer";
 import { useRecoilValue } from "recoil";
 import { selectedDayState } from "../../states/atom";
-import { useFeedsInDay } from "../../hooks/useFeedsInDay"; 
-
+import { useFeedsInDay } from "../../hooks/useFeedsInDay";
+import FeedSkeleton from "../UI/FeedSkeleton";
 export function FeedsInDay(props: any) {
   const [ref, isView] = useInView();
   const selectedDay = useRecoilValue(selectedDayState);
@@ -13,50 +13,27 @@ export function FeedsInDay(props: any) {
   // 9시간 뺴서 한국 시간으로 변환
   date.setHours(date.getHours() - 9);
   // 쓰로틀 적용
-
-  const { getBoard, getNextPage, getBoardIsSuccess, getNextPageIsPossible } =
-    useFeedsInDay(date);
-  // // 날짜 문자로 변환
-  const year = date.getFullYear();
-  const month = date.getMonth() + 1;
-  const day = date.getDate() + 1;
+  const {
+    getBoard,
+    getNextPage,
+    getBoardIsSuccess,
+    getNextPageIsPossible,
+    status,
+  } = useFeedsInDay(date);
 
   useEffect(() => {
     // 맨 마지막 요소를 보고있고 페이지가 존재하면
-    // 다음 페이지 데이터를 가져옴
-
     if (isView && getNextPageIsPossible) {
       getNextPage();
     }
   }, [isView, getNextPage, getNextPageIsPossible]);
 
+  if (status === "loading") {
+    return <FeedSkeleton></FeedSkeleton>;
+  }
   return (
     // <div className="xl:ml-20 justify-self-center xl:w-3/6">
-    <div className="basis-2/4">
-      {/* 위에 여백 두고 그룹피드 타이틀 만들기 */}
-      {/* 그룹 피드 타이틀 ver1*/}
-      {/* <div className="relative p-3 rounded-3xl">
-        <h1 className="text-2xl antialiased font-bold text-whtie">그룹 피드</h1>
-      </div> */}
-      {/* 그룹 피드 타이틀 ver2 */}
-      <div className="rounded-lg bg-sky-500">
-        {/* 메뉴바*/}
-        <div className="px-3 py-3 mx-auto rounded-lg max-w-7xl">
-          <div className="flex flex-wrap items-center ">
-            <div className="flex items-center flex-1 w-0 ">
-              <span className="flex p-2 mr-1 -ml-3 rounded-lg bg-sky-500">
-                <CalendarDaysIcon
-                  className="w-6 h-6 ml-3 text-white"
-                  aria-hidden="true"
-                />
-              </span>
-              <p className="text-xl font-bold text-white truncate">
-                <span className="">{`${year}년 ${month}월 ${day}일`}</span>
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
+    <>
       {getBoardIsSuccess && getBoard!.pages[0].board_page.length === 0 ? (
         <div
           className="flex justify-center w-full h-full pt-10 mt-5 bg-white rounded-md shadow-md "
@@ -166,7 +143,7 @@ export function FeedsInDay(props: any) {
             ))} */}
         </ul>
       </div>
-    </div>
+    </>
   );
 }
 function thrrottle(callback: any, limit: any) {

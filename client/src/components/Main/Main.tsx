@@ -1,15 +1,14 @@
 import { Fragment } from "react";
 import { useRecoilValue, useRecoilState } from "recoil";
-import AvailableFeeds from "../Feeds/AvailableFeeds";
-import Feed from "../Feeds/Feed";
-import AvailableTags from "../Tags/AvailableTags";
+import FeedsInGroup from "../Feeds/FeedsInGroup";
+import Feed from "../Feeds/GroupFeeds";
+import AvailableTags from "../Tags/TagsInFeeds";
 import { FeedTagEditModal } from "../Tags/FeedTagEditModal";
 import {
   changeMainSectionState,
   mainSectionState,
   tagModalVisble,
 } from "../../states/atom";
-import { AvailableBookmarks } from "../Bookmarks/AvailableBookmarks";
 import Noti from "../Noti/Noti";
 import User from "../User/User";
 import { useCookies } from "react-cookie";
@@ -23,7 +22,9 @@ import {
   DocumentPlusIcon,
   MegaphoneIcon,
 } from "@heroicons/react/24/outline";
-import FeedSkeleton from "../UI/FeedSkeleton";
+import DayFeeds from "../Calender/DayFeeds";
+import BookmarkFeeds from "../Bookmarks/BookmarkFeeds";
+import TagFeeds from "../Tags/TagFeeds";
 export function Main() {
   const [cookies] = useCookies(["logCookie"]);
   const [changeMainSection, setChangeMainSection] = useRecoilState(
@@ -38,11 +39,11 @@ export function Main() {
       case 0:
         return <Feed></Feed>;
       case 1:
-        return <AvailableBookmarks></AvailableBookmarks>;
+        return <BookmarkFeeds />;
       case 2:
-        return <AvailableTags></AvailableTags>;
+        return <TagFeeds></TagFeeds>;
       case 3:
-        return <FeedsInDay></FeedsInDay>;
+        return <DayFeeds></DayFeeds>;
       case 4:
         return <SearchResults></SearchResults>;
       default:
@@ -76,9 +77,7 @@ export function Main() {
         className="absolute hidden w-8 h-8 cursor-pointer xl:block top-24 left-20 text-sky-500 hover:text-sky-600 hover:scale-95"
       ></Squares2X2Icon>
       {/* 태그 편집 모달 */}
-      {tagModal === 1 && (
-        <FeedTagEditModal ></FeedTagEditModal>
-      )}
+      {tagModal === 1 && <FeedTagEditModal></FeedTagEditModal>}
       {/* {tagModal === 2 && <GroupTagEditModal></GroupTagEditModal>} */}
     </Fragment>
   );
