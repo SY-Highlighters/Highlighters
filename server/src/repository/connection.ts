@@ -1,15 +1,17 @@
-import { Highlight, PrismaClient, User } from '@prisma/client';
+import { Highlight, User } from '@prisma/client';
 import * as elasticsearch from '@elastic/elasticsearch';
 import { Global, Injectable } from '@nestjs/common';
 import { elasticFeedDto } from './dto/elastic.dto';
+import { PrismaService } from './prisma.service';
 
 @Global()
 @Injectable()
 export class ElasticsearchService {
   private readonly client: elasticsearch.Client;
-  private readonly prismaClient: PrismaClient;
-
-  constructor() {
+  
+  constructor(
+    private readonly prismaService: PrismaService
+  ) {
     this.client = new elasticsearch.Client({
       cloud: {
         id: process.env.ELASTICSEARCH_NODE,
@@ -124,20 +126,26 @@ export class ElasticsearchService {
         track_scores: true,
       },
     });
+    // console.log(result);
     const real_result = [];
-    for (let i = 0; i < result.hits.hits.length; i++) {
-      real_result.push(result.hits.hits[i]._source);
-      real_result[i].score = result.hits.hits[i]._score;
-      const image = await this.prismaClient.user.findFirst({
-        where: {
-          nickname: real_result[i].user_nickname,
-          group_id: user.group_id,
-        },
-        select: {
-          image: true,
-        },
-      });
-      real_result[i].image = image.image;
+    if (result.hits.hits.length > 0) {
+      for (let i = 0; i < result.hits.hits.length; i++) {
+        real_result.push(result.hits.hits[i]._source);
+        real_result[i].score = result.hits.hits[i]._score;
+        // const log = real_result[i].user_nickname;
+        // console.log(log);
+        const image = await this.prismaService.user.findFirst({
+          where: {
+            group_id: user.group_id,
+            nickname: real_result[i].user_nickname,
+          },
+          select: {
+            image: true,
+          },
+        });
+        // console.log(image);
+        real_result[i].image = image.image;
+      }
     }
     return real_result;
   }
