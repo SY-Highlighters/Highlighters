@@ -130,7 +130,7 @@ export class CalendarService {
         await this.cacheManager.set(
           `calendar-${date}-${page}`,
           result,
-          60 * 60, // ttl: 1시간
+          60 * 60 * 24, // ttl: 24시간
         );
         console.log('[calendar] cache set');
       }
