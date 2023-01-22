@@ -85,6 +85,19 @@ export class NotiService {
     }
   }
 
+  async deleteAllNoti(user: User): Promise<null> {
+    try {
+      await this.prismaService.noti.deleteMany({
+        where: {
+          receiver_id: user.email,
+        },
+      });
+      return null;
+    } catch (e) {
+      throw new HttpException('Internal Server Error', 500);
+    }
+  }
+
   async findNotiWeb(user: User, page: number, take: number) {
     try {
       const count = await this.prismaService.noti.count({
