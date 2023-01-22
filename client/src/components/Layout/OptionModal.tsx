@@ -8,7 +8,7 @@ import { tagModalVisble, sighUpCheck } from "../../states/atom";
 import {
   tagsInFeedState,
   userInfoState,
-  currentFeedIdState,
+  currentFeedState,
 } from "../../states/atom";
 import { useCookies } from "react-cookie";
 import { useEffect, useState } from "react";
@@ -24,7 +24,7 @@ import { optionModalToggleState } from "../../states/atom";
 import { useRef } from "react";
 export function OptionModal(props: any) {
   const setTagModal = useSetRecoilState(tagModalVisble);
-  const currentFeedId = useRecoilValue(currentFeedIdState);
+  const currentFeedId = useRecoilValue(currentFeedState);
   const [optionModalToggle, setOptionModalToggle] = useRecoilState(
     optionModalToggleState
   );

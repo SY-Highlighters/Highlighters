@@ -16,7 +16,7 @@ import { Comment } from "../../Comment/Comment";
 import { FeedTagEdit } from "../../Tags/FeedTagEdit";
 import { TagItem } from "../../Tags/TagItem/TagItem";
 import {
-  currentFeedIdState,
+  currentFeedState,
   tagModalVisble,
   commentReloadState,
 } from "../../../states/atom";
@@ -41,7 +41,7 @@ import YoutubeTimeStamp from "./YoutubeTimeStamp";
 const dummary = "현재 네이버 뉴스만 지원합니다 😂";
 const FeedItem = (props: any) => {
   const [commentIsClicked, setCommentIsClicked] = useState(false);
-  const setCurrentFeedId = useSetRecoilState(currentFeedIdState);
+  const setCurrentFeedId = useSetRecoilState(currentFeedState);
   const [cookies] = useCookies(["logCookie"]);
   const [threeTrigger, setThreeTrigger] = useState(false);
   const [summary, setSummary] = useState(dummary);
@@ -384,6 +384,7 @@ const FeedItem = (props: any) => {
             // key={props.key}
             tag={props.tag}
             feed_id={props.id}
+            feedTitle={props.title}
           ></FeedTagEdit>
 
           {/* 댓글 , 즐겨찾기 section*/}

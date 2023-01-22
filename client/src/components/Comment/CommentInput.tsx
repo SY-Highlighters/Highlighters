@@ -3,7 +3,7 @@ import { tagModalVisble, sighUpCheck } from "../../states/atom";
 import {
   tagsInFeedState,
   userInfoState,
-  currentFeedIdState,
+  currentFeedState,
   commentReloadState,
 } from "../../states/atom";
 import { useCookies } from "react-cookie";
@@ -15,7 +15,7 @@ import { useUserData } from "../../hooks/useUserData";
 export function CommentInput(props: any) {
   const [inputValue, setInputValue] = useState("");
   const [cookies, setCookie, removeCookie] = useCookies(["logCookie"]);
-  const currentFeedId = useRecoilValue(currentFeedIdState);
+  const currentFeed = useRecoilValue(currentFeedState);
   // 코멘트가 입력되었을때 다른 컴포넌트를 리렌더링 시키기위한 상태
   const setcommentReload = useSetRecoilState(commentReloadState);
   const handleChange = (e: any) => {
@@ -37,13 +37,13 @@ export function CommentInput(props: any) {
 
   const commentAddHandler = async () => {
     //인풋 안에 값 비우기
-    const host_url = `${process.env.REACT_APP_HOST}/api/comment/create/${currentFeedId}`;
+    const host_url = `${process.env.REACT_APP_HOST}/api/comment/create/${currentFeed.feed_id}`;
     // 서버에 그룹 생성 요청
     await axios
       .post(
         host_url,
         {
-          feed_id: currentFeedId,
+          feed_id: currentFeed.feed_id,
           contents: inputValue,
         },
         {

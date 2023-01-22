@@ -222,7 +222,7 @@ async function postHighlight(range, highlightStr) {
         );
         window.open("https://highlighters.site/");
       } else {
-        // console.log('[posthighlight] response: ', response);
+        console.log(response);
         highlights.push(response.data.data);
         highlightDone(range, response.data.data.id);
       }

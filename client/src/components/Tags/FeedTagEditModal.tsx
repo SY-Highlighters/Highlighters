@@ -8,7 +8,7 @@ import { tagModalVisble, sighUpCheck } from "../../states/atom";
 import {
   tagsInFeedState,
   userInfoState,
-  currentFeedIdState,
+  currentFeedState,
   tagsCreateState,
   tagsDelState,
 } from "../../states/atom";
@@ -24,7 +24,7 @@ import { useQuery } from "react-query";
 
 export function FeedTagEditModal(props: any) {
   const setTagModal = useSetRecoilState(tagModalVisble);
-  const currentFeedId = useRecoilValue(currentFeedIdState);
+  const currentFeedId = useRecoilValue(currentFeedState);
   // 그룹 태그 리스트 전역
   const [cookies, setCookie, removeCookie] = useCookies(["logCookie"]);
   const [inputValue, setInputValue] = useState("");
@@ -175,7 +175,7 @@ export function FeedTagEditModal(props: any) {
             <h1 className="text-3xl font-semibold text-left text-sky-500 ">
               태그 수정
             </h1>
-
+            
             <div className="flex flex-wrap mt-2 ">{tagLists}</div>
             {/* 태그 생성 */}
             <div className="flex flex-wrap mt-5">

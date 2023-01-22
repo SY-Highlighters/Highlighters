@@ -8,21 +8,8 @@ import { useInView } from "react-intersection-observer";
 import NotiList from "./NotiList";
 // const NotiList = lazy(() => import("./NotiList"));
 export default function Noti() {
-  const [ref, isView] = useInView();
-  // const [noti.dataData, setNotiData] = useState<NotiData[]>([]);
-  const { getBoard, getNextPage, getBoardIsSuccess, getNextPageIsPossible } =
-    useNoti();
-
   const [notiCount, setNotiCount] = useState(0);
-  useEffect(() => {
-    // 맨 마지막 요소를 보고있고 페이지가 존재하면
-    // 다음 페이지 데이터를 가져옴
-    if (isView && getNextPageIsPossible) {
-      getNextPage();
-    }
-  }, [isView, getNextPage, getNextPageIsPossible]);
-  // console.log(getBoard);
-  // 노티 모두 읽음
+
   const clickedAllRead = () => {
     setNotiCount(0);
   };
