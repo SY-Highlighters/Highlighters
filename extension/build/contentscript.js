@@ -775,6 +775,9 @@ const getBookmark = async (videoID) => {
 
 const postBookmark = async (videoID, time) => {
   const youtubeURL = `https://www.youtube.com/watch?v=${videoID}`;
+  const highlightColorInSync = await chrome.storage.sync.get("highlightColor");
+  highlightColor = highlightColorInSync.highlightColor;
+
   const og_image = document.querySelector("meta[property='og:image']");
   const og_description = document.querySelector(
     "meta[property='og:description']"
@@ -877,7 +880,7 @@ const rehighlightVideo = (highlight) => {
   highlightYTP.style.left = `${barPos}%`;
   highlightYTP.style.height = "100%";
   highlightYTP.style.width = "4px";
-  highlightYTP.style.backgroundColor = highlightColor;
+  highlightYTP.style.backgroundColor = highlight.color;
   highlightYTP.style.cursor = "pointer";
   highlightYTP.style.zIndex = "2147483647";
 
@@ -900,11 +903,6 @@ chrome.runtime.onMessage.addListener(async (request, sender, sendResponse) => {
     case "getHighlight":
       const highlights = request.data ? request.data : [];
       console.log("[cs] getHighlight", highlights);
-
-      const highlightColorInSync = await chrome.storage.sync.get(
-        "highlightColor"
-      );
-      highlightColor = highlightColorInSync.highlightColor;
 
       for (const highlight of highlights) {
         try {
