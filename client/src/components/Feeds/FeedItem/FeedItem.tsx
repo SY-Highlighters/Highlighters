@@ -70,30 +70,60 @@ const FeedItem = (props: any) => {
         return;
       }
 
-      console.log(hl);
-
       if (firstHighlight !== hl.user.nickname || index === 0) {
+        // 첫 하이라이트
         firstHighlight = hl.user.nickname;
-        const highContent =
-          hl.type === 1 ? (
-            <div className="ml-1">
-              <span
-                className="text-xs lg:text-base"
-                style={{ backgroundColor: hl.color }}
-              >
-                {/* hl.contents에서 개행문자 처리 */}
-                {hl.contents.trim()}
-                {/* {hl.contents} */}
-              </span>
-            </div>
-          ) : (
-            // eslint-disable-next-line jsx-a11y/alt-text
-            <img
-              src={hl.contents}
-              className="w-3/5 mt-2 mb-1 ml-2 h-3/5 outline-4"
-              style={{ outlineStyle: "solid", outlineColor: hl.color }}
-            ></img>
-          );
+        let highContent;
+        switch (hl.type) {
+          case 1: // 텍스트 하이라이트
+            highContent = (
+              <div className="ml-1">
+                <span
+                  className="text-xs lg:text-base"
+                  style={{ backgroundColor: hl.color }}
+                >
+                  {/* hl.contents에서 개행문자 처리 */}
+                  {hl.contents.trim()}
+                  {/* {hl.contents} */}
+                </span>
+              </div>
+            );
+            break;
+          case 2: // 이미지 하이라이트
+            highContent = (
+              // eslint-disable-next-line jsx-a11y/alt-text
+              <img
+                src={hl.contents}
+                className="w-3/5 mt-2 mb-1 ml-2 h-3/5 outline-4"
+                style={{ outlineStyle: "solid", outlineColor: hl.color }}
+              ></img>
+            );
+            break;
+          case 3: // 동영상 하이라이트
+            break;
+          default:
+        }
+
+        // const highContent =
+        //   hl.type === 1 ? (
+        //     <div className="ml-1">
+        //       <span
+        //         className="text-xs lg:text-base"
+        //         style={{ backgroundColor: hl.color }}
+        //       >
+        //         {/* hl.contents에서 개행문자 처리 */}
+        //         {hl.contents.trim()}
+        //         {/* {hl.contents} */}
+        //       </span>
+        //     </div>
+        //   ) : (
+        //     // eslint-disable-next-line jsx-a11y/alt-text
+        //     <img
+        //       src={hl.contents}
+        //       className="w-3/5 mt-2 mb-1 ml-2 h-3/5 outline-4"
+        //       style={{ outlineStyle: "solid", outlineColor: hl.color }}
+        //     ></img>
+        //   );
         return (
           <div key={index}>
             <li className="" key={index}>
@@ -108,29 +138,51 @@ const FeedItem = (props: any) => {
             </li>
           </div>
         );
-      }
-      return (
-        <div key={index}>
-          <li className="ml-6 " key={index}>
-            {hl.type === 1 ? (
+      } else {
+        // 첫 하이라이트 아닐 때
+        let highContent;
+
+        switch (hl.type) {
+          case 1: // 텍스트 하이라이트
+            highContent = (
               <div className="ml-1">
                 <span
                   className="text-xs lg:text-base"
                   style={{ backgroundColor: hl.color }}
                 >
+                  {/* hl.contents에서 개행문자 처리 */}
                   {hl.contents.trim()}
+                  {/* {hl.contents} */}
                 </span>
               </div>
-            ) : (
+            );
+            break;
+          case 2: // 이미지 하이라이트
+            highContent = (
+              // eslint-disable-next-line jsx-a11y/alt-text
               <img
                 src={hl.contents}
                 className="w-3/5 mt-2 mb-1 ml-2 h-3/5 outline-4"
-                style={{ outlineStyle: "solid", outlineColor: hl.color }}
+                style={{
+                  outlineStyle: "solid",
+                  outlineColor: hl.color,
+                }}
               ></img>
-            )}
-          </li>
-        </div>
-      );
+            );
+            break;
+          case 3: // 동영상 하이라이트
+            break;
+          default:
+        }
+
+        return (
+          <div key={index}>
+            <li className="ml-6 " key={index}>
+              {highContent}
+            </li>
+          </div>
+        );
+      }
     });
   }
 
@@ -243,16 +295,19 @@ const FeedItem = (props: any) => {
 
         {/* 노션 북마크처럼 만들기 프로젝트 */}
         <a href={props.url} target="_blank" rel="noreferrer">
-          <div className="flex h-20 mb-2 ml-4 overflow-hidden rounded-lg shadow-sm cursor-pointer"
-            style={{ width: "95%" }}>
-            <div className="w-20 h-full">
+          <div
+            className="flex h-20 mb-2 ml-4 overflow-hidden rounded-lg shadow-sm cursor-pointer"
+            style={{ width: "95%" , height: "85px" }}
+          >
+            <div className="w-20 h-full"
+            style = {{width: "85px"}}>
               <img
                 className="object-cover w-full h-full rounded-sm"
                 src={props.og_image}
                 alt=""
               />
             </div>
-            <div className="flex-1 px-6 py-3 mb-5 ">
+            <div className="flex-1 my-auto px-5">
               <h4 className="mb-1 text-sm font-semibold tracking-tight text-gray-700">
                 {props.title}
               </h4>
