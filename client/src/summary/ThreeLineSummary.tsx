@@ -17,6 +17,7 @@ const ThreeLineSummary = (props: any) => {
         url: `${process.env.REACT_APP_HOST}/api/summary`,
         data: {
           url: props.url,
+          id: props.id,
         },
         headers: {
           "Content-Type": "application/json",

@@ -13,7 +13,15 @@ export class SummaryService {
     private readonly httpService: HttpService,
   ) {}
 
-  async summary_url(url: string, user: User) {
+  async summary_url(url: string, user: User, id: number) {
+    const summary = await this.prismaService.feed.findUnique({
+      where: {
+        id: id,
+      },
+    });
+    if (summary) {
+      return summary;
+    }
     const api_url =
       'https://naveropenapi.apigw.ntruss.com/text-summary/v1/summarize';
     const AxiosRequestConfig = {
@@ -75,9 +83,23 @@ export class SummaryService {
     const send_data = JSON.stringify(data);
     // console.log(send_data);
     try {
-      const result = await this.httpService
+      const result = this.httpService
         .post(api_url, send_data, AxiosRequestConfig)
         .pipe(map((response) => response.data));
+
+      let ss: string;
+      result.subscribe(async (res) => {
+        ss = res.summary;
+        await this.prismaService.feed.update({
+          where: {
+            id: +id,
+          },
+          data: {
+            summary: ss,
+          },
+        });
+      });
+
       return result;
     } catch (error) {
       console.log('error', error);

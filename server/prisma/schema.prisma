@@ -48,6 +48,7 @@ model Feed {
   url        String      @db.Text
   user_email String
   og_id      Int
+  summary    String?     @db.Text
   bookmark   Bookmark[]
   comment    Comment[]
   group      Group       @relation(fields: [group_id], references: [id], onDelete: Cascade)

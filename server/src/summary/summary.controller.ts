@@ -29,7 +29,11 @@ export class SummaryController {
   })
   @ApiOperation({ summary: 'summary 실행' })
   @Post('/')
-  async summary_url(@GetUser() user: User, @Body('url') url: string) {
-    return this.summaryService.summary_url(url, user);
+  async summary_url(
+    @GetUser() user: User,
+    @Body('url') url: string,
+    @Body('id') id: number,
+  ) {
+    return this.summaryService.summary_url(url, user, id);
   }
 }

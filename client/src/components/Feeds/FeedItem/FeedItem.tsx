@@ -226,6 +226,7 @@ const FeedItem = (props: any) => {
         url: `${process.env.REACT_APP_HOST}/api/summary`,
         data: {
           url: props.url,
+          id: props.id,
         },
         headers: {
           "Content-Type": "application/json",
@@ -284,7 +285,7 @@ const FeedItem = (props: any) => {
         </a>
         {/* 세줄요약 -> 현재 네이버 뉴스만 가능 */}
         {props.url.includes("https://n.news.naver.com") && (
-          <ThreeLineSummary url={props.url}></ThreeLineSummary>
+          <ThreeLineSummary url={props.url} id={props.id}></ThreeLineSummary>
         )}
 
         {/*    <div
