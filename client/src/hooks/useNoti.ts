@@ -1,9 +1,11 @@
 import { useInfiniteQuery } from "react-query";
 import axios from "axios";
 import { useCookies } from "react-cookie";
+import { testNoti } from "../states/atom";
+import { useRecoilState } from "recoil";
 export const useNoti = () => {
   const [cookies] = useCookies(["logCookie"]);
-
+  const [testNt, setTestNoti] = useRecoilState(testNoti);
   const getPageBoard = async ({ pageParam = 1 }) => {
     const res = await axios({
       method: "get",
@@ -15,6 +17,9 @@ export const useNoti = () => {
         Authorization: `Bearer ${cookies.logCookie}`,
       },
     });
+
+    // setTestNoti((pre: any) => [...pre, res.data]);
+    // console.log("testNt", testNt);
     return {
       // 실제 데이터
       board_page: res.data,
@@ -38,6 +43,19 @@ export const useNoti = () => {
       if (!lastPage.isLast) return lastPage.current_page + 1;
       // 마지막 페이지면 undefined가 리턴되어서 hasNextPage는 false가 됨!
       return undefined;
+    },
+    onSuccess: (data) => {
+      // console.log("data!!!!", data);
+      // let newNotifications = testNt;
+      // data.pages.forEach((pageData: any) => {
+      //   newNotifications = [
+      //     ...newNotifications,
+      //     ...pageData.board_page.data.data,
+      //   ];
+      // });
+    
+      setTestNoti(data);
+      // console.log("testNt", testNt);
     },
   });
 

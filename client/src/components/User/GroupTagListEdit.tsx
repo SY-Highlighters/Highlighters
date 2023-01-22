@@ -1,6 +1,6 @@
 import FeedItem from "../Feeds/FeedItem/FeedItem";
 import { useRecoilState, useRecoilValue } from "recoil";
-import { feedsTagListState, testDelState } from "../../states/atom";
+import { feedsTagListState, GroupTagListState } from "../../states/atom";
 import { useCookies } from "react-cookie";
 import { useEffect, useState } from "react";
 import axios from "axios";
@@ -8,12 +8,12 @@ import { useQuery } from "react-query";
 import { TagEditItem } from "../Tags/TagItem/TagEditItem";
 import { ArchiveBoxXMarkIcon, HashtagIcon } from "@heroicons/react/24/outline";
 import { useMutation } from "react-query";
+import { is } from "date-fns/locale";
 
 const GroupTagListEdit = (props: any) => {
-  const [grouptagList, setGroupTagList] = useRecoilState(feedsTagListState);
   const [cookies] = useCookies(["logCookie"]);
   const [clickedTagEdit, setClickedTagEdit] = useState(false);
-  const [testDel, setTestDel] = useRecoilState(testDelState);
+  const [groupTagList, setGroupTagList] = useRecoilState(GroupTagListState);
 
   const {
     data: tagEditList,
@@ -63,20 +63,33 @@ const GroupTagListEdit = (props: any) => {
       console.error(error);
     }
   });
+  if (isSuccess) {
+    setGroupTagList(tagEditList);
+    console.log("tagEditList", tagEditList);
+  }
 
   const deleteTagHandler = async (data: any) => {
     try {
       await mutate(data);
+      // console.log(data.tag_name);
+      // // tagEditList에서 data에 해당하는 tagEditItem 삭제
+      // const newTagEditList = tagEditList.filter(
+      //   (tagEditItem: any) => tagEditItem.tag_name !== data.tag_name
+      // );
+      // setGroupTagList(newTagEditList);
+      // console.log("삭제후tagEditList", tagEditList);
+
       // data에 해당하는 tagEditItem 삭제
       refetch();
+      window.location.reload();
     } catch (error) {
       console.error(error);
     }
   };
-  // useEffect(() => {}, [tagEditList]);
+  useEffect(() => {}, [groupTagList]);
   return (
     <div className="">
-      {isSuccess && tagEditList.length === 0 && (
+      {isSuccess && groupTagList.length === 0 && (
         <div className="flex flex-col items-center justify-center opacity-75">
           <div className="flex items-center justify-center w-20 h-20 rounded-full ">
             <HashtagIcon
@@ -88,8 +101,8 @@ const GroupTagListEdit = (props: any) => {
         </div>
       )}
       {isSuccess &&
-        tagEditList &&
-        tagEditList.map((tag: any) => (
+        groupTagList &&
+        groupTagList.map((tag: any) => (
           <span key={tag.id}>
             <TagEditItem
               key={tag.tag_id}

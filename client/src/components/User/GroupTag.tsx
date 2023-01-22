@@ -1,6 +1,10 @@
 import FeedItem from "../Feeds/FeedItem/FeedItem";
 import { useRecoilState, useRecoilValue } from "recoil";
-import { feedsTagListState, clickedGroupTagDelState } from "../../states/atom";
+import {
+  feedsTagListState,
+  clickedGroupTagDelState,
+  GroupTagListState,
+} from "../../states/atom";
 import { useCookies } from "react-cookie";
 import React, { useEffect, useState, Suspense, lazy } from "react";
 import axios from "axios";
@@ -15,15 +19,18 @@ const GroupTagList = lazy(() => import("./GroupTagList"));
 const GroupTagListEdit = lazy(() => import("./GroupTagListEdit"));
 
 const GroupTag = (props: any) => {
+  const [testDel, setTestDel] = useRecoilState(GroupTagListState);
+
   const [clickedGroupTagDel, setclickedGroupTagDel] = useRecoilState(
     clickedGroupTagDelState
   );
-
+    
   // 그룹 태그 삭제 버튼 클릭 핸들러
   function groupTagDeleteHandler() {
     // console.log("그룹 태그 삭제 버튼 클릭");
     setclickedGroupTagDel(!clickedGroupTagDel);
   }
+  useEffect(() => {}, [testDel]);
   return (
     <div
       className={
@@ -42,7 +49,7 @@ const GroupTag = (props: any) => {
       </div>
 
       <div
-        className="mx-5 m-2 overflow-y-auto h-3/4 "
+        className="m-2 mx-5 overflow-y-auto h-3/4 "
         // style={{ height: "35vh" }}
       >
         <ul>

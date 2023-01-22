@@ -155,7 +155,21 @@ export const tagsDelState = atom<any>({
   default: [],
 });
 
-export const testDelState = atom<any>({
-  key: "testDelState",
+export const GroupTagListState = atom<any>({
+  key: "GroupTagListState",
   default: [],
 });
+
+export const reloadNotiState = atom<boolean>({
+  key: "reloadNotiState",
+  default: false,
+});
+
+export const testNoti = atom<any>({
+  key: "testNoti",
+  default: false,
+});
+
+
+
+

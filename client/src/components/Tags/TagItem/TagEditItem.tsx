@@ -6,18 +6,18 @@ import {
   clickedGroupTagDelState,
   tagsCreateState,
   tagsDelState,
-  testDelState,
+  
 } from "../../../states/atom";
 import Swal from "sweetalert2";
 import { useMutation } from "react-query";
 
 export function TagEditItem(props: any) {
   const [cookies, setCookie, removeCookie] = useCookies(["logCookie"]);
-  const [testDel, setTestDel] = useRecoilState(testDelState);
+  const [tagsDel, setTagsDel] = useRecoilState(tagsDelState);
   const [tagList, setTagList] = useRecoilState(tagsInFeedState);
   const clickedGroupTagDel = useRecoilValue(clickedGroupTagDelState);
   const [tagsCreate, setTagsCreate] = useRecoilState(tagsCreateState);
-  const [tagsDel, setTagsDel] = useRecoilState(tagsDelState);
+  // const [tagsDel, setTagsDel] = useRecoilState(tagsDelState);
   const host_url = clickedGroupTagDel
     ? `${process.env.REACT_APP_HOST}/api/tag/web/delete`
     : `${process.env.REACT_APP_HOST}/api/tag/delete`;
@@ -90,7 +90,7 @@ export function TagEditItem(props: any) {
   };
 
   return (
-    <span className="mt-2 inline-flex items-center mr-2 px-3 py-0.5 rounded-full text-sm font-medium bg-sky-100 text-sky-800 hover:bg-sky-300">
+    <span className="mt-2 inline-flex items-center mr-2 px-2 py-0.5 rounded-full text-sm font-medium bg-sky-100 text-sky-800 hover:bg-sky-300">
       #{props.tagName}
       <button onClick={delClickHandler}>
         <svg

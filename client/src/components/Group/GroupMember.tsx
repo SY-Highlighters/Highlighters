@@ -4,46 +4,46 @@ import {
   DocumentPlusIcon,
   MegaphoneIcon,
 } from "@heroicons/react/24/outline";
-
+import { useRecoilState } from "recoil";
+import { groupModalVisble, groupMemberVisibleState } from "../../states/atom";
 import { useGroupMember } from "../../hooks/useGroupMember";
+
 export function GroupMember() {
+  const [groupMemberVisible, setGroupMemberVisible] = useRecoilState(
+    groupMemberVisibleState
+  );
+  const clickedGroupMem = () => {
+    setGroupMemberVisible(!groupMemberVisible);
+  };
   const { data: groupMember, isSuccess } = useGroupMember();
   // console.log(groupMember);
   return (
-    <div className="grid w-full grid-cols-6 px-5 pb-2 overflow-y-auto h-15 xl:scrollbar-hide">
-      {/* <ul className="flex flex-col space-y-2"> */}
-      {isSuccess && groupMember.length === 0 && (
-        <div className="flex flex-col items-center justify-center">
-          <p className="text-xs font-bold text-gray-500 ">
-            팀원을 초대해보세요 😎
-          </p>
-        </div>
-      )}
+    <div>
+      <div className="flex justify-center -space-x-1 overflow-hidden">
+        {/* <ul classNameName="flex flex-col space-y-2"> */}
 
-      {isSuccess &&
-        groupMember &&
-        groupMember.map((member: any, index: number) => (
-          <div className="mb-3 ml-2">
-            <span className="">
+        {isSuccess &&
+          groupMember &&
+          // 6번쨰 부터
+          groupMember
+            .slice(5)
+            .map((member: any, index: number) => (
               <img
                 key={index}
-                className="rounded-full shadow-md w-7 h-7"
+                className="inline-block w-10 h-10 rounded-full ring-2 ring-white"
                 src={member.image}
                 alt=""
               />
-            </span>
-          </div>
-          //   <li className="flex items-center justify-between f">
-          //   <div className="flex items-center ml-3">
-          //     <img className="w-5 h-5 rounded-full" src={member.image} alt="" />
-          //     {/* <span className="ml-2 text-sm font-medium text-gray-900">
-          //           {member.nickname}
-          //         </span> */}
-          //   </div>
-          //   </li>
-        ))}
-
-      {/* </ul> */}
+            ))}
+      </div>
+      <div className="pb-2 mt-2 ml-6 text-sm font-medium">
+        <span
+          onClick={clickedGroupMem}
+          className="text-blue-500 cursor-pointer"
+        >
+          - 닫기
+        </span>
+      </div>
     </div>
   );
 }

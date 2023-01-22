@@ -1,13 +1,13 @@
 import { MegaphoneIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { reloadNotiState, testNoti } from "../../states/atom";
+import { reloadNotiState } from "../../states/atom";
 import NotiItem from "./NotiItem/NotiItem";
 import Calender from "../Calender/Calender";
 import { useNoti } from "../../hooks/useNoti";
 import { useInView } from "react-intersection-observer";
 import NotiSkeleton from "../UI/NotiSkeleton";
-import { useRecoilState } from "recoil";
+
 interface NotiInfiniteList {
   board_page: any;
   current_page: number;
@@ -18,8 +18,6 @@ const NotiList = () => {
   const [ref, isView] = useInView();
   const [reloadNoti, setReloadNoti] = useState(reloadNotiState);
   const [notiData, setNotiData] = useState([]);
-  const [testNt, setTestNoti] = useRecoilState(testNoti);
-
   const {
     getBoard,
     getNextPage,
@@ -27,7 +25,7 @@ const NotiList = () => {
     getNextPageIsPossible,
     status,
   } = useNoti();
-  console.log("노티 명단", testNt);
+  // console.log("노티 명단", getBoard);
   useEffect(() => {
     // setNotiData(getBoardIsSuccess && getBoard!.pages[0].board_page.data.data);
     // 맨 마지막 요소를 보고있고 페이지가 존재하면
@@ -43,29 +41,14 @@ const NotiList = () => {
     return <NotiSkeleton></NotiSkeleton>;
   }
   const notiListDel = (delNotiId: any) => {
-    const newNotiData = testNt!.pages.map((page_data: any, page_num: any) => {
-      const board_page = page_data.board_page;
-      const newBoardPage = board_page.data.data.filter(
-        (noti: any) => noti.id !== delNotiId
-      );
-      return {
-        ...page_data,
-        board_page: {
-          ...board_page,
-          data: {
-            ...board_page.data,
-            data: newBoardPage,
-          },
-        },
-      };
-    });
-    setTestNoti(newNotiData);
+    // const newNotiData = notiData.filter((noti: any) => noti.id === delNotiId);
+    // setNotiData(newNotiData);
   };
   return (
     <div className="mt-5 overflow-y-auto bg-white rounded-lg shadow-lg xl:scrollbar-hide h-1/3 box-shadow-bottom-only ">
       <div className="m-5">
         {getBoardIsSuccess &&
-          testNt!.pages[0].board_page.data.data.length === 0 && (
+          getBoard!.pages[0].board_page.data.data.length === 0 && (
             <div className="flex flex-col items-center justify-center">
               <div className="flex items-center justify-center w-20 h-20 mb-3 rounded-full "></div>
               <p className="text-base font-bold text-gray-500 opacity-50 ">
@@ -77,8 +60,8 @@ const NotiList = () => {
         <ul className="">
           {
             // 데이터를 불러오는데 성공하고 데이터가 0개가 아닐 때 렌더링
-            getBoardIsSuccess && testNt!.pages
-              ? testNt!.pages.map((page_data: any, page_num: any) => {
+            getBoardIsSuccess && getBoard!.pages
+              ? getBoard!.pages.map((page_data, page_num) => {
                   const board_page = page_data.board_page;
                   return board_page.data.data.map((noti: any, idx: any) => {
                     if (

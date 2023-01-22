@@ -1,9 +1,13 @@
 import React, { useState } from "react";
 import { useCookies } from "react-cookie";
 import axios from "axios";
+import { reloadNotiState } from "../../../states/atom";
+import { useRecoilState } from "recoil";
 const host_url = `${process.env.REACT_APP_HOST}/api/noti/delete`;
 export default function NotiItem(props: any) {
   const [cookies] = useCookies(["logCookie"]);
+  const [reloadNoti, setReloadNoti] = useRecoilState(reloadNotiState);
+
   async function clickedRead() {
     console.log("clickedRead", props.notiId);
     // Todo : 태그 삭제 기능
@@ -14,9 +18,8 @@ export default function NotiItem(props: any) {
       },
       data: { noti_id: [props.notiId] },
     });
-
-    // 리액트쿼리에 저장된 태그리스트 업데이트
-    // setTestDel(!testDel);
+    setReloadNoti(!reloadNotiState);
+    props.delFunc(props.notiId);
   }
   return (
     <li>

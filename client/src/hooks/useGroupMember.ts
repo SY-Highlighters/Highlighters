@@ -29,6 +29,8 @@ export function useGroupMember() {
       refetchOnMount: false,
       refetchOnWindowFocus: false,
       enabled: !!cookies.logCookie,
+      // // 5개만 가져오기
+      // select: (data) => data.slice(0, 5),
     }
   );
 }

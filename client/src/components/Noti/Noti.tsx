@@ -7,13 +7,16 @@ import { useNoti } from "../../hooks/useNoti";
 import { useInView } from "react-intersection-observer";
 import NotiList from "./NotiList";
 import { useCookies } from "react-cookie";
+import { useRecoilState, useResetRecoilState } from "recoil";
+import { testNoti } from "../../states/atom";
 const host_url = `${process.env.REACT_APP_HOST}/api/noti/deleteAll`;
 
 // const NotiList = lazy(() => import("./NotiList"));
 export default function Noti() {
   const [notiCount, setNotiCount] = useState(0);
   const [cookies] = useCookies(["logCookie"]);
-
+  const [testNt, setTestNoti] = useRecoilState(testNoti);
+  const resetTNt = useResetRecoilState(testNoti);
   // const clickedAllRead = () => {
   //   setNotiCount(0);
   // };
@@ -25,7 +28,7 @@ export default function Noti() {
         Authorization: `Bearer ${cookies.logCookie}`,
       },
     });
-
+    resetTNt();
     // 리액트쿼리에 저장된 태그리스트 업데이트
     // setTestDel(!testDel);
   }

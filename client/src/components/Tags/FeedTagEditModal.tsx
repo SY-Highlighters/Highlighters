@@ -35,9 +35,13 @@ export function FeedTagEditModal(props: any) {
   const [tagsDel, setTagsDel] = useRecoilState(tagsDelState);
   const resetTagsInFeedState = useResetRecoilState(tagsInFeedState);
   const [imgUrl, setImgUrl] = useState("");
+  const resetCreTags = useResetRecoilState(tagsCreateState);
+  const resetDelTags = useResetRecoilState(tagsDelState);
 
   const closeModal = () => {
     setTagModal(0);
+    resetCreTags();
+    resetDelTags();
     resetTagsInFeedState();
     // 새로고침하고 원래 스크롤로 이동함
   };
@@ -174,14 +178,14 @@ export function FeedTagEditModal(props: any) {
           {/* 모달 안 내용 */}
           <div className="w-full p-6 m-auto bg-white rounded-md shadow-md lg:max-w-xl">
             <div className="flex flex-row">
-              <h1 className="text-2xl font-semibold text-left text-sky-500 ">
+              <h1 className="ml-2 text-2xl font-semibold text-left text-sky-500 ">
                 태그 수정
               </h1>
             </div>
-              <div className="mt-2 ml-2 text-base text-black">
-                <span>{currentFeed.feed_title}</span>
-              </div>
-            <div className="flex flex-wrap mt-2 ">{tagLists}</div>
+            <div className="mt-2 ml-2 text-xl text-semibold text-sky-700">
+              <span>{currentFeed.feed_title.slice(0, 40)}...</span>
+            </div>
+            <div className="flex flex-wrap mt-2 ml-2">{tagLists}</div>
             {/* 태그 생성 */}
             <div className="flex flex-wrap mt-5">
               <div className="w-full px-2">
