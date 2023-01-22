@@ -118,7 +118,7 @@ async function highlightDone(range, id) {
         const newNode = document.createElement("highlight");
         newNode.setAttribute("class", id);
         // newNode.setAttribute("id", id);
-        newNode.style.backgroundColor = highlightColor.highlightColor;
+        newNode.style.backgroundColor = highlightColor;
         newrange.surroundContents(newNode);
         newNode.addEventListener("click", (event) =>
           showToolBar(event, newNode, userImage, 1)
@@ -131,7 +131,7 @@ async function highlightDone(range, id) {
         const newNode = document.createElement("highlight");
         newNode.setAttribute("class", id);
         // newNode.setAttribute("id", id);
-        newNode.style.backgroundColor = highlightColor.highlightColor;
+        newNode.style.backgroundColor = highlightColor;
         newrange.surroundContents(newNode);
         newNode.addEventListener("click", (event) =>
           showToolBar(event, newNode, userImage, 1)
@@ -146,7 +146,7 @@ async function highlightDone(range, id) {
           const newNode = document.createElement("highlight");
           newNode.setAttribute("class", id);
           // newNode.setAttribute("id", id);
-          newNode.style.backgroundColor = highlightColor.highlightColor;
+          newNode.style.backgroundColor = highlightColor;
           newrange.surroundContents(newNode);
           newNode.addEventListener("click", (event) =>
             showToolBar(event, newNode, userImage, 1)
@@ -162,7 +162,7 @@ async function highlightDone(range, id) {
     const newNode = document.createElement("highlight");
     newNode.setAttribute("class", id);
     // newNode.setAttribute("id", id);
-    newNode.style.backgroundColor = highlightColor.highlightColor;
+    newNode.style.backgroundColor = highlightColor;
     range.surroundContents(newNode);
     // 툴바표시 이벤트리스너 추가
     newNode.addEventListener("click", (event) =>
@@ -208,7 +208,7 @@ async function postHighlight(range, highlightStr) {
           ? og_image.content
           : "https://www.salonlfc.com/wp-content/uploads/2018/01/image-not-found-1-scaled-1150x647.png",
         description: og_description ? og_description.content : "No Description",
-        color: highlightColor.highlightColor,
+        color: highlightColor,
         type: 1,
       },
     },
@@ -598,7 +598,7 @@ function highlightImage() {
 
         // 이벤트리스너(하이라이트 버튼) 없애기
         const highlightedImage = selectedImage.cloneNode(true);
-        highlightedImage.style.border = `8px solid ${highlightColor.highlightColor}`;
+        highlightedImage.style.border = `8px solid ${highlightColor}`;
         selectedImage.parentNode.replaceChild(highlightedImage, selectedImage);
         selectedImage = highlightedImage;
 
