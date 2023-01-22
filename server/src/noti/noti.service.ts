@@ -68,22 +68,32 @@ export class NotiService {
     return result;
   }
 
-  async deleteNoti(deleteNotiDto: DeleteNotiDto[], user: User): Promise<null> {
+  async deleteNoti(noti_id: number[]): Promise<null> {
     try {
-      for (let i = 0; i < deleteNotiDto.length; i++) {
-        if (user.email !== deleteNotiDto[i].receiver_id) {
-          throw new HttpException('Forbidden', 403);
-        }
-        deleteNotiDto[i].noti_id = Number(deleteNotiDto[i].noti_id);
+      for (let i = 0; i < noti_id.length; i++) {
+        console.log(noti_id[i]);
         await this.prismaService.noti.delete({
           where: {
-            id: deleteNotiDto[i].noti_id,
+            id: noti_id[i],
           },
         });
       }
       return null;
     } catch (e) {
       console.log(e);
+      throw new HttpException('Internal Server Error', 500);
+    }
+  }
+
+  async deleteAllNoti(user: User): Promise<null> {
+    try {
+      await this.prismaService.noti.deleteMany({
+        where: {
+          receiver_id: user.email,
+        },
+      });
+      return null;
+    } catch (e) {
       throw new HttpException('Internal Server Error', 500);
     }
   }

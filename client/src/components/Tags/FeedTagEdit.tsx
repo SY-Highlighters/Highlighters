@@ -3,20 +3,23 @@ import { useSetRecoilState } from "recoil";
 import {
   tagsInFeedState,
   tagModalVisble,
-  currentFeedIdState,
+  currentFeedState,
 } from "../../states/atom";
 
 export function FeedTagEdit(props: any) {
   const setTagList = useSetRecoilState(tagsInFeedState);
   const setTagModal = useSetRecoilState(tagModalVisble);
-  const setCurrentFeedId = useSetRecoilState(currentFeedIdState);
+  const setCurrentFeed = useSetRecoilState(currentFeedState);
   const tagEditHandler = () => {
     // console.log("tagEditHandler");
     // console.log(props.tag);
-    
+
     tagAdd(props.tag);
     // 해당 피드의 id를 전역으로 저장
-    setCurrentFeedId(props.feed_id);
+    setCurrentFeed({
+      feed_id: props.feed_id,
+      feed_title: props.feed_title,
+    });
     setTagModal(1);
   };
   // 해당 피드에 대한 태그 리스트를 전역으로 저장

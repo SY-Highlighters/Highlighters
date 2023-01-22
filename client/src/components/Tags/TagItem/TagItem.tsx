@@ -2,7 +2,7 @@ import { useSetRecoilState, useRecoilValue, useRecoilState } from "recoil";
 import {
   clickedTagState,
   mainSectionState,
-  currentFeedIdState,
+  currentFeedState,
   tagsInFeedState,
   tagsCreateState,
   tagsDelState,
@@ -13,7 +13,7 @@ import Swal from "sweetalert2";
 export function TagItem(props: any) {
   const setclickedTag = useSetRecoilState(clickedTagState);
   const setMainSectionNum = useSetRecoilState(mainSectionState);
-  const currentFeedId = useRecoilValue(currentFeedIdState);
+  const currentFeedId = useRecoilValue(currentFeedState);
   const [tagList, setTagList] = useRecoilState(tagsInFeedState);
   const [tagsCreate, setTagsCreate] = useRecoilState(tagsCreateState);
   const [tagsDel, setTagsDel] = useRecoilState(tagsDelState);

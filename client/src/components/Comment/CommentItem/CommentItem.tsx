@@ -1,7 +1,7 @@
 import {
   tagsInFeedState,
   userInfoState,
-  currentFeedIdState,
+  currentFeedState,
   commentReloadState,
 } from "../../../states/atom";
 import { useSetRecoilState, useRecoilState, useRecoilValue } from "recoil";
@@ -11,7 +11,7 @@ import axios from "axios";
 import Swal from "sweetalert2";
 export function CommentItem(props: any) {
   const [cookies] = useCookies(["logCookie"]);
-  const currentFeedId = useRecoilValue(currentFeedIdState);
+  const currentFeed = useRecoilValue(currentFeedState);
   const date = new Date(props.date);
   const year = date.getFullYear();
   const month = date.getMonth() + 1;

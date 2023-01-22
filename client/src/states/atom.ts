@@ -99,9 +99,12 @@ export const userInfoState = atom<any>({
   },
 });
 
-export const currentFeedIdState = atom<number>({
-  key: "currentFeedIdState",
-  default: 0,
+export const currentFeedState = atom<{ feed_id: number; feed_title: string }>({
+  key: "currentFeedState",
+  default: {
+    feed_id: 0,
+    feed_title: "",
+  },
 });
 
 /// 쓰레기장
@@ -116,7 +119,6 @@ export const commentReloadState = atom<boolean>({
   key: "commentReloadState",
   default: false,
 });
-
 
 export const optionModalToggleState = atom<boolean>({
   key: "optionModalToggleState",

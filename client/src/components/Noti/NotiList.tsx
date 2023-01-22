@@ -16,8 +16,7 @@ const NotiList = () => {
     getNextPageIsPossible,
     status,
   } = useNoti();
-
-  const [notiCount, setNotiCount] = useState(0);
+  console.log('노티 명단' ,getBoard)
   useEffect(() => {
     // 맨 마지막 요소를 보고있고 페이지가 존재하면
     // 다음 페이지 데이터를 가져옴
@@ -59,6 +58,7 @@ const NotiList = () => {
                         // 마지막 요소에 ref 넣기 위해 div로 감싸기
                         <div ref={ref} key={noti.id} className="">
                           <NotiItem
+                            notiId={noti.id}
                             sender={noti.nickname}
                             title={noti.title}
                             contents={noti.contents}
@@ -70,6 +70,7 @@ const NotiList = () => {
                       return (
                         <div key={noti.id} className="">
                           <NotiItem
+                            notiId={noti.id}
                             sender={noti.nickname}
                             title={noti.title}
                             contents={noti.contents}

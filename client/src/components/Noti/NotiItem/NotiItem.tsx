@@ -1,5 +1,23 @@
+import React, { useState } from "react";
+import { useCookies } from "react-cookie";
+import axios from "axios";
+const host_url = `${process.env.REACT_APP_HOST}/api/noti/delete`;
 export default function NotiItem(props: any) {
-  function clickedRead() {}
+  const [cookies] = useCookies(["logCookie"]);
+  async function clickedRead() {
+    console.log("clickedRead", props.notiId);
+    // Todo : 태그 삭제 기능
+    // 서버에 태그 삭제 요청
+    await axios.delete(host_url, {
+      headers: {
+        Authorization: `Bearer ${cookies.logCookie}`,
+      },
+      data: { noti_id: [props.notiId] },
+    });
+
+    // 리액트쿼리에 저장된 태그리스트 업데이트
+    // setTestDel(!testDel);
+  }
   return (
     <li>
       <div className="px-4 py-3 mt-5 mb-3 border-t-4 rounded-lg shadow-md bg-sky-100 border-sky-500 ">

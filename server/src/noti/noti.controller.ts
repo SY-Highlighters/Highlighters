@@ -37,15 +37,20 @@ export class NotiController {
     return this.notiService.createNoti(createNotiDto);
   }
 
-  // 노티 리스트를 받아 삭제
+  // 노티 하나삭제
   @ApiResponse({ status: 200, description: 'success', type: null })
   @ApiOperation({ summary: '노티 리스트를 받아 삭제' })
   @Delete('/delete')
-  async deleteNoti(
-    @Body() deleteNotiDto: DeleteNotiDto[],
-    @GetUser() user: User,
-  ): Promise<null> {
-    return this.notiService.deleteNoti(deleteNotiDto, user);
+  async deleteNoti(@Body('noti_id') noti_id: number[]): Promise<null> {
+    return this.notiService.deleteNoti(noti_id);
+  }
+
+  // 노티 전체삭제
+  @ApiResponse({ status: 200, description: 'success', type: null })
+  @ApiOperation({ summary: '노티 전체삭제' })
+  @Delete('/deleteAll')
+  async deleteAllNoti(@GetUser() user: User): Promise<null> {
+    return this.notiService.deleteAllNoti(user);
   }
 
   // 웹에서의 노티 조회(송신자, isread true 포함)

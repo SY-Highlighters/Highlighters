@@ -798,7 +798,6 @@ const postBookmark = async (videoID, time) => {
 const newVideoLoaded = async () => {
   const bookmarkBtnExists = document.getElementsByClassName("bookmark-btn")[0];
   const response = await getBookmark(currentVideo);
-  console.log("response", response);
   currentVideoBookmarks = response.data.success ? response.data.data : [];
   console.log("currentVideoBookmarks", currentVideoBookmarks);
 

@@ -3,11 +3,11 @@ import { CommentItem } from "./CommentItem/CommentItem";
 import { useEffect, useState } from "react";
 import { useCookies } from "react-cookie";
 import axios from "axios";
-import { currentFeedIdState, commentReloadState } from "../../states/atom";
+import { currentFeedState, commentReloadState } from "../../states/atom";
 import { useRecoilValue, useRecoilState } from "recoil";
 import { useUserData } from "../../hooks/useUserData";
 export function Comment(props: any) {
-  const currentFeedId = useRecoilValue(currentFeedIdState);
+  const currentFeed = useRecoilValue(currentFeedState);
   const [cookies] = useCookies(["logCookie"]);
   const [commentList, setCommentList] = useState([]);
   const [commentReload, setcommentReload] = useRecoilState(commentReloadState);
@@ -16,7 +16,7 @@ export function Comment(props: any) {
   // 코멘트 변경시 리로드
   useEffect(() => {
     async function fetchData() {
-      const response = await getFeedComment(currentFeedId, cookies);
+      const response = await getFeedComment(currentFeed.feed_id, cookies);
       setCommentList(response.data.data);
       // setcommentReload((prev) => !prev);
     }

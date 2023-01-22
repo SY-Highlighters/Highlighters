@@ -222,7 +222,7 @@ async function postHighlight(range, highlightStr) {
         );
         window.open("https://highlighters.site/");
       } else {
-        // console.log('[posthighlight] response: ', response);
+        console.log(response);
         highlights.push(response.data.data);
         highlightDone(range, response.data.data.id);
       }
@@ -798,7 +798,6 @@ const postBookmark = async (videoID, time) => {
 const newVideoLoaded = async () => {
   const bookmarkBtnExists = document.getElementsByClassName("bookmark-btn")[0];
   const response = await getBookmark(currentVideo);
-  console.log("response", response);
   currentVideoBookmarks = response.data.success ? response.data.data : [];
   console.log("currentVideoBookmarks", currentVideoBookmarks);
 

@@ -111,8 +111,9 @@ export class ElasticsearchService {
           bool: {
             must: [
               {
-                match: {
-                  contents: word,
+                multi_match: {
+                  query: word,
+                  fields: ['contents', 'title', 'description'],
                 },
               },
               {
