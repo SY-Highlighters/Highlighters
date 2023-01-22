@@ -84,21 +84,19 @@ export class HighlightService {
       let result = null;
 
       // type 1 일반 글씨 하이라이트
-      if (type != 2) {
-        result = await this.prismaService.highlight.create({
-          data: {
-            feed_id: find_feed.id,
-            group_id: group_id,
-            user_email: user_email,
-            selection: selection,
-            contents: contents,
-            type: type,
-            color: color,
-          },
-        });
-      } else {
-        // type 2 이미지 하이라이트
-
+      result = await this.prismaService.highlight.create({
+        data: {
+          feed_id: find_feed.id,
+          group_id: group_id,
+          user_email: user_email,
+          selection: selection,
+          contents: contents,
+          type: type,
+          color: color,
+        },
+      });
+      // type 2 이미지 하이라이트
+      if (type == 2) {
         // url에서 이미지를 fetch 이후 s3에 업로드
         await fetchandsave(contents, result.id);
         // s3 url을 db에 업데이트
@@ -108,16 +106,15 @@ export class HighlightService {
             contents: `https://highlighters-s3.s3.ap-northeast-2.amazonaws.com/picture/${result.id}.jpg`,
           },
         });
-
-        if (find_feed) {
-          await this.prismaService.feed.update({
-            where: { id: find_feed.id },
-            data: {
-              // highlight: { connect: { id: result.id } },
-              updatedAt: result.createdAt,
-            },
-          });
-        }
+      }
+      if (find_feed) {
+        await this.prismaService.feed.update({
+          where: { id: find_feed.id },
+          data: {
+            // highlight: { connect: { id: result.id } },
+            updatedAt: result.createdAt,
+          },
+        });
       }
 
       // websocket으로 보내기

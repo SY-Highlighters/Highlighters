@@ -42,6 +42,7 @@ export class NotiController {
   @ApiOperation({ summary: '노티 리스트를 받아 삭제' })
   @Delete('/delete')
   async deleteNoti(@Body() deleteNotiDto: DeleteNotiDto[]): Promise<null> {
+    console.log(deleteNotiDto);
     return this.notiService.deleteNoti(deleteNotiDto);
   }
 
