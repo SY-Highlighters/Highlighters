@@ -24,7 +24,8 @@ import { useQuery } from "react-query";
 
 export function FeedTagEditModal(props: any) {
   const setTagModal = useSetRecoilState(tagModalVisble);
-  const currentFeedId = useRecoilValue(currentFeedState);
+  const currentFeed = useRecoilValue(currentFeedState);
+  console.log("이거임", currentFeed);
   // 그룹 태그 리스트 전역
   const [cookies, setCookie, removeCookie] = useCookies(["logCookie"]);
   const [inputValue, setInputValue] = useState("");
@@ -88,7 +89,7 @@ export function FeedTagEditModal(props: any) {
       <TagEditItem
         key={tagItem.tag_id}
         tagName={tagItem.tag_name}
-        feedId={currentFeedId}
+        feedId={currentFeed.feed_id}
         tagId={tagItem.tag_id}
         // tagList={tagList}
       />
@@ -110,7 +111,7 @@ export function FeedTagEditModal(props: any) {
           {
             delete_tag_id: tagDelList,
             create_tag_name: tagCreList,
-            feed_id: currentFeedId,
+            feed_id: currentFeed.feed_id,
           },
           {
             headers: {
@@ -172,10 +173,14 @@ export function FeedTagEditModal(props: any) {
           </button>
           {/* 모달 안 내용 */}
           <div className="w-full p-6 m-auto bg-white rounded-md shadow-md lg:max-w-xl">
-            <h1 className="text-3xl font-semibold text-left text-sky-500 ">
-              태그 수정
-            </h1>
-            
+            <div className="flex flex-row">
+              <h1 className="text-2xl font-semibold text-left text-sky-500 ">
+                태그 수정
+              </h1>
+            </div>
+              <div className="mt-2 ml-2 text-base text-black">
+                <span>{currentFeed.feed_title}</span>
+              </div>
             <div className="flex flex-wrap mt-2 ">{tagLists}</div>
             {/* 태그 생성 */}
             <div className="flex flex-wrap mt-5">
@@ -203,7 +208,7 @@ export function FeedTagEditModal(props: any) {
             </div>
             {/* 검색창 미리보기 형식으로 태그 리스트 */}
             <div>
-              <div className="flex justify-center mt-5">
+              <div className="flex justify-center mt-5 ml-2">
                 <GroupTagList
                   onFunc={() => {
                     // console.log("test");

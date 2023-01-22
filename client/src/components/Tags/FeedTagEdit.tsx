@@ -18,7 +18,7 @@ export function FeedTagEdit(props: any) {
     // 해당 피드의 id를 전역으로 저장
     setCurrentFeed({
       feed_id: props.feed_id,
-      feed_title: props.feed_title,
+      feed_title: props.feedTitle,
     });
     setTagModal(1);
   };

@@ -10,7 +10,7 @@ export function GroupMember() {
   const { data: groupMember, isSuccess } = useGroupMember();
   // console.log(groupMember);
   return (
-    <div className="px-2 overflow-y-auto h-15 xl:scrollbar-hide ">
+    <div className="grid w-full grid-cols-6 px-5 pb-2 overflow-y-auto h-15 xl:scrollbar-hide">
       {/* <ul className="flex flex-col space-y-2"> */}
       {isSuccess && groupMember.length === 0 && (
         <div className="flex flex-col items-center justify-center">
@@ -20,26 +20,28 @@ export function GroupMember() {
         </div>
       )}
 
-      <div className="flex mb-5 ml-3 -mx-1">
-        {isSuccess &&
-          groupMember &&
-          groupMember.map((member: any, index: number) => (
-            <img
-              key={index}
-              className="ml-1 rounded-full shadow-md w-7 h-7"
-              src={member.image}
-              alt=""
-            />
-            //   <li className="flex items-center justify-between f">
-            //   <div className="flex items-center ml-3">
-            //     <img className="w-5 h-5 rounded-full" src={member.image} alt="" />
-            //     {/* <span className="ml-2 text-sm font-medium text-gray-900">
-            //           {member.nickname}
-            //         </span> */}
-            //   </div>
-            //   </li>
-          ))}
-      </div>
+      {isSuccess &&
+        groupMember &&
+        groupMember.map((member: any, index: number) => (
+          <div className="mb-3 ml-2">
+            <span className="">
+              <img
+                key={index}
+                className="rounded-full shadow-md w-7 h-7"
+                src={member.image}
+                alt=""
+              />
+            </span>
+          </div>
+          //   <li className="flex items-center justify-between f">
+          //   <div className="flex items-center ml-3">
+          //     <img className="w-5 h-5 rounded-full" src={member.image} alt="" />
+          //     {/* <span className="ml-2 text-sm font-medium text-gray-900">
+          //           {member.nickname}
+          //         </span> */}
+          //   </div>
+          //   </li>
+        ))}
 
       {/* </ul> */}
     </div>
