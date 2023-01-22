@@ -73,7 +73,7 @@ export class SummaryService {
     };
 
     const send_data = JSON.stringify(data);
-    console.log(send_data);
+    // console.log(send_data);
     try {
       const result = await this.httpService
         .post(api_url, send_data, AxiosRequestConfig)
