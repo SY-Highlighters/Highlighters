@@ -68,12 +68,9 @@ export class NotiService {
     return result;
   }
 
-  async deleteNoti(deleteNotiDto: DeleteNotiDto[], user: User): Promise<null> {
+  async deleteNoti(deleteNotiDto: DeleteNotiDto[]): Promise<null> {
     try {
       for (let i = 0; i < deleteNotiDto.length; i++) {
-        if (user.email !== deleteNotiDto[i].receiver_id) {
-          throw new HttpException('Forbidden', 403);
-        }
         deleteNotiDto[i].noti_id = Number(deleteNotiDto[i].noti_id);
         await this.prismaService.noti.delete({
           where: {

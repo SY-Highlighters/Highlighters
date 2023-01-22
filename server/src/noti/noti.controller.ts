@@ -41,11 +41,8 @@ export class NotiController {
   @ApiResponse({ status: 200, description: 'success', type: null })
   @ApiOperation({ summary: '노티 리스트를 받아 삭제' })
   @Delete('/delete')
-  async deleteNoti(
-    @Body() deleteNotiDto: DeleteNotiDto[],
-    @GetUser() user: User,
-  ): Promise<null> {
-    return this.notiService.deleteNoti(deleteNotiDto, user);
+  async deleteNoti(@Body() deleteNotiDto: DeleteNotiDto[]): Promise<null> {
+    return this.notiService.deleteNoti(deleteNotiDto);
   }
 
   // 웹에서의 노티 조회(송신자, isread true 포함)

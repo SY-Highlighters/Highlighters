@@ -18,5 +18,4 @@ export class ShowNotiDto {
 
 export class DeleteNotiDto {
   noti_id: number;
-  receiver_id: string;
 }
