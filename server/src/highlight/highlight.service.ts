@@ -209,11 +209,11 @@ export class HighlightService {
           select: { contents: true, feed_id: true },
           data: { contents: '', color: '-1' }, // 삭제된 하이라이트는 color를 -1로 변경
         });
-      } else if (type === 2) {
+      } else {
         // 사진 하이라이트 삭제
         high_contents = await this.prismaService.highlight.delete({
           where: { id: id },
-          select: { contents: true, feed_id: true },
+          // select: { contents: true, feed_id: true },
         });
       }
       await deleteS3(id);
