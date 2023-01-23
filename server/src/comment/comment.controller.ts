@@ -28,13 +28,14 @@ export class CommentController {
   // 새로운 Comment 생성
   @Post('/create/:feed_id')
   async createComment(
-    @Param('feed_id') feed_id: number,
+    @Body('feed_id') feed_id: number,
+    @Body('content') content: string,
     @GetUser() user: User,
   ): Promise<Comment> {
     const createCommentDto = new CreateCommentDto();
+    createCommentDto.contents = content;
     createCommentDto.feed_id = feed_id;
     createCommentDto.user_email = user.email;
-    createCommentDto.group_id = user.group_id;
 
     return this.commentService.createComment(createCommentDto);
   }
