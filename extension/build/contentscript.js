@@ -419,6 +419,8 @@ function deleteHighlight(node) {
         const deletedImageNode = node.cloneNode(true);
         node.parentNode.replaceChild(deletedImageNode, node);
 
+        // 이미지 하이라이터 버튼 복원하기
+        const button = document.getElementById("btn_image_highlighters");
         const position = deletedImageNode.getBoundingClientRect();
         const scrollY = window.scrollY;
         const scrollX = window.scrollX;
@@ -907,16 +909,15 @@ chrome.runtime.onMessage.addListener(async (request, sender, sendResponse) => {
       const progressBarContainer = document.querySelector(
         ".ytp-progress-bar-container"
       );
-      console.log(progressBarContainer);
 
-      const previous_pins =
-        progressBarContainer.querySelectorAll(".highlighters-ytp");
+      if (progressBarContainer) {
+        const previous_pins =
+          progressBarContainer.querySelectorAll(".highlighters-ytp");
 
-      for (let i = 0; i < previous_pins.length; i++) {
-        progressBarContainer.removeChild(previous_pins[i]);
+        for (let i = 0; i < previous_pins.length; i++) {
+          progressBarContainer.removeChild(previous_pins[i]);
+        }
       }
-
-      console.log(progressBarContainer);
 
       for (const highlight of highlights) {
         try {

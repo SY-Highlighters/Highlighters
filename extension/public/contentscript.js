@@ -910,11 +910,13 @@ chrome.runtime.onMessage.addListener(async (request, sender, sendResponse) => {
         ".ytp-progress-bar-container"
       );
 
-      const previous_pins =
-        progressBarContainer.querySelectorAll(".highlighters-ytp");
+      if (progressBarContainer) {
+        const previous_pins =
+          progressBarContainer.querySelectorAll(".highlighters-ytp");
 
-      for (let i = 0; i < previous_pins.length; i++) {
-        progressBarContainer.removeChild(previous_pins[i]);
+        for (let i = 0; i < previous_pins.length; i++) {
+          progressBarContainer.removeChild(previous_pins[i]);
+        }
       }
 
       for (const highlight of highlights) {
