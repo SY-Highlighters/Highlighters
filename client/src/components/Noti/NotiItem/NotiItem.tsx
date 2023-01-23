@@ -9,7 +9,7 @@ export default function NotiItem(props: any) {
   const [reloadNoti, setReloadNoti] = useRecoilState(reloadNotiState);
 
   async function clickedRead() {
-    console.log("clickedRead", props.notiId);
+    // console.log("clickedRead", props.notiId);
     // Todo : 태그 삭제 기능
     // 서버에 태그 삭제 요청
     await axios.delete(host_url, {

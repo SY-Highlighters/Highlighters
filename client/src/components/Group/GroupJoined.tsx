@@ -46,13 +46,13 @@ export default function GroupJoined(props: any) {
             </div>
           </div>
         </div>
-        {isSuccess && groupMember.length === 0 && (
+        {/* {isSuccess && groupMember.length === 0 && (
           <div className="flex flex-col items-center justify-center">
             <p className="text-xs font-bold text-gray-500 ">
               팀원을 초대해보세요 😎
             </p>
           </div>
-        )}
+        )} */}
         {/* 그룹 초대 버튼 만들기 */}
         <div className="flex justify-center mt-1 cursor-pointer">
           <div className="">
@@ -82,14 +82,14 @@ export default function GroupJoined(props: any) {
           </div>
           <span className="mt-1 ml-1 text-xs text-gray-400"></span>
         </div>
-            <div className="mt-3 text-sm font-medium">
-              <span
-                onClick={clickedGroupMem}
-                className="text-blue-500 cursor-pointer"
-              >
-                {!groupMemberVisible && "+ 더보기"}
-              </span>
-            </div>
+        <div className="mt-3 text-sm font-medium">
+          <span
+            onClick={clickedGroupMem}
+            className="text-blue-500 cursor-pointer"
+          >
+            {!groupMemberVisible && "+ 더보기"}
+          </span>
+        </div>
       </div>
       {groupMemberVisible && <GroupMember></GroupMember>}
     </div>

@@ -37,14 +37,13 @@ export function CommentInput(props: any) {
 
   const commentAddHandler = async () => {
     //인풋 안에 값 비우기
-    const host_url = `${process.env.REACT_APP_HOST}/api/comment/create/${currentFeed.feed_id}`;
-    // 서버에 그룹 생성 요청
+    const host_url = `${process.env.REACT_APP_HOST}/api/comment/create`;
     await axios
       .post(
         host_url,
         {
           feed_id: currentFeed.feed_id,
-          contents: inputValue,
+          content: inputValue,
         },
         {
           headers: {

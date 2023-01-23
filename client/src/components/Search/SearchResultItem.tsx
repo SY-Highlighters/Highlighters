@@ -4,7 +4,7 @@ import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 
 const SearchResultItem = (props: any) => {
   const [searchKeyword, setSearchKeyword] = useRecoilState(searchKeywordState);
-  console.log("잉", props.date);
+  // console.log("잉", props.date);
   const date = new Date(props.date);
   const year = date.getFullYear();
   const month = date.getMonth() + 1;

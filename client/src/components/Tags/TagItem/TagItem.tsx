@@ -56,23 +56,21 @@ export function TagItem(props: any) {
     } else {
       // 1. 삭제된 태그 리스트에 있는지 확인
       const delTag = tagsDel.find((item: any) => item.tag_name === props.name);
-      console.log("delTag입니다.", delTag);
+      // console.log("delTag입니다.", delTag);
       // 1-1. 있으면 삭제된 태그 리스트에서 삭제하고, 현재 태그 리스트에 추가
       if (delTag) {
         setTagsDel(tagsDel.filter((item: any) => item.tag_name !== props.name));
         setTagList([...tagList, delTag]);
       } else {
-        console.log("여긴옴?");
+        // console.log("여긴옴?");
         // 2. 생성된 태그 리스트에 있는지 확인
-        console.log();
 
         const createTag = tagsCreate.find(
           (item: any) => item.tag_name === props.name
         );
-        console.log("createTag", createTag);
+        // console.log("createTag", createTag);
         // 2-1. 없으면 생성된 태그 리스트에 추가
         if (!createTag) {
-          console.log("여긴옴2?");
           const newTagItem = {
             tag_name: props.name,
           };
@@ -81,7 +79,6 @@ export function TagItem(props: any) {
         }
         // 2-2. 있으면 생성된 태그 리스트에서 삭제
         else {
-          console.log("여긴옴3?");
           Swal.fire({
             icon: "error",
             title: "태그 중복",

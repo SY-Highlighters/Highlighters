@@ -31,13 +31,13 @@ export function GoogleLoginButton() {
 
   const googleSocialLogin = useGoogleLogin({
     onSuccess: async (creRes) => {
-      console.log(creRes);
+      // console.log(creRes);
       await axios
         .post(`${process.env.REACT_APP_HOST}/api/auth/google`, {
           accessToken: creRes.access_token,
         })
         .then(function (response) {
-          console.log('이건머고,?',response);
+          // console.log('이건머고,?',response);
           if (response) {
             axios.defaults.headers.common[
               "Authorization"

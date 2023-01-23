@@ -213,14 +213,17 @@ const FeedItem = (props: any) => {
 
   function commentToggleHandler() {
     if (!commentIsClicked) {
-      setCurrentFeedId(props.id);
+      setCurrentFeedId({
+        feed_id: props.id,
+        feed_title: props.title,
+      });
     }
     setCommentIsClicked(!commentIsClicked);
   }
 
   // 세줄요약 api
   const threeTriHandler = async () => {
-    console.log(props.id)
+    // console.log(props.id);
     if (!threeTrigger && props.url.includes("https://n.news.naver.com")) {
       const three = await axios({
         method: "post",

@@ -35,7 +35,7 @@ const NotiList = () => {
     isSuccess,
     isLoading,
   } = useQuery("notiList", getNoti);
-  console.log("여긴 노티", notiList);
+  // console.log("여긴 노티", notiList);
   async function getNoti() {
     const res = await axios({
       method: "get",

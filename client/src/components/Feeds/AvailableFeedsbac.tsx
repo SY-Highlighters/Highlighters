@@ -15,7 +15,7 @@ const AvailableFeeds = () => {
   const groupId = user?.group_id;
 
   useEffect(() => {
-    console.log("groupId: ", groupId);
+    // console.log("groupId: ", groupId);
   }, [groupId]);
   
   const { data: feedsInGroup, isSuccess } = useQuery(

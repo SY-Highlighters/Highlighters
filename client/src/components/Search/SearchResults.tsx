@@ -28,9 +28,9 @@ const SearchResults = () => {
           Authorization: `Bearer ${cookies.logCookie}`,
         },
       });
-      console.log(response);
+      // console.log(response);
       const data = response.data.data;
-      console.log("searchresult: ", data);
+      // console.log("searchresult: ", data);
       searchResultFeedsAdd(data);
     }
 
