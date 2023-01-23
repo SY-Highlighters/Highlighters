@@ -22,21 +22,35 @@ export class CommentService {
   }
 
   async getComments(feed_id: number): Promise<ShowCommentDto[]> {
-    const comments = await this.prismaService.comment.findMany({
-      where: { feed_id: feed_id },
-    });
+    // const comments = await this.prismaService.comment.findMany({
+    //   where: { feed_id: feed_id },
+    // });
     // add user nickname, user image and comment created_at
     const result: ShowCommentDto[] = [];
     try {
+      // for (const comment of comments) {
+      //   const user = await this.prismaService.user.findUnique({
+      //     where: { email: comment.user_email },
+      //   });
+      //   const showCommentDto: ShowCommentDto = {
+      //     id: comment.id,
+      //     contents: comment.contents,
+      //     nickname: user.nickname,
+      //     profile_image: user.image,
+      //     createdAt: comment.createdAt,
+      //   };
+      //   result.push(showCommentDto);
+      // }
+      const comments = await this.prismaService.comment.findMany({
+        where: { feed_id: feed_id },
+        include: { user: true },
+      });
       for (const comment of comments) {
-        const user = await this.prismaService.user.findUnique({
-          where: { email: comment.user_email },
-        });
         const showCommentDto: ShowCommentDto = {
           id: comment.id,
           contents: comment.contents,
-          nickname: user.nickname,
-          profile_image: user.image,
+          nickname: comment.user.nickname,
+          profile_image: comment.user.image,
           createdAt: comment.createdAt,
         };
         result.push(showCommentDto);
