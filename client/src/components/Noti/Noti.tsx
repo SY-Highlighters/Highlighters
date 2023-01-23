@@ -7,7 +7,7 @@ import { useNoti } from "../../hooks/useNoti";
 import { useInView } from "react-intersection-observer";
 import NotiList from "./NotiList";
 import { useCookies } from "react-cookie";
-import { useRecoilState, useResetRecoilState } from "recoil";
+import { useRecoilValue, useResetRecoilState } from "recoil";
 import { testNoti } from "../../states/atom";
 const host_url = `${process.env.REACT_APP_HOST}/api/noti/deleteAll`;
 
@@ -15,7 +15,7 @@ const host_url = `${process.env.REACT_APP_HOST}/api/noti/deleteAll`;
 export default function Noti() {
   const [notiCount, setNotiCount] = useState(0);
   const [cookies] = useCookies(["logCookie"]);
-  const [testNt, setTestNoti] = useRecoilState(testNoti);
+  const testNt = useRecoilValue(testNoti);
   const resetTNt = useResetRecoilState(testNoti);
   // const clickedAllRead = () => {
   //   setNotiCount(0);
@@ -49,11 +49,9 @@ export default function Noti() {
               <p className="text-xl font-bold text-white truncate">
                 <span className="">알림</span>
               </p>
-              {/* 알림 카운트
               <div className="flex items-center justify-center flex-shrink-0 w-6 h-6 ml-2 text-xs font-medium text-white rounded-full opacity-75 bg-sky-600">
-                {notiCount > 99 ? "99+" : notiCount}
-              </div> */}
-
+                {testNt.length > 99 ? "99+" : testNt.length}
+              </div>
               {/* 모두읽음 구석에 배치 */}
               <span
                 onClick={clickedAllRead}
