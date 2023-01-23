@@ -12,3 +12,8 @@ export const feedGenerateState = atom<any>({
   default: [false],
 });
 
+// 현재 하이라이트 색깔 state
+export const currentColorState = atom<any>({
+  key: "currentColorState",
+  default: ["#E9D5FF"],
+});

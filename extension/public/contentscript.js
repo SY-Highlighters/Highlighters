@@ -6,7 +6,7 @@ let highlights = [];
 let userImage;
 let curNode;
 let curNodeType;
-let curNodeID = null;
+// let curNodeID = null;
 // let mouseOverImgButton = {};
 
 const toolBarCSS = `
@@ -29,6 +29,17 @@ const backgroundCSS = `
     background: rgba(255, 255, 255, 0);
     z-index: 999;
 `;
+
+const pen_purple =
+  "https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FbhTyoz%2FbtrWYMqgMN8%2F1auPxBjwj2dcxtiQ4qTNP1%2Fimg.png";
+const pen_blue =
+  "https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FbSTxN4%2FbtrWS3s6Nny%2FUAwdw2EdlUzkfEp6ZOxLM0%2Fimg.png";
+const pen_yellow =
+  "https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FcwmKe7%2FbtrWZXkQKtl%2FVVl4FYkjMUQfhzT6EBJSt0%2Fimg.png";
+const pen_green =
+  "https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FbuwOGM%2FbtrWX5pUxf0%2Faa9V7hS48VqJgeKrNjLykK%2Fimg.png";
+const pen_red =
+  "https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FcDpb7P%2FbtrWREgrRTF%2FwcDFX51rqGcVThfEJyLXgK%2Fimg.png";
 
 function highlight() {
   const range = selectionText.getRangeAt(0);
@@ -597,13 +608,14 @@ function makeButton(name) {
   const button = document.createElement("input");
   button.setAttribute("id", `btn_${name}_highlighters`);
   button.setAttribute("type", "image");
-  button.setAttribute(
-    "src",
-    "https://cdn-icons-png.flaticon.com/512/3237/3237124.png"
-  );
+
+  console.log(highlightColor);
+  button.src =
+    "https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FGWbSx%2FbtrWU72GYzf%2FCNBOeTyQB5sAk0gDIyvATK%2Fimg.png";
   button.style.height = "35px";
   button.style.width = "35px";
   button.style.display = "none";
+  // button.style.transform = "rotate(270deg)"
 
   return button;
 }
@@ -695,6 +707,28 @@ async function onWindowReady() {
   const highlightColorInSync = await chrome.storage.sync.get("highlightColor");
   highlightColor = highlightColorInSync.highlightColor;
 
+  let pen_src;
+  switch (highlightColor) {
+    case "#e9d5ff":
+      pen_src = pen_purple;
+      break;
+    case "#bfdbfe":
+      pen_src = pen_blue;
+      break;
+    case "#bbf7d0":
+      pen_src = pen_green;
+      break;
+    case "#fecaca":
+      pen_src = pen_red;
+      break;
+    default:
+      pen_src = pen_yellow;
+      break;
+  }
+
+  textPenButton.src = pen_src;
+  imagePenButton.src = pen_src;
+
   // 하이라이트 가져오기
   getUserInfo();
 }
@@ -725,7 +759,7 @@ document.onmouseup = function (e) {
     const direction = sel.anchorOffset - sel.focusOffset < 0;
     const divTop = direction ? e.pageY + 10 : e.pageY - 40;
     const divLeft = direction ? e.pageX + 10 : e.pageX - 40;
-    button.style.transform = direction ? "rotate(90deg)" : "rotate(270deg)";
+    button.style.transform = direction ? "rotate(0deg)" : "rotate(180deg)";
 
     // 레이어 위치를 변경한다.
     button.style.top = divTop + "px";
@@ -973,6 +1007,38 @@ chrome.runtime.onMessage.addListener(async (request, sender, sendResponse) => {
         console.log("하이라이트 복원 실패", e);
       }
       break;
+
+    case "changeCurrentColor":
+      console.log("[contentscript]: changeCurrentColor: ", request.data);
+      const textPenButton = document.getElementById("btn_text_highlighters");
+      const imagePenButton = document.getElementById("btn_image_highlighters");
+
+      let pen_src;
+      switch (request.data) {
+        case "#e9d5ff":
+          pen_src = pen_purple;
+          break;
+        case "#bfdbfe":
+          pen_src = pen_blue;
+          break;
+        case "#bbf7d0":
+          pen_src = pen_green;
+          break;
+        case "#fecaca":
+          pen_src = pen_red;
+          break;
+        default:
+          pen_src = pen_yellow;
+          break;
+      }
+
+      textPenButton.src = pen_src;
+      imagePenButton.src = pen_src;
+      sendResponse({ response: "ok" });
+      break;
+    // try {
+
+    // }
 
     default:
       console.log(request, sender);

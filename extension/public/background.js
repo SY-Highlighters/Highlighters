@@ -295,6 +295,7 @@ async function BackgroundStart() {
             .then((data) => sendResponse({ data }))
             .catch((error) => console.log(`fetch 실패: ${error}`));
           break;
+        
 
         default:
           console.log("[background] Bad Request");
