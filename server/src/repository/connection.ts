@@ -58,7 +58,7 @@ export class ElasticsearchService {
   }
 
   async appendFeed(feed_id: string, contents: string) {
-    await this.client.updateByQuery({
+    this.client.updateByQuery({
       index: 'search-highlighter',
       body: {
         query: {
