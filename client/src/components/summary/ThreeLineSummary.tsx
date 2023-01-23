@@ -24,8 +24,10 @@ const ThreeLineSummary = (props: any) => {
           Authorization: `Bearer ${cookies.logCookie}`,
         },
       });
-      setSummary(threeLineSummaryResult.data.data.summary);
-      console.log(threeLineSummaryResult);
+      // console.log(threeLineSummaryResult.data);
+      // console.log(threeLineSummaryResult.data.data);
+      setSummary(threeLineSummaryResult.data.data);
+      // console.log(threeLineSummaryResult);
     }
     setThreeTrigger(!threeTrigger);
   };

@@ -1,10 +1,11 @@
 import { map } from 'rxjs/operators';
 import { HttpService } from '@nestjs/axios';
-import { Injectable, HttpException, ConsoleLogger } from '@nestjs/common';
+import { Injectable, HttpException, ConsoleLogger, Sse } from '@nestjs/common';
 import { User } from '@prisma/client';
 import { ElasticsearchService } from 'src/repository/connection';
 import { PrismaService } from 'src/repository/prisma.service';
 import { parse } from 'node-html-parser';
+import { GoogleAuth } from 'google-auth-library';
 
 @Injectable()
 export class SummaryService {
@@ -20,8 +21,7 @@ export class SummaryService {
       },
     });
     if (feed.summary) {
-      console.log('summary already exists');
-      console.log('summary from db: ', feed.summary);
+      console.log('summary already exists in DB');
       return feed.summary;
     }
     const api_url =
@@ -33,25 +33,23 @@ export class SummaryService {
         'content-type': 'application/json',
       },
     };
-    // console.log(url);
 
     const full_text = await fetch(url).then((res) => res.text());
     const temp = parse(full_text);
+    console.log('temp: ', temp);
     const title = temp.querySelector('#title_area').innerText.trim();
+    console.log('title: ', title);
     const dic_area = temp.querySelector('#dic_area');
-    // console.log(dic_area);
+    console.log('dic_area: ', dic_area);
     const end_photo_orgs = dic_area.querySelectorAll('.end_photo_org');
-
     let end_photo_orgs_text;
     if (end_photo_orgs) {
       end_photo_orgs_text = end_photo_orgs.map((node) => {
         return node.innerText;
       });
     }
-
     const media_end_summary = dic_area.querySelector('.media_end_summary');
     let content = dic_area.innerText;
-
     if (media_end_summary) {
       content = dic_area.innerText.replace(media_end_summary.innerText, '');
     }
@@ -59,7 +57,7 @@ export class SummaryService {
       content = content.replace(end_photo_orgs_text[i], '');
     }
     content = content.trim();
-    console.log(content);
+    // console.log(content);
 
     // let text = temp.querySelector('#dic_area').innerText.trim();
     // console.log(text);
@@ -73,9 +71,11 @@ export class SummaryService {
     // console.log('text: ', text);
 
     if (content.length > 1999) {
-      throw new HttpException('문장이 너무 길어요', 400);
+      console.log('문장이 너무 길어요');
+      return '2천자 이상의 문장은 요약할 수 없어요.';
+      // throw new HttpException('문장이 너무 길어요', 400);
     }
-    console.log('문장이 너무 긴지 확인');
+
     const data = {
       document: {
         title: title,
@@ -90,26 +90,27 @@ export class SummaryService {
     };
 
     const send_data = JSON.stringify(data);
-    // console.log(send_data);
+
     try {
-      const result = this.httpService
-        .post(api_url, send_data, AxiosRequestConfig)
-        .pipe(map((response) => response.data));
-      console.log('summary result: ', result);
-      let ss: string;
-      result.subscribe(async (res) => {
-        ss = res.summary;
-        await this.prismaService.feed.update({
-          where: {
-            id: +id,
-          },
-          data: {
-            summary: ss,
-          },
-        });
-        console.log('summary: ', ss);
-        return ss;
+      const response = await fetch(api_url, {
+        method: 'POST',
+        headers: {
+          'X-NCP-APIGW-API-KEY-ID': process.env.NAVER_API_KEY_ID,
+          'X-NCP-APIGW-API-KEY': process.env.NAVER_API_KEY,
+          'content-type': 'application/json',
+        },
+        body: send_data,
+      }).then((res) => res.json());
+
+      await this.prismaService.feed.update({
+        where: {
+          id: +id,
+        },
+        data: {
+          summary: response.summary,
+        },
       });
+      return response.summary;
     } catch (error) {
       console.log('error', error);
     }
