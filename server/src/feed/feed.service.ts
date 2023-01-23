@@ -68,6 +68,8 @@ export class FeedService {
     elasticFeed.title = feed_title;
     elasticFeed.url = url;
     elasticFeed.description = description;
+    elasticFeed.createdAt = _Feed.createdAt;
+    elasticFeed.image = user.image;
     if (type == 1) {
       elasticFeed.contents = high_content;
     } else {

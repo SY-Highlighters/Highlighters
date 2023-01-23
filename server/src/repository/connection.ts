@@ -8,10 +8,8 @@ import { PrismaService } from './prisma.service';
 @Injectable()
 export class ElasticsearchService {
   private readonly client: elasticsearch.Client;
-  
-  constructor(
-    private readonly prismaService: PrismaService
-  ) {
+
+  constructor(private readonly prismaService: PrismaService) {
     this.client = new elasticsearch.Client({
       cloud: {
         id: process.env.ELASTICSEARCH_NODE,
@@ -35,6 +33,8 @@ export class ElasticsearchService {
         description: elasticfeed.description,
         group_id: elasticfeed.group_id,
         url: elasticfeed.url,
+        image: elasticfeed.image,
+        createdAt: elasticfeed.createdAt,
       },
     });
   }

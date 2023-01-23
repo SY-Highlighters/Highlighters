@@ -6,4 +6,6 @@ export class elasticFeedDto {
   url: string;
   contents: any;
   description: string;
+  createdAt: Date;
+  image: string;
 }
