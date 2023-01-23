@@ -62,7 +62,7 @@ export function FeedTagEditModal(props: any) {
 
   // 엔터나 버튼 클릭시 태그 추가
   const tagAddHandler = async () => {
-    if (inputValue === "") {
+    if (inputValue === "" || inputValue.trim() === "") {
       return;
     }
     // 태그 중복 체크
