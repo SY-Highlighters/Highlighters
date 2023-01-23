@@ -98,17 +98,51 @@ export class NotiService {
     }
   }
 
-  async findNotiWeb(user: User, page: number, take: number) {
+  // async findNotiWeb(user: User, page: number, take: number) {
+  //   try {
+  //     const count = await this.prismaService.noti.count({
+  //       where: { receiver_id: user.email },
+  //     });
+  //     const noties = await this.prismaService.noti.findMany({
+  //       where: { receiver_id: user.email },
+  //       orderBy: { createdAt: 'desc' },
+  //       include: { feed: true, sender: true },
+  //       take: take,
+  //       skip: (page - 1) * take,
+  //     });
+  //     const result: ShowNotiDto[] = [];
+  //     for (let i = 0; i < noties.length; i++) {
+  //       // await this.prismaService.noti.update({
+  //       //   where: { id: noties[i].id },
+  //       //   data: { isRead: true },
+  //       // });
+  //       result.push({
+  //         id: noties[i].id,
+  //         contents: noties[i].contents,
+  //         nickname: noties[i].sender.nickname,
+  //         feed_id: noties[i].feed_id,
+  //         title: noties[i].feed.title,
+  //         url: noties[i].feed.url,
+  //         createdAt: noties[i].createdAt,
+  //       });
+  //     }
+  //     return {
+  //       totalcount: count,
+  //       currentPage: page,
+  //       totalPage: Math.ceil(count / take),
+  //       data: result,
+  //     };
+  //   } catch (e) {
+  //     throw new HttpException('Internal Server Error', 500);
+  //   }
+  // }
+
+  async findNotiWeb(user: User) {
     try {
-      const count = await this.prismaService.noti.count({
-        where: { receiver_id: user.email },
-      });
       const noties = await this.prismaService.noti.findMany({
         where: { receiver_id: user.email },
         orderBy: { createdAt: 'desc' },
         include: { feed: true, sender: true },
-        take: take,
-        skip: (page - 1) * take,
       });
       const result: ShowNotiDto[] = [];
       for (let i = 0; i < noties.length; i++) {
@@ -127,9 +161,6 @@ export class NotiService {
         });
       }
       return {
-        totalcount: count,
-        currentPage: page,
-        totalPage: Math.ceil(count / take),
         data: result,
       };
     } catch (e) {

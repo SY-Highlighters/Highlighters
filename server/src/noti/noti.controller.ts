@@ -57,12 +57,8 @@ export class NotiController {
   @ApiResponse({ status: 200, description: 'success', type: ShowNotiDto })
   @ApiOperation({ summary: '웹에서의 노티 조회(송신자, isread true 포함)' })
   @Get('/web')
-  async findNotiWeb(
-    @GetUser() user: User,
-    @Query('page') page: number,
-    @Query('take') take: number,
-  ) {
-    return this.notiService.findNotiWeb(user, page, take);
+  async findNotiWeb(@GetUser() user: User) {
+    return this.notiService.findNotiWeb(user);
   }
 
   // 익스텐션에서의 노티 조회(송신자, isread true 제외)
