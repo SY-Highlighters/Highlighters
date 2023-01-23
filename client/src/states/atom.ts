@@ -167,7 +167,7 @@ export const reloadNotiState = atom<boolean>({
 
 export const testNoti = atom<any>({
   key: "testNoti",
-  default: false,
+  default: [],
 });
 
 
