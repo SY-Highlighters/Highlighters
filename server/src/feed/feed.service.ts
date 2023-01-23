@@ -221,12 +221,26 @@ export class FeedService {
     return feeds;
   }
 
-  async deleteFeedById(id: number): Promise<Feed> {
+  async deleteFeedById(id: number): Promise<boolean> {
     const result = await this.prismaService.feed.delete({
       where: { id },
+      select: {
+        tag: {
+          select: {
+            id: true,
+          },
+        },
+      },
+    });
+    await this.prismaService.tag.deleteMany({
+      where: {
+        id: {
+          in: result.tag.map((tag) => tag.id),
+        },
+      },
     });
     this.elastic.deleteFeed(String(id));
-    return result;
+    return true;
   }
 
   async findFeedByUrl(url: string, user: User): Promise<boolean> {

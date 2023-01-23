@@ -88,7 +88,7 @@ export class FeedController {
 
   // Id로 Feed 찾은 후 삭제
   @Delete('/delete/:id')
-  async deleteFeedById(@Param('id') id: number): Promise<Feed> {
+  async deleteFeedById(@Param('id') id: number): Promise<boolean> {
     return this.feedService.deleteFeedById(id);
   }
 
