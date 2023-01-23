@@ -22,48 +22,7 @@ import { throttle } from "lodash";
 import { useQuery } from "react-query";
 import { useCookies } from "react-cookie";
 import axios from "axios";
-const meetings = [
-  {
-    id: 1,
-    name: "Leslie Alexander",
-    imageUrl:
-      "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
-    startDatetime: "2022-05-11T13:00",
-    endDatetime: "2022-05-11T14:30",
-  },
-  {
-    id: 2,
-    name: "Michael Foster",
-    imageUrl:
-      "https://images.unsplash.com/photo-1519244703995-f4e0f30006d5?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
-    startDatetime: "2022-05-20T09:00",
-    endDatetime: "2022-05-20T11:30",
-  },
-  {
-    id: 3,
-    name: "Dries Vincent",
-    imageUrl:
-      "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
-    startDatetime: "2022-05-20T17:00",
-    endDatetime: "2022-05-20T18:30",
-  },
-  {
-    id: 4,
-    name: "Leslie Alexander",
-    imageUrl:
-      "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
-    startDatetime: "2022-06-09T13:00",
-    endDatetime: "2022-06-09T14:30",
-  },
-  {
-    id: 5,
-    name: "Michael Foster",
-    imageUrl:
-      "https://images.unsplash.com/photo-1519244703995-f4e0f30006d5?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
-    startDatetime: "2022-05-13T14:00",
-    endDatetime: "2022-05-13T14:30",
-  },
-];
+
 
 function classNames(...classes: any) {
   return classes.filter(Boolean).join(" ");
@@ -77,19 +36,19 @@ export default function Calender() {
   let firstDayCurrentMonth = parse(currentMonth, "MMM-yyyy", new Date());
   const setGlobalSelectedDay = useSetRecoilState(selectedDayState);
   const setMainSectionNum = useSetRecoilState(mainSectionState);
-  console.log("오늘인가", today);
+  // console.log("오늘인가", today);
 
-  const { data, isSuccess } = useQuery("currentMonth", getMouthFeed);
+  const { data, isSuccess } = useQuery(currentMonth, getMouthFeed);
   async function getMouthFeed() {
     const res = await axios({
       method: "get",
-      url: `${process.env.REACT_APP_HOST}/api/calendar/month/?date=${today}`,
+      url: `${process.env.REACT_APP_HOST}/api/calendar/month/?date=${currentMonth}`,
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${cookies.logCookie}`,
       },
     });
-    console.log("월 날짜가져오기", res.data);
+    // console.log("월 날짜가져오기", res.data);
     return res.data;
   }
   // console.log("이번달인가",currentMonth)
@@ -108,15 +67,17 @@ export default function Calender() {
     setCurrentMonth(format(firstDayNextMonth, "MMM-yyyy"));
   }
 
-  let selectedDayMeetings = meetings.filter((meeting) =>
-    isSameDay(parseISO(meeting.startDatetime), selectedDay)
-  );
+  // let selectedDayMeetings = meetings.filter((meeting) =>
+  //   isSameDay(parseISO(meeting.startDatetime), selectedDay)
+  // );
   // const throttledClickedDay = (day: any) => thrrottle(clickedDay(day), 10000);
   function clickedDay(day: Date) {
     setSelectedDay(day);
     setGlobalSelectedDay(day);
     setMainSectionNum(3);
   }
+  // useEffect(() => {
+  // }, [setCurrentMonth]);
   return (
     <div className="w-full mt-3 bg-white rounded-lg shadow-lg h-15">
       <div className="m-5">
