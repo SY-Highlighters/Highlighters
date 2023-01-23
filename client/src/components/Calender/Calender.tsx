@@ -15,11 +15,13 @@ import {
   parseISO,
   startOfToday,
 } from "date-fns";
-import { Fragment, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import { useSetRecoilState } from "recoil";
 import { selectedDayState, mainSectionState } from "../../states/atom";
 import { throttle } from "lodash";
-
+import { useQuery } from "react-query";
+import { useCookies } from "react-cookie";
+import axios from "axios";
 const meetings = [
   {
     id: 1,
@@ -67,13 +69,30 @@ function classNames(...classes: any) {
   return classes.filter(Boolean).join(" ");
 }
 export default function Calender() {
+  const [cookies] = useCookies(["logCookie"]);
+
   let today = startOfToday();
   let [selectedDay, setSelectedDay] = useState(today);
   let [currentMonth, setCurrentMonth] = useState(format(today, "MMM-yyyy"));
   let firstDayCurrentMonth = parse(currentMonth, "MMM-yyyy", new Date());
   const setGlobalSelectedDay = useSetRecoilState(selectedDayState);
   const setMainSectionNum = useSetRecoilState(mainSectionState);
+  console.log("오늘인가", today);
 
+  const { data, isSuccess } = useQuery("currentMonth", getMouthFeed);
+  async function getMouthFeed() {
+    const res = await axios({
+      method: "get",
+      url: `${process.env.REACT_APP_HOST}/api/calendar/month/?date=${today}`,
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${cookies.logCookie}`,
+      },
+    });
+    console.log("월 날짜가져오기", res.data);
+    return res.data;
+  }
+  // console.log("이번달인가",currentMonth)
   let days = eachDayOfInterval({
     start: firstDayCurrentMonth,
     end: endOfMonth(firstDayCurrentMonth),
@@ -176,12 +195,13 @@ export default function Calender() {
                     </time>
                   </button>
 
-                  <div className="w-1 h-1 mx-auto mt-1">
-                    {meetings.some((meeting) =>
-                      isSameDay(parseISO(meeting.startDatetime), day)
-                    ) && (
-                      <div className="w-2 h-2 rounded-full bg-sky-500"></div>
-                    )}
+                  <div className="w-1 h-1 mx-auto mt-1 ">
+                    {isSuccess &&
+                      data.data.some((meeting: any) =>
+                        isSameDay(parseISO(meeting.startDatetime), day)
+                      ) && (
+                        <div className="w-2 h-2 -mr-1 rounded-full bg-violet-400"></div>
+                      )}
                   </div>
                 </div>
               ))}
