@@ -14,13 +14,16 @@ export class SummaryService {
   ) {}
 
   async summary_url(url: string, user: User, id: number) {
-    const summary = await this.prismaService.feed.findUnique({
+    console.log('summary_url 시작');
+    const feed = await this.prismaService.feed.findUnique({
       where: {
         id: id,
       },
     });
-    if (summary) {
-      return summary;
+    if (feed.summary) {
+      console.log('summary already exists');
+      console.log('summary: ', feed.summary);
+      return feed.summary;
     }
     const api_url =
       'https://naveropenapi.apigw.ntruss.com/text-summary/v1/summarize';
@@ -37,21 +40,27 @@ export class SummaryService {
     const temp = parse(full_text);
     const title = temp.querySelector('#title_area').innerText.trim();
     const dic_area = temp.querySelector('#dic_area');
-    const end_photo_orgs = dic_area
-      .querySelectorAll('.end_photo_org')
-      .map((node) => {
+    // console.log(dic_area);
+    const end_photo_orgs = dic_area.querySelectorAll('.end_photo_org');
+
+    let end_photo_orgs_text;
+    if (end_photo_orgs) {
+      end_photo_orgs_text = end_photo_orgs.map((node) => {
         return node.innerText;
       });
+    }
 
-    const media_end_summary =
-      dic_area.querySelector('.media_end_summary').innerText;
+    const media_end_summary = dic_area.querySelector('.media_end_summary');
+    let content = dic_area.innerText;
 
-    let content = dic_area.innerText.replace(media_end_summary, '');
-    for (let i = 0; i < end_photo_orgs.length; i++) {
-      content = content.replace(end_photo_orgs[i], '');
+    if (media_end_summary) {
+      content = dic_area.innerText.replace(media_end_summary.innerText, '');
+    }
+    for (let i = 0; i < end_photo_orgs_text.length; i++) {
+      content = content.replace(end_photo_orgs_text[i], '');
     }
     content = content.trim();
-    // console.log(content);
+    console.log(content);
 
     // let text = temp.querySelector('#dic_area').innerText.trim();
     // console.log(text);
@@ -67,6 +76,7 @@ export class SummaryService {
     if (content.length > 1999) {
       throw new HttpException('문장이 너무 길어요', 400);
     }
+    console.log('문장이 너무 긴지 확인');
     const data = {
       document: {
         title: title,
@@ -83,10 +93,11 @@ export class SummaryService {
     const send_data = JSON.stringify(data);
     // console.log(send_data);
     try {
+      console.log('summary start');
       const result = this.httpService
         .post(api_url, send_data, AxiosRequestConfig)
         .pipe(map((response) => response.data));
-
+      console.log('summary end: ', result);
       let ss: string;
       result.subscribe(async (res) => {
         ss = res.summary;
@@ -98,9 +109,9 @@ export class SummaryService {
             summary: ss,
           },
         });
+        console.log('summary: ', ss);
+        return ss;
       });
-
-      return result;
     } catch (error) {
       console.log('error', error);
     }
