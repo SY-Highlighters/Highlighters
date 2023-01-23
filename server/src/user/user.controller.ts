@@ -11,6 +11,6 @@ export class UserController {
 
   @Get('/signin')
   async findSignInUserGroupInfo(@GetUser() user: User): Promise<object> {
-    return this.userService.findSignInUserGroupInfo(user.email);
+    return this.userService.findSignInUserGroupInfo(user);
   }
 }
