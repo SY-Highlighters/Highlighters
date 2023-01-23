@@ -26,7 +26,7 @@ export class CommentController {
   constructor(private readonly commentService: CommentService) {}
 
   // 새로운 Comment 생성
-  @Post('/create/:feed_id')
+  @Post('/create')
   async createComment(
     @Body('feed_id') feed_id: number,
     @Body('content') content: string,
