@@ -18,14 +18,14 @@ export class CalendarService {
 
   async showCalendar(user: User, page: number, take: number, date: Date) {
     const curr_date = new Date();
-    // console.log('current date: ', curr_date.getDate());
-    // console.log('request date: ', date.getDate());
 
     let cache_flag = 0;
     // 요청 날짜가 현재 날짜와 같지 않은 경우만 캐시
     if (date.getDate() !== curr_date.getDate()) {
       const cache_result = await this.cacheManager.get(
-        `calendar-${date}-${page}`,
+        `calendar-${user.group_id}-${date.getFullYear()}-${
+          date.getMonth() + 1
+        }-${date.getDate()}-${page}`,
       );
       if (!cache_result) {
         console.log('[calendar] cache miss');
@@ -128,7 +128,9 @@ export class CalendarService {
 
       if (cache_flag === 1) {
         await this.cacheManager.set(
-          `calendar-${date}-${page}`,
+          `calendar-${user.group_id}-${date.getFullYear()}-${
+            date.getMonth() + 1
+          }-${date.getDate()}-${page}`,
           result,
           60 * 60 * 24, // ttl: 24시간
         );
@@ -154,6 +156,19 @@ export class CalendarService {
       if (curr_date > limit_date) {
         break;
       }
+
+      // // cache로 조회
+      // const is_exists = await this.cacheManager.get(
+      //   `calendar-${user.group_id}-${curr_date.getFullYear()}-${
+      //     curr_date.getMonth() + 1
+      //   }-${curr_date.getDate()}-1`,
+      // );
+      // if (is_exists) {
+      //   result.push({
+      //     startDatetime: curr_date,
+      //   });
+      //   continue;
+      // }
 
       const count = await this.prismaService.feed.findFirst({
         where: {

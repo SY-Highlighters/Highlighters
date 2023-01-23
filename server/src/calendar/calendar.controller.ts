@@ -24,6 +24,12 @@ import { query } from 'express';
 export class CalendarController {
   constructor(private readonly calendarService: CalendarService) {}
 
+  @Get('/test')
+  async test(@GetUser() user: User) {
+    console.log('user: ', user);
+    return 'test';
+  }
+
   // 캘린더 조회
   @ApiResponse({ status: 200, description: 'success', type: 'Feed' })
   @ApiOperation({ summary: '캘린더 조회' })
