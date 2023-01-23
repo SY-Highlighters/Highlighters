@@ -133,19 +133,6 @@ export class ElasticsearchService {
       for (let i = 0; i < result.hits.hits.length; i++) {
         real_result.push(result.hits.hits[i]._source);
         real_result[i].score = result.hits.hits[i]._score;
-        // const log = real_result[i].user_nickname;
-        // console.log(log);
-        const image = await this.prismaService.user.findFirst({
-          where: {
-            group_id: user.group_id,
-            nickname: real_result[i].user_nickname,
-          },
-          select: {
-            image: true,
-          },
-        });
-        // console.log(image);
-        real_result[i].image = image.image;
       }
     }
     return real_result;
