@@ -14,7 +14,6 @@ export class SummaryService {
   ) {}
 
   async summary_url(url: string, user: User, id: number) {
-    console.log('summary_url 시작');
     const feed = await this.prismaService.feed.findUnique({
       where: {
         id: id,
@@ -22,7 +21,7 @@ export class SummaryService {
     });
     if (feed.summary) {
       console.log('summary already exists');
-      console.log('summary: ', feed.summary);
+      console.log('summary from db: ', feed.summary);
       return feed.summary;
     }
     const api_url =
@@ -93,11 +92,10 @@ export class SummaryService {
     const send_data = JSON.stringify(data);
     // console.log(send_data);
     try {
-      console.log('summary start');
       const result = this.httpService
         .post(api_url, send_data, AxiosRequestConfig)
         .pipe(map((response) => response.data));
-      console.log('summary end: ', result);
+      console.log('summary result: ', result);
       let ss: string;
       result.subscribe(async (res) => {
         ss = res.summary;
