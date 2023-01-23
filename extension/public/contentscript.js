@@ -419,7 +419,7 @@ function deleteHighlight(node) {
         const deletedImageNode = node.cloneNode(true);
         node.parentNode.replaceChild(deletedImageNode, node);
 
-        // 이미지 하이라이터 버튼 복원하기 
+        // 이미지 하이라이터 버튼 복원하기
         const button = document.getElementById("btn_image_highlighters");
         const position = deletedImageNode.getBoundingClientRect();
         const scrollY = window.scrollY;
@@ -820,13 +820,6 @@ const addNewBookmarkEventHandler = async () => {
   rehighlightVideo(newHighlight);
 };
 
-// const getTime = (t) => {
-//   let date = new Date(0);
-//   date.setSeconds(t);
-
-//   return date.toISOString().substr(11, 8);
-// };
-
 const deletePin = (pinNode) => {
   pinNode.remove();
 
@@ -861,6 +854,7 @@ const rehighlightVideo = (highlight) => {
 
   const highlightYTP = document.createElement("highlighters");
   highlightYTP.id = highlight.id;
+  highlightYTP.className = "highlighters-ytp";
   highlightYTP.setAttribute("data-time", parseInt(highlight.contents));
   highlightYTP.style.position = "absolute";
 
@@ -912,6 +906,19 @@ chrome.runtime.onMessage.addListener(async (request, sender, sendResponse) => {
       const highlights = request.data ? request.data : [];
       console.log("[cs] getHighlight", highlights);
 
+      const progressBarContainer = document.querySelector(
+        ".ytp-progress-bar-container"
+      );
+
+      if (progressBarContainer) {
+        const previous_pins =
+          progressBarContainer.querySelectorAll(".highlighters-ytp");
+
+        for (let i = 0; i < previous_pins.length; i++) {
+          progressBarContainer.removeChild(previous_pins[i]);
+        }
+      }
+
       for (const highlight of highlights) {
         try {
           if (highlight.type === 1) rehighlightText(highlight);
@@ -928,7 +935,7 @@ chrome.runtime.onMessage.addListener(async (request, sender, sendResponse) => {
 
     case "newVideo":
       currentVideo = request.videoID;
-      console.log(currentVideo);
+      console.log("currentVideo", currentVideo);
       newVideoLoaded();
       break;
 

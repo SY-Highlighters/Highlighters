@@ -8,6 +8,8 @@ import { PrismaService } from 'src/repository/prisma.service';
 export class JwtStrategy extends PassportStrategy(Strategy) {
   // jwt strategy 사용
   constructor(private readonly prismaService: PrismaService) {
+    // BearerToken으로 넘어온 token을 secretKey로 유효한지 확인
+    // super: 부모 component의 것을 사용하겠다는 의미???
     super({
       secretOrKey: process.env.JWT_SECRET,
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),

@@ -1,4 +1,4 @@
-const is_production = false; // true: 배포용, false: 로컬용
+const is_production = true; // true: 배포용, false: 로컬용
 
 const cookie_url = is_production
   ? "https://highlighters.site"
@@ -157,7 +157,7 @@ async function BackgroundStart() {
         const queryParameters = url.split("?")[1];
         const urlParameters = new URLSearchParams(queryParameters);
 
-        console.log(urlParameters.get("v"));
+        console.log("[bg]Youtube Param", urlParameters.get("v"));
 
         chrome.tabs.sendMessage(tabId, {
           greeting: "newVideo",

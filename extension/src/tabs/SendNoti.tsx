@@ -59,11 +59,11 @@ export default function SendNoti() {
         <div className="mt-1 md:col-span-2 md:mt-0">
           {/* <form action="#" method="POST" onSubmit={formSubmitHandler}> */}
           <div className="shadow sm:overflow-hidden sm:rounded-md">
-            <div className="space-y-6 bg-white px-4 py-5 sm:p-6">
+            <div className="px-4 py-5 space-y-6 bg-white sm:p-6">
               <div>
                 <label
                   htmlFor="about"
-                  className="block text-sm font-large text-gray-700"
+                  className="block text-sm text-gray-700 font-large"
                 >
                   메세지
                 </label>
@@ -73,7 +73,7 @@ export default function SendNoti() {
                     id="about"
                     name="about"
                     rows={4}
-                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-sky-500 focus:ring-sky-500 sm:text-sm resize-none"
+                    className="block w-full mt-1 border-gray-300 rounded-md shadow-sm resize-none focus:border-sky-500 focus:ring-sky-500 sm:text-sm"
                     placeholder="메세지를 입력하세요"
                     defaultValue={""}
                     value={messageInput}
@@ -82,11 +82,11 @@ export default function SendNoti() {
                 </div>
               </div>
             </div>
-            <div className="bg-gray-50 px-4 py-3 text-right sm:px-4">
+            <div className="px-4 py-3 text-right bg-gray-50 sm:px-4">
               <button
                 onClick={notiSubmitHandler}
                 type="submit"
-                className="inline-flex justify-center rounded-md border border-transparent bg-sky-500 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-sky-700 focus:outline-none focus:ring-2 focus:ring-sky-500 focus:ring-offset-2"
+                className="inline-flex justify-center px-4 py-2 text-sm font-medium text-white border border-transparent rounded-md shadow-sm bg-sky-500 hover:bg-sky-700 focus:outline-none focus:ring-2 focus:ring-sky-500 focus:ring-offset-2"
               >
                 전송
               </button>

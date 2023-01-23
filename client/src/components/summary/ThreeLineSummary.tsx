@@ -25,7 +25,7 @@ const ThreeLineSummary = (props: any) => {
         },
       });
       setSummary(threeLineSummaryResult.data.data.summary);
-      console.log(threeLineSummaryResult.data);
+      console.log(threeLineSummaryResult);
     }
     setThreeTrigger(!threeTrigger);
   };
