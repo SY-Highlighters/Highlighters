@@ -125,6 +125,15 @@ export class ElasticsearchService {
           },
         },
         track_scores: true,
+        highlight: {
+          pre_tags: ['<mark>'],
+          post_tags: ['</mark>'],
+          fields: {
+            contents: {},
+            title: {},
+            description: {},
+          },
+        },
       },
     });
     // console.log(result);
