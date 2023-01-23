@@ -4,7 +4,7 @@ import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 
 const SearchResultItem = (props: any) => {
   const [searchKeyword, setSearchKeyword] = useRecoilState(searchKeywordState);
-
+  console.log("잉", props.date);
   const date = new Date(props.date);
   const year = date.getFullYear();
   const month = date.getMonth() + 1;
@@ -31,6 +31,9 @@ const SearchResultItem = (props: any) => {
   // 하이라이트에 검색어 들어있는지 검사
   if (props.resultinfo.length > 0) {
     resultinfosDiv = props.resultinfo.map((info: any, index: number) => {
+      if (info === "") {
+        return;
+      }
       let infoContent;
       switch (info.type) {
         case 1:

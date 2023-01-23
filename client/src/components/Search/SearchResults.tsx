@@ -60,15 +60,17 @@ const SearchResults = () => {
 
   const searchResultFeedsAdd = (data: []) => {
     if (elastic_on) {
+      console.log("여기오고", data);
       data.map((item: any) => {
         const newFeed = {
           id: item.id,
           title: item.title,
           description: item.description,
           url: item.url,
-          resultinfo: item.resultinfo,
+          resultinfo: item.contents,
           username: item.user_nickname,
           userimage: item.image,
+          date: item.createdAt,
         };
         setSearchResultFeeds((oldFeeds: any) => [...oldFeeds, newFeed]);
       });
@@ -140,7 +142,7 @@ const SearchResults = () => {
                   key={feed.id}
                   title={feed.title}
                   url={feed.url}
-                  // date={feed.createdAt}
+                  date={feed.date}
                   resultinfo={feed.resultinfo}
                   // description={""}
                   // og_image={null}

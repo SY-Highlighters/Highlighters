@@ -37,7 +37,7 @@ import { useCookies } from "react-cookie";
 // });
 import axios from "axios";
 import YoutubeTimeStamp from "./YoutubeTimeStamp";
-import ThreeLineSummary from "../../../summary/ThreeLineSummary";
+import ThreeLineSummary from "../../summary/ThreeLineSummary";
 
 const dummary = "현재 네이버 뉴스만 지원합니다 😂";
 const FeedItem = (props: any) => {
@@ -131,7 +131,7 @@ const FeedItem = (props: any) => {
             return (
               <>
                 <div></div>
-                <div key={index} className="ml-1 mr-1 inline-flex">
+                <div key={index} className="inline-flex ml-1 mr-1">
                   <li key={index}>
                     <div className="flex flex-row mt-2">
                       <img
@@ -186,7 +186,7 @@ const FeedItem = (props: any) => {
             );
           case 3: // 동영상 하이라이트
             return (
-              <div key={index} className="ml-1 mr-1 inline-flex">
+              <div key={index} className="inline-flex ml-1 mr-1">
                 <li key={index}>
                   <div className="flex flex-row mt-2">
                     <div className="h-5 opacity-100"></div>
@@ -220,6 +220,7 @@ const FeedItem = (props: any) => {
 
   // 세줄요약 api
   const threeTriHandler = async () => {
+    console.log(props.id)
     if (!threeTrigger && props.url.includes("https://n.news.naver.com")) {
       const three = await axios({
         method: "post",
