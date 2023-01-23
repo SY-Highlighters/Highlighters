@@ -40,7 +40,7 @@ export class CalendarService {
       const count = await this.prismaService.feed.count({
         where: {
           group_id: user.group_id,
-          updatedAt: {
+          createdAt: {
             gte: new Date(
               date.getFullYear(),
               date.getMonth(),
@@ -60,7 +60,7 @@ export class CalendarService {
       const feeds = await this.prismaService.feed.findMany({
         where: {
           group_id: user.group_id,
-          updatedAt: {
+          createdAt: {
             gte: new Date(
               date.getFullYear(),
               date.getMonth(),
