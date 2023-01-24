@@ -56,7 +56,7 @@
     <li><a href="#roadmap">Roadmap</a></li>
     <li><a href="#아키텍처">아키텍처</a></li>
     <li><a href="#포스터">포스터</a></li>
-    <li><a href="#팀 소개">팀 소개</a></li>
+    <li><a href="#팀소개">팀 소개</a></li>
   </ol>
 </details>
 
@@ -121,7 +121,7 @@
 
 <!-- CONTACT -->
 
-## 팀 소개
+## 팀소개
 🛠️수정중🛠️
 
 <p align="right">(<a href="#readme-top">맨 위로</a>)</p>
