@@ -109,14 +109,39 @@ export class ElasticsearchService {
       body: {
         query: {
           bool: {
-            must: [
+            should: [
               {
-                multi_match: {
-                  query: word,
-                  fields: ['contents', 'title', 'description'],
+                fuzzy: {
+                  contents: {
+                    value: word,
+                    fuzziness: 1,
+                  },
                 },
               },
               {
+                fuzzy: {
+                  title: {
+                    value: word,
+                    fuzziness: 1,
+                  },
+                },
+              },
+              {
+                fuzzy: {
+                  description: {
+                    value: word,
+                    fuzziness: 1,
+                  },
+                },
+              },
+            ],
+            must: [
+              {
+                // multi_match: {
+                //   query: word,
+                //   fields: ['contents', 'title', 'description'],
+                // },
+
                 term: {
                   group_id: user.group_id,
                 },
@@ -130,8 +155,8 @@ export class ElasticsearchService {
           post_tags: ['</mark>'],
           fields: {
             contents: {},
-            title: {},
-            description: {},
+            // title: {},
+            // description: {},
           },
         },
       },
