@@ -48,7 +48,7 @@
   <summary>Table of Contents</summary>
   <ol>
     <li>
-      <a href="#Highlighters😎">Highlighters😎</a>
+      <a href="#Highlighters">Highlighters😎</a>
     </li>
     <li>
       <a href="#시작하기">시작하기</a>
@@ -62,7 +62,7 @@
 
 <!-- ABOUT THE PROJECT -->
 
-# Highlighters😎
+# Highlighters
 <!-- 대충 이미지 -->
 ![image](https://user-images.githubusercontent.com/101175828/214380298-89b3f13f-6571-4399-a2a0-776cbe908c30.png)
 
