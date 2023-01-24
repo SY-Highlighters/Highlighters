@@ -111,29 +111,39 @@ export class ElasticsearchService {
           bool: {
             should: [
               {
-                fuzzy: {
-                  contents: {
-                    value: word,
-                    fuzziness: 1,
-                  },
+                multi_match: {
+                  fields: ['contents', 'title', 'description'],
+                  query: word,
+                  fuzziness: 1,
                 },
               },
-              {
-                fuzzy: {
-                  title: {
-                    value: word,
-                    fuzziness: 1,
-                  },
-                },
-              },
-              {
-                fuzzy: {
-                  description: {
-                    value: word,
-                    fuzziness: 1,
-                  },
-                },
-              },
+              // {
+              //   fuzzy: {
+              //     contents: {
+              //       value: word,
+              //       fuzziness: 1,
+              //       max_expansions: 10,
+              //     },
+              //   },
+              // },
+              // {
+              //   fuzzy: {
+              //     title: {
+              //       value: word,
+              //       fuzziness: 1,
+              //       max_expansions: 10,
+              //     },
+              //   },
+              // },
+              // {
+              //   fuzzy: {
+              //     description: {
+              //       value: word,
+              //       fuzziness: 1,
+              //       max_expansions: 10,
+              //     },
+              //   },
+              // },
             ],
             must: [
               {
@@ -149,7 +159,7 @@ export class ElasticsearchService {
             ],
           },
         },
-        track_scores: true,
+        // track_scores: true,
         highlight: {
           pre_tags: ['<mark>'],
           post_tags: ['</mark>'],
