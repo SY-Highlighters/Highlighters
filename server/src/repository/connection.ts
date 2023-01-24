@@ -114,6 +114,7 @@ export class ElasticsearchService {
                 match: {
                   title: {
                     query: word,
+                    boost: 1.5,
                   },
                 },
               },
@@ -121,14 +122,34 @@ export class ElasticsearchService {
                 multi_match: {
                   fields: ['contents', 'description'],
                   query: word,
+                  boost: 1.4,
+                },
+              },
+              {
+                term: {
+                  title: {
+                    value: word,
+                    boost: 1.3,
+                  },
+                },
+              },
+              {
+                term: {
+                  contents: {
+                    value: word,
+                    boost: 1.3,
+                  },
                 },
               },
               {
                 fuzzy: {
                   title: {
                     value: word,
-                    fuzziness: 1,
+                    fuzziness: 2,
+                    prefix_length: 1,
                     max_expansions: 10,
+                    rewrite: 'constant_score',
+                    boost: 1.1,
                   },
                 },
               },
@@ -137,27 +158,26 @@ export class ElasticsearchService {
                   contents: {
                     value: word,
                     fuzziness: 1,
+                    prefix_length: 1,
                     max_expansions: 10,
+                    rewrite: 'constant_score',
                   },
                 },
               },
-              // {
-              //   fuzzy: {
-              //     description: {
-              //       value: word,
-              //       fuzziness: 1,
-              //       max_expansions: 10,
-              //     },
-              //   },
-              // },
+              {
+                fuzzy: {
+                  description: {
+                    value: word,
+                    fuzziness: 1,
+                    prefix_length: 1,
+                    max_expansions: 10,
+                    rewrite: 'constant_score',
+                  },
+                },
+              },
             ],
             must: [
               {
-                // multi_match: {
-                //   query: word,
-                //   fields: ['contents', 'title', 'description'],
-                // },
-
                 term: {
                   group_id: user.group_id,
                 },
@@ -167,15 +187,12 @@ export class ElasticsearchService {
         },
         track_scores: true,
         highlight: {
-          pre_tags: ['<mark>'],
-          post_tags: ['</mark>'],
           fields: {
-            contents: {},
             title: {},
-            description: {},
+            contents: {},
           },
         },
-        size: 20,
+        min_score: 1.5,
       },
     });
     const real_result = [];
@@ -185,6 +202,7 @@ export class ElasticsearchService {
         real_result[i].score = result.hits.hits[i]._score;
       }
     }
+    real_result.push(result.hits.hits.length);
     return real_result;
   }
 }
