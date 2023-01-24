@@ -49,7 +49,7 @@
   <summary>Table of Contents</summary>
   <ol>
     <li>
-      <a href="#Highlighters">Highlighters</a>
+      <a href="#Highlighters😎">Highlighters</a>
     </li>
     <li>
       <a href="#시작하기">시작하기</a>
@@ -57,8 +57,7 @@
     <li><a href="#roadmap">Roadmap</a></li>
     <li><a href="#아키텍처">아키텍처</a></li>
     <li><a href="#포스터">포스터</a></li>
-    <li><a href="#팀 소개">팀 소개</a></li>
-    <li><a href="#acknowledgments">Acknowledgments</a></li>
+    <li><a href="#팀소개">팀소개</a></li>
   </ol>
 </details>
 
@@ -91,29 +90,26 @@
 
 
 
-<p align="right">(<a href="#readme-top"></a>)</p>
+<p align="right">(<a href="#readme-top">맨 위로</a>)</p>
 
 
 <!-- ROADMAP -->
 
 ## Roadmap
 
-- [x] Add Changelog
-- [x] Add back to top links
-- [ ] Add Additional Templates w/ Examples
-- [ ] Add "components" document to easily copy & paste sections of the readme
+- [x] 텍스트 하이라이팅
+- [x] 사진 하이라이팅
+- [x] 유튜브 하이라이팅
+- [ ] 동적 웹 최적화
 - [ ] Multi-language Support
-  - [ ] Chinese
-  - [ ] Spanish
+  - [ ] English
 
-See the [open issues](https://github.com/othneildrew/Best-README-Template/issues) for a full list of proposed features (and known issues).
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
+<p align="right">(<a href="#readme-top">맨 위로</a>)</p>
 <!-- 아키텍처 -->
 
 ## 아키텍처
-아키텍쳐 모시깽
+![image](https://user-images.githubusercontent.com/101175828/214384335-2e829ad4-d4c2-40f0-be71-cf2ebcfc8166.png)
 
 
 <p align="right">(<a href="#readme-top">맨 위로</a>)</p>
@@ -121,36 +117,16 @@ See the [open issues](https://github.com/othneildrew/Best-README-Template/issues
 <!-- 포스터 -->
 
 ## 포스터
-모시꺵이
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
+🛠️수정중🛠️
+<p align="right">(<a href="#readme-top">맨 위로</a>)</p>
 
 <!-- CONTACT -->
 
 ## 팀 소개
+🛠️수정중🛠️
 
-Your Name - [@your_twitter](https://twitter.com/your_username) - email@example.com
+<p align="right">(<a href="#readme-top">맨 위로</a>)</p>
 
-Project Link: [https://github.com/your_username/repo_name](https://github.com/your_username/repo_name)
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
-<!-- ACKNOWLEDGMENTS -->
-
-## Acknowledgments
-
-Use this space to list resources you find helpful and would like to give credit to. I've included a few of my favorites to kick things off!
-
-- [Choose an Open Source License](https://choosealicense.com)
-- [GitHub Emoji Cheat Sheet](https://www.webpagefx.com/tools/emoji-cheat-sheet)
-- [Malven's Flexbox Cheatsheet](https://flexbox.malven.co/)
-- [Malven's Grid Cheatsheet](https://grid.malven.co/)
-- [Img Shields](https://shields.io)
-- [GitHub Pages](https://pages.github.com)
-- [Font Awesome](https://fontawesome.com)
-- [React Icons](https://react-icons.github.io/react-icons/search)
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
