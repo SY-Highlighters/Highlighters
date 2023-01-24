@@ -28,12 +28,11 @@
   </a>
 
 
-  <h3 align="center">Highlighters</h3>
 
   <p align="center">
    Link Sharing & Archiving for Collaboration
     <br />
-    <a href="https://highlighters.site/"><strong>체험하기</strong></a>
+    <a href="https://highlighters.site/"><strong>시작하기</strong></a>
     <br />
     <br />
     <!-- <a href="https://github.com/othneildrew/Best-README-Template">View Demo</a> 
