@@ -111,30 +111,36 @@ export class ElasticsearchService {
           bool: {
             should: [
               {
-                multi_match: {
-                  fields: ['contents', 'title', 'description'],
-                  query: word,
-                  fuzziness: 1,
+                match: {
+                  title: {
+                    query: word,
+                  },
                 },
               },
-              // {
-              //   fuzzy: {
-              //     contents: {
-              //       value: word,
-              //       fuzziness: 1,
-              //       max_expansions: 10,
-              //     },
-              //   },
-              // },
-              // {
-              //   fuzzy: {
-              //     title: {
-              //       value: word,
-              //       fuzziness: 1,
-              //       max_expansions: 10,
-              //     },
-              //   },
-              // },
+              {
+                multi_match: {
+                  fields: ['contents', 'description'],
+                  query: word,
+                },
+              },
+              {
+                fuzzy: {
+                  title: {
+                    value: word,
+                    fuzziness: 1,
+                    max_expansions: 10,
+                  },
+                },
+              },
+              {
+                fuzzy: {
+                  contents: {
+                    value: word,
+                    fuzziness: 1,
+                    max_expansions: 10,
+                  },
+                },
+              },
               // {
               //   fuzzy: {
               //     description: {
@@ -159,19 +165,19 @@ export class ElasticsearchService {
             ],
           },
         },
-        // track_scores: true,
+        track_scores: true,
         highlight: {
           pre_tags: ['<mark>'],
           post_tags: ['</mark>'],
           fields: {
             contents: {},
-            // title: {},
-            // description: {},
+            title: {},
+            description: {},
           },
         },
+        size: 20,
       },
     });
-    // console.log(result);
     const real_result = [];
     if (result.hits.hits.length > 0) {
       for (let i = 0; i < result.hits.hits.length; i++) {

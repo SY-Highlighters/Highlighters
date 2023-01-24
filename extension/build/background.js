@@ -1,4 +1,4 @@
-const is_production = false; // true: 배포용, false: 로컬용
+const is_production = true; // true: 배포용, false: 로컬용
 
 const cookie_url = is_production
   ? "https://highlighters.site"
@@ -295,7 +295,6 @@ async function BackgroundStart() {
             .then((data) => sendResponse({ data }))
             .catch((error) => console.log(`fetch 실패: ${error}`));
           break;
-        
 
         default:
           console.log("[background] Bad Request");
