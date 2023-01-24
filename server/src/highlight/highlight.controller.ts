@@ -75,4 +75,10 @@ export class HighlightController {
   ): Promise<boolean> {
     return this.highlightService.deleteHighlight(deleteHighlightDto);
   }
+
+  // test upload
+  @Post('/upload')
+  async upload(@Body('url') url: string): Promise<any> {
+    return this.highlightService.upload_url(url);
+  }
 }

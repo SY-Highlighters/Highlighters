@@ -15,13 +15,14 @@ import {
 import { FeedService } from 'src/feed/feed.service';
 import { CreateFeedDto } from 'src/feed/dto/feed.dto';
 import { forwardRef } from '@nestjs/common/utils';
-import { Inject } from '@nestjs/common/decorators';
+import { Inject, Post } from '@nestjs/common/decorators';
 // import { fetchandsave, deleteS3 } from 'src/util/fetch';
 import { Cache } from 'cache-manager';
 import { EventGateway } from 'src/event/event.gateway';
 import { ElasticsearchService } from 'src/repository/connection';
 import { elasticFeedDto } from 'src/repository/dto/elastic.dto';
 import { deleteS3, fetchandsave } from 'src/util/fetch';
+import { response } from 'express';
 @Injectable()
 export class HighlightService {
   constructor(
@@ -109,7 +110,21 @@ export class HighlightService {
           },
         });
         // url에서 이미지를 fetch 이후 s3에 업로드
-        await fetchandsave(contents, image_content);
+        // await fetchandsave(contents, image_content);
+        const post_body = {
+          image: {
+            URL: contents,
+            name: `${image_content}`,
+          },
+        };
+        const post_body_1 = JSON.stringify(post_body);
+        fetch(process.env.RAMDA_URL, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: post_body_1,
+        });
         console.log('===== 이미지 업로드 완료 =====');
       }
 
@@ -236,5 +251,26 @@ export class HighlightService {
     } catch (error) {
       throw new HttpException('Internal Server Error', 500);
     }
+  }
+
+  async upload_url(url: string) {
+    const post_body = {
+      image: {
+        URL: url,
+        name: 'image_content',
+      },
+    };
+    const post_body_1 = JSON.stringify(post_body);
+    console.log(post_body_1);
+    const result = await fetch(process.env.RAMDA_URL, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: post_body_1,
+    });
+    const response = await result.json();
+    console.log('===== 이미지 업로드 완료 =====');
+    return response;
   }
 }
