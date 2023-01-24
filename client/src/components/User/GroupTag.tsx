@@ -24,7 +24,7 @@ const GroupTag = (props: any) => {
   const [clickedGroupTagDel, setclickedGroupTagDel] = useRecoilState(
     clickedGroupTagDelState
   );
-    
+
   // 그룹 태그 삭제 버튼 클릭 핸들러
   function groupTagDeleteHandler() {
     // console.log("그룹 태그 삭제 버튼 클릭");
@@ -36,6 +36,7 @@ const GroupTag = (props: any) => {
       className={
         props.onCss ? props.onCss : "mt-5 bg-white rounded-lg shadow-lg h-full"
       }
+      style={{ height: "35vh" }}
     >
       <div className="mx-6 mt-5 mb-2">
         {/* <div className="p-6 h-1/3 rounded-3xl"> */}

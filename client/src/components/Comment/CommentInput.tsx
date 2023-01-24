@@ -86,9 +86,9 @@ export function CommentInput(props: any) {
         </div>
         <button
           onClick={commentAddHandler}
-          className="w-1/6 h-10 mt-1 text-base text-white border rounded-lg bg-sky-500 ml-7 focus:shadow-outline hover:bg-sky-700 hover:text-gray-200"
+          className="w-1/6 h-10 mt-1 text-base text-white border rounded-lg shadow-md bg-sky-500 ml-7 focus:shadow-outline hover:bg-sky-700 hover:text-gray-200"
         >
-          입력
+          댓글
         </button>
       </div>
     </div>

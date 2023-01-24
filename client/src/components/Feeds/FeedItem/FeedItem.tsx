@@ -9,7 +9,7 @@ import {
   StarIcon as StarIconOutLine,
   TrashIcon,
 } from "@heroicons/react/24/outline";
-
+import LazyImage from "../../Main/LazyImage";
 import { StarIcon } from "@heroicons/react/24/solid";
 import { useEffect, useState } from "react";
 import { Comment } from "../../Comment/Comment";
@@ -336,11 +336,18 @@ const FeedItem = (props: any) => {
               style={{ width: "95%", height: "85px" }}
             >
               <div className="w-20 h-full" style={{ width: "85px" }}>
-                <img
-                  className="object-cover w-full h-full rounded-sm"
-                  src={props.og_image}
-                  alt=""
-                />
+                {props.idx > 3 ? (
+                  <LazyImage
+                    className="object-cover w-full h-full rounded-sm"
+                    src={props.og_image}
+                  ></LazyImage>
+                ) : (
+                  <img
+                    className="object-cover w-full h-full rounded-sm"
+                    src={props.og_image}
+                    alt=""
+                  />
+                )}
               </div>
               <div className="flex-1 px-5 my-auto">
                 <h4 className="mb-1 text-sm font-semibold tracking-tight text-gray-700">

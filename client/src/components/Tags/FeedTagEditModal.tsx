@@ -202,7 +202,11 @@ export function FeedTagEditModal(props: any) {
                   <div>
                     <button onClick={tagAddHandler} className="">
                       <ArrowRightCircleIcon
-                        className="flex-shrink-0 mt-2 ml-3 text-gray-400 w-7 h-7 hover:text-sky-500"
+                        className={
+                          inputValue
+                            ? "flex-shrink-0 mt-2 ml-3 text-sky-400 w-7 h-7 hover:text-sky-500"
+                            : "flex-shrink-0 mt-2 ml-3 text-gray-400 w-7 h-7 hover:text-sky-500"
+                        }
                         aria-hidden="true"
                       />
                     </button>
@@ -228,7 +232,7 @@ export function FeedTagEditModal(props: any) {
                   onClick={tagSaveHandler}
                   className="w-full px-4 py-2 text-white rounded-lg bg-sky-500 hover:bg-sky-600 focus:outline-none"
                 >
-                  태그 저장
+                  저장
                 </button>
               </div>
             </div>

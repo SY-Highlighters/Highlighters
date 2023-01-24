@@ -73,6 +73,7 @@ const SearchResultItem = (props: any) => {
           }
           break;
         default:
+          console.log("error");
           infoContent = "error";
           break;
       }
