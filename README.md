@@ -52,24 +52,19 @@
       <a href="#Highlighters">Highlighters</a>
     </li>
     <li>
-      <a href="#getting-started">시작하기</a>
-      <ul>
-        <li><a href="#prerequisites">Prerequisites</a></li>
-        <li><a href="#installation">Installation</a></li>
-      </ul>
+      <a href="#시작하기">시작하기</a>
     </li>
-    <li><a href="#usage">Usage</a></li>
     <li><a href="#roadmap">Roadmap</a></li>
-    <li><a href="#contributing">Contributing</a></li>
-    <li><a href="#license">License</a></li>
-    <li><a href="#contact">Contact</a></li>
+    <li><a href="#아키텍처">아키텍처</a></li>
+    <li><a href="#포스터">포스터</a></li>
+    <li><a href="#팀 소개">팀 소개</a></li>
     <li><a href="#acknowledgments">Acknowledgments</a></li>
   </ol>
 </details>
 
 <!-- ABOUT THE PROJECT -->
 
-# Highlighters
+# Highlighters😎
 <!-- 대충 이미지 -->
 ![image](https://user-images.githubusercontent.com/101175828/214380298-89b3f13f-6571-4399-a2a0-776cbe908c30.png)
 
@@ -96,17 +91,8 @@
 
 
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
+<p align="right">(<a href="#readme-top"></a>)</p>
 
-<!-- USAGE EXAMPLES -->
-
-## Usage
-
-Use this space to show useful examples of how a project can be used. Additional screenshots, code examples and demos work well in this space. You may also link to more resources.
-
-_For more examples, please refer to the [Documentation](https://example.com)_
-
-<p align="right">(<a href="#readme-top">맨위로</a>)</p>
 
 <!-- ROADMAP -->
 
@@ -124,34 +110,24 @@ See the [open issues](https://github.com/othneildrew/Best-README-Template/issues
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-<!-- CONTRIBUTING -->
+<!-- 아키텍처 -->
 
-## Contributing
+## 아키텍처
+아키텍쳐 모시깽
 
-Contributions are what make the open source community such an amazing place to learn, inspire, and create. Any contributions you make are **greatly appreciated**.
 
-If you have a suggestion that would make this better, please fork the repo and create a pull request. You can also simply open an issue with the tag "enhancement".
-Don't forget to give the project a star! Thanks again!
+<p align="right">(<a href="#readme-top">맨 위로</a>)</p>
 
-1. Fork the Project
-2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the Branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
+<!-- 포스터 -->
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
-<!-- LICENSE -->
-
-## License
-
-Distributed under the MIT License. See `LICENSE.txt` for more information.
+## 포스터
+모시꺵이
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 <!-- CONTACT -->
 
-## Contact
+## 팀 소개
 
 Your Name - [@your_twitter](https://twitter.com/your_username) - email@example.com
 
