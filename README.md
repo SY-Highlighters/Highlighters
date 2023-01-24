@@ -1,5 +1,3 @@
-<<<<<<< .merge_file_FtGhFE
-<!-- Improved compatibility of back to top link: See: https://github.com/othneildrew/Best-README-Template/pull/73 -->
 
 <a name="readme-top"></a>
 
@@ -11,7 +9,6 @@
 *** Thanks again! Now go create something AMAZING! :D
 -->
 
-<!-- 43.200.165.44 -->
 
 <!-- PROJECT SHIELDS -->
 <!--
@@ -22,29 +19,28 @@
 *** https://www.markdownguide.org/basic-syntax/#reference-style-links
 -->
 
-[![Contributors][contributors-shield]][contributors-url]
-[![Issues][issues-shield]][issues-url]
 
 <!-- PROJECT LOGO -->
 <br />
 <div align="center">
-  <a href="https://github.com/othneildrew/Best-README-Template">
-    <img src="images/logo.png" alt="Logo" width="80" height="80">
+  <a href="https://highlighters.site/">
+    <img src="https://velog.velcdn.com/images/chobae/post/97fa6a9e-ebfb-48ba-8335-d6a5c3949a47/image.png" alt="Logo" width="" height="">
   </a>
 
-  <h3 align="center">Best-README-Template</h3>
+
+  <h3 align="center">Highlighters</h3>
 
   <p align="center">
-    An awesome README template to jumpstart your projects!
+   Link Sharing & Archiving for Collaboration
     <br />
-    <a href="https://github.com/othneildrew/Best-README-Template"><strong>Explore the docs »</strong></a>
+    <a href="https://highlighters.site/"><strong>체험하기</strong></a>
     <br />
     <br />
-    <a href="https://github.com/othneildrew/Best-README-Template">View Demo</a>
+    <!-- <a href="https://github.com/othneildrew/Best-README-Template">View Demo</a> 
     ·
     <a href="https://github.com/othneildrew/Best-README-Template/issues">Report Bug</a>
     ·
-    <a href="https://github.com/othneildrew/Best-README-Template/issues">Request Feature</a>
+    <a href="https://github.com/othneildrew/Best-README-Template/issues">Request Feature</a> -->
   </p>
 </div>
 
@@ -76,38 +72,22 @@
 
 <!-- ABOUT THE PROJECT -->
 
-## About The Project
+# Highlighters
+<!-- 대충 이미지 -->
+![image](https://user-images.githubusercontent.com/101175828/214380298-89b3f13f-6571-4399-a2a0-776cbe908c30.png)
 
-[![Product Name Screen Shot][product-screenshot]](https://example.com)
 
-There are many great README templates available on GitHub; however, I didn't find one that really suited my needs so I created this enhanced one. I want to create a README template so amazing that it'll be the last one you ever need -- I think this is it.
+ <h3 align="left">Highlighters는 3가지의 고민에서 시작됐습니다.</h3>
 
-Here's why:
+- 브라우저에서 바로 링크를 팀원에게 보낼 수 없을까? 
+- 공유한 링크를 다시 찾기 쉽게 모아두면 좋겠어! 
+- 중요한 내용이 한눈에 보였으면 좋겠어! 
 
-- Your time should be focused on creating something amazing. A project that solves a problem and helps others
-- You shouldn't be doing the same tasks over and over like creating a README from scratch
-- You should implement DRY principles to the rest of your life :smile:
+<p align="right">(<a href="#readme-top">맨 위로</a>)</p>
 
-Of course, no one template will serve all projects since your needs may be different. So I'll be adding more in the near future. You may also suggest changes by forking this repo and creating a pull request or opening an issue. Thanks to all the people have contributed to expanding this template!
 
-Use the `BLANK_README.md` to get started.
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-### Built With
-
-This section should list any major frameworks/libraries used to bootstrap your project. Leave any add-ons/plugins for the acknowledgements section. Here are a few examples.
-
-- [![Next][next.js]][next-url]
-- [![React][react.js]][react-url]
-- [![Vue][vue.js]][vue-url]
-- [![Angular][angular.io]][angular-url]
-- [![Svelte][svelte.dev]][svelte-url]
-- [![Laravel][laravel.com]][laravel-url]
-- [![Bootstrap][bootstrap.com]][bootstrap-url]
-- [![JQuery][jquery.com]][jquery-url]
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 <!-- GETTING STARTED -->
 
