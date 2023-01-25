@@ -50,7 +50,7 @@ const BookmarkFeeds = () => {
             </button>
             <div className="justify-self-end">
               <Squares2X2Icon
-                // onClick={clickedMainChange}
+                onClick={clickedMainChange}
                 className="text-white cursor-pointer w-7 h-7 xl:block top-24 left-20 hover:text-sky-600 hover:scale-95"
               ></Squares2X2Icon>
             </div>

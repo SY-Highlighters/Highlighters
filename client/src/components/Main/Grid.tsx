@@ -1,10 +1,29 @@
 import GridSkeleton from "../UI/GridSkeleton";
 import Gallery from "./Gallery";
 import { Suspense, lazy } from "react";
-import { changeMainSectionState } from "../../states/atom";
+import { changeMainSectionState, mainSectionState } from "../../states/atom";
 import { useRecoilState } from "recoil";
+import TagGallery from "../Grid/TagGallery";
+import DaysGallery from "../Grid/DaysGallery";
 // const Gallery = lazy(() => import("./Gallery"));
 export function Grid() {
+  const [mainSectionNum, setMainSectionNum] = useRecoilState(mainSectionState);
+  const MainSection = (setionNum: number) => {
+    switch (setionNum) {
+      case 0:
+        return <Gallery />;
+      case 1:
+        return <Gallery />;
+      case 2:
+        return <TagGallery></TagGallery>;
+      case 3:
+        return <DaysGallery></DaysGallery>;
+      // case 4:
+      //   return use
+      default:
+        return <Gallery />;
+    }
+  };
   const [changeMainSection, setChangeMainSection] = useRecoilState(
     changeMainSectionState
   );
@@ -17,7 +36,8 @@ export function Grid() {
     <div className="box-border w-full h-full gap-3 p-5 xl:overflow-hidden xl:px-16 xl:flex-row xl:flex ">
       {/* 사진 갤러리 만들기 */}
       <div className="w-full bg-white rounded-lg shadow-md">
-        <Gallery></Gallery>
+        {/* <Gallery></Gallery> */}
+        {MainSection(mainSectionNum)}
       </div>
       <svg
         onClick={clickedMainChange}

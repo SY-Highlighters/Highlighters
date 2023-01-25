@@ -68,7 +68,6 @@ const FeedItem = (props: any) => {
   // 하이라이트 section
   let highlights;
   let youtubeCode;
-  let youtubes;
   if (props.highlight.length > 0) {
     let firstHighlight = props.highlight[0].user.nickname;
 
@@ -87,8 +86,8 @@ const FeedItem = (props: any) => {
         switch (hl.type) {
           case 1: // 텍스트 하이라이트
             return (
-              <div key={index}>
-                <li className="" key={index}>
+              <div>
+                <li key={index} className="">
                   <div className="flex flex-row mt-2">
                     <img
                       src={hl.user.image}
@@ -109,8 +108,8 @@ const FeedItem = (props: any) => {
             );
           case 2: // 이미지 하이라이트
             return (
-              <div key={index}>
-                <li className="" key={index}>
+              <div>
+                <li key={index} className="">
                   <div className="flex flex-row mt-2">
                     <img
                       src={hl.user.image}
@@ -129,24 +128,21 @@ const FeedItem = (props: any) => {
             );
           case 3: // 동영상 하이라이트
             return (
-              <>
-                <div></div>
-                <div key={index} className="inline-flex ml-1 mr-1">
-                  <li key={index}>
-                    <div className="flex flex-row mt-2">
-                      <img
-                        src={hl.user.image}
-                        className="w-5 h-5 mr-2 rounded-full shadow-md"
-                        alt="유저"
-                      ></img>
-                      <YoutubeTimeStamp
-                        time={hl.contents}
-                        setTime={youtubeTimeSet}
-                      ></YoutubeTimeStamp>
-                    </div>
-                  </li>
-                </div>
-              </>
+              <div className="inline-flex ml-1 mr-1">
+                <li key={index}>
+                  <div className="flex flex-row mt-2">
+                    <img
+                      src={hl.user.image}
+                      className="w-5 h-5 mr-2 rounded-full shadow-md"
+                      alt="유저"
+                    ></img>
+                    <YoutubeTimeStamp
+                      time={hl.contents}
+                      setTime={youtubeTimeSet}
+                    ></YoutubeTimeStamp>
+                  </div>
+                </li>
+              </div>
             );
           default:
         }
@@ -155,8 +151,8 @@ const FeedItem = (props: any) => {
         switch (hl.type) {
           case 1: // 텍스트 하이라이트
             return (
-              <div key={index}>
-                <li className="ml-6 " key={index}>
+              <div>
+                <li key={index} className="ml-6 ">
                   <div className="ml-1">
                     <span
                       className="text-xs lg:text-base"
@@ -170,8 +166,8 @@ const FeedItem = (props: any) => {
             );
           case 2: // 이미지 하이라이트
             return (
-              <div key={index}>
-                <li className="ml-6 " key={index}>
+              <div>
+                <li key={index} className="ml-6 ">
                   <img
                     src={hl.contents}
                     className="w-3/5 mt-2 mb-1 ml-2 h-3/5 outline-4"
@@ -186,7 +182,7 @@ const FeedItem = (props: any) => {
             );
           case 3: // 동영상 하이라이트
             return (
-              <div key={index} className="inline-flex ml-1 mr-1">
+              <div className="inline-flex ml-1 mr-1">
                 <li key={index}>
                   <div className="flex flex-row mt-2">
                     <div className="h-5 opacity-100"></div>

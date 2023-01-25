@@ -38,7 +38,7 @@ const AvailableFeeds = () => {
       getNextPage();
     }
   }, [isView, getNextPage, getNextPageIsPossible]);
-  // console.log("여긴 피드",getBoard);
+  console.log("여긴 피드",getBoard);
   if (status === "loading") {
     return <FeedSkeleton></FeedSkeleton>;
   }

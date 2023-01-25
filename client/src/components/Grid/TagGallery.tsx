@@ -1,60 +1,29 @@
 import { useState, useRef, useEffect } from "react";
-import { DocumentPlusIcon } from "@heroicons/react/24/outline";
+import axios from "axios";
+import { useCookies } from "react-cookie";
+import { useUserData } from "../../hooks/useUserData";
+import LazyImage from "../Main/LazyImage";
+import {
+  DocumentIcon,
+  DocumentPlusIcon,
+  MegaphoneIcon,
+} from "@heroicons/react/24/outline";
+import { QueryCache, useQuery, QueryClient, useQueryClient } from "react-query";
 import { useInView } from "react-intersection-observer";
 import { useFeedsInGroup } from "../../hooks/useFeedsInGroup";
 import Feed from "../../models/feed";
 import FeedSkeleton from "../UI/FeedSkeleton";
-import GridItem from "../Grid/GridItem/GridItem";
+import GridItem from "./GridItem/GridItem";
 import { useFeedsInGrid } from "../../hooks/useFeedsInGrid";
 import GridSkeleton from "../UI/GridSkeleton";
-import { mainSectionState } from "../../states/atom";
-import { useRecoilState } from "recoil";
+import { mainSectionState, clickedTagState } from "../../states/atom";
+import { useRecoilState, useRecoilValue } from "recoil";
 import { useFeedsInBookmark } from "../../hooks/useFeedsInBookmark";
 import { useFeedsInDay } from "../../hooks/useFeedsInDay";
 import { useFeedsInTag } from "../../hooks/useFeedsInTag";
 
-const Gallery = () => {
-  const [mainSectionNum, setMainSectionNum] = useRecoilState(mainSectionState);
-
-  const MainSection = (setionNum: number) => {
-    switch (setionNum) {
-      case 0:
-        return useFeedsInGrid;
-      case 1:
-        return useFeedsInBookmark;
-      // case 2:
-      //   return useFeedsInTag;
-      // case 3:
-      //   return useFeedsInDay;
-      // case 4:
-      //   return use
-      default:
-        return useFeedsInGrid;
-    }
-  };
-  //   const [cookies] = useCookies(["logCookie"]);
-  // const [ref, inView] = useInView({
-  //   threshold: 0.5,
-  // });
-
-  //   const { data: user } = useUserData(cookies);
-  //   const [heavyList, setHeavyList] = useState([]);
-  //   useEffect(() => {
-  //     async function getFeed() {
-  //       const res = await axios({
-  //         method: "get",
-  //         url: `${process.env.REACT_APP_HOST}/api/feed/group/${user.group_id}`,
-  //         headers: {
-  //           "Content-Type": "application/json",
-  //           Authorization: `Bearer ${cookies.logCookie}`,
-  //         },
-  //       });
-
-  //       console.log(res.data.data);
-  //       setHeavyList(res.data.data);
-  //     }
-  //     getFeed();
-  //   }, []);
+const TagGallery = () => {
+  const clickedTag = useRecoilValue(clickedTagState);
 
   const {
     getBoard,
@@ -62,9 +31,8 @@ const Gallery = () => {
     getBoardIsSuccess,
     getNextPageIsPossible,
     status,
-  } = MainSection(mainSectionNum)();
+  } = useFeedsInTag(clickedTag.tag_name);
   const [ref, isView] = useInView();
-  const listRef = useRef(null);
   // 스크롤 위아래ㅏ
   // const scrollToTop = () => {
   //   listRef.current.scrollTop = 0;
@@ -79,7 +47,7 @@ const Gallery = () => {
       getNextPage();
     }
   }, [isView, getNextPage, getNextPageIsPossible]);
-  console.log('그리드 정보',getBoard);
+  // console.log(getBoard);
   if (status === "loading") {
     return <GridSkeleton></GridSkeleton>;
   }
@@ -153,4 +121,4 @@ const Gallery = () => {
   );
 };
 
-export default Gallery;
+export default TagGallery;
