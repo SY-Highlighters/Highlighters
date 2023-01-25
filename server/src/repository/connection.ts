@@ -109,73 +109,6 @@ export class ElasticsearchService {
       body: {
         query: {
           bool: {
-            should: [
-              {
-                match: {
-                  title: {
-                    query: word,
-                    boost: 1.5,
-                  },
-                },
-              },
-              {
-                multi_match: {
-                  fields: ['contents', 'description'],
-                  query: word,
-                  boost: 1.4,
-                },
-              },
-              {
-                term: {
-                  title: {
-                    value: word,
-                    boost: 1.3,
-                  },
-                },
-              },
-              {
-                term: {
-                  contents: {
-                    value: word,
-                    boost: 1.3,
-                  },
-                },
-              },
-              {
-                fuzzy: {
-                  title: {
-                    value: word,
-                    fuzziness: 2,
-                    prefix_length: 1,
-                    max_expansions: 10,
-                    rewrite: 'constant_score',
-                    boost: 1.1,
-                  },
-                },
-              },
-              {
-                fuzzy: {
-                  contents: {
-                    value: word,
-                    fuzziness: 1,
-                    prefix_length: 1,
-                    max_expansions: 10,
-                    rewrite: 'constant_score',
-                  },
-                },
-              },
-              {
-                fuzzy: {
-                  description: {
-                    value: word,
-                    fuzziness: 1,
-                    prefix_length: 1,
-                    max_expansions: 10,
-                    rewrite: 'constant_score',
-                  },
-                },
-              },
-            ],
             must: [
               {
                 term: {
@@ -183,12 +116,74 @@ export class ElasticsearchService {
                 },
               },
             ],
+            should: [
+              {
+                match: {
+                  title: {
+                    query: word,
+                    boost: 5,
+                  },
+                },
+              },
+              {
+                match: {
+                  desciption: {
+                    query: word,
+                    boost: 4,
+                  },
+                },
+              },
+
+              {
+                term: {
+                  title: {
+                    value: word,
+                    boost: 8,
+                  },
+                },
+              },
+              {
+                term: {
+                  contents: {
+                    value: word,
+                    boost: 8,
+                  },
+                },
+              },
+              {
+                fuzzy: {
+                  title: {
+                    value: word,
+                    fuzziness: 1,
+                    // prefix_length: 1,
+                    max_expansions: 3,
+                    rewrite: 'constant_score',
+                    // boost: 1.5,
+                  },
+                },
+              },
+              {
+                fuzzy: {
+                  contents: {
+                    value: word,
+                    fuzziness: 1,
+                    // prefix_length: 1,
+                    max_expansions: 3,
+                    rewrite: 'constant_score',
+                  },
+                },
+              },
+            ],
           },
         },
         track_scores: true,
         highlight: {
+          fragment_size: 100,
           fields: {
-            title: {},
+            title: {
+              pre_tags: ['<em>'],
+              post_tags: ['</em>'],
+            },
             contents: {},
           },
         },
@@ -210,10 +205,13 @@ export class ElasticsearchService {
     if (result.hits.hits.length > 0) {
       for (let i = 0; i < result.hits.hits.length; i++) {
         real_result.push(result.hits.hits[i]._source);
+        if (result.hits.hits[i].highlight) {
+          real_result[i].highlight = result.hits.hits[i].highlight;
+        }
+
         real_result[i].score = result.hits.hits[i]._score;
       }
     }
-    real_result.push(result.hits.hits.length);
     return real_result;
   }
 }
