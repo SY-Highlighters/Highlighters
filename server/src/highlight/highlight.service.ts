@@ -119,7 +119,7 @@ export class HighlightService {
           },
         };
         const post_body_1 = JSON.stringify(post_body);
-        fetch(process.env.RAMDA_URL, {
+        fetch(process.env.LAMDA_URL, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
