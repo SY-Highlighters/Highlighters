@@ -195,6 +195,17 @@ export class ElasticsearchService {
         min_score: 1.5,
       },
     });
+    if (result.hits.hits.length == 0) {
+      this.client.index({
+        index: 'logs-highlighter',
+        document: {
+          word: word,
+          user: user.email,
+          group_id: user.group_id,
+          createdAt: Date.now(),
+        },
+      });
+    }
     const real_result = [];
     if (result.hits.hits.length > 0) {
       for (let i = 0; i < result.hits.hits.length; i++) {
