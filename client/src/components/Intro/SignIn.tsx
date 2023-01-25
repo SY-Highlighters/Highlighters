@@ -5,7 +5,7 @@ import SignUp from "./SignUp";
 import { logModalVisble, sighUpCheck, userInfoState } from "../../states/atom";
 import { useCookies } from "react-cookie";
 import Swal from "sweetalert2";
-import GoogleLoginButton from "./GoogleLoginButton";
+import { GoogleLoginButton } from "./GoogleLoginButton";
 import { GoogleOAuthProvider, GoogleLogin } from "@react-oauth/google";
 
 export default function SignIn() {
@@ -113,9 +113,9 @@ export default function SignIn() {
               />
             </div>
             {/* 비밀번호 잃어버렸을때 기능 -> 구현 할지 모르겠다*/}
-            <a href="#!" className="text-xs text-sky-600 hover:underline">
+            {/* <a href="#!" className="text-xs text-sky-600 hover:underline">
               Forget Password?
-            </a>
+            </a> */}
             <div className="mt-6">
               <button className="w-full px-4 py-2 tracking-wide text-white transition-colors duration-200 transform rounded-md bg-sky-700 hover:bg-sky-600 focus:outline-none focus:bg-sky-600">
                 Login
@@ -130,16 +130,21 @@ export default function SignIn() {
             <GoogleLoginButton></GoogleLoginButton>
             {/* </GoogleOAuthProvider> */}
           </div>
-
-          <p className="mt-8 text-xs font-light text-center text-gray-700">
-            Don't have an account?{" "}
-            <p
-              onClick={signUpChangeHandler}
-              className="font-medium cursor-pointer text-sky-600 hover:underline hover:scale-105"
-            >
-              Sign up
-            </p>
-          </p>
+          <div className="flex flex-col justify-center">
+            <div className="flex justify-center ">
+              <span className="text-xs font-light text-center text-gray-700">
+                Don't have an account?
+              </span>
+            </div>
+            <div className="flex justify-center ">
+              <span
+                onClick={signUpChangeHandler}
+                className="font-medium cursor-pointer text-sky-600 hover:underline hover:scale-105"
+              >
+                Sign up
+              </span>
+            </div>
+          </div>
         </div>
       ) : (
         <SignUp></SignUp>
