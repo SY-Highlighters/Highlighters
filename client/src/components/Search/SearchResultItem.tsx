@@ -1,6 +1,7 @@
 import { CalendarIcon } from "@heroicons/react/20/solid";
 import { searchKeywordState } from "../../states/atom";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
+import { preProcessFile } from "typescript";
 
 const SearchResultItem = (props: any) => {
   const [searchKeyword, setSearchKeyword] = useRecoilState(searchKeywordState);
@@ -9,78 +10,56 @@ const SearchResultItem = (props: any) => {
   const year = date.getFullYear();
   const month = date.getMonth() + 1;
   const day = date.getDate();
-  let titleDiv;
-  let resultinfosDiv;
-
+  let highlightContent;
+  console.log("props", props);
   // 타이틀에 검색어 들어있는지 검사
-  // const title = props.title;
-  // const i = title.toUpperCase().indexOf(searchKeyword.toUpperCase());
-  // if (i !== -1) {
-  //   const j = i + searchKeyword.length;
-  //   titleDiv = (
-  //     <div>
-  //       {title.substring(0, i)}
-  //       <span className="text-sky-600">{title.substring(i, j)}</span>
-  //       {title.substring(j)}
-  //     </div>
-  //   );
-  // } else {
-  //   titleDiv = <div>{title}</div>;
-  // }
-
-  // // 하이라이트에 검색어 들어있는지 검사
-  // if (props.resultinfo.length > 0) {
-  //   resultinfosDiv = props.resultinfo.map((info: any, index: number) => {
-  //     if (info === "") {
-  //       return;
-  //     }
-  //     let infoContent;
-  //     switch (info.type) {
-  //       case 1:
-  //         const content = info.highlight.contents;
-  //         if (content.length < 200) {
-  //           infoContent = (
-  //             <span style={{ backgroundColor: info.highlight.color }}>
-  //               {content.substring(0, info.includeStart)}
-  //               <span className="font-bold text-sky-600">
-  //                 {content.substring(info.includeStart, info.includeEnd)}
-  //               </span>
-  //               {content.substring(info.includeEnd)}
-  //             </span>
-  //           );
-  //         } else {
-  //           if (content.length - info.includeEnd < 200)
-  //             infoContent = (
-  //               <span style={{ backgroundColor: info.highlight.color }}>
-  //                 {"..."}
-  //                 <span className="font-bold text-sky-600">
-  //                   {content.substring(info.includeStart, info.includeEnd)}
-  //                 </span>
-  //                 {content.substring(info.includeEnd)}
-  //               </span>
-  //             );
-  //           else {
-  //             infoContent = (
-  //               <span style={{ backgroundColor: info.highlight.color }}>
-  //                 {"..."}
-  //                 <span className="font-bold text-sky-600">
-  //                   {content.substring(info.includeStart, info.includeEnd)}
-  //                 </span>
-  //                 {content.substr(info.includeEnd, 200) + "..."}
-  //               </span>
-  //             );
-  //           }
-  //         }
-  //         break;
-  //       default:
-  //         console.log("error");
-  //         infoContent = "error";
-  //         break;
-  //     }
-  //     return <div>{infoContent}</div>;
-  //   });
-  // }
-
+  let titleContent;
+  // const title = props.searchTitle ? props.searchTitle : props.title;
+  if (props.searchTitle && props.searchTitle[0]) {
+    // <em> 태그 찾아서 파싱한 곳에 span 태그로 감싸고 Span 태그에 className 추가
+    let pattern = /<em>(.*?)<\/em>/g;
+    let newStr = props.searchTitle[0].replace(
+      pattern,
+      '<span style="background-color: #FFEA20">$1</span>'
+    );
+    titleContent = (
+      <span
+        className="text-lg font-bold text-black"
+        dangerouslySetInnerHTML={{ __html: newStr }}
+      ></span>
+    );
+  } else {
+    titleContent = (
+      <span className="text-lg font-bold text-black">{props.title}</span>
+    );
+  }
+  // 검색어가 포함된 피드 내용
+  if (props.searchContent) {
+    highlightContent = props.searchContent.map(
+      (content: any, index: number) => {
+        // #부터 -까지 파싱
+        let colorPattern = /#(.*?)-/g;
+        let color = colorPattern.exec(content);
+        // console.log(color[1])
+        let pattern = /<em>(.*?)<\/em>/g;
+        let newStr = content.replace(
+          pattern,
+          '<span style="font-weight:bold; ; opacity:1;">$1</span>'
+        );
+        return (
+          <li key={index}>
+            <span className="text-sm text-black opacity-70">
+              <span
+                
+                dangerouslySetInnerHTML={{ __html: newStr }}
+                style={{ backgroundColor: color! }}
+              ></span>
+            </span>
+          </li>
+        );
+      }
+    );
+  }
   return (
     // <li className="py-5">
     <div className="overflow-hidden bg-white rounded-lg shadow-lg">
@@ -111,14 +90,14 @@ const SearchResultItem = (props: any) => {
         <a href={props.url} target="_blank" rel="noreferrer">
           <span>
             <h2 className="mb-5 font-bold leading-6 text-gray-900 text-mg xl:text-xl hover:text-gray-600">
-              {props.title}
+              {titleContent}
             </h2>
           </span>
         </a>
         {/* 검색어가 포함된 피드 내용 */}
-        {/* <div className="mb-5 ">
-          <ul className="space-y-1.5">{resultinfosDiv}</ul>
-        </div> */}
+        <div className="mb-5 ">
+          <ul className="space-y-1.5">{highlightContent}</ul>
+        </div>
         <div className="flex items-center justify-between mt-4 ml-2 text-sm text-gray-500 ">
           <div>
             <div className="flex flex-row space-x-5"></div>

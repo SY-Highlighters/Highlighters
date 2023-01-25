@@ -71,6 +71,8 @@ const SearchResults = () => {
         const newFeed = {
           id: item.id,
           title: item.title,
+          searchTitle: item.highlight.title,
+          searchContent: item.highlight.contents,
           description: item.description,
           url: item.url,
           // resultinfo: item.contents,
@@ -157,6 +159,8 @@ const SearchResults = () => {
                   title={feed.title}
                   url={feed.url}
                   date={feed.date}
+                  searchTitle={feed.searchTitle}
+                  searchContent={feed.searchContent}
                   resultinfo={feed.resultinfo}
                   // description={""}
                   // og_image={null}
