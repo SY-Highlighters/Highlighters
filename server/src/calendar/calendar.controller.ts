@@ -8,6 +8,7 @@ import {
   UseInterceptors,
   Body,
   Query,
+  Req,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { HttpExceptionFilter } from 'src/common/exceptions/http-exception.filter';
@@ -24,23 +25,17 @@ import { query } from 'express';
 export class CalendarController {
   constructor(private readonly calendarService: CalendarService) {}
 
-  @Get('/test')
-  async test(@GetUser() user: User) {
-    console.log('user: ', user);
-    return 'test';
-  }
-
   // 캘린더 조회
   @ApiResponse({ status: 200, description: 'success', type: 'Feed' })
   @ApiOperation({ summary: '캘린더 조회' })
   @Get('/')
-  async showCalendar(
+  async calendarFeed(
     @GetUser() user: User,
     @Query('page') page: number,
     @Query('take') take: number,
     @Query('date') date: Date,
   ) {
-    return this.calendarService.showCalendar(user, page, take, date);
+    return this.calendarService.calendarFeed(user, page, take, date);
   }
 
   // 캘린더 월별 유무 조회

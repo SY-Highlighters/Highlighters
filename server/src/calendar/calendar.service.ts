@@ -16,7 +16,7 @@ export class CalendarService {
     @Inject(CACHE_MANAGER) private readonly cacheManager: Cache,
   ) {}
 
-  async showCalendar(user: User, page: number, take: number, date: Date) {
+  async calendarFeed(user: User, page: number, take: number, date: Date) {
     const curr_date = new Date();
 
     let cache_flag = 0;
@@ -136,6 +136,7 @@ export class CalendarService {
         );
         console.log('[calendar] cache set');
       }
+
       return result;
     } catch (e) {
       throw new HttpException('Internal Server Error', 500);
@@ -146,30 +147,26 @@ export class CalendarService {
     const target_date = new Date(date.getFullYear(), date.getMonth());
     const limit_date = new Date(date.getFullYear(), date.getMonth() + 1);
     const result = [];
+
+    // cache로 조회
+    const cache_result = await this.cacheManager.get(
+      `showcalendar-${user.group_id}-${date.getFullYear()}-${
+        date.getMonth() + 1
+      }`,
+    );
+    if (cache_result) {
+      return cache_result;
+    }
+
     for (let i = 0; i < 31; i++) {
       const curr_date = new Date(
         target_date.getFullYear(),
         target_date.getMonth(),
       );
       curr_date.setDate(i + 1);
-
       if (curr_date > limit_date) {
         break;
       }
-
-      // // cache로 조회
-      // const is_exists = await this.cacheManager.get(
-      //   `calendar-${user.group_id}-${curr_date.getFullYear()}-${
-      //     curr_date.getMonth() + 1
-      //   }-${curr_date.getDate()}-1`,
-      // );
-      // if (is_exists) {
-      //   result.push({
-      //     startDatetime: curr_date,
-      //   });
-      //   continue;
-      // }
-
       const count = await this.prismaService.feed.findFirst({
         where: {
           group_id: user.group_id,
@@ -196,6 +193,26 @@ export class CalendarService {
         });
       }
     }
+
+    // 한국 시간 구하기
+    const curr = new Date();
+    const utc = curr.getTime() + curr.getTimezoneOffset() * 60 * 1000;
+    const KR_TIME_DIFF = 9 * 60 * 60 * 1000;
+    const kr_curr = new Date(utc + KR_TIME_DIFF);
+    const h = kr_curr.getHours();
+    const m = kr_curr.getMinutes();
+    const s = kr_curr.getSeconds();
+
+    const sec = h * 60 * 60 + m * 60 + s; // 현재 시간을 초로 나타냄
+    const ttl = 60 * 60 * 24 - sec; // 24시간에서 현재 시간을 뺌
+
+    await this.cacheManager.set(
+      `showcalendar-${user.group_id}-${date.getFullYear()}-${
+        date.getMonth() + 1
+      }`,
+      result,
+      ttl, // 하루가 끝나기 전까지
+    );
     return result;
   }
 }

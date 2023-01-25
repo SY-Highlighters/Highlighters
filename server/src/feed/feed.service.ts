@@ -12,8 +12,9 @@ import { elasticFeedDto } from 'src/repository/dto/elastic.dto';
 export class FeedService {
   constructor(
     private readonly prismaService: PrismaService,
-    private readonly tagService: TagService, // @Inject(CACHE_MANAGER) private readonly cacheManager: Cache,
+    private readonly tagService: TagService,
     private readonly elastic: ElasticsearchService,
+    @Inject(CACHE_MANAGER) private readonly cacheManager: Cache,
   ) {}
 
   async createFeed(createFeedDto: CreateFeedDto, user: User): Promise<Feed> {
@@ -221,7 +222,10 @@ export class FeedService {
     return feeds;
   }
 
-  async deleteFeedById(id: number): Promise<boolean> {
+  async deleteFeedById(id: number, user: User): Promise<boolean> {
+    const deletingFeed = await this.prismaService.feed.findUnique({
+      where: { id },
+    });
     const result = await this.prismaService.feed.delete({
       where: { id },
       select: {
@@ -240,6 +244,29 @@ export class FeedService {
       },
     });
     this.elastic.deleteFeed(String(id));
+    let i = 1;
+    while (true) {
+      const isExist = await this.cacheManager.get(
+        `calendar-${user.group_id}-${deletingFeed.createdAt.getFullYear()}-${
+          deletingFeed.createdAt.getMonth() + 1
+        }-${deletingFeed.createdAt.getDate()}-${i}`,
+      );
+      if (isExist === null) {
+        console.log('deleted all calendar cache');
+        break;
+      }
+      await this.cacheManager.del(
+        `calendar-${user.group_id}-${deletingFeed.createdAt.getFullYear()}-${
+          deletingFeed.createdAt.getMonth() + 1
+        }-${deletingFeed.createdAt.getDate()}-${i}`,
+      );
+      i++;
+    }
+    await this.cacheManager.del(
+      `showcalendar-${user.group_id}-${deletingFeed.createdAt.getFullYear()}-${
+        deletingFeed.createdAt.getMonth() + 1
+      }`,
+    );
     return true;
   }
 
