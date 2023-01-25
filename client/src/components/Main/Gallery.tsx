@@ -16,7 +16,30 @@ import FeedSkeleton from "../UI/FeedSkeleton";
 import GridItem from "../Grid/GridItem/GridItem";
 import { useFeedsInGrid } from "../../hooks/useFeedsInGrid";
 import GridSkeleton from "../UI/GridSkeleton";
+import { mainSectionState } from "../../states/atom";
+import { useRecoilState } from "recoil";
+import { useFeedsInBookmark } from "../../hooks/useFeedsInBookmark";
+import { useFeedsInDay } from "../../hooks/useFeedsInDay";
+import { useFeedsInTag } from "../../hooks/useFeedsInTag";
+
 const Gallery = () => {
+  const [mainSectionNum, setMainSectionNum] = useRecoilState(mainSectionState);
+  // const MainSection = (setionNum: number) => {
+  //   switch (setionNum) {
+  //     case 0:
+  //       return useFeedsInGrid;
+  //     case 1:
+  //       return useFeedsInBookmark;
+  //     case 2:
+  //       return useFeedsInTag;
+  //     case 3:
+  //       return useFeedsInDay;
+  //     // case 4:
+  //     //   return use
+  //     default:
+  //       return useFeedsInGrid;
+  //   }
+  // };
   //   const [cookies] = useCookies(["logCookie"]);
   // const [ref, inView] = useInView({
   //   threshold: 0.5,
@@ -68,6 +91,7 @@ const Gallery = () => {
   if (status === "loading") {
     return <GridSkeleton></GridSkeleton>;
   }
+
   return (
     <div className="py-12 mx-auto sm:py-18 sm:px-5 lg:w-full lg:px-10">
       {getBoardIsSuccess && getBoard!.pages[0].board_page.length === 0 ? (

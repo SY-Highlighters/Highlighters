@@ -72,10 +72,9 @@ export function Main() {
         <Grid></Grid>
       )}
       {/* 그리드 화면 */}
-      <Squares2X2Icon
-        onClick={clickedMainChange}
-        className="absolute hidden w-8 h-8 cursor-pointer xl:block top-24 left-20 text-sky-500 hover:text-sky-600 hover:scale-95"
-      ></Squares2X2Icon>
+      {/*  닫기 버튼 */}
+
+
       {/* 태그 편집 모달 */}
       {tagModal === 1 && <FeedTagEditModal></FeedTagEditModal>}
       {/* {tagModal === 2 && <GroupTagEditModal></GroupTagEditModal>} */}

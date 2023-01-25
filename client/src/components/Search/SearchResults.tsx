@@ -2,8 +2,12 @@ import FeedItem from "../Feeds/FeedItem/FeedItem";
 import { useEffect, useState } from "react";
 import { useCookies } from "react-cookie";
 import axios from "axios";
-import { DocumentIcon, MegaphoneIcon } from "@heroicons/react/24/outline";
-import { searchKeywordState } from "../../states/atom";
+import {
+  DocumentIcon,
+  MegaphoneIcon,
+  HomeIcon,
+} from "@heroicons/react/24/outline";
+import { searchKeywordState, mainSectionState } from "../../states/atom";
 import { useRecoilState } from "recoil";
 import SearchResultItem from "./SearchResultItem";
 
@@ -11,6 +15,8 @@ const elastic_on = true;
 const searchMode = elastic_on ? "ela" : "bar";
 
 const SearchResults = () => {
+  const [mainSectionNum, setMainSectionNum] = useRecoilState(mainSectionState);
+
   const [cookies, setCookie, removeCookie] = useCookies(["logCookie"]);
   const [searchKeyword, setSearchKeyword] = useRecoilState(searchKeywordState);
   const [searchResultFeeds, setSearchResultFeeds] = useState<object[]>([]);
@@ -91,14 +97,16 @@ const SearchResults = () => {
       });
     }
   };
-
+  const handleBookmarkClick = () => {
+    setMainSectionNum(0);
+  };
   return (
     <div className="basis-2/4 ">
       <div className="rounded-md opacity-90 bg-sky-500">
         {/* 메뉴바*/}
         <div className="px-3 py-2 mx-auto rounded-lg max-w-7xl">
           <div className="flex flex-wrap items-center ">
-            <div className="flex items-center">
+            <div className="flex items-center flex-1 w-0">
               <span className="flex p-2 mr-1 -ml-3 rounded-lg bg-sky-500">
                 <DocumentIcon
                   className="w-6 h-6 ml-3 text-white"
@@ -112,6 +120,12 @@ const SearchResults = () => {
                 </span>
               </p>
             </div>
+            <button
+              onClick={handleBookmarkClick}
+              className="p-1 text-white bg-sky-500 hover:bg-sky-500 "
+            >
+              <HomeIcon className="w-6 h-6"></HomeIcon>
+            </button>
           </div>
         </div>
       </div>

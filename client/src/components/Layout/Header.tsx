@@ -36,15 +36,6 @@ export default function Header() {
   // react-query 사용 시 server state
   const { data: user, isSuccess } = useUserData(cookies);
 
-  const handleBookmarkClick = () => {
-    // console.log("bookmark click");
-    // setBookmark(!bookmark);
-    if (mainSectionNum === 1) {
-      setMainSectionNum(0);
-    } else {
-      setMainSectionNum(1);
-    }
-  };
   const logout = async () => {
     queryClient.removeQueries();
     removeCookie("logCookie");
@@ -61,7 +52,6 @@ export default function Header() {
   };
 
   const searchButtonClicked = () => {
-
     if (searchInput === "") {
       Swal.fire({
         icon: "warning",
@@ -168,25 +158,7 @@ export default function Header() {
             </div>
             {/* <ul className="flex flex-col list-none lg:flex-row lg:ml-auto"> */}
             <ul className="flex flex-col mr-3 space-x-2 list-none lg:flex-row lg:ml-auto">
-              <li className="mt-1 nav-item">
-                {mainSectionNum === 1 ? (
-                  <button
-                    onClick={handleBookmarkClick}
-                    type="button"
-                    className="p-1 text-white rounded-full bg-sky-600 hover:bg-sky-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-sky-500 "
-                  >
-                    <span className="sr-only">View notifications</span>
-                    <HomeIcon className="w-6 h-6" aria-hidden="true" />
-                  </button>
-                ) : (
-                  <button
-                    onClick={handleBookmarkClick}
-                    className="p-1 text-white rounded-full bg-sky-600 hover:bg-sky-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-sky-500 "
-                  >
-                    <StarIcon className="w-6 h-6"></StarIcon>
-                  </button>
-                )}
-              </li>
+              <li className="mt-1 nav-item"></li>
               <li className="nav-item">
                 {/* 유저 프로필 버튼 */}
                 {isSuccess && user.image ? (
