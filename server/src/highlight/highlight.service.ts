@@ -98,7 +98,6 @@ export class HighlightService {
         });
       } else {
         const image_content = `${group_id}${find_feed.id}${Date.now()}`;
-        console.log(image_content);
         // type 2 이미지 하이라이트
         result = await this.prismaService.highlight.create({
           data: {
@@ -251,7 +250,6 @@ export class HighlightService {
           select: { contents: true, feed_id: true },
         });
       }
-      console.log(high_contents);
 
       return true;
     } catch (error) {
@@ -267,7 +265,6 @@ export class HighlightService {
       },
     };
     const post_body_1 = JSON.stringify(post_body);
-    console.log(post_body_1);
     const result = await fetch(process.env.RAMDA_URL, {
       method: 'POST',
       headers: {
@@ -276,7 +273,6 @@ export class HighlightService {
       body: post_body_1,
     });
     const response = await result.json();
-    console.log('===== 이미지 업로드 완료 =====');
     return response;
   }
 }

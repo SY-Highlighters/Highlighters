@@ -75,7 +75,6 @@ export class FeedController {
     @Param('id') id: number,
     @GetUser() user: User,
   ): Promise<object[]> {
-    // console.log()
     return this.feedService.findFeedByGroupId(id, user);
   }
 

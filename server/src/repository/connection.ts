@@ -79,7 +79,6 @@ export class ElasticsearchService {
 
   async deleteHighlight(feed_id: string, contents: string) {
     try {
-      console.log('extracontents  ------------', contents);
       await this.client.updateByQuery({
         index: 'search-highlighter',
         body: {
