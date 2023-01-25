@@ -5,7 +5,7 @@ import SignUp from "./SignUp";
 import { logModalVisble, sighUpCheck, userInfoState } from "../../states/atom";
 import { useCookies } from "react-cookie";
 import Swal from "sweetalert2";
-import { GoogleLoginButton } from "./GoogleLoginButton";
+import GoogleLoginButton from "./GoogleLoginButton";
 import { GoogleOAuthProvider, GoogleLogin } from "@react-oauth/google";
 
 export default function SignIn() {
@@ -124,7 +124,11 @@ export default function SignIn() {
           </form>
 
           <div className="justify-center mt-1">
+            {/* <GoogleOAuthProvider */}
+            {/* clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID!}
+            > */}
             <GoogleLoginButton></GoogleLoginButton>
+            {/* </GoogleOAuthProvider> */}
           </div>
 
           <p className="mt-8 text-xs font-light text-center text-gray-700">

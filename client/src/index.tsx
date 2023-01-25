@@ -27,9 +27,7 @@ root.render(
   <CookiesProvider>
     <RecoilRoot>
       <QueryClientProvider client={queryClient}>
-        <GoogleOAuthProvider clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID!}>
-          <App />
-        </GoogleOAuthProvider>
+        <App />
       </QueryClientProvider>
     </RecoilRoot>
   </CookiesProvider>
