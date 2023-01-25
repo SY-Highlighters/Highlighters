@@ -11,7 +11,7 @@ const SearchResultItem = (props: any) => {
   const month = date.getMonth() + 1;
   const day = date.getDate();
   let highlightContent;
-  console.log("props", props);
+  // console.log("props", props);
   // 타이틀에 검색어 들어있는지 검사
   let titleContent;
   // const title = props.searchTitle ? props.searchTitle : props.title;
@@ -34,29 +34,50 @@ const SearchResultItem = (props: any) => {
     );
   }
   // 검색어가 포함된 피드 내용
+  let color: string;
   if (props.searchContent) {
     highlightContent = props.searchContent.map(
       (content: any, index: number) => {
         // #부터 -까지 파싱
         let colorPattern = /#(.*?)-/g;
-        let color = colorPattern.exec(content);
-        // console.log(color[1])
-        let pattern = /<em>(.*?)<\/em>/g;
-        let newStr = content.replace(
-          pattern,
-          '<span style="font-weight:bold; ; opacity:1;">$1</span>'
-        );
-        return (
-          <li key={index}>
-            <span className="text-sm text-black opacity-70">
-              <span
-                
-                dangerouslySetInnerHTML={{ __html: newStr }}
-                style={{ backgroundColor: color! }}
-              ></span>
-            </span>
-          </li>
-        );
+        let newColor = colorPattern.exec(content);
+        // console.log("color", color);
+        if (newColor === null) {
+          let pattern = /<em>(.*?)<\/em>/g;
+          let newStr = content.replace(
+            pattern,
+            '<span style="font-weight:bold; opacity:1;">$1</span>'
+          );
+          return (
+            <li key={index}>
+              <span className="text-sm text-black opacity-70">
+                <span
+                  dangerouslySetInnerHTML={{ __html: newStr }}
+                  style={{ backgroundColor: `#${color!}` }}
+                ></span>
+              </span>
+            </li>
+          );
+        } else {
+          color = newColor[1];
+          // 첫번째 공백 부터 시작하기
+          let newContent = content.split(" ").slice(1).join(" ");
+          let pattern = /<em>(.*?)<\/em>/g;
+          let newStr = newContent.replace(
+            pattern,
+            '<span style="font-weight:bold; opacity:1;">$1</span>'
+          );
+          return (
+            <li key={index}>
+              <span className="text-sm text-black opacity-70">
+                <span
+                  dangerouslySetInnerHTML={{ __html: newStr }}
+                  style={{ backgroundColor: `#${color!}` }}
+                ></span>
+              </span>
+            </li>
+          );
+        }
       }
     );
   }
@@ -96,7 +117,7 @@ const SearchResultItem = (props: any) => {
         </a>
         {/* 검색어가 포함된 피드 내용 */}
         <div className="mb-5 ">
-          <ul className="space-y-1.5">{highlightContent}</ul>
+          <ul className="">{highlightContent}</ul>
         </div>
         <div className="flex items-center justify-between mt-4 ml-2 text-sm text-gray-500 ">
           <div>
