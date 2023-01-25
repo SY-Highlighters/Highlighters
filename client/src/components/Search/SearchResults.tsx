@@ -67,7 +67,7 @@ const SearchResults = () => {
           title: item.title,
           description: item.description,
           url: item.url,
-          resultinfo: item.contents,
+          // resultinfo: item.contents,
           username: item.user_nickname,
           userimage: item.image,
           date: item.createdAt,

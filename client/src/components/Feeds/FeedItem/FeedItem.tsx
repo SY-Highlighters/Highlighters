@@ -37,7 +37,7 @@ import { useCookies } from "react-cookie";
 // });
 import axios from "axios";
 import YoutubeTimeStamp from "./YoutubeTimeStamp";
-import ThreeLineSummary from "../../summary/ThreeLineSummary";
+import ThreeLineSummary from "../../Summary/ThreeLineSummary";
 
 const dummary = "현재 네이버 뉴스만 지원합니다 😂";
 const FeedItem = (props: any) => {
