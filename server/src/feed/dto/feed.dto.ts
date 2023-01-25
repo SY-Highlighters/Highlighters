@@ -21,6 +21,7 @@ export class CreateFeedDto {
   high_content?: string;
 
   type?: number;
+  color?: string;
 }
 
 // export class getfeedDto {

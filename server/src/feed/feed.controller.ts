@@ -95,9 +95,4 @@ export class FeedController {
     return this.feedService.deleteFeedById(id, user);
   }
 
-  // Feed test 생성
-  @Post('/ela')
-  async inputFeed(elasticfeed: elasticFeedDto) {
-    return this.feedService.inputFeed(elasticfeed);
-  }
 }

@@ -65,6 +65,7 @@ export class HighlightService {
         newFeedDto.description = description;
         newFeedDto.high_content = contents;
         newFeedDto.type = type;
+        newFeedDto.color = color;
 
         find_feed = await this.feedService.createFeed(newFeedDto, user);
       } else {
@@ -76,7 +77,8 @@ export class HighlightService {
         } else {
           elasticFeed.contents = '';
         }
-        this.elastic.appendFeed(elasticFeed.feed_id, elasticFeed.contents);
+        const extracontents = `${color}-${elasticFeed.contents}`;
+        this.elastic.appendFeed(elasticFeed.feed_id, extracontents);
       }
 
       let result = null;
@@ -220,6 +222,9 @@ export class HighlightService {
       // 하이라이트 삭제
       let high_contents;
       if (type == 1) {
+        const high_find = await this.prismaService.highlight.findUnique({
+          where: { id: id },
+        });
         // 텍스트 하이라이트 삭제
         high_contents = await this.prismaService.highlight.update({
           where: { id: id },
@@ -227,10 +232,11 @@ export class HighlightService {
           data: { contents: '', color: '-1' }, // 삭제된 하이라이트는 color를 -1로 변경
         });
 
+        const extracontents = `${high_find.color}-${high_find.contents}`;
         // elastic 삭제
         await this.elastic.deleteHighlight(
           String(high_contents.feed_id),
-          high_contents.contents,
+          extracontents,
         );
       } else if (type == 2) {
         // 사진 하이라이트 삭제

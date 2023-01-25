@@ -27,6 +27,7 @@ export class FeedService {
       tag_name,
       high_content,
       type,
+      color,
     } = createFeedDto;
 
     // og 부분
@@ -72,9 +73,9 @@ export class FeedService {
     elasticFeed.createdAt = _Feed.createdAt;
     elasticFeed.image = user.image;
     if (type == 1) {
-      elasticFeed.contents = high_content;
+      elasticFeed.contents = `${color}-${high_content}`;
     } else {
-      elasticFeed.contents = '';
+      elasticFeed.contents = `${color}`;
     }
     await this.elastic.inputFeed(elasticFeed);
 
@@ -278,9 +279,5 @@ export class FeedService {
       },
     });
     return result ? true : false;
-  }
-
-  async inputFeed(elasticfeed: elasticFeedDto) {
-    this.elastic.inputFeed(elasticfeed);
   }
 }
