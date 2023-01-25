@@ -132,14 +132,14 @@ export default function SignIn() {
           </div>
           <div className="flex flex-col justify-center">
             <div className="flex justify-center ">
-              <span className="text-xs font-light text-center text-gray-700">
+              <span className="mt-1 text-xs font-light text-center text-gray-400">
                 Don't have an account?
               </span>
             </div>
-            <div className="flex justify-center ">
+            <div className="flex justify-center">
               <span
                 onClick={signUpChangeHandler}
-                className="font-medium cursor-pointer text-sky-600 hover:underline hover:scale-105"
+                className="text-sm font-medium cursor-pointer text-sky-600 hover:text-sky-300"
               >
                 Sign up
               </span>
