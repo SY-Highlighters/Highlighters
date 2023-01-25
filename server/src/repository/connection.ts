@@ -110,7 +110,7 @@ export class ElasticsearchService {
       body: {
         query: {
           bool: {
-            must: [
+            filter: [
               {
                 term: {
                   group_id: user.group_id,
@@ -119,22 +119,20 @@ export class ElasticsearchService {
             ],
             should: [
               {
-                match: {
-                  title: {
-                    query: word,
-                    boost: 5,
-                  },
+                multi_match: {
+                  query: word,
+                  fields: ['title', 'contents'],
+                  boost: 5,
                 },
               },
-              {
-                match: {
-                  desciption: {
-                    query: word,
-                    boost: 4,
-                  },
-                },
-              },
-
+              // {
+              //   match: {
+              //     desciption: {
+              //       query: word,
+              //       boost: 4,
+              //     },
+              //   },
+              // },
               {
                 term: {
                   title: {
@@ -147,7 +145,7 @@ export class ElasticsearchService {
                 term: {
                   contents: {
                     value: word,
-                    boost: 8,
+                    boost: 6,
                   },
                 },
               },
@@ -158,7 +156,7 @@ export class ElasticsearchService {
                     fuzziness: 1,
                     // prefix_length: 1,
                     max_expansions: 3,
-                    rewrite: 'constant_score',
+                    rewrite: 'top_terms_boost_3',
                     // boost: 1.5,
                   },
                 },
@@ -170,13 +168,14 @@ export class ElasticsearchService {
                     fuzziness: 1,
                     // prefix_length: 1,
                     max_expansions: 3,
-                    rewrite: 'constant_score',
+                    rewrite: 'top_terms_boost_3',
                   },
                 },
               },
             ],
           },
         },
+
         track_scores: true,
         highlight: {
           fragment_size: 100,
@@ -188,7 +187,7 @@ export class ElasticsearchService {
             contents: {},
           },
         },
-        min_score: 1.5,
+        min_score: 1,
       },
     });
     if (result.hits.hits.length == 0) {
