@@ -20,12 +20,14 @@ const SearchResults = () => {
   const [cookies, setCookie, removeCookie] = useCookies(["logCookie"]);
   const [searchKeyword, setSearchKeyword] = useRecoilState(searchKeywordState);
   const [searchResultFeeds, setSearchResultFeeds] = useState<object[]>([]);
+  const [searchComplete, setSearchComplete] = useState(false);
 
   // let timeoutId: NodeJS.Timeout;
   useEffect(() => {
     setSearchResultFeeds([]);
     // setSearchKeyword("");
     async function getSearchResultsAsync() {
+      setSearchComplete(false);
       const response = await axios({
         method: "get",
         url: `${process.env.REACT_APP_HOST}/api/search/${searchMode}/${searchKeyword}`, // [TBD]
@@ -38,6 +40,7 @@ const SearchResults = () => {
       const data = response.data.data;
       // console.log("searchresult: ", data);
       searchResultFeedsAdd(data);
+      setSearchComplete(true);
     }
 
     // clearTimeout(timeoutId);
@@ -132,7 +135,7 @@ const SearchResults = () => {
         </div>
       </div>
       {/*  검색결과 없을 */}
-      {searchResultFeeds.length === 0 ? (
+      { searchComplete && searchResultFeeds.length === 0 ? (
         <div
           className="flex justify-center w-full h-full pt-10 mt-5 bg-white rounded-md shadow-md "
           style={{ height: "80vh" }}

@@ -20,7 +20,7 @@ const SearchResultItem = (props: any) => {
     let pattern = /<em>(.*?)<\/em>/g;
     let newStr = props.searchTitle[0].replace(
       pattern,
-      '<span style="font-weight:bold; color: #0ea5e9;">$1</span>'
+      '<span style="font-weight:bold; color:#0284c7;">$1</span>'
     );
     titleContent = (
       <span
@@ -46,11 +46,11 @@ const SearchResultItem = (props: any) => {
           let pattern = /<em>(.*?)<\/em>/g;
           let newStr = content.replace(
             pattern,
-            '<span style="font-weight:bold; color: #0ea5e9;">$1</span>'
+            '<span style="font-weight:bold; color:#0284c7;">$1</span>'
           );
           return (
             <li key={index}>
-              <span className="text-sm text-black opacity-70">
+              <span className="text-sm text-black ">
                 <span
                   dangerouslySetInnerHTML={{ __html: newStr }}
                   style={{ backgroundColor: `#${color!}` }}
@@ -65,11 +65,11 @@ const SearchResultItem = (props: any) => {
           let pattern = /<em>(.*?)<\/em>/g;
           let newStr = newContent.replace(
             pattern,
-            '<span style="font-weight:bold; color: #0ea5e9;">$1</span>'
+            '<span style="font-weight:bold; color:#0284c7;">$1</span>'
           );
           return (
             <li key={index}>
-              <span className="text-sm text-black opacity-70">
+              <span className="text-sm text-black ">
                 <span
                   dangerouslySetInnerHTML={{ __html: newStr }}
                   style={{ backgroundColor: `#${color!}` }}
