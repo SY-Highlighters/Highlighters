@@ -78,6 +78,7 @@ const SearchResults = () => {
           searchContent: item.highlight.contents,
           description: item.description,
           url: item.url,
+          spareColor: item.contents,
           // resultinfo: item.contents,
           username: item.user_nickname,
           userimage: item.image,
@@ -162,6 +163,7 @@ const SearchResults = () => {
                   title={feed.title}
                   url={feed.url}
                   date={feed.date}
+                  spareColor={feed.spareColor}
                   searchTitle={feed.searchTitle}
                   searchContent={feed.searchContent}
                   resultinfo={feed.resultinfo}

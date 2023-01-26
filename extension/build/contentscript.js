@@ -458,7 +458,7 @@ function showToolBar(event, node, user, nodetype, nodeID) {
 
   curNode = node; // 현재 선택된 하이라이트 업데이트
   curNodeType = nodetype; // 현재 선택된 하이라이트 노드 타입 업데이트
-  curNodeID = nodeID; // 현재 선택된 하이라이트 노드 아이디 업데이트
+  // curNodeID = nodeID; // 현재 선택된 하이라이트 노드 아이디 업데이트
   userImageDiv.setAttribute("src", user); // 현재 선택된 하이라이트의 유저 이미지로 설정
 
   // 투명 배경 : 툴바 바깥 눌렀을 때 툴바가 닫히도록 이벤트 리스너 추가
