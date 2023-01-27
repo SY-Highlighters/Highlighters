@@ -27,20 +27,10 @@
     <img src="https://velog.velcdn.com/images/chobae/post/97fa6a9e-ebfb-48ba-8335-d6a5c3949a47/image.png" alt="Logo" width="" height="">
   </a>
 
-
-
   <p align="center">
    Link Sharing & Archiving for Collaboration
     <br />
     <a href="https://highlighters.site/"><strong>시작하기</strong></a>
-    
-    <br />
-    <br />
-    <!-- <a href="https://github.com/othneildrew/Best-README-Template">View Demo</a> 
-    ·
-    <a href="https://github.com/othneildrew/Best-README-Template/issues">Report Bug</a>
-    ·
-    <a href="https://github.com/othneildrew/Best-README-Template/issues">Request Feature</a> -->
   </p>
 </div>
 
