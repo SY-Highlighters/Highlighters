@@ -82,7 +82,7 @@
 <!-- GETTING STARTED -->
 
 ## 시작하기
-  <a href="https://zircon-kale-103.notion.site/Highlighters-b7074bda3ec542e7bd4002babca6e5fc">
+  <a href="https://zircon-kale-103.notion.site/Highlighters-b7074bda3ec542e7bd4002babca6e5fc" target="_blank" rel="noreferrer" >
     <img width="873" alt="image" src="https://user-images.githubusercontent.com/101175828/214382114-4a8ed9b6-b446-4315-be4f-0984b4bd311a.png">
   </a>
 
