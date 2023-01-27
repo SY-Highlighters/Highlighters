@@ -79,7 +79,7 @@ const Gallery = () => {
       getNextPage();
     }
   }, [isView, getNextPage, getNextPageIsPossible]);
-  console.log('그리드 정보',getBoard);
+  // console.log("그리드 정보", getBoard);
   if (status === "loading") {
     return <GridSkeleton></GridSkeleton>;
   }
@@ -121,27 +121,29 @@ const Gallery = () => {
                     board_page.length - 1 === idx
                   ) {
                     return (
-                      <GridItem
-                        ref={ref}
-                        index={idx}
-                        key={feed.id}
-                        feedId={feed.id}
-                        ogImage={feed.og.image}
-                        title={feed.title}
-                        url={feed.url}
-                      ></GridItem>
+                      <div ref={ref} key={feed.id}>
+                        <GridItem
+                          index={idx}
+                          key={feed.id}
+                          feedId={feed.id}
+                          ogImage={feed.og.image}
+                          title={feed.title}
+                          url={feed.url}
+                        ></GridItem>
+                      </div>
                     );
                   } else {
                     return (
-                      <GridItem
-                        ref={ref}
-                        index={idx}
-                        key={feed.id}
-                        feedId={feed.id}
-                        ogImage={feed.og.image}
-                        title={feed.title}
-                        url={feed.url}
-                      ></GridItem>
+                      <div key={feed.id}>
+                        <GridItem
+                          index={idx}
+                          key={feed.id}
+                          feedId={feed.id}
+                          ogImage={feed.og.image}
+                          title={feed.title}
+                          url={feed.url}
+                        ></GridItem>
+                      </div>
                     );
                   }
                 });

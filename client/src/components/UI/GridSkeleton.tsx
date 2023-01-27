@@ -1,6 +1,6 @@
 const GridSkeleton = () => {
   const gridList = Array.from({ length: 15 }, (_, i) => (
-    <div className="relative group">
+    <div className="relative group" key={i}>
       <div className="overflow-hidden bg-gray-200 rounded-md min-h-80 aspect-w-1 aspect-h-1 group-hover:opacity-75 lg:aspect-none lg:h-40">
         <div className="object-cover object-center w-full h-full lg:h-full lg:w-full" />
       </div>

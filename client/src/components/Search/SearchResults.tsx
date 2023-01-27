@@ -69,7 +69,7 @@ const SearchResults = () => {
 
   const searchResultFeedsAdd = (data: []) => {
     if (elastic_on) {
-      console.log("여기오고", data);
+      // console.log("여기오고", data);
       data.map((item: any) => {
         const newFeed = {
           id: item.id,

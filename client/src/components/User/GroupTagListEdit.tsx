@@ -63,10 +63,11 @@ const GroupTagListEdit = (props: any) => {
       console.error(error);
     }
   });
-  if (isSuccess) {
-    setGroupTagList(tagEditList);
-    console.log("tagEditList", tagEditList);
-  }
+  
+  // if (isSuccess) {
+  //   setGroupTagList(tagEditList);
+  //   // console.log("tagEditList", tagEditList);
+  // }
 
   const deleteTagHandler = async (data: any) => {
     try {
@@ -86,10 +87,10 @@ const GroupTagListEdit = (props: any) => {
       console.error(error);
     }
   };
-  useEffect(() => {}, [groupTagList]);
+  // useEffect(() => {}, [groupTagList]);
   return (
     <div className="">
-      {isSuccess && groupTagList.length === 0 && (
+      {isSuccess && tagEditList.length === 0 && (
         <div className="flex flex-col items-center justify-center opacity-75">
           <div className="flex items-center justify-center w-20 h-20 rounded-full ">
             <HashtagIcon
@@ -101,9 +102,9 @@ const GroupTagListEdit = (props: any) => {
         </div>
       )}
       {isSuccess &&
-        groupTagList &&
-        groupTagList.map((tag: any) => (
-          <span key={tag.id}>
+        tagEditList &&
+        tagEditList.map((tag: any) => (
+          <span key={tag.tag_name}>
             <TagEditItem
               key={tag.tag_id}
               tagName={tag.tag_name}
