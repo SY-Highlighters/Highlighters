@@ -23,7 +23,7 @@
 <!-- PROJECT LOGO -->
 <br />
 <div align="center">
-  <a href="https://highlighters.site/">
+  <a href="https://highlighters.site/" target="_blank">
     <img src="https://velog.velcdn.com/images/chobae/post/97fa6a9e-ebfb-48ba-8335-d6a5c3949a47/image.png" alt="Logo" width="" height="">
   </a>
 
@@ -82,7 +82,7 @@
 <!-- GETTING STARTED -->
 
 ## 시작하기
-  <a href="https://zircon-kale-103.notion.site/Highlighters-b7074bda3ec542e7bd4002babca6e5fc" target="_blank" rel="noreferrer" >
+  <a href="https://zircon-kale-103.notion.site/Highlighters-b7074bda3ec542e7bd4002babca6e5fc" target="_blank">
     <img width="873" alt="image" src="https://user-images.githubusercontent.com/101175828/214382114-4a8ed9b6-b446-4315-be4f-0984b4bd311a.png">
   </a>
 
