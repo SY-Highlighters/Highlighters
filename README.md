@@ -107,9 +107,9 @@
 <!-- 포스터 -->
 
 ## 포스터
-🛠️수정중🛠️
-<p align="right">(<a href="#readme-top">맨 위로</a>)</p>
+![image](https://user-images.githubusercontent.com/101175828/215235500-a329f9fd-6251-4e7e-8e96-36a33113678f.png)
 
+<p align="right">(<a href="#readme-top">맨 위로</a>)</p>
 <!-- CONTACT -->
 
 ## 팀소개
