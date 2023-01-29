@@ -71,8 +71,8 @@
 <!-- GETTING STARTED -->
 
 ## 서비스 소개
-  
-  <a name="서비스 소개" href="https://zircon-kale-103.notion.site/Highlighters-b7074bda3ec542e7bd4002babca6e5fc" target="_blank">
+<a name="서비스 소개"> </a>
+  <a href="https://zircon-kale-103.notion.site/Highlighters-b7074bda3ec542e7bd4002babca6e5fc" target="_blank">
     <p>Highlighters </p>
   </a>
 
@@ -105,13 +105,15 @@
 
 <!-- 포스터 -->
 
-## 포스터
+## 프로젝트 포스터
+<a name="프로젝트 포스터"> </a>
 ![image](https://user-images.githubusercontent.com/101175828/215235500-a329f9fd-6251-4e7e-8e96-36a33113678f.png)
 
 <p align="right">(<a href="#readme-top">맨 위로</a>)</p>
 <!-- CONTACT -->
 
 ## 팀소개
+<a name="팀 소개"> </a>
 🛠️수정중🛠️
 
 <p align="right">(<a href="#readme-top">맨 위로</a>)</p>
