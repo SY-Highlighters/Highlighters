@@ -15,6 +15,8 @@
 <!-- TABLE OF CONTENTS -->
 
 ## 목차
+1. [프로젝트 개요](#Highlighters)
+2. [서비스 사용 설명서](#service)
 <a href="#Highlighters">1. 프로젝트 개요</a>
 <a href="#service">2. 서비스 사용 설명서</a>
 <a href="#roadmap">3. 서비스 로드맵</a>
