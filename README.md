@@ -36,7 +36,7 @@
 
 <!-- TABLE OF CONTENTS -->
 
-# 목차
+## 목차
 
 <li>
   <a href="#Highlighters">Highlighters😎</a>
@@ -52,7 +52,7 @@
 
 <!-- ABOUT THE PROJECT -->
 
-# Highlighters
+## Highlighters
 <!-- 대충 이미지 -->
 ![image](https://user-images.githubusercontent.com/101175828/214380298-89b3f13f-6571-4399-a2a0-776cbe908c30.png)
 
@@ -72,8 +72,9 @@
 <!-- GETTING STARTED -->
 
 ## 서비스 소개
-  <a href="https://zircon-kale-103.notion.site/Highlighters-b7074bda3ec542e7bd4002babca6e5fc" target="_blank">
-  <p>Highlighters </p>
+  
+  <a name="서비스 소개" href="https://zircon-kale-103.notion.site/Highlighters-b7074bda3ec542e7bd4002babca6e5fc" target="_blank">
+    <p>Highlighters </p>
   </a>
 
 
