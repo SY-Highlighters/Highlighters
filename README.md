@@ -37,18 +37,17 @@
 <!-- TABLE OF CONTENTS -->
 
 ## 목차
+<a href="#Highlighters">1. Highlighters 란?</a>
 
-<li>
-  <a href="#Highlighters">1. Highlighters란?</a>
-</li>
-<li>
-  <a href="#service">2. 서비스 소개</a>
-</li>
-<li><a href="#roadmap">3. Roadmap</a></li>
-<li><a href="#아키텍처">4. 아키텍처</a></li>
-<li><a href="#poster">5. 프로젝트 포스터</a></li>
-<li><a href="#team">6. 팀 소개</a></li>
+<a href="#service">2. 서비스 사용 설명서</a>
 
+<a href="#roadmap">3. Roadmap</a>
+
+<a href="#arch">4. 서비스 구조도</a>
+
+<a href="#poster">5. 프로젝트 포스터</a>
+
+<a href="#team">6. 팀 소개</a>
 
 <!-- ABOUT THE PROJECT -->
 
@@ -74,7 +73,7 @@
 <a name="service"> </a>
 
   <a href="https://zircon-kale-103.notion.site/Highlighters-b7074bda3ec542e7bd4002babca6e5fc" target="_blank">
-    <p>Highlighters 사용 설명서</p>
+    <p>바로가기</p>
   </a>
 
 
@@ -85,7 +84,8 @@
 
 <!-- ROADMAP -->
 
-## Roadmap
+## 서비스 로드맵
+<a name="roadmap"></a>
 
 - [x] 텍스트 하이라이팅
 - [x] 사진 하이라이팅
@@ -98,7 +98,9 @@
 <p align="right">(<a href="#readme-top">맨 위로</a>)</p>
 <!-- 아키텍처 -->
 
-## 아키텍처
+## 서비스 구조도
+<a name="arch"></a>
+
 ![image](https://user-images.githubusercontent.com/101175828/214384335-2e829ad4-d4c2-40f0-be71-cf2ebcfc8166.png)
 
 
@@ -113,7 +115,7 @@
 <p align="right">(<a href="#readme-top">맨 위로</a>)</p>
 <!-- CONTACT -->
 
-## 팀소개
+## 팀원 소개
 <a name="team"> </a>
 🛠️수정중🛠️
 
