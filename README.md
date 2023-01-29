@@ -49,13 +49,11 @@
 ## Highlighters 😎
 <!-- 대충 이미지 -->
 
- <h3 align="left">Highlighters는 3가지의 고민에서 시작됐습니다.</h3>
+ <h3 align="left">Highlighters는 3가지 고민에서 시작되었습니다.</h3>
 
 - 링크를 브라우저에서 곧바로 팀원에게 보낼 수 없을까? 
 - 공유한 링크를 다시 찾기 쉽게 모아두면 좋겠어! 
 - 글에서 중요한 내용이 한눈에 보였으면 좋겠어! 
-
-<p align="right">(<a href="#readme-top">맨 위로</a>)</p>
 
 
 
@@ -68,33 +66,25 @@
   <a href="https://zircon-kale-103.notion.site/Highlighters-b7074bda3ec542e7bd4002babca6e5fc" target="_blank">
     <p>바로가기</p>
   </a>
-
-
-
-
 <p align="right">(<a href="#readme-top">맨 위로</a>)</p>
 
-
-
-<p align="right">(<a href="#readme-top">맨 위로</a>)</p>
-<!-- 아키텍처 -->
-
-<a name="arch"></a>
-## 서비스 구조도
-
-![image](https://user-images.githubusercontent.com/101175828/214384335-2e829ad4-d4c2-40f0-be71-cf2ebcfc8166.png)
-
-
-<p align="right">(<a href="#readme-top">맨 위로</a>)</p>
 
 <!-- 포스터 -->
 <a name="poster"> </a>
 ## 프로젝트 포스터
 ![image](https://user-images.githubusercontent.com/101175828/215235500-a329f9fd-6251-4e7e-8e96-36a33113678f.png)
-
 <p align="right">(<a href="#readme-top">맨 위로</a>)</p>
-<!-- CONTACT -->
 
+
+<!-- 아키텍처 -->
+<a name="arch"></a>
+## 서비스 구조도
+![image](https://user-images.githubusercontent.com/101175828/214384335-2e829ad4-d4c2-40f0-be71-cf2ebcfc8166.png)
+<p align="right">(<a href="#readme-top">맨 위로</a>)</p>
+
+
+
+<!-- CONTACT -->
 <a name="team"> </a>
 ## 팀원 소개
 🛠️수정중🛠️
