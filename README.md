@@ -38,10 +38,15 @@
 
 ## 목차
 <a href="#Highlighters">1. Highlighters 란?</a>
+
 <a href="#service">2. 서비스 사용 설명서</a>
+
 <a href="#roadmap">3. 서비스 로드맵</a>
+
 <a href="#arch">4. 서비스 구조도</a>
+
 <a href="#poster">5. 프로젝트 포스터</a>
+
 <a href="#team">6. 팀원 소개</a>
 
 <!-- ABOUT THE PROJECT -->
