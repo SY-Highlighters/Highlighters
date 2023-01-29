@@ -42,7 +42,7 @@
       <a href="#Highlighters">Highlighters😎</a>
     </li>
     <li>
-      <a href="#">서비스 소개</a>
+      <a href="#서비스 소개">서비스 소개</a>
     </li>
     <li><a href="#roadmap">Roadmap</a></li>
     <li><a href="#아키텍처">아키텍처</a></li>
@@ -72,7 +72,7 @@
 
 <!-- GETTING STARTED -->
 
-## 서비스 
+## 서비스 소개
   <a href="https://zircon-kale-103.notion.site/Highlighters-b7074bda3ec542e7bd4002babca6e5fc" target="_blank">
     <img width="873" alt="image" src="https://user-images.githubusercontent.com/101175828/214382114-4a8ed9b6-b446-4315-be4f-0984b4bd311a.png">
   </a>
