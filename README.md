@@ -17,7 +17,7 @@
 
 ## 목차
 1. [프로젝트 개요](#Highlighters)
-2. [서비스 사용 설명서](#service)
+2. [프로젝트 ](#service)
 3. [서비스 로드맵](#roadmap)
 4. [서비스 구조도](#arch)
 5. [프로젝트 포스터](#poster)
