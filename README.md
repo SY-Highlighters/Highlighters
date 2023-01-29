@@ -17,8 +17,8 @@
 
 ## 목차
 1. [프로젝트 개요](#Highlighters)
-2. [프로젝트 소개](#Intro)
-3. [프로젝트 구조도](#Arch)
+2. [서비스 소개](#Intro)
+3. [서비스 구조도](#Arch)
 4. [프로젝트 포스터](#Poster)
 
 <!-- ABOUT THE PROJECT -->
@@ -39,7 +39,7 @@
 
 
 <a name="Intro"> </a>
-## 프로젝트 
+## 서비스 소개
 
  <h3 align="left">Highlighters는 3가지 고민에서 시작되었습니다.</h3>
 
@@ -58,12 +58,6 @@
 ## 프로젝트 포스터
 ![image](https://user-images.githubusercontent.com/101175828/215235500-a329f9fd-6251-4e7e-8e96-36a33113678f.png)
 <p align="right">(<a href="#readme-top">맨 위로</a>)</p>
-
-
-<!-- CONTACT -->
-
-<p align="right">(<a href="#readme-top">맨 위로</a>)</p>
-
 
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
