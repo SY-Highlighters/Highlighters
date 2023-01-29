@@ -35,7 +35,11 @@
 
 팀원 : 5
 
-- 팀원 소개 이미지
+팀원 소개 이미지 들어가야 함
+
+웹사이트 : [바로가기](https://highlighters.site/)
+
+발표영상 : 
 
 <!-- ABOUT THE PROJECT -->
 <a name="Highlighters"> </a>
