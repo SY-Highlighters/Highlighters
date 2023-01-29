@@ -17,14 +17,12 @@
 
 ## 목차
 1. [프로젝트 개요](#Highlighters)
-2. [프로젝트 ](#service)
-3. [서비스 로드맵](#roadmap)
-4. [프로젝트 포스터](#poster)
-5. [서비스 구조도](#arch)
-
+2. [프로젝트 소개](#Intro)
+3. [프로젝트 구조도](#Arch)
+4. [프로젝트 포스터](#Poster)
 
 <!-- ABOUT THE PROJECT -->
-
+<a name="Highlighters"> </a>
 ## 프로젝트 개요
 
 프로젝트 기간 : 2022.12.23 ~ 2023.01.27
@@ -40,9 +38,8 @@
 발표영상 : 
 
 
-<a name="Highlighters"> </a>
+<a name="Intro"> </a>
 ## Highlighters 😎
-<!-- 대충 이미지 -->
 
  <h3 align="left">Highlighters는 3가지 고민에서 시작되었습니다.</h3>
 
@@ -53,20 +50,19 @@
 
 <a name="service"> </a>
 ## 프로젝트 소개
-
-<!-- 포스터 -->
-<a name="poster"> </a>
-## 프로젝트 포스터
-![image](https://user-images.githubusercontent.com/101175828/215235500-a329f9fd-6251-4e7e-8e96-36a33113678f.png)
-<p align="right">(<a href="#readme-top">맨 위로</a>)</p>
-
+프로젝트 소개
 
 <!-- 아키텍처 -->
-<a name="arch"></a>
+<a name="Arch"></a>
 ## 서비스 구조도
 ![image](https://user-images.githubusercontent.com/101175828/214384335-2e829ad4-d4c2-40f0-be71-cf2ebcfc8166.png)
 <p align="right">(<a href="#readme-top">맨 위로</a>)</p>
 
+<!-- 포스터 -->
+<a name="Poster"> </a>
+## 프로젝트 포스터
+![image](https://user-images.githubusercontent.com/101175828/215235500-a329f9fd-6251-4e7e-8e96-36a33113678f.png)
+<p align="right">(<a href="#readme-top">맨 위로</a>)</p>
 
 
 <!-- CONTACT -->
