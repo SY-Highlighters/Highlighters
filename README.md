@@ -41,13 +41,13 @@
 
 <a href="#service">2. 서비스 사용 설명서</a>
 
-<a href="#roadmap">3. Roadmap</a>
+<a href="#roadmap">3. 서비스 로드맵</a>
 
 <a href="#arch">4. 서비스 구조도</a>
 
 <a href="#poster">5. 프로젝트 포스터</a>
 
-<a href="#team">6. 팀 소개</a>
+<a href="#team">6. 팀원 소개</a>
 
 <!-- ABOUT THE PROJECT -->
 <a name="Highlighters"> </a>
