@@ -39,23 +39,22 @@
 ## 목차
 
 <li>
-  <a href="#Highlighters">Highlighters😎</a>
+  <a href="#Highlighters">1. Highlighters란?</a>
 </li>
 <li>
-  <a href="#서비스 소개">서비스 소개</a>
+  <a href="#서비스 소개">2. 서비스 소개</a>
 </li>
-<li><a href="#roadmap">Roadmap</a></li>
-<li><a href="#아키텍처">아키텍처</a></li>
-<li><a href="#포스터">포스터</a></li>
-<li><a href="#팀소개">팀 소개</a></li>
+<li><a href="#roadmap">3. Roadmap</a></li>
+<li><a href="#아키텍처">4. 아키텍처</a></li>
+<li><a href="#포스터">5. 프로젝트 포스터</a></li>
+<li><a href="#팀소개">6. 팀 소개</a></li>
 
 
 <!-- ABOUT THE PROJECT -->
 
-## Highlighters
+## Highlighters😎
+<a name="Highlighters"> </a>
 <!-- 대충 이미지 -->
-![image](https://user-images.githubusercontent.com/101175828/214380298-89b3f13f-6571-4399-a2a0-776cbe908c30.png)
-
 
  <h3 align="left">Highlighters는 3가지의 고민에서 시작됐습니다.</h3>
 
