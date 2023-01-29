@@ -17,33 +17,47 @@ export class AuthService {
 
   // 구글 로그인
   async googleLogin({ email, name, image }): Promise<any> {
-    // db에 유저 정보가 있는지 확인
-    const user = await this.prismaService.user.findUnique({
+    const user = await this.prismaService.user.upsert({
       where: { email: email },
+      create: {
+        email: email,
+        nickname: name,
+        image: image,
+        password: 'google',
+      },
+      update: {},
     });
-    console.log('inside the googleLogin service', 'user: ', user);
-
-    // if user does not exist in db, create newuser and return userinfo with accesstoken
-    // db에 유저가 없다면, 회원가입 + 로그인
-    if (!user) {
-      const newUser = await this.prismaService.user.create({
-        data: {
-          email: email,
-          nickname: name,
-          image: image,
-          password: 'google',
-        },
-      });
-      return {
-        accessToken: this.jwtService.sign({ email: newUser.email }),
-      };
-    }
-
-    // if user already exists in db, return userinfo with accesstoken
-    // db에 유저가 있다면, 로그인
     return {
       accessToken: this.jwtService.sign({ email: user.email }),
     };
+
+    // // db에 유저 정보가 있는지 확인
+    // const user = await this.prismaService.user.findUnique({
+    //   where: { email: email },
+    // });
+    // console.log('inside the googleLogin service', 'user: ', user);
+
+    // // if user does not exist in db, create newuser and return userinfo with accesstoken
+    // // db에 유저가 없다면, 회원가입 + 로그인
+    // if (!user) {
+    //   const newUser = await this.prismaService.user.create({
+    //     data: {
+    //       email: email,
+    //       nickname: name,
+    //       image: image,
+    //       password: 'google',
+    //     },
+    //   });
+    //   return {
+    //     accessToken: this.jwtService.sign({ email: newUser.email }),
+    //   };
+    // }
+
+    // // if user already exists in db, return userinfo with accesstoken
+    // // db에 유저가 있다면, 로그인
+    // return {
+    //   accessToken: this.jwtService.sign({ email: user.email }),
+    // };
   }
 
   // 회원가입
