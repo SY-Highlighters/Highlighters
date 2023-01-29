@@ -224,9 +224,9 @@ export class FeedService {
   }
 
   async deleteFeedById(id: number, user: User): Promise<boolean> {
-    const deletingFeed = await this.prismaService.feed.findUnique({
-      where: { id },
-    });
+    // const deletingFeed = await this.prismaService.feed.findUnique({
+    //   where: { id },
+    // });
     const result = await this.prismaService.feed.delete({
       where: { id },
       select: {
@@ -235,6 +235,7 @@ export class FeedService {
             id: true,
           },
         },
+        createdAt: true,
       },
     });
     await this.prismaService.tag.deleteMany({
@@ -248,24 +249,24 @@ export class FeedService {
     let i = 1;
     while (true) {
       const isExist = await this.cacheManager.get(
-        `calendar-${user.group_id}-${deletingFeed.createdAt.getFullYear()}-${
-          deletingFeed.createdAt.getMonth() + 1
-        }-${deletingFeed.createdAt.getDate()}-${i}`,
+        `calendar-${user.group_id}-${result.createdAt.getFullYear()}-${
+          result.createdAt.getMonth() + 1
+        }-${result.createdAt.getDate()}-${i}`,
       );
       if (isExist === null) {
         console.log('deleted all calendar cache');
         break;
       }
       await this.cacheManager.del(
-        `calendar-${user.group_id}-${deletingFeed.createdAt.getFullYear()}-${
-          deletingFeed.createdAt.getMonth() + 1
-        }-${deletingFeed.createdAt.getDate()}-${i}`,
+        `calendar-${user.group_id}-${result.createdAt.getFullYear()}-${
+          result.createdAt.getMonth() + 1
+        }-${result.createdAt.getDate()}-${i}`,
       );
       i++;
     }
     await this.cacheManager.del(
-      `showcalendar-${user.group_id}-${deletingFeed.createdAt.getFullYear()}-${
-        deletingFeed.createdAt.getMonth() + 1
+      `showcalendar-${user.group_id}-${result.createdAt.getFullYear()}-${
+        result.createdAt.getMonth() + 1
       }`,
     );
     return true;
