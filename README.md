@@ -50,9 +50,8 @@
 <a href="#team">6. 팀 소개</a>
 
 <!-- ABOUT THE PROJECT -->
-
-## Highlighters😎
 <a name="Highlighters"> </a>
+## Highlighters 😎
 <!-- 대충 이미지 -->
 
  <h3 align="left">Highlighters는 3가지의 고민에서 시작됐습니다.</h3>
@@ -68,9 +67,8 @@
 
 
 <!-- GETTING STARTED -->
-
-## 서비스 사용 설명서
 <a name="service"> </a>
+## 서비스 사용 설명서
 
   <a href="https://zircon-kale-103.notion.site/Highlighters-b7074bda3ec542e7bd4002babca6e5fc" target="_blank">
     <p>바로가기</p>
@@ -83,9 +81,8 @@
 
 
 <!-- ROADMAP -->
-
-## 서비스 로드맵
 <a name="roadmap"></a>
+## 서비스 로드맵
 
 - [x] 텍스트 하이라이팅
 - [x] 사진 하이라이팅
@@ -98,8 +95,8 @@
 <p align="right">(<a href="#readme-top">맨 위로</a>)</p>
 <!-- 아키텍처 -->
 
-## 서비스 구조도
 <a name="arch"></a>
+## 서비스 구조도
 
 ![image](https://user-images.githubusercontent.com/101175828/214384335-2e829ad4-d4c2-40f0-be71-cf2ebcfc8166.png)
 
@@ -107,16 +104,15 @@
 <p align="right">(<a href="#readme-top">맨 위로</a>)</p>
 
 <!-- 포스터 -->
-
-## 프로젝트 포스터
 <a name="poster"> </a>
+## 프로젝트 포스터
 ![image](https://user-images.githubusercontent.com/101175828/215235500-a329f9fd-6251-4e7e-8e96-36a33113678f.png)
 
 <p align="right">(<a href="#readme-top">맨 위로</a>)</p>
 <!-- CONTACT -->
 
-## 팀원 소개
 <a name="team"> </a>
+## 팀원 소개
 🛠️수정중🛠️
 
 <p align="right">(<a href="#readme-top">맨 위로</a>)</p>
