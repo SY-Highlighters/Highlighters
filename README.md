@@ -70,10 +70,11 @@
 
 <!-- GETTING STARTED -->
 
-## 서비스 소개
+## 서비스 사용 설명서
 <a name="service"> </a>
+
   <a href="https://zircon-kale-103.notion.site/Highlighters-b7074bda3ec542e7bd4002babca6e5fc" target="_blank">
-    <p>Highlighters </p>
+    <p>Highlighters 사용 설명서</p>
   </a>
 
 
