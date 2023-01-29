@@ -38,7 +38,7 @@
 
 발표영상 : 
 
-<!-- ABOUT THE PROJECT -->
+
 <a name="Highlighters"> </a>
 ## Highlighters 😎
 <!-- 대충 이미지 -->
@@ -49,18 +49,6 @@
 - 공유한 링크를 다시 찾기 쉽게 모아두면 좋겠어! 
 - 글에서 중요한 내용이 한 눈에 보였으면 좋겠어! 
 
-
-
-
-
-<!-- GETTING STARTED -->
-<a name="service"> </a>
-## 서비스 사용 설명서
-
-  <a href="https://zircon-kale-103.notion.site/Highlighters-b7074bda3ec542e7bd4002babca6e5fc" target="_blank">
-    <p>바로가기</p>
-  </a>
-<p align="right">(<a href="#readme-top">맨 위로</a>)</p>
 
 
 <!-- 포스터 -->
