@@ -35,21 +35,20 @@
 </div>
 
 <!-- TABLE OF CONTENTS -->
-<details>
-  <summary>Table of Contents</summary>
-  <ol>
-    <li>
-      <a href="#Highlighters">Highlighters😎</a>
-    </li>
-    <li>
-      <a href="#서비스 소개">서비스 소개</a>
-    </li>
-    <li><a href="#roadmap">Roadmap</a></li>
-    <li><a href="#아키텍처">아키텍처</a></li>
-    <li><a href="#포스터">포스터</a></li>
-    <li><a href="#팀소개">팀 소개</a></li>
-  </ol>
-</details>
+
+# 목차
+
+<li>
+  <a href="#Highlighters">Highlighters😎</a>
+</li>
+<li>
+  <a href="#서비스 소개">서비스 소개</a>
+</li>
+<li><a href="#roadmap">Roadmap</a></li>
+<li><a href="#아키텍처">아키텍처</a></li>
+<li><a href="#포스터">포스터</a></li>
+<li><a href="#팀소개">팀 소개</a></li>
+
 
 <!-- ABOUT THE PROJECT -->
 
@@ -74,7 +73,7 @@
 
 ## 서비스 소개
   <a href="https://zircon-kale-103.notion.site/Highlighters-b7074bda3ec542e7bd4002babca6e5fc" target="_blank">
-    <img width="873" alt="image" src="https://user-images.githubusercontent.com/101175828/214382114-4a8ed9b6-b446-4315-be4f-0984b4bd311a.png">
+  <p>Highlighters </p>
   </a>
 
 
