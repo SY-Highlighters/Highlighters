@@ -15,7 +15,7 @@
 <!-- TABLE OF CONTENTS -->
 
 ## 목차
-<a href="#Highlighters">1. Highlighters 란?</a>
+<a href="#Highlighters">1. 프로젝트 개요</a>
 
 <a href="#service">2. 서비스 사용 설명서</a>
 
@@ -26,6 +26,16 @@
 <a href="#poster">5. 프로젝트 포스터</a>
 
 <a href="#team">6. 팀원 소개</a>
+
+<!-- ABOUT THE PROJECT -->
+
+## 프로젝트 개요
+
+프로젝트 기간 : 2022.12.23 ~ 2023.01.27
+
+팀원 : 5
+
+- 팀원 소개 이미지
 
 <!-- ABOUT THE PROJECT -->
 <a name="Highlighters"> </a>
