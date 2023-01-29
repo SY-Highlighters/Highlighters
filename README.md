@@ -25,8 +25,6 @@
 
 <a href="#poster">5. 프로젝트 포스터</a>
 
-<a href="#team">6. 팀원 소개</a>
-
 <!-- ABOUT THE PROJECT -->
 
 ## 프로젝트 개요
@@ -84,9 +82,6 @@
 
 
 <!-- CONTACT -->
-<a name="team"> </a>
-## 팀원 소개
-🛠️수정중🛠️
 
 <p align="right">(<a href="#readme-top">맨 위로</a>)</p>
 
