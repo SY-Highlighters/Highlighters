@@ -37,6 +37,8 @@
 
 팀원 소개 이미지 들어가야 함
 
+서비스 사용 설명서 : [바로가기](https://zircon-kale-103.notion.site/Highlighters-b7074bda3ec542e7bd4002babca6e5fc)
+
 웹사이트 : [바로가기](https://highlighters.site/)
 
 발표영상 : 
