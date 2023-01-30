@@ -35,7 +35,7 @@
 
 웹사이트 : [바로가기](https://highlighters.site/)
 
-발표영상 : [바로가기]
+발표영상 : [바로가기](https://www.youtube.com/watch?v=1hC4BrA4MJI)
 
 <p align="right">(<a href="#readme-top">맨 위로</a>)</p>
 
