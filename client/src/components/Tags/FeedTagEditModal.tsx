@@ -25,7 +25,7 @@ import { useQuery } from "react-query";
 export function FeedTagEditModal(props: any) {
   const setTagModal = useSetRecoilState(tagModalVisble);
   const currentFeed = useRecoilValue(currentFeedState);
-  console.log("이거임", currentFeed);
+  // console.log("이거임", currentFeed);
   // 그룹 태그 리스트 전역
   const [cookies, setCookie, removeCookie] = useCookies(["logCookie"]);
   const [inputValue, setInputValue] = useState("");
@@ -89,7 +89,7 @@ export function FeedTagEditModal(props: any) {
   };
   // console.log("태그리스트", tagList);
   const tagLists = tagList.map((tagItem: any) => (
-    <div key={tagItem.tag_id}>
+    <div key={tagItem.tag_name}>
       <TagEditItem
         key={tagItem.tag_id}
         tagName={tagItem.tag_name}

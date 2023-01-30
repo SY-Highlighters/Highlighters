@@ -9,7 +9,7 @@ export const useTagsInGrid = (tagName: String) => {
       method: "get",
       url: `${
         process.env.REACT_APP_HOST
-      }/api/tag/search?page=${pageParam}&take=${4}&tag_name=${tagName}`,
+      }/api/tag/search?page=${pageParam}&take=${45}&tag_name=${tagName}`,
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${cookies.logCookie}`,
@@ -31,7 +31,7 @@ export const useTagsInGrid = (tagName: String) => {
     isSuccess: getBoardIsSuccess,
     hasNextPage: getNextPageIsPossible,
     status: status,
-  } = useInfiniteQuery(["feedsInGrid"], getPageBoard, {
+  } = useInfiniteQuery(["tagsInGrid"], getPageBoard, {
     getNextPageParam: (lastPage, pages) => {
       // lastPage와 pages는 콜백함수에서 리턴한 값을 의미한다!!
       // lastPage: 직전에 반환된 리턴값, pages: 여태 받아온 전체 페이지

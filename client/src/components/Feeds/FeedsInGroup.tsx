@@ -1,18 +1,11 @@
 import FeedItem from "./FeedItem/FeedItem";
 import { useEffect, useState, useRef } from "react";
-
-import { useCookies } from "react-cookie";
-import axios from "axios";
-import {
-  DocumentIcon,
-  DocumentPlusIcon,
-  MegaphoneIcon,
-} from "@heroicons/react/24/outline";
-import { QueryCache, useQuery, QueryClient, useQueryClient } from "react-query";
+import { DocumentPlusIcon } from "@heroicons/react/24/outline";
 import { useInView } from "react-intersection-observer";
 import { useFeedsInGroup } from "../../hooks/useFeedsInGroup";
-import Feed from "../../models/feed";
 import FeedSkeleton from "../UI/FeedSkeleton";
+import LazyLoad from "react-lazy-load";
+
 const AvailableFeeds = () => {
   const {
     getBoard,
@@ -23,14 +16,7 @@ const AvailableFeeds = () => {
   } = useFeedsInGroup();
   const [ref, isView] = useInView();
   const listRef = useRef(null);
-  // 스크롤 위아래ㅏ
-  // const scrollToTop = () => {
-  //   listRef.current.scrollTop = 0;
-  // };
-  // console.log(getBoard);
-  // const scrollToBottom = () => {
-  //   listRef.current.scrollTop = listRef.current.scrollHeight;
-  // };
+
   useEffect(() => {
     // 맨 마지막 요소를 보고있고 페이지가 존재하면
     // 다음 페이지 데이터를 가져옴
@@ -87,7 +73,7 @@ const AvailableFeeds = () => {
                         // 마지막 요소에 ref 넣기 위해 div로 감싸기
                         <div ref={ref} key={feed.id} className="">
                           <FeedItem
-                            idx= {idx}
+                            idx={idx}
                             id={feed.id}
                             key={feed.id}
                             title={feed.title}
@@ -109,29 +95,59 @@ const AvailableFeeds = () => {
                         </div>
                       );
                     } else {
-                      return (
-                        <div key={feed.id} className="">
-                          <FeedItem
-                            idx= {idx}
-                            id={feed.id}
-                            key={feed.id}
-                            title={feed.title}
-                            description={feed.og.description}
-                            og_image={feed.og.image}
-                            url={feed.url}
-                            highlight={feed.highlight}
-                            date={feed.createdAt}
-                            tag={feed.tag}
-                            writer={feed.user.nickname}
-                            writerImg={feed.user.image}
-                            commentLen={feed.comment.length}
-                            bookmarked={
-                              feed.bookmark.length !== 0 ? true : false
-                            }
-                            bookmarkId={feed.bookmark[0]}
-                          />
-                        </div>
-                      );
+                      if (idx < 4) {
+                        return (
+                          <div key={feed.id} className="">
+                            <FeedItem
+                              idx={idx}
+                              id={feed.id}
+                              key={feed.id}
+                              title={feed.title}
+                              description={feed.og.description}
+                              og_image={feed.og.image}
+                              url={feed.url}
+                              highlight={feed.highlight}
+                              date={feed.createdAt}
+                              tag={feed.tag}
+                              writer={feed.user.nickname}
+                              writerImg={feed.user.image}
+                              commentLen={feed.comment.length}
+                              bookmarked={
+                                feed.bookmark.length !== 0 ? true : false
+                              }
+                              bookmarkId={feed.bookmark[0]}
+                              summary={feed.summary}
+                            />
+                          </div>
+                        );
+                      } else {
+                        return (
+                          <LazyLoad>
+                            <div key={feed.id} className="">
+                              <FeedItem
+                                idx={idx}
+                                id={feed.id}
+                                key={feed.id}
+                                title={feed.title}
+                                description={feed.og.description}
+                                og_image={feed.og.image}
+                                url={feed.url}
+                                highlight={feed.highlight}
+                                date={feed.createdAt}
+                                tag={feed.tag}
+                                writer={feed.user.nickname}
+                                writerImg={feed.user.image}
+                                commentLen={feed.comment.length}
+                                bookmarked={
+                                  feed.bookmark.length !== 0 ? true : false
+                                }
+                                bookmarkId={feed.bookmark[0]}
+                                summary={feed.summary}
+                              />
+                            </div>
+                          </LazyLoad>
+                        );
+                      }
                     }
                   });
                 })

@@ -30,6 +30,7 @@ const DayFeeds = () => {
   const handleBookmarkClick = () => {
     setMainSectionNum(0);
   };
+  console.log("kDate", kDate);
   return (
     <div className="basis-2/4">
       <div className="rounded-md opacity-90 bg-sky-500">

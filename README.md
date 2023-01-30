@@ -1,131 +1,71 @@
-
+# Highlighters
 <a name="readme-top"></a>
-
-<!--
-*** Thanks for checking out the Best-README-Template. If you have a suggestion
-*** that would make this better, please fork the repo and create a pull request
-*** or simply open an issue with the tag "enhancement".
-*** Don't forget to give the project a star!
-*** Thanks again! Now go create something AMAZING! :D
--->
-
-
-<!-- PROJECT SHIELDS -->
-<!--
-*** I'm using markdown "reference style" links for readability.
-*** Reference links are enclosed in brackets [ ] instead of parentheses ( ).
-*** See the bottom of this document for the declaration of the reference variables
-*** for contributors-url, forks-url, etc. This is an optional, concise syntax you may use.
-*** https://www.markdownguide.org/basic-syntax/#reference-style-links
--->
-
 
 <!-- PROJECT LOGO -->
 <br />
 <div align="center">
-  <a href="https://highlighters.site/">
+  <a href="https://highlighters.site/" target="_blank">
     <img src="https://velog.velcdn.com/images/chobae/post/97fa6a9e-ebfb-48ba-8335-d6a5c3949a47/image.png" alt="Logo" width="" height="">
   </a>
 
-
-
   <p align="center">
    Link Sharing & Archiving for Collaboration
-    <br />
-    <a href="https://highlighters.site/"><strong>시작하기</strong></a>
-    <br />
-    <br />
-    <!-- <a href="https://github.com/othneildrew/Best-README-Template">View Demo</a> 
-    ·
-    <a href="https://github.com/othneildrew/Best-README-Template/issues">Report Bug</a>
-    ·
-    <a href="https://github.com/othneildrew/Best-README-Template/issues">Request Feature</a> -->
   </p>
 </div>
 
 <!-- TABLE OF CONTENTS -->
-<details>
-  <summary>Table of Contents</summary>
-  <ol>
-    <li>
-      <a href="#Highlighters">Highlighters😎</a>
-    </li>
-    <li>
-      <a href="#시작하기">시작하기</a>
-    </li>
-    <li><a href="#roadmap">Roadmap</a></li>
-    <li><a href="#아키텍처">아키텍처</a></li>
-    <li><a href="#포스터">포스터</a></li>
-    <li><a href="#팀소개">팀 소개</a></li>
-  </ol>
-</details>
+
+## 목차
+1. [프로젝트 개요](#Highlighters)
+2. [서비스 소개](#Intro)
+3. [서비스 구조도](#Arch)
+4. [프로젝트 포스터](#Poster)
 
 <!-- ABOUT THE PROJECT -->
+<a name="Highlighters"> </a>
+## 프로젝트 개요
 
-# Highlighters
-<!-- 대충 이미지 -->
-![image](https://user-images.githubusercontent.com/101175828/214380298-89b3f13f-6571-4399-a2a0-776cbe908c30.png)
+프로젝트 기간 : 2022.12.23 ~ 2023.01.27
 
+팀원 : 5
 
- <h3 align="left">Highlighters는 3가지의 고민에서 시작됐습니다.</h3>
+팀원 소개 이미지 들어가야 함
 
-- 브라우저에서 바로 링크를 팀원에게 보낼 수 없을까? 
+서비스 사용 설명서 : [바로가기](https://zircon-kale-103.notion.site/Highlighters-b7074bda3ec542e7bd4002babca6e5fc)
+
+웹사이트 : [바로가기](https://highlighters.site/)
+
+발표영상 : [바로가기](https://www.youtube.com/watch?v=1hC4BrA4MJI)
+
+<p align="right">(<a href="#readme-top">맨 위로</a>)</p>
+
+<a name="Intro"> </a>
+## 서비스 소개
+
+ <h3 align="left">Highlighters는 3가지 고민에서 시작되었습니다.</h3>
+ 
+- 웹페이지에서 중요한 내용이 한 눈에 보였으면 좋겠어! 
+- 브라우저에서 곧바로 팀원에게 링크를 보낼 수 없을까? 
 - 공유한 링크를 다시 찾기 쉽게 모아두면 좋겠어! 
-- 중요한 내용이 한눈에 보였으면 좋겠어! 
 
+ <h3 align="left">Highlighters는 이런 서비스입니다.</h3>
+ 
+1. 크롬 익스텐션을 통해 텍스트, 이미지, 영상에 하이라이트를 할 수 있습니다. 
+2. 그룹원들에게 쉽게 링크를 공유할 수 있습니다. 
+3. 공유한 자료를 아카이빙하고 검색할 수 있습니다.
 <p align="right">(<a href="#readme-top">맨 위로</a>)</p>
 
-
-
-
-
-<!-- GETTING STARTED -->
-
-## 시작하기
-  <a href="https://zircon-kale-103.notion.site/Highlighters-b7074bda3ec542e7bd4002babca6e5fc">
-    <img width="873" alt="image" src="https://user-images.githubusercontent.com/101175828/214382114-4a8ed9b6-b446-4315-be4f-0984b4bd311a.png">
-  </a>
-
-
-
-
-<p align="right">(<a href="#readme-top">맨 위로</a>)</p>
-
-
-<!-- ROADMAP -->
-
-## Roadmap
-
-- [x] 텍스트 하이라이팅
-- [x] 사진 하이라이팅
-- [x] 유튜브 하이라이팅
-- [ ] 동적 웹 최적화
-- [ ] Multi-language Support
-  - [ ] English
-
-
-<p align="right">(<a href="#readme-top">맨 위로</a>)</p>
 <!-- 아키텍처 -->
-
-## 아키텍처
+<a name="Arch"></a>
+## 서비스 구조도
 ![image](https://user-images.githubusercontent.com/101175828/214384335-2e829ad4-d4c2-40f0-be71-cf2ebcfc8166.png)
-
-
 <p align="right">(<a href="#readme-top">맨 위로</a>)</p>
 
 <!-- 포스터 -->
-
-## 포스터
-🛠️수정중🛠️
+<a name="Poster"> </a>
+## 프로젝트 포스터
+![image](https://user-images.githubusercontent.com/101175828/215235500-a329f9fd-6251-4e7e-8e96-36a33113678f.png)
 <p align="right">(<a href="#readme-top">맨 위로</a>)</p>
-
-<!-- CONTACT -->
-
-## 팀소개
-🛠️수정중🛠️
-
-<p align="right">(<a href="#readme-top">맨 위로</a>)</p>
-
 
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->

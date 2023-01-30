@@ -93,5 +93,4 @@ export class FeedController {
   ): Promise<boolean> {
     return this.feedService.deleteFeedById(id, user);
   }
-
 }

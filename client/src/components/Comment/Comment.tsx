@@ -18,7 +18,7 @@ export function Comment(props: any) {
     async function fetchData() {
       const response = await getFeedComment(currentFeed.feed_id, cookies);
       setCommentList(response.data.data);
-      console.log("코멘트 불러오기",response.data.data)
+      // console.log("코멘트 불러오기",response.data.data)
       // setcommentReload((prev) => !prev);
     }
     fetchData();

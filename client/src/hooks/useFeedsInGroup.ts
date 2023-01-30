@@ -9,7 +9,7 @@ export const useFeedsInGroup = () => {
       method: "get",
       url: `${
         process.env.REACT_APP_HOST
-      }/api/feed/sep/feed?page=${pageParam}&take=${10}`,
+      }/api/feed/sep/feed?page=${pageParam}&take=${12}`,
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${cookies.logCookie}`,

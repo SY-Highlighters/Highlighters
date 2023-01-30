@@ -20,7 +20,7 @@ export function FeedsInDay(props: any) {
     getNextPageIsPossible,
     status,
   } = useFeedsInDay(date);
-
+  console.log("여기야", getBoard);
   useEffect(() => {
     // 맨 마지막 요소를 보고있고 페이지가 존재하면
     if (isView && getNextPageIsPossible) {
@@ -64,6 +64,7 @@ export function FeedsInDay(props: any) {
               ? getBoard!.pages.map((page_data, page_num) => {
                   const board_page = page_data.board_page;
                   return board_page.map((feed: any, idx: any) => {
+                    console.log("피드 하나", feed);
                     if (
                       // 마지막 요소에 ref 달아주기
                       getBoard!.pages.length - 1 === page_num &&
@@ -71,8 +72,9 @@ export function FeedsInDay(props: any) {
                     ) {
                       return (
                         // 마지막 요소에 ref 넣기 위해 div로 감싸기
-                        <div ref={ref} key={feed.id} className="">
+                        <div ref={ref} key={feed.id + date} className="">
                           <FeedItem
+                            idx={idx}
                             id={feed.id}
                             key={feed.id}
                             title={feed.title}
@@ -89,13 +91,15 @@ export function FeedsInDay(props: any) {
                               feed.bookmark.length !== 0 ? true : false
                             }
                             bookmarkId={feed.bookmark[0]}
+                            summary={feed.summary}
                           />
                         </div>
                       );
                     } else {
                       return (
-                        <div key={feed.id} className="">
+                        <div key={feed.id + date} className="">
                           <FeedItem
+                            idx={idx}
                             id={feed.id}
                             key={feed.id}
                             title={feed.title}
@@ -112,6 +116,7 @@ export function FeedsInDay(props: any) {
                               feed.bookmark.length !== 0 ? true : false
                             }
                             bookmarkId={feed.bookmark[0]}
+                            summary={feed.summary}
                           />
                         </div>
                       );

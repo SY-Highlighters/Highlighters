@@ -21,7 +21,7 @@ import { useRecoilState, useRecoilValue } from "recoil";
 import { useFeedsInBookmark } from "../../hooks/useFeedsInBookmark";
 import { useFeedsInDay } from "../../hooks/useFeedsInDay";
 import { useFeedsInTag } from "../../hooks/useFeedsInTag";
-
+import { useTagsInGrid } from "../../hooks/Grid/useTagsInGrid";
 const TagGallery = () => {
   const clickedTag = useRecoilValue(clickedTagState);
 
@@ -31,7 +31,7 @@ const TagGallery = () => {
     getBoardIsSuccess,
     getNextPageIsPossible,
     status,
-  } = useFeedsInTag(clickedTag.tag_name);
+  } = useTagsInGrid(clickedTag.tag_name);
   const [ref, isView] = useInView();
   // 스크롤 위아래ㅏ
   // const scrollToTop = () => {
@@ -89,27 +89,29 @@ const TagGallery = () => {
                     board_page.length - 1 === idx
                   ) {
                     return (
-                      <GridItem
-                        ref={ref}
-                        index={idx}
-                        key={feed.id}
-                        feedId={feed.id}
-                        ogImage={feed.og.image}
-                        title={feed.title}
-                        url={feed.url}
-                      ></GridItem>
+                      <div ref={ref} key={feed.id}>
+                        <GridItem
+                          index={idx}
+                          key={feed.id}
+                          feedId={feed.id}
+                          ogImage={feed.og.image}
+                          title={feed.title}
+                          url={feed.url}
+                        ></GridItem>
+                      </div>
                     );
                   } else {
                     return (
-                      <GridItem
-                        ref={ref}
-                        index={idx}
-                        key={feed.id}
-                        feedId={feed.id}
-                        ogImage={feed.og.image}
-                        title={feed.title}
-                        url={feed.url}
-                      ></GridItem>
+                      <div key={feed.id}>
+                        <GridItem
+                          index={idx}
+                          key={feed.id}
+                          feedId={feed.id}
+                          ogImage={feed.og.image}
+                          title={feed.title}
+                          url={feed.url}
+                        ></GridItem>
+                      </div>
                     );
                   }
                 });

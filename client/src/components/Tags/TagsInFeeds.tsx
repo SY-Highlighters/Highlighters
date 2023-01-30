@@ -61,6 +61,7 @@ const TagsInFeeds = () => {
                         // 마지막 요소에 ref 넣기 위해 div로 감싸기
                         <div ref={ref} key={feed.id} className="">
                           <FeedItem
+                            idx={idx}
                             id={feed.id}
                             key={feed.id}
                             title={feed.title}
@@ -77,6 +78,7 @@ const TagsInFeeds = () => {
                               feed.bookmark.length !== 0 ? true : false
                             }
                             bookmarkId={feed.bookmark[0]}
+                            summary={feed.summary}
                           />
                         </div>
                       );
@@ -84,6 +86,7 @@ const TagsInFeeds = () => {
                       return (
                         <div key={feed.id} className="">
                           <FeedItem
+                            idx={idx}
                             id={feed.id}
                             key={feed.id}
                             title={feed.title}
@@ -100,6 +103,7 @@ const TagsInFeeds = () => {
                               feed.bookmark.length !== 0 ? true : false
                             }
                             bookmarkId={feed.bookmark[0]}
+                            summary={feed.summary}
                           />
                         </div>
                       );

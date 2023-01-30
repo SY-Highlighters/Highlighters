@@ -93,27 +93,29 @@ const DaysGallery = () => {
                     board_page.length - 1 === idx
                   ) {
                     return (
-                      <GridItem
-                        ref={ref}
-                        index={idx}
-                        key={feed.id}
-                        feedId={feed.id}
-                        ogImage={feed.og.image}
-                        title={feed.title}
-                        url={feed.url}
-                      ></GridItem>
+                      <div ref={ref} key={feed.id}>
+                        <GridItem
+                          index={idx}
+                          key={feed.id}
+                          feedId={feed.id}
+                          ogImage={feed.og.image}
+                          title={feed.title}
+                          url={feed.url}
+                        ></GridItem>
+                      </div>
                     );
                   } else {
                     return (
-                      <GridItem
-                        ref={ref}
-                        index={idx}
-                        key={feed.id}
-                        feedId={feed.id}
-                        ogImage={feed.og.image}
-                        title={feed.title}
-                        url={feed.url}
-                      ></GridItem>
+                      <div key={feed.id}>
+                        <GridItem
+                          index={idx}
+                          key={feed.id}
+                          feedId={feed.id}
+                          ogImage={feed.og.image}
+                          title={feed.title}
+                          url={feed.url}
+                        ></GridItem>
+                      </div>
                     );
                   }
                 });

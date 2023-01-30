@@ -30,7 +30,7 @@ const GroupTag = (props: any) => {
     // console.log("그룹 태그 삭제 버튼 클릭");
     setclickedGroupTagDel(!clickedGroupTagDel);
   }
-  useEffect(() => {}, [testDel]);
+  // useEffect(() => {}, [testDel]);
   return (
     <div
       className={

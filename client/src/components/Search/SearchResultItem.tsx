@@ -48,7 +48,7 @@ const SearchResultItem = (props: any) => {
           return;
         }
         let newColor = match[0].slice(0, 7);
-        console.log("color", newColor, content);
+        // console.log("color", newColor, content);
         if (newColor === null) {
           if (content === "undefined") {
             return;
@@ -59,7 +59,7 @@ const SearchResultItem = (props: any) => {
             pattern,
             '<span style="font-weight:bold; color:#0284c7;">$1</span>'
           );
-          console.log("newStr", newStr);
+          // console.log("newStr", newStr);
           return (
             <li key={index}>
               <span className="text-sm text-black ">
@@ -72,7 +72,7 @@ const SearchResultItem = (props: any) => {
           );
         } else {
           color = newColor;
-          console.log("컬러 있을떄", color);
+          // console.log("컬러 있을떄", color);
           // 첫번째 공백 부터 시작하기
           let newContent = content.split("-").slice(1).join(" ");
           if (newContent === "undefined") {
@@ -86,7 +86,7 @@ const SearchResultItem = (props: any) => {
             pattern,
             '<span style="font-weight:bold; color:#0284c7;">$1</span>'
           );
-          console.log("newStr", newStr);
+          // console.log("newStr", newStr);
           return (
             <li key={index}>
               <span className="text-sm text-black ">
