@@ -224,15 +224,19 @@ async function postHighlight(range, highlightStr) {
       },
     },
     (response) => {
-      if (response.data.statusCode === 401) {
-        console.log(
-          "unauthorized error status code: ",
-          response.data.statusCode
-        );
-        alert(
-          "Highlighters: 로그인이 필요한 서비스입니다.\n(확인을 누르면 웹사이트로 이동합니다)"
-        );
-        window.open("https://highlighters.site/");
+      if (response === undefined) {
+        if (response.data.statusCode === 401) {
+          console.log(
+            "unauthorized error status code: ",
+            response.data.statusCode
+          );
+          alert(
+            "Highlighters: 로그인이 필요한 서비스입니다.\n(확인을 누르면 웹사이트로 이동합니다)"
+          );
+          window.open("https://highlighters.site/");
+        } else {
+          console.log("Response is undefined");
+        }
       } else {
         console.log(response);
         highlights.push(response.data.data);

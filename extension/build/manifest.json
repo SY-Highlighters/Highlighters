@@ -2,19 +2,11 @@
   "manifest_version": 3,
   "name": "Highlighters",
   "description": "Base Level Extension",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "background": {
     "service_worker": "background.js"
   },
-  "permissions": [
-    "storage",
-    "tabs",
-    "cookies",
-    "notifications",
-    "alarms",
-    "action",
-    "webNavigation"
-  ],
+  "permissions": ["storage", "tabs", "cookies", "notifications", "action"],
   "host_permissions": ["<all_urls>", "http://localhost/"],
   "action": {
     "default_icon": {
