@@ -14,20 +14,22 @@ export class BookmarkService {
   ): Promise<null> {
     const { feed_id } = requestBookmarkDto;
     try {
-      await this.prismaService.bookmark.create({
-        data: {
-          feed_id: feed_id,
-          user_email: user.email,
-        },
-      });
-      await this.prismaService.feed.update({
-        where: {
-          id: feed_id,
-        },
-        data: {
-          updatedAt: new Date(),
-        },
-      });
+      await this.prismaService.$transaction([
+        this.prismaService.bookmark.create({
+          data: {
+            feed_id: feed_id,
+            user_email: user.email,
+          },
+        }),
+        this.prismaService.feed.update({
+          where: {
+            id: feed_id,
+          },
+          data: {
+            updatedAt: new Date(),
+          },
+        }),
+      ]);
     } catch (e) {
       console.log(e);
       throw new HttpException('Internal Server Error', 500);
