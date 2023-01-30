@@ -48,9 +48,8 @@ export class TagController {
   @Delete('/delete')
   async deleteTag(
     @Body() requestTagDeleteDto: RequestTagDeleteDto,
-    @GetUser() user: User,
   ): Promise<null> {
-    return this.tagService.deleteTag(requestTagDeleteDto, user);
+    return this.tagService.deleteTag(requestTagDeleteDto);
   }
 
   // 웹 배너에서 그룹 내 모든 태그 조회

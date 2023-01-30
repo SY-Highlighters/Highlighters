@@ -224,9 +224,6 @@ export class FeedService {
   }
 
   async deleteFeedById(id: number, user: User): Promise<boolean> {
-    // const deletingFeed = await this.prismaService.feed.findUnique({
-    //   where: { id },
-    // });
     const result = await this.prismaService.feed.delete({
       where: { id },
       select: {

@@ -110,8 +110,6 @@ export class HighlightService {
             color: color,
           },
         });
-        // url에서 이미지를 fetch 이후 s3에 업로드
-        // await fetchandsave(contents, image_content);
         const post_body = {
           image: {
             URL: contents,
@@ -132,7 +130,6 @@ export class HighlightService {
       await this.prismaService.feed.update({
         where: { id: find_feed.id },
         data: {
-          // highlight: { connect: { id: result.id } },
           updatedAt: result.createdAt,
         },
       });

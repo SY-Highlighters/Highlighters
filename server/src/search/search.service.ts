@@ -24,11 +24,6 @@ export class SearchService {
               contains: word,
             },
           },
-          // {
-          //   user_email: {
-          //     contains: word,
-          //   },
-          // },
           {
             highlight: {
               some: {
@@ -46,7 +41,6 @@ export class SearchService {
       include: {
         bookmark: true,
         highlight: true,
-        // tag: true,
         user: true,
       },
     });

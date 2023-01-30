@@ -62,10 +62,7 @@ export class TagService {
     }
   }
 
-  async deleteTag(
-    requestTagDeleteDto: RequestTagDeleteDto,
-    user: User,
-  ): Promise<null> {
+  async deleteTag(requestTagDeleteDto: RequestTagDeleteDto): Promise<null> {
     const { tag_id } = requestTagDeleteDto;
     try {
       await this.prismaService.tag.delete({

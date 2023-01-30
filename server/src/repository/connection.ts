@@ -124,14 +124,6 @@ export class ElasticsearchService {
                   boost: 5,
                 },
               },
-              // {
-              //   match: {
-              //     desciption: {
-              //       query: word,
-              //       boost: 4,
-              //     },
-              //   },
-              // },
               {
                 term: {
                   title: {
