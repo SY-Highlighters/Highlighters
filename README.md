@@ -5,7 +5,7 @@
 <br />
 <div align="center">
   <a href="https://highlighters.site/" target="_blank">
-    <img src="https://velog.velcdn.com/images/chobae/post/97fa6a9e-ebfb-48ba-8335-d6a5c3949a47/image.png" alt="Logo" width="" height="">
+    <img src="https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2F31yWM%2FbtrXCZpaP2S%2FyqPF5xC7b25iYzKE5KflE1%2Fimg.png" alt="Logo" width="" height="">
   </a>
 
   <p align="center">
