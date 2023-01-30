@@ -6,7 +6,12 @@
   "background": {
     "service_worker": "background.js"
   },
-  "permissions": ["storage", "tabs", "cookies", "notifications", "action"],
+  "permissions": [
+    "storage",
+    "tabs",
+    "cookies",
+    "notifications"
+  ],
   "host_permissions": ["<all_urls>", "http://localhost/"],
   "action": {
     "default_icon": {
