@@ -1,6 +1,6 @@
 import { ElasticsearchService } from 'src/repository/connection';
 import { TagService } from './../tag/tag.service';
-import { Feed, User } from '@prisma/client';
+import { Feed, User, Prisma } from '@prisma/client';
 import { CACHE_MANAGER, Inject, Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/repository/prisma.service';
 import { CreateFeedDto } from './dto/feed.dto';
@@ -94,12 +94,28 @@ export class FeedService {
   }
 
   async findSepFeedById(page: number, take: number, user: User) {
-    try {
-      const count = await this.prismaService.feed.count({
-        where: { group_id: user.group_id },
+    return this.generatedFeed(page, take, user, 1);
+  }
+
+  async generatedFeed(page: number, take: number, user: User, type: number) {
+    let condition;
+    if (type == 1) {
+      condition = Prisma.validator<Prisma.UserWhereInput>()({
+        group_id: user.group_id,
       });
+    }
+    if (type == 2) {
+      condition = Prisma.validator<Prisma.UserWhereInput>()({
+        bookmark: {
+          some: {
+            user_email: user.email,
+          },
+        },
+      });
+    }
+    try {
       const feeds = await this.prismaService.feed.findMany({
-        where: { group_id: user.group_id },
+        where: condition,
         orderBy: { updatedAt: 'desc' },
         take: take,
         skip: take * (page - 1),
@@ -143,17 +159,9 @@ export class FeedService {
           },
         },
       });
-
-      // 만약 highlight의 color가 '-1'이면 삭제된 highlight이므로 삭제
-      for (const feed of feeds) {
-        feed.highlight = feed.highlight.filter(
-          (highlight) => highlight.color !== '-1',
-        );
-      }
-
       return {
         currentPage: page,
-        totalPage: Math.ceil(count / take),
+        totalPage: Math.ceil(feeds.length / take),
         feeds,
       };
     } catch (e) {

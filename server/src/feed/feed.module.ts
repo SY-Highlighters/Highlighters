@@ -17,5 +17,6 @@ import { ElasticsearchService } from 'src/repository/connection';
   ],
   controllers: [FeedController],
   providers: [FeedService, TagService, ElasticsearchService],
+  exports: [FeedService],
 })
 export class FeedModule {}

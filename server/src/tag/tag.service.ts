@@ -1,3 +1,4 @@
+import { FeedService } from 'src/feed/feed.service';
 import { Injectable, HttpException } from '@nestjs/common';
 import { Tag, User } from '@prisma/client';
 import { PrismaService } from 'src/repository/prisma.service';
