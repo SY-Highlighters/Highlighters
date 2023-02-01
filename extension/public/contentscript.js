@@ -88,32 +88,48 @@ function makeXPath(node, currentPath) {
   }
 }
 
-async function highlightDone(range, id) {
-  console.log("highlightdone: ", id);
+function highlightSingleNode(node, id, img, type, startOffset, endOffset) {
+  const newrange = document.createRange();
+  newrange.setStart(node, startOffset);
+  newrange.setEnd(node, endOffset);
 
-  if (range.startContainer !== range.endContainer) {
-    const startxpath = makeXPath(range.startContainer);
-    const endxpath = makeXPath(range.endContainer);
-    const startxpatharray = startxpath.split("/");
-    const endxpatharray = endxpath.split("/");
+  const newNode = document.createElement("highlight");
+  newNode.setAttribute("class", id);
+  newNode.style.backgroundColor = highlightColor;
+
+  newrange.surroundContents(newNode);
+  newNode.addEventListener("click", (event) =>
+    showToolBar(event, newNode, img, type)
+  );
+}
+
+async function highlightDone(range, id) {
+  const startOffset = range.startOffset;
+  const endOffset = range.endOffset;
+  const startNode = range.startContainer;
+  const endNode = range.endContainer;
+
+  // 여러 노드에 걸친 하이라이팅
+  if (startNode !== endNode) {
+    const startXpath = makeXPath(startNode).split("/");
+    const endXpath = makeXPath(endNode).split("/");
 
     let commonxpath = [];
-    for (let i = 0; startxpatharray[i] === endxpatharray[i]; i++) {
-      commonxpath.push(startxpatharray[i]);
+    for (let i = 0; startXpath[i] === endXpath[i]; i++) {
+      if (startXpath[i] === undefined) break;
+      commonxpath.push(startXpath[i]);
     }
 
-    const commonxpathstr = commonxpath.join("/");
-
-    const commonnode = document.evaluate(
-      commonxpathstr,
+    const commonNode = document.evaluate(
+      commonxpath.join("/"),
       document,
       null,
       XPathResult.FIRST_ORDERED_NODE_TYPE,
       null
     ).singleNodeValue;
 
-    const childs = [...commonnode.childNodes];
-
+    // 공통조상 노드의 자식노드부터 DFS로 탐색
+    const childs = [...commonNode.childNodes];
     const stk = [];
     while (childs.length !== 0) {
       stk.push(childs.pop());
@@ -122,63 +138,36 @@ async function highlightDone(range, id) {
     let flag = 0;
     while (stk.length !== 0) {
       const current = stk.pop();
-      if (current === range.startContainer) {
-        const newrange = document.createRange();
-        newrange.setStart(current, range.startOffset);
-        newrange.setEnd(current, current.textContent.length);
-        const newNode = document.createElement("highlight");
-        newNode.setAttribute("class", id);
-        // newNode.setAttribute("id", id);
-        newNode.style.backgroundColor = highlightColor;
-        newrange.surroundContents(newNode);
-        newNode.addEventListener("click", (event) =>
-          showToolBar(event, newNode, userImage, 1)
-        );
+      const length = current.textContent.length;
+
+      // 시작노드 발견
+      if (current === startNode) {
+        highlightSingleNode(current, id, userImage, 1, startOffset, length);
         flag = 1;
-      } else if (current === range.endContainer) {
-        const newrange = document.createRange();
-        newrange.setStart(current, 0);
-        newrange.setEnd(current, range.endOffset);
-        const newNode = document.createElement("highlight");
-        newNode.setAttribute("class", id);
-        // newNode.setAttribute("id", id);
-        newNode.style.backgroundColor = highlightColor;
-        newrange.surroundContents(newNode);
-        newNode.addEventListener("click", (event) =>
-          showToolBar(event, newNode, userImage, 1)
-        );
+      }
+      // 끝노드 발견
+      else if (current === endNode) {
+        highlightSingleNode(current, id, userImage, 1, 0, endOffset);
         break;
-      } else {
+      }
+      // 다른 노드
+      else {
         const curchilds = [...current.childNodes];
+
+        // 시작노드와 끝노드 사이의 리프노드
         if (flag && curchilds.length === 0) {
-          const newrange = document.createRange();
-          newrange.setStart(current, 0);
-          newrange.setEnd(current, current.textContent.length);
-          const newNode = document.createElement("highlight");
-          newNode.setAttribute("class", id);
-          // newNode.setAttribute("id", id);
-          newNode.style.backgroundColor = highlightColor;
-          newrange.surroundContents(newNode);
-          newNode.addEventListener("click", (event) =>
-            showToolBar(event, newNode, userImage, 1)
-          );
+          highlightSingleNode(current, id, userImage, 1, 0, length);
         }
+
         while (curchilds.length !== 0) {
           stk.push(curchilds.pop());
         }
       }
     }
-  } else {
-    //하이라이팅
-    const newNode = document.createElement("highlight");
-    newNode.setAttribute("class", id);
-    // newNode.setAttribute("id", id);
-    newNode.style.backgroundColor = highlightColor;
-    range.surroundContents(newNode);
-    // 툴바표시 이벤트리스너 추가
-    newNode.addEventListener("click", (event) =>
-      showToolBar(event, newNode, userImage, 1)
-    );
+  }
+  // 단일 노드에 하이라이팅
+  else {
+    highlightSingleNode(startNode, id, userImage, 1, startOffset, endOffset);
   }
 
   // 펜 버튼 숨기기
