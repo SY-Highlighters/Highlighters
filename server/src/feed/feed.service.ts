@@ -13,7 +13,7 @@ export class FeedService {
   constructor(
     private readonly prismaService: PrismaService,
     private readonly tagService: TagService,
-    private readonly elastic: ElasticsearchService,
+    // private readonly elastic: ElasticsearchService,
     @Inject(CACHE_MANAGER) private readonly cacheManager: Cache,
   ) {}
 
@@ -62,22 +62,22 @@ export class FeedService {
       },
     });
 
-    // elastic input
-    const elasticFeed = new elasticFeedDto();
-    elasticFeed.feed_id = String(_Feed.id);
-    elasticFeed.user_nickname = user.nickname;
-    elasticFeed.group_id = user.group_id;
-    elasticFeed.title = feed_title;
-    elasticFeed.url = url;
-    elasticFeed.description = description;
-    elasticFeed.createdAt = _Feed.createdAt;
-    elasticFeed.image = user.image;
-    if (type == 1) {
-      elasticFeed.contents = `${color}-${high_content}`;
-    } else {
-      elasticFeed.contents = `${color}`;
-    }
-    await this.elastic.inputFeed(elasticFeed);
+    // // elastic input
+    // const elasticFeed = new elasticFeedDto();
+    // elasticFeed.feed_id = String(_Feed.id);
+    // elasticFeed.user_nickname = user.nickname;
+    // elasticFeed.group_id = user.group_id;
+    // elasticFeed.title = feed_title;
+    // elasticFeed.url = url;
+    // elasticFeed.description = description;
+    // elasticFeed.createdAt = _Feed.createdAt;
+    // elasticFeed.image = user.image;
+    // if (type == 1) {
+    //   elasticFeed.contents = `${color}-${high_content}`;
+    // } else {
+    //   elasticFeed.contents = `${color}`;
+    // }
+    // await this.elastic.inputFeed(elasticFeed);
 
     // tag 부분
     if (tag_name) {
@@ -250,7 +250,7 @@ export class FeedService {
         },
       },
     });
-    this.elastic.deleteFeed(String(id));
+    // this.elastic.deleteFeed(String(id));
     let i = 1;
     while (true) {
       const isExist = await this.cacheManager.get(

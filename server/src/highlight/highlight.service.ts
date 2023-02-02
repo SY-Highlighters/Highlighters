@@ -30,8 +30,7 @@ export class HighlightService {
     private event: EventGateway,
     // @Inject(CACHE_MANAGER) private readonly cacheManager: Cache,
     @Inject(forwardRef(() => FeedService))
-    private readonly feedService: FeedService,
-    private readonly elastic: ElasticsearchService,
+    private readonly feedService: FeedService, // private readonly elastic: ElasticsearchService,
   ) {}
 
   async createHighlight(
@@ -69,16 +68,16 @@ export class HighlightService {
 
         find_feed = await this.feedService.createFeed(newFeedDto, user);
       } else {
-        // elastic input
-        const elasticFeed = new elasticFeedDto();
-        elasticFeed.feed_id = String(find_feed.id);
-        if (type == 1) {
-          elasticFeed.contents = contents;
-        } else {
-          elasticFeed.contents = '';
-        }
-        const extracontents = `${color}-${elasticFeed.contents}`;
-        this.elastic.appendFeed(elasticFeed.feed_id, extracontents);
+        // // elastic input
+        // const elasticFeed = new elasticFeedDto();
+        // elasticFeed.feed_id = String(find_feed.id);
+        // if (type == 1) {
+        //   elasticFeed.contents = contents;
+        // } else {
+        //   elasticFeed.contents = '';
+        // }
+        // const extracontents = `${color}-${elasticFeed.contents}`;
+        // this.elastic.appendFeed(elasticFeed.feed_id, extracontents);
       }
 
       let result = null;
@@ -228,12 +227,12 @@ export class HighlightService {
           data: { contents: '', color: '-1' }, // 삭제된 하이라이트는 color를 -1로 변경
         });
 
-        const extracontents = `${high_find.color}-${high_find.contents}`;
-        // elastic 삭제
-        await this.elastic.deleteHighlight(
-          String(high_contents.feed_id),
-          extracontents,
-        );
+        // const extracontents = `${high_find.color}-${high_find.contents}`;
+        // // elastic 삭제
+        // await this.elastic.deleteHighlight(
+        //   String(high_contents.feed_id),
+        //   extracontents,
+        // );
       } else if (type == 2) {
         // 사진 하이라이트 삭제
         high_contents = await this.prismaService.highlight.delete({

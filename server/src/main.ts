@@ -1,6 +1,6 @@
 import * as dotenv from 'dotenv';
 dotenv.config();
-import apm from 'elastic-apm-node/start';
+// import apm from 'elastic-apm-node/start';
 import { PrismaService } from 'src/repository/prisma.service';
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';

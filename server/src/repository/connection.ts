@@ -10,15 +10,15 @@ export class ElasticsearchService {
   private readonly client: elasticsearch.Client;
 
   constructor(private readonly prismaService: PrismaService) {
-    this.client = new elasticsearch.Client({
-      cloud: {
-        id: process.env.ELASTICSEARCH_NODE,
-      },
-      auth: {
-        username: process.env.ELASTICSEARCH_USERNAME,
-        password: process.env.ELASTICSEARCH_PASSWORD,
-      },
-    });
+    // this.client = new elasticsearch.Client({
+    //   cloud: {
+    //     id: process.env.ELASTICSEARCH_NODE,
+    //   },
+    //   auth: {
+    //     username: process.env.ELASTICSEARCH_USERNAME,
+    //     password: process.env.ELASTICSEARCH_PASSWORD,
+    //   },
+    // });
   }
 
   async inputFeed(elasticfeed: elasticFeedDto) {
