@@ -15,7 +15,7 @@ import { BookmarkModule } from './bookmark/bookmark.module';
 import { ElasticsearchService } from './repository/connection';
 import { CommentModule } from './comment/comment.module';
 import { SearchModule } from './search/search.module';
-import { ApmModule } from 'nestjs-elastic-apm';
+// import { ApmModule } from 'nestjs-elastic-apm';
 import { CalendarModule } from './calendar/calendar.module';
 import { EventModule } from './event/event.module';
 import { SummaryModule } from './summary/summary.module';
@@ -34,7 +34,7 @@ import { SummaryModule } from './summary/summary.module';
     BookmarkModule,
     CommentModule,
     SearchModule,
-    ApmModule.register(),
+    // ApmModule.register(),
     CalendarModule,
     EventModule,
     SummaryModule,

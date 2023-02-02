@@ -6,13 +6,13 @@ import { PrismaService } from 'src/repository/prisma.service';
 @Injectable()
 export class SearchService {
   constructor(
-    private readonly elastic: ElasticsearchService,
+    // private readonly elastic: ElasticsearchService,
     private readonly prismaService: PrismaService,
   ) {}
 
-  async find(word: string, user: User): Promise<object[] | void> {
-    return await this.elastic.findFeed(word, user);
-  }
+  // async find(word: string, user: User): Promise<object[] | void> {
+  //   return await this.elastic.findFeed(word, user);
+  // }
 
   async findtest(word: string, user: User): Promise<object[] | void> {
     const result = await this.prismaService.feed.findMany({

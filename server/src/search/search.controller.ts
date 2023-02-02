@@ -36,18 +36,18 @@ export class SearchController {
     return this.searchService.findtest(word, user);
   }
 
-  // 일라스틱 검색바 조회
-  @ApiResponse({
-    status: 200,
-    description: 'success',
-    type: '피드, 하이라이트, 태그',
-  })
-  @ApiOperation({ summary: '일라스틱 검색바 조회' })
-  @Get('ela/:word')
-  async find(
-    @GetUser() user: User,
-    @Param('word') word: string,
-  ): Promise<object[] | void> {
-    return this.searchService.find(word, user);
-  }
+  // // 일라스틱 검색바 조회
+  // @ApiResponse({
+  //   status: 200,
+  //   description: 'success',
+  //   type: '피드, 하이라이트, 태그',
+  // })
+  // @ApiOperation({ summary: '일라스틱 검색바 조회' })
+  // @Get('ela/:word')
+  // async find(
+  //   @GetUser() user: User,
+  //   @Param('word') word: string,
+  // ): Promise<object[] | void> {
+  //   return this.searchService.find(word, user);
+  // }
 }
