@@ -6,8 +6,6 @@ let highlights = [];
 let userImage;
 let curNode;
 let curNodeType;
-// let curNodeID = null;
-// let mouseOverImgButton = {};
 
 const toolBarCSS = `
     width: 111px !important;
@@ -88,156 +86,90 @@ function makeXPath(node, currentPath) {
   }
 }
 
-function highlightSingleNode(node, id, img, type, startOffset, endOffset) {
+function highlightSingleNode(node, highlight, startOffset, endOffset) {
+  const id = highlight.id;
+  const highlighterImage = highlight.user ? highlight.user.image : userImage;
+  const color = highlight.color;
+
   const newrange = document.createRange();
   newrange.setStart(node, startOffset);
   newrange.setEnd(node, endOffset);
 
   const newNode = document.createElement("highlight");
   newNode.setAttribute("class", id);
-  newNode.style.backgroundColor = highlightColor;
-
   newrange.surroundContents(newNode);
-  newNode.addEventListener("click", (event) =>
-    showToolBar(event, newNode, img, type)
-  );
+
+  if (color !== -1) {
+    newNode.style.backgroundColor = color;
+    newNode.addEventListener("click", (event) =>
+      showToolBar(event, newNode, highlighterImage, 1)
+    );
+  }
 }
 
-async function highlightDone(range, id) {
-  const startOffset = range.startOffset;
-  const endOffset = range.endOffset;
-  const startNode = range.startContainer;
-  const endNode = range.endContainer;
+function highlightManyNode(highlight, rangeobj) {
+  const startNode = rangeobj.startNode;
+  const endNode = rangeobj.endNode;
+  const startOffset = rangeobj.startOffset;
+  const endOffset = rangeobj.endOffset;
 
-  // 여러 노드에 걸친 하이라이팅
-  if (startNode !== endNode) {
-    const startXpath = makeXPath(startNode).split("/");
-    const endXpath = makeXPath(endNode).split("/");
+  const startXpath = makeXPath(startNode).split("/");
+  const endXpath = makeXPath(endNode).split("/");
 
-    let commonxpath = [];
-    for (let i = 0; startXpath[i] === endXpath[i]; i++) {
-      if (startXpath[i] === undefined) break;
-      commonxpath.push(startXpath[i]);
+  let commonxpath = [];
+  for (let i = 0; startXpath[i] === endXpath[i]; i++) {
+    if (startXpath[i] === undefined) break;
+    commonxpath.push(startXpath[i]);
+  }
+
+  const commonNode = document.evaluate(
+    commonxpath.join("/"),
+    document,
+    null,
+    XPathResult.FIRST_ORDERED_NODE_TYPE,
+    null
+  ).singleNodeValue;
+
+  // 공통조상 노드의 자식노드부터 DFS로 탐색
+  const childs = [...commonNode.childNodes];
+  const stk = [];
+  while (childs.length !== 0) {
+    stk.push(childs.pop());
+  }
+
+  let flag = 0;
+  while (stk.length !== 0) {
+    const current = stk.pop();
+    const length = current.textContent.length;
+
+    // 시작노드 발견
+    if (current === startNode) {
+      highlightSingleNode(current, highlight, startOffset, length);
+      flag = 1;
     }
-
-    const commonNode = document.evaluate(
-      commonxpath.join("/"),
-      document,
-      null,
-      XPathResult.FIRST_ORDERED_NODE_TYPE,
-      null
-    ).singleNodeValue;
-
-    // 공통조상 노드의 자식노드부터 DFS로 탐색
-    const childs = [...commonNode.childNodes];
-    const stk = [];
-    while (childs.length !== 0) {
-      stk.push(childs.pop());
+    // 끝노드 발견
+    else if (current === endNode) {
+      highlightSingleNode(current, highlight, 0, endOffset);
+      break;
     }
+    // 다른 노드
+    else {
+      const curchilds = [...current.childNodes];
 
-    let flag = 0;
-    while (stk.length !== 0) {
-      const current = stk.pop();
-      const length = current.textContent.length;
-
-      // 시작노드 발견
-      if (current === startNode) {
-        highlightSingleNode(current, id, userImage, 1, startOffset, length);
-        flag = 1;
+      // 시작노드와 끝노드 사이의 리프노드
+      if (flag && curchilds.length === 0) {
+        highlightSingleNode(current, highlight, 0, length);
       }
-      // 끝노드 발견
-      else if (current === endNode) {
-        highlightSingleNode(current, id, userImage, 1, 0, endOffset);
-        break;
-      }
-      // 다른 노드
-      else {
-        const curchilds = [...current.childNodes];
 
-        // 시작노드와 끝노드 사이의 리프노드
-        if (flag && curchilds.length === 0) {
-          highlightSingleNode(current, id, userImage, 1, 0, length);
-        }
-
-        while (curchilds.length !== 0) {
-          stk.push(curchilds.pop());
-        }
+      while (curchilds.length !== 0) {
+        stk.push(curchilds.pop());
       }
     }
   }
-  // 단일 노드에 하이라이팅
-  else {
-    highlightSingleNode(startNode, id, userImage, 1, startOffset, endOffset);
-  }
-
-  // 펜 버튼 숨기기
-  const button = document.getElementById("btn_text_highlighters");
-  button.style.display = "none";
-}
-
-/* 하이라이트 Post */
-async function postHighlight(range, highlightStr) {
-  const highlightColorInSync = await chrome.storage.sync.get("highlightColor");
-  highlightColor = highlightColorInSync.highlightColor;
-  const uri = window.location.href;
-  const decodeuri = decodeURI(uri);
-
-  const rangeobj = {
-    startXPath: makeXPath(range.startContainer),
-    startOffset: range.startOffset,
-    endXPath: makeXPath(range.endContainer),
-    endOffset: range.endOffset,
-  };
-
-  console.log("rangeobj: ", rangeobj);
-
-  const og_image = document.querySelector("meta[property='og:image']");
-  const og_description = document.querySelector(
-    "meta[property='og:description']"
-  );
-
-  chrome.runtime.sendMessage(
-    {
-      greeting: "postHighlight",
-      data: {
-        url: decodeuri,
-        contents: highlightStr,
-        selection: rangeobj,
-        title: document.title,
-        image: og_image
-          ? og_image.content
-          : "https://www.salonlfc.com/wp-content/uploads/2018/01/image-not-found-1-scaled-1150x647.png",
-        description: og_description ? og_description.content : "No Description",
-        color: highlightColor,
-        type: 1,
-      },
-    },
-    (response) => {
-      if (response === undefined) {
-        if (response.data.statusCode === 401) {
-          console.log(
-            "unauthorized error status code: ",
-            response.data.statusCode
-          );
-          alert(
-            "Highlighters: 로그인이 필요한 서비스입니다.\n(확인을 누르면 웹사이트로 이동합니다)"
-          );
-          window.open("https://highlighters.site/");
-        } else {
-          console.log("Response is undefined");
-        }
-      } else {
-        console.log(response);
-        highlights.push(response.data.data);
-        highlightDone(range, response.data.data.id);
-      }
-    }
-  );
 }
 
 function rehighlightText(highlight) {
   const selection = highlight.selection;
-  const range = document.createRange();
 
   // 시작 노드 복원
   const startNode = document.evaluate(
@@ -247,7 +179,7 @@ function rehighlightText(highlight) {
     XPathResult.FIRST_ORDERED_NODE_TYPE,
     null
   ).singleNodeValue;
-  const startOff = Number(selection.startOffset);
+  const startOffset = Number(selection.startOffset);
 
   // 종료 노드 복원
   const endNode = document.evaluate(
@@ -257,121 +189,17 @@ function rehighlightText(highlight) {
     XPathResult.FIRST_ORDERED_NODE_TYPE,
     null
   ).singleNodeValue;
-  const endOff = Number(selection.endOffset);
+  const endOffset = Number(selection.endOffset);
 
-  // 복원한 시작노드, 종료 노드 기준으로 range 복원
+  const rangeobj = { startNode, endNode, startOffset, endOffset };
 
   /* 시작노드와 종료노드가 다른 경우 */
+  console.log("highlight", highlight);
+
   if (startNode !== endNode) {
-    const startxpath = selection.startXPath;
-    const endxpath = selection.endXPath;
-    const startxpatharray = startxpath.split("/");
-    const endxpatharray = endxpath.split("/");
-
-    // 시작노드와 종료노드의 공통 조상 찾기
-    let commonxpath = [];
-    for (let i = 0; startxpatharray[i] === endxpatharray[i]; i++) {
-      commonxpath.push(startxpatharray[i]);
-    }
-    const commonxpathstr = commonxpath.join("/");
-    const commonnode = document.evaluate(
-      commonxpathstr,
-      document,
-      null,
-      XPathResult.FIRST_ORDERED_NODE_TYPE,
-      null
-    ).singleNodeValue;
-
-    // 공통 조상의 자식 리스트
-    const childs = [...commonnode.childNodes];
-
-    // DFS -> 공통 조상의 자손들 중, 시작 노드와 끝 노드 사이에 있는 노드들 탐색
-    const stk = [];
-    while (childs.length !== 0) {
-      stk.push(childs.pop());
-    }
-
-    let flag = 0;
-    while (stk.length !== 0) {
-      const current = stk.pop();
-      if (current === startNode) {
-        const newrange = document.createRange();
-        newrange.setStart(current, startOff);
-        newrange.setEnd(current, current.textContent.length);
-        const newNode = document.createElement("highlight");
-        newNode.setAttribute("class", highlight.id);
-        if (highlight.color === "-1") {
-          // 색상이 없는 경우 style과 eventListener를 지워준다.
-          newNode.removeAttribute("style");
-          newrange.surroundContents(newNode);
-        } else {
-          newNode.style.backgroundColor = highlight.color;
-          newrange.surroundContents(newNode);
-          newNode.addEventListener("click", (event) =>
-            showToolBar(event, newNode, highlight.user.image, 1)
-          );
-        }
-        flag = 1;
-      } else if (current === endNode) {
-        const newrange = document.createRange();
-        newrange.setStart(current, 0);
-        newrange.setEnd(current, endOff);
-        const newNode = document.createElement("highlight");
-        newNode.setAttribute("class", highlight.id);
-        if (highlight.color === "-1") {
-          // 색상이 없는 경우 style과 eventListener를 지워준다.
-          newNode.removeAttribute("style");
-          newrange.surroundContents(newNode);
-        } else {
-          newNode.style.backgroundColor = highlight.color;
-          newrange.surroundContents(newNode);
-          newNode.addEventListener("click", (event) =>
-            showToolBar(event, newNode, highlight.user.image, 1)
-          );
-        }
-        break;
-      } else {
-        const curchilds = [...current.childNodes];
-        if (flag && curchilds.length === 0) {
-          const newrange = document.createRange();
-          newrange.setStart(current, 0);
-          newrange.setEnd(current, current.textContent.length);
-          const newNode = document.createElement("highlight");
-          newNode.setAttribute("class", highlight.id);
-          if (highlight.color === "-1") {
-            // 색상이 없는 경우 style과 eventListener를 지워준다.
-            newNode.removeAttribute("style");
-            newrange.surroundContents(newNode);
-          } else {
-            newNode.style.backgroundColor = highlight.color;
-            newrange.surroundContents(newNode);
-            newNode.addEventListener("click", (event) =>
-              showToolBar(event, newNode, highlight.user.image, 1)
-            );
-          }
-        }
-        while (curchilds.length !== 0) {
-          stk.push(curchilds.pop());
-        }
-      }
-    }
+    highlightManyNode(highlight, rangeobj);
   } else {
-    /* 시작노드와 종료노드가 같은 경우 */
-    range.setStart(startNode, startOff);
-    range.setEnd(endNode, endOff);
-    const newNode = document.createElement("highlight");
-    newNode.setAttribute("class", highlight.id);
-    if (highlight.color === "-1") {
-      // 색상이 없는 경우 style과 eventListener를 지워준다.
-      newNode.removeAttribute("style");
-      range.surroundContents(newNode);
-    } else {
-      newNode.style.backgroundColor = highlight.color;
-      range.surroundContents(newNode);
-      newNode.addEventListener("click", (event) =>
-        showToolBar(event, newNode, highlight.user.image, 1)
-      );
-    }
+    highlightSingleNode(startNode, highlight, startOffset, endOffset);
   }
 }
 
@@ -396,9 +224,70 @@ function rehighlightImage(highlight) {
   );
 }
 
+/* 하이라이트 Post */
+async function postHighlight(range, highlightStr) {
+  const highlightColorInSync = await chrome.storage.sync.get("highlightColor");
+  highlightColor = highlightColorInSync.highlightColor;
+
+  const uri = window.location.href;
+  const decodeuri = decodeURI(uri);
+
+  const rangeobj = {
+    startXPath: makeXPath(range.startContainer),
+    endXPath: makeXPath(range.endContainer),
+    startOffset: range.startOffset,
+    endOffset: range.endOffset,
+  };
+
+  const ogImageNode = document.querySelector("meta[property='og:image']");
+  const ogDescNode = document.querySelector("meta[property='og:description']");
+
+  const ogImage = ogImageNode
+    ? ogImageNode.content
+    : "https://www.salonlfc.com/wp-content/uploads/2018/01/image-not-found-1-scaled-1150x647.png";
+  const ogDesc = ogDescNode ? ogDescNode.content : "No Description";
+
+  chrome.runtime.sendMessage(
+    {
+      greeting: "postHighlight",
+      data: {
+        url: decodeuri,
+        contents: highlightStr,
+        selection: rangeobj,
+        title: document.title,
+        image: ogImage,
+        description: ogDesc,
+        color: highlightColor,
+        type: 1,
+      },
+    },
+    (response) => {
+      if (response.data.statusCode === 401) {
+        console.log(
+          "unauthorized error status code: ",
+          response.data.statusCode
+        );
+        alert(
+          "Highlighters: 로그인이 필요한 서비스입니다.\n(확인을 누르면 웹사이트로 이동합니다)"
+        );
+        window.open("https://highlighters.site/");
+      }
+      // postHighlight 성공
+      else {
+        const highlight = response.data.data;
+
+        highlights.push(highlight);
+        rehighlightText(highlight);
+
+        // 펜 버튼 숨기기
+        const button = document.getElementById("btn_text_highlighters");
+        button.style.display = "none";
+      }
+    }
+  );
+}
+
 function deleteHighlight(node) {
-  // const nodeclass = curNodeID == null ? node.className : curNodeID;
-  console.log(node.classList);
   const nodeId = node.classList[0];
 
   chrome.runtime.sendMessage(
@@ -597,14 +486,13 @@ function highlightImage() {
   );
 }
 
-function makeButton(name) {
+function makeButton(name, penImage) {
   const button = document.createElement("input");
   button.setAttribute("id", `btn_${name}_highlighters`);
   button.setAttribute("type", "image");
 
   console.log(highlightColor);
-  button.src =
-    "https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FGWbSx%2FbtrWU72GYzf%2FCNBOeTyQB5sAk0gDIyvATK%2Fimg.png";
+  button.src = penImage;
   button.style.height = "35px";
   button.style.width = "35px";
   button.style.display = "none";
@@ -681,22 +569,6 @@ async function onWindowReady() {
     return;
   }
 
-  const html = document.querySelector("html");
-
-  const textPenButton = makeButton("text");
-  const imagePenButton = makeButton("image");
-  const toolBar = makeToolBar();
-
-  textPenButton.addEventListener("click", highlight);
-  imagePenButton.addEventListener("click", highlightImage);
-  imagePenButton.addEventListener("mouseover", () => {
-    imagePenButton.style.display = "block";
-  });
-
-  html.appendChild(textPenButton);
-  html.appendChild(imagePenButton);
-  html.appendChild(toolBar);
-
   const highlightColorInSync = await chrome.storage.sync.get("highlightColor");
   highlightColor = highlightColorInSync.highlightColor;
 
@@ -719,8 +591,21 @@ async function onWindowReady() {
       break;
   }
 
-  textPenButton.src = pen_src;
-  imagePenButton.src = pen_src;
+  const html = document.querySelector("html");
+
+  const textPenButton = makeButton("text", pen_src);
+  const imagePenButton = makeButton("image", pen_src);
+  const toolBar = makeToolBar();
+
+  textPenButton.addEventListener("click", highlight);
+  imagePenButton.addEventListener("click", highlightImage);
+  imagePenButton.addEventListener("mouseover", () => {
+    imagePenButton.style.display = "block";
+  });
+
+  html.appendChild(textPenButton);
+  html.appendChild(imagePenButton);
+  html.appendChild(toolBar);
 
   // 하이라이트 가져오기
   getUserInfo();
