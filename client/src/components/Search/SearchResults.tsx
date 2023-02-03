@@ -11,7 +11,7 @@ import { searchKeywordState, mainSectionState } from "../../states/atom";
 import { useRecoilState } from "recoil";
 import SearchResultItem from "./SearchResultItem";
 
-const elastic_on = true;
+const elastic_on = false;
 const searchMode = elastic_on ? "ela" : "bar";
 
 const SearchResults = () => {
@@ -162,7 +162,8 @@ const SearchResults = () => {
                   key={feed.id}
                   title={feed.title}
                   url={feed.url}
-                  date={feed.date}
+                  // date={feed.date}
+                  date={feed.createdAt}
                   spareColor={feed.spareColor}
                   searchTitle={feed.searchTitle}
                   searchContent={feed.searchContent}

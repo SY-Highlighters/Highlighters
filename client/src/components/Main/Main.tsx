@@ -1,7 +1,7 @@
 import { Fragment } from "react";
 import { useRecoilValue, useRecoilState } from "recoil";
 import FeedsInGroup from "../Feeds/FeedsInGroup";
-import Feed from "../Feeds/GroupFeeds";
+import GroupFeeds from "../Feeds/GroupFeeds";
 import AvailableTags from "../Tags/TagsInFeeds";
 import { FeedTagEditModal } from "../Tags/FeedTagEditModal";
 import {
@@ -37,7 +37,7 @@ export function Main() {
   const MainSection = (setionNum: number) => {
     switch (setionNum) {
       case 0:
-        return <Feed></Feed>;
+        return <GroupFeeds></GroupFeeds>;
       case 1:
         return <BookmarkFeeds />;
       case 2:
@@ -47,7 +47,7 @@ export function Main() {
       case 4:
         return <SearchResults></SearchResults>;
       default:
-        return <Feed></Feed>;
+        return <GroupFeeds></GroupFeeds>;
     }
   };
   // useEffect(() => {
