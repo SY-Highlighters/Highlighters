@@ -113,7 +113,7 @@
 
 - 오타가 있어도 의도한 검색결과를 제공해줍니다. (과금 문제로 현재는 일반 검색기능만 작동합니다.)
   <div>
-    <img width="300" height="160" src="https://user-images.githubusercontent.com/101175828/216539091-6fe20844-8241-49ef-9c0d-764449dbca8c.gif"> </img>
+    <img width="400" height="200" src="https://user-images.githubusercontent.com/101175828/216539091-6fe20844-8241-49ef-9c0d-764449dbca8c.gif"> </img>
   </div>
 
 9. 피드 댓글
