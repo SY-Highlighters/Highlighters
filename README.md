@@ -1,4 +1,5 @@
 # Highlighters
+
 <a name="readme-top"></a>
 
 <!-- PROJECT LOGO -->
@@ -16,13 +17,16 @@
 <!-- TABLE OF CONTENTS -->
 
 ## 목차
+
 1. [프로젝트 개요](#Highlighters)
 2. [서비스 소개](#Intro)
 3. [서비스 구조도](#Arch)
 4. [프로젝트 포스터](#Poster)
 
 <!-- ABOUT THE PROJECT -->
+
 <a name="Highlighters"> </a>
+
 ## 프로젝트 개요
 
 프로젝트 기간 : 2022.12.23 ~ 2023.01.27
@@ -40,13 +44,14 @@
 <p align="right">(<a href="#readme-top">맨 위로</a>)</p>
 
 <a name="Intro"> </a>
+
 ## 서비스 소개
 
  <h3 align="left">Highlighters는 3가지 고민에서 시작되었습니다.</h3>
  
 - 웹페이지에서 중요한 내용이 한 눈에 보였으면 좋겠어! 
 - 브라우저에서 곧바로 팀원에게 링크를 보낼 수 없을까? 
-- 공유한 링크를 다시 찾기 쉽게 모아두면 좋겠어! 
+- 공유한 링크를 다시 찾기 쉽게 모아두면 좋겠어!
 
  <h3 align="left">Highlighters는 이런 서비스입니다.</h3>
  
@@ -57,41 +62,81 @@
  <h3 align="left">주요 기능</h3>
  
 1. 텍스트 하이라이트
-- 텍스트를 하이라이팅하고 이를 피드에서 확인할 수 있습니다. 
+- 텍스트를 하이라이팅하고 이를 피드에서 확인할 수 있습니다.
+<img width="300" height="160" src="https://user-images.githubusercontent.com/101175828/216535800-1d050bff-484d-43c8-ad68-61590383f59d.gif"> </img> 
 2. 이미지 하이라이트
-- 이미지를 하이라이팅하고 이를 피드에서 확인할 수 있습니다. 
+- 이미지를 하이라이팅하고 이를 피드에서 확인할 수 있습니다.
+  <!-- <div>
+    <img width="300" height="160"  src="https://user-images.githubusercontent.com/101175828/216537143-2f7bcd1f-9d30-42f8-86de-10587673a030.gif"></img>
+    <img width="300" height="160" src="https://user-images.githubusercontent.com/101175828/216537281-4498ad2d-a8c5-44fa-9c54-e0ab51c337cb.gif"> </img>
+  </div> -->
+    <table border="0" >
+    <tr>
+        <td>    <img src="https://user-images.githubusercontent.com/101175828/216537143-2f7bcd1f-9d30-42f8-86de-10587673a030.gif"></img></td>
+        <td>    <img src="https://user-images.githubusercontent.com/101175828/216537281-4498ad2d-a8c5-44fa-9c54-e0ab51c337cb.gif"> </img></td>
+   </tr>
+
+  </table>
+
 3. 유튜브 영상 하이라이트
-- 유튜브 영상에서 원하는 시간을 하이라이팅할 수 있습니다. 
-- 피드에서 하이라이팅한 시간을 곧바로 재생할 수 있습니다. 
+
+- 유튜브 영상에서 원하는 시간을 하이라이팅할 수 있습니다.
+- 피드에서 하이라이팅한 시간을 곧바로 재생할 수 있습니다.
+  <img width="300" height="160" src="https://user-images.githubusercontent.com/101175828/216539463-35aa8836-9b30-41c0-aeac-ef03335c031e.gif"> </img>
+  <img width="300" height="230" src="https://user-images.githubusercontent.com/101175828/216539648-c765fe17-f104-4500-96ab-0a074e0e70d2.gif"> </img>
+
 4. 그룹원간 실시간 하이라이트 동기화
-- 동일한 웹사이트에 접속했을 때, 그룹원이 하이라이팅한 내용이 내 화면에도 실시간으로 반영됩니다. 
+
+- 동일한 웹사이트에 접속했을 때, 그룹원이 하이라이팅한 내용이 내 화면에도 실시간으로 반영됩니다.
+  <img  src="https://user-images.githubusercontent.com/101175828/216539214-8ee34979-d587-49df-a343-38fcc02f5be5.gif"> </img>
+
 5. 그룹원간 메시지 및 링크 알림
-- 그룹원에게 메시지 및 링크 알림을 보낼 수 있습니다. 
-- 링크 알림을 클릭하면 곧바로 해당 링크로 이동할 수 있습니다. 
+
+- 그룹원에게 메시지 및 링크 알림을 보낼 수 있습니다.
+- 링크 알림을 클릭하면 곧바로 해당 링크로 이동할 수 있습니다.
+
 6. 3줄 요약
-- 링크의 내용을 3줄로 요약해줍니다. 
+
+- 링크의 내용을 3줄로 요약해줍니다.
+
 7. 피드 아카이빙
-- 피드를 태그 별로 모아볼 수 있습니다. 
+
+- 피드를 태그 별로 모아볼 수 있습니다.
 - 날짜 별로 피드를 모아볼 수 있습니다.
-- 즐겨찾기를 해 둔 피드를 모아볼 수 있습니다. 
+- 즐겨찾기를 해 둔 피드를 모아볼 수 있습니다.
+
 8. 피드 검색
+
 - 오타가 있어도 의도한 검색결과를 제공해줍니다. (과금 문제로 현재는 일반 검색기능만 작동합니다.)
+  <img width="300" height="160" src="https://user-images.githubusercontent.com/101175828/216539091-6fe20844-8241-49ef-9c0d-764449dbca8c.gif"> </img>
+
 9. 피드 댓글
-- 피드에 댓글을 달 수 있습니다. 
+
+- 피드에 댓글을 달 수 있습니다.
+
 10. 그리드뷰 보기
-- 많은 피드들을 한 눈에 볼 수 있습니다. 
+
+- 많은 피드들을 한 눈에 볼 수 있습니다.
 <p align="right">(<a href="#readme-top">맨 위로</a>)</p>
 
 <!-- 아키텍처 -->
+
 <a name="Arch"></a>
+
 ## 서비스 구조도
+
 ![image](https://user-images.githubusercontent.com/101175828/214384335-2e829ad4-d4c2-40f0-be71-cf2ebcfc8166.png)
+
 <p align="right">(<a href="#readme-top">맨 위로</a>)</p>
 
 <!-- 포스터 -->
+
 <a name="Poster"> </a>
+
 ## 프로젝트 포스터
+
 ![image](https://user-images.githubusercontent.com/101175828/215235500-a329f9fd-6251-4e7e-8e96-36a33113678f.png)
+
 <p align="right">(<a href="#readme-top">맨 위로</a>)</p>
 
 <!-- MARKDOWN LINKS & IMAGES -->
@@ -122,4 +167,3 @@
 [bootstrap-url]: https://getbootstrap.com
 [jquery.com]: https://img.shields.io/badge/jQuery-0769AD?style=for-the-badge&logo=jquery&logoColor=white
 [jquery-url]: https://jquery.com
-
