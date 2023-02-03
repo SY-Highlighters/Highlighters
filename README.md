@@ -63,7 +63,9 @@
  
 1. 텍스트 하이라이트
 - 텍스트를 하이라이팅하고 이를 피드에서 확인할 수 있습니다.
-<img width="300" height="160" src="https://user-images.githubusercontent.com/101175828/216535800-1d050bff-484d-43c8-ad68-61590383f59d.gif"> </img> 
+  <div>
+    <img width="400 height="200" src="https://user-images.githubusercontent.com/101175828/216535800-1d050bff-484d-43c8-ad68-61590383f59d.gif"> </img>
+  </div>
 2. 이미지 하이라이트
 - 이미지를 하이라이팅하고 이를 피드에서 확인할 수 있습니다.
   <!-- <div>
@@ -82,8 +84,10 @@
 
 - 유튜브 영상에서 원하는 시간을 하이라이팅할 수 있습니다.
 - 피드에서 하이라이팅한 시간을 곧바로 재생할 수 있습니다.
-  <img width="300" height="160" src="https://user-images.githubusercontent.com/101175828/216539463-35aa8836-9b30-41c0-aeac-ef03335c031e.gif"> </img>
-  <img width="300" height="230" src="https://user-images.githubusercontent.com/101175828/216539648-c765fe17-f104-4500-96ab-0a074e0e70d2.gif"> </img>
+  <div>
+    <img width="400" height="230" src="https://user-images.githubusercontent.com/101175828/216539463-35aa8836-9b30-41c0-aeac-ef03335c031e.gif"> </img>
+    <img width="300" height="230" src="https://user-images.githubusercontent.com/101175828/216539648-c765fe17-f104-4500-96ab-0a074e0e70d2.gif"> </img>
+  </div>
 
 4. 그룹원간 실시간 하이라이트 동기화
 
@@ -108,7 +112,9 @@
 8. 피드 검색
 
 - 오타가 있어도 의도한 검색결과를 제공해줍니다. (과금 문제로 현재는 일반 검색기능만 작동합니다.)
-  <img width="300" height="160" src="https://user-images.githubusercontent.com/101175828/216539091-6fe20844-8241-49ef-9c0d-764449dbca8c.gif"> </img>
+  <div>
+    <img width="300" height="160" src="https://user-images.githubusercontent.com/101175828/216539091-6fe20844-8241-49ef-9c0d-764449dbca8c.gif"> </img>
+  </div>
 
 9. 피드 댓글
 
