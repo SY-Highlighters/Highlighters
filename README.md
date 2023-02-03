@@ -63,16 +63,20 @@
  
 #### 1. 텍스트 하이라이트
 - 텍스트를 하이라이팅하고 이를 피드에서 확인할 수 있습니다.
-  <div>
-    <img width="400" height="200" src="https://user-images.githubusercontent.com/101175828/216535800-1d050bff-484d-43c8-ad68-61590383f59d.gif"> </img>
-  </div>
+   <table border="0" >
+    <tr>
+        <td><img width="400" height="200" src="https://user-images.githubusercontent.com/101175828/216561610-7b3c0b07-2924-4414-be78-281ea964e699.gif"> </img></td>
+        <td><img width="400" height="200" src="https://user-images.githubusercontent.com/101175828/216561650-8a524521-d6d2-46fd-91af-0f1cedb5fa21.gif"></img></td>
+   </tr>
+
+  </table>
 #### 2. 이미지 하이라이트
 - 이미지를 하이라이팅하고 이를 피드에서 확인할 수 있습니다.
   <!-- <div>
     <img width="300" height="160"  src="https://user-images.githubusercontent.com/101175828/216537143-2f7bcd1f-9d30-42f8-86de-10587673a030.gif"></img>
     <img width="300" height="160" src="https://user-images.githubusercontent.com/101175828/216537281-4498ad2d-a8c5-44fa-9c54-e0ab51c337cb.gif"> </img>
   </div> -->
-    <table border="0" >
+   <table border="0" >
     <tr>
         <td>    <img src="https://user-images.githubusercontent.com/101175828/216537143-2f7bcd1f-9d30-42f8-86de-10587673a030.gif"></img></td>
         <td>    <img src="https://user-images.githubusercontent.com/101175828/216537281-4498ad2d-a8c5-44fa-9c54-e0ab51c337cb.gif"> </img></td>
@@ -98,17 +102,31 @@
 
 - 그룹원에게 메시지 및 링크 알림을 보낼 수 있습니다.
 - 링크 알림을 클릭하면 곧바로 해당 링크로 이동할 수 있습니다.
+   <div>
+    <img width="400" height="400" src="https://user-images.githubusercontent.com/101175828/216554060-f565c9d9-2904-4ed3-890b-ce310bee307f.gif"> </img>
+  </div>
 
 #### 6. 3줄 요약
 
 - 링크의 내용을 3줄로 요약해줍니다.
+   <div>
+    <img width="400" height="230" src="https://user-images.githubusercontent.com/101175828/216561358-16fb58e4-8401-406f-bdb4-5a42b8dc047b.gif"> </img>
+  </div>
+
 
 #### 7. 피드 아카이빙
 
 - 피드를 태그 별로 모아볼 수 있습니다.
 - 날짜 별로 피드를 모아볼 수 있습니다.
 - 즐겨찾기를 해 둔 피드를 모아볼 수 있습니다.
+    <table border="0" >
+    <tr>
+        <td>    <img src="https://user-images.githubusercontent.com/101175828/216554937-47c37f6d-5eb7-4285-86f4-ab150506d98b.png"></img></td>
+        <td>    <img src="https://user-images.githubusercontent.com/101175828/216554961-c3c90f2b-6a71-4265-8bb3-d9c8cf8022ed.png"> </img></td>
+        <td>    <img src="https://user-images.githubusercontent.com/101175828/216554978-c0545a1f-4705-44f1-bc2e-5c2403cc9777.png"> </img></td>
+   </tr>
 
+  </table>
 #### 8. 피드 검색
 
 - 오타가 있어도 의도한 검색결과를 제공해줍니다. (과금 문제로 현재는 일반 검색기능만 작동합니다.)
@@ -119,10 +137,15 @@
 #### 9. 피드 댓글
 
 - 피드에 댓글을 달 수 있습니다.
-
+   <div>
+    <img height="400" width="500"src="https://user-images.githubusercontent.com/101175828/216555375-3e1b4e7c-75fb-45c0-aad3-832f9fee1806.png"> </img>
+  </div>
 #### 10. 그리드뷰 보기
-
+  
 - 많은 피드들을 한 눈에 볼 수 있습니다.
+   <div>
+    <img src="https://user-images.githubusercontent.com/101175828/216556511-2ff48f42-b4cf-4c13-9d25-f6ba0faec531.gif"> </img>
+  </div>
 <p align="right">(<a href="#readme-top">맨 위로</a>)</p>
 
 <!-- 아키텍처 -->
