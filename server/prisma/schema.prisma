@@ -1,5 +1,6 @@
 generator client {
   provider = "prisma-client-js"
+  // previewFeatures = ["fullTextSearch", "fullTextIndex"]
 }
 
 datasource db {
@@ -61,6 +62,7 @@ model Feed {
   @@index([group_id], map: "FEED_group_id_fkey")
   @@index([user_email], map: "FEED_user_email_fkey")
   @@index([og_id], map: "FEED_og_id_fkey")
+  // @@fulltext([title])
   @@map("FEED")
 }
 
@@ -130,6 +132,7 @@ model Highlight {
   @@index([feed_id], map: "HIGHLIGHT_feed_id_fkey")
   @@index([user_email], map: "HIGHLIGHT_user_email_fkey")
   @@index([group_id], map: "HIGHLIGHT_group_id_fkey")
+  // @@fulltext([contents])
   @@map("HIGHLIGHT")
 }
 

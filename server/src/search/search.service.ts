@@ -15,6 +15,7 @@ export class SearchService {
   // }
 
   async findtest(word: string, user: User): Promise<object[] | void> {
+    // const word_arr = word.split(' ');
     const result = await this.prismaService.feed.findMany({
       where: {
         group_id: user.group_id,
