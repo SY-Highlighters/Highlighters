@@ -2,12 +2,15 @@ let selectionText;
 let selectedImage = null;
 let highlightStr = "null";
 let highlightColor;
-let highlights = [];
 let userImage;
 let curNode;
 let curNodeType;
-// let curNodeID = null;
-// let mouseOverImgButton = {};
+
+const blackList = [
+  "https://highlighters.site/",
+  "https://highlighters.site/#",
+  "http://localhost:3000/",
+];
 
 const toolBarCSS = `
     width: 111px !important;
@@ -41,9 +44,15 @@ const pen_green =
 const pen_red =
   "https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FcDpb7P%2FbtrWREgrRTF%2FwcDFX51rqGcVThfEJyLXgK%2Fimg.png";
 
-function highlight() {
-  const range = selectionText.getRangeAt(0);
-  postHighlight(range, highlightStr);
+function getUserImage() {
+  chrome.runtime.sendMessage(
+    {
+      greeting: "getUserInfo",
+    },
+    (response) => {
+      userImage = response.data.image;
+    }
+  );
 }
 
 function makeXPath(node, currentPath) {
@@ -170,6 +179,61 @@ function highlightManyNode(highlight, rangeobj) {
   }
 }
 
+function highlightImage() {
+  const uri = window.location.href;
+  const decodeuri = decodeURI(uri);
+
+  const rangeObject = {
+    XPath: makeXPath(selectedImage),
+  };
+
+  chrome.runtime.sendMessage(
+    {
+      greeting: "postHighlight",
+      data: {
+        url: decodeuri,
+        contents: selectedImage.src,
+        selection: rangeObject,
+        title: document.title,
+        image: document.querySelector("meta[property='og:image']").content,
+        description: document.querySelector("meta[property='og:description']")
+          .content,
+        color: highlightColor,
+        type: 2,
+      },
+    },
+    (response) => {
+      if (response.data.statusCode === 401) {
+        console.log(
+          "unauthorized error status code: ",
+          response.data.statusCode
+        );
+        alert(
+          "Highlighters: 로그인이 필요한 서비스입니다.\n(확인을 누르면 웹사이트로 이동합니다)"
+        );
+        window.open("https://highlighters.site/");
+      } else {
+        const highlight = response.data.data;
+
+        // 이벤트리스너(하이라이트 버튼) 없애기
+        const highlightedImage = selectedImage.cloneNode(true);
+        highlightedImage.style.border = `8px solid ${highlightColor}`;
+        selectedImage.parentNode.replaceChild(highlightedImage, selectedImage);
+        selectedImage = highlightedImage;
+
+        // 툴바 표시 이벤트리스너 추가
+        highlightedImage.addEventListener("click", (event) =>
+          showToolBar(event, highlightedImage, userImage, 2)
+        );
+
+        // 펜 버튼 숨기기
+        const ImageButton = document.getElementById("btn_image_highlighters");
+        ImageButton.style.display = "none";
+      }
+    }
+  );
+}
+
 function rehighlightText(highlight) {
   const selection = highlight.selection;
 
@@ -196,8 +260,6 @@ function rehighlightText(highlight) {
   const rangeobj = { startNode, endNode, startOffset, endOffset };
 
   /* 시작노드와 종료노드가 다른 경우 */
-  console.log("highlight", highlight);
-
   if (startNode !== endNode) {
     highlightManyNode(highlight, rangeobj);
   } else {
@@ -226,14 +288,14 @@ function rehighlightImage(highlight) {
   );
 }
 
-/* 하이라이트 Post */
-async function postHighlight(range, highlightStr) {
+async function postHighlight() {
   const highlightColorInSync = await chrome.storage.sync.get("highlightColor");
   highlightColor = highlightColorInSync.highlightColor;
 
   const uri = window.location.href;
   const decodeuri = decodeURI(uri);
 
+  const range = selectionText.getRangeAt(0);
   const rangeobj = {
     startXPath: makeXPath(range.startContainer),
     endXPath: makeXPath(range.endContainer),
@@ -277,8 +339,6 @@ async function postHighlight(range, highlightStr) {
       // postHighlight 성공
       else {
         const highlight = response.data.data;
-
-        highlights.push(highlight);
         rehighlightText(highlight);
 
         // 펜 버튼 숨기기
@@ -299,35 +359,24 @@ function deleteHighlight(node) {
     },
     (response) => {
       if (curNodeType === 1) {
-        const NodeList = document.querySelectorAll(`highlight`);
-        NodeList.forEach((nodeInList) => {
-          if (nodeInList.className === nodeId) {
-            // 배경색 및 메뉴바 이벤트리스너 지우기
-            nodeInList.removeAttribute("style");
-            const deletedTextNode = nodeInList.cloneNode(true);
-            nodeInList.parentNode.replaceChild(deletedTextNode, nodeInList);
+        const highlightList = document.querySelectorAll(`highlight`);
+
+        for (const highlight of highlightList) {
+          // 배경색 및 메뉴바 이벤트리스너 지우기
+          if (highlight.className === nodeId) {
+            highlight.removeAttribute("style");
+            const deletedTextNode = highlight.cloneNode(true);
+            highlight.parentNode.replaceChild(deletedTextNode, highlight);
           }
-        });
+        }
       } else if (curNodeType === 2) {
         // 배경색 및 메뉴바 이벤트리스너 지우기
         node.removeAttribute("style");
-        const deletedImageNode = node.cloneNode(true);
-        node.parentNode.replaceChild(deletedImageNode, node);
+        const deletedImage = node.cloneNode(true);
+        node.parentNode.replaceChild(deletedImage, node);
 
         // 이미지 하이라이터 버튼 복원하기
-        const button = document.getElementById("btn_image_highlighters");
-        const position = deletedImageNode.getBoundingClientRect();
-        const scrollY = window.scrollY;
-        const scrollX = window.scrollX;
-        const mouseOverImgBtn = mouseOverImgBtnHandler(
-          button,
-          deletedImageNode,
-          position,
-          scrollY,
-          scrollX
-        );
-        deletedImageNode.addEventListener("mouseover", mouseOverImgBtn);
-        deletedImageNode.addEventListener("mouseout", mouseOnImgBtn);
+        setEventOnImage(deletedImage);
       }
     }
   );
@@ -335,15 +384,14 @@ function deleteHighlight(node) {
   hideToolBar();
 }
 
-function showToolBar(event, node, user, nodetype, nodeID) {
+function showToolBar(event, node, user, nodetype) {
   const html = document.querySelector("html");
-  const userImageDiv = document.getElementById("userImageDiv-highlighters");
+  const userImageButton = document.getElementById("btn_userImage_highlighters");
   const toolBar = document.getElementById("toolBar-highlighters");
 
   curNode = node; // 현재 선택된 하이라이트 업데이트
   curNodeType = nodetype; // 현재 선택된 하이라이트 노드 타입 업데이트
-  // curNodeID = nodeID; // 현재 선택된 하이라이트 노드 아이디 업데이트
-  userImageDiv.setAttribute("src", user); // 현재 선택된 하이라이트의 유저 이미지로 설정
+  userImageButton.setAttribute("src", user); // 현재 선택된 하이라이트의 유저 이미지로 설정
 
   // 투명 배경 : 툴바 바깥 눌렀을 때 툴바가 닫히도록 이벤트 리스너 추가
   const background = document.createElement("div");
@@ -372,133 +420,55 @@ function hideToolBar() {
   background.remove();
 }
 
-function getUserInfo() {
-  chrome.runtime.sendMessage(
-    {
-      greeting: "getUserInfo",
-    },
-    (response) => {
-      userImage = response.data.image;
-    }
-  );
-}
-
-const mouseOverImgBtnHandler =
-  (button, image, position, scrollY, scrollX) => () => {
-    button.style.top = position.top + scrollY + 10 + "px";
-    button.style.left = position.left + scrollX + 10 + "px";
-    button.style.transform = "rotate(270deg)";
-    button.style.zIndex = "2147483647";
-    button.style.display = "block";
-    button.style.position = "absolute";
-
-    selectedImage = image;
-  };
-
-const mouseOnImgBtn = () => {
+function setEventOnImage(image) {
   const button = document.getElementById("btn_image_highlighters");
-  button.style.display = "none";
-};
+  const pos = image.getBoundingClientRect();
 
-function makeEventOnImage() {
-  const button = document.getElementById("btn_image_highlighters");
-  const images = document.querySelectorAll("img");
+  // 일정 크기 이상의 이미지만 하이라이팅 가능
+  if (pos.height > 150 || pos.width > 150) {
+    const scrollY = window.scrollY;
+    const scrollX = window.scrollX;
 
-  for (const image of images) {
-    // console.log(image.classList);
-    if (image.classList.contains("highlighted")) {
-      continue;
-    }
+    // 이미지에 MouseOver했을 때 버튼 활성화
+    image.addEventListener("mouseover", () => {
+      button.style.top = pos.top + scrollY + 10 + "px";
+      button.style.left = pos.left + scrollX + 10 + "px";
+      button.style.transform = "rotate(270deg)";
+      button.style.zIndex = "2147483647";
+      button.style.display = "block";
+      button.style.position = "absolute";
 
-    const position = image.getBoundingClientRect();
+      selectedImage = image;
+    });
 
-    if (position.height > 150 || position.width > 150) {
-      const scrollY = window.scrollY;
-      const scrollX = window.scrollX;
-
-      const mouseOverImgBtn = mouseOverImgBtnHandler(
-        button,
-        image,
-        position,
-        scrollY,
-        scrollX
-      );
-      image.addEventListener("mouseover", mouseOverImgBtn);
-      image.addEventListener("mouseout", mouseOnImgBtn);
-    }
+    // 이미지에서 MouseOut했을 때 버튼 비활성화
+    image.addEventListener("mouseout", () => (button.style.display = "none"));
   }
 }
 
-function highlightImage() {
-  const uri = window.location.href;
-  const decodeuri = decodeURI(uri);
+function checkImages() {
+  const images = document.querySelectorAll("img");
 
-  const rangeObject = {
-    XPath: makeXPath(selectedImage),
-  };
+  for (const image of images) {
+    // 하이라이팅된 이미지는 스킵
+    if (image.classList.contains("highlighted")) continue;
 
-  chrome.runtime.sendMessage(
-    {
-      greeting: "postHighlight",
-      data: {
-        url: decodeuri,
-        contents: selectedImage.src,
-        selection: rangeObject,
-        title: document.title,
-        image: document.querySelector("meta[property='og:image']").content,
-        description: document.querySelector("meta[property='og:description']")
-          .content,
-        color: highlightColor,
-        type: 2,
-      },
-    },
-    (response) => {
-      if (response.data.statusCode === 401) {
-        console.log(
-          "unauthorized error status code: ",
-          response.data.statusCode
-        );
-        alert(
-          "Highlighters: 로그인이 필요한 서비스입니다.\n(확인을 누르면 웹사이트로 이동합니다)"
-        );
-        window.open("https://highlighters.site/");
-      } else {
-        console.log("Post Highlight Image Success", response.data);
-        highlights.push(response.data.data);
-
-        const curId = response.data.data.id; // 현재 선택된 이미지 노드아이디 백업
-        console.log(curId);
-
-        // 이벤트리스너(하이라이트 버튼) 없애기
-        const highlightedImage = selectedImage.cloneNode(true);
-        highlightedImage.style.border = `8px solid ${highlightColor}`;
-        selectedImage.parentNode.replaceChild(highlightedImage, selectedImage);
-        selectedImage = highlightedImage;
-
-        // 툴바 표시 이벤트리스너 추가
-        highlightedImage.addEventListener("click", (event) =>
-          showToolBar(event, highlightedImage, userImage, 2, curId)
-        );
-
-        // 펜 버튼 숨기기
-        const ImageButton = document.getElementById("btn_image_highlighters");
-        ImageButton.style.display = "none";
-      }
-    }
-  );
+    // 하이라이트 버튼 이벤트 삽입
+    setEventOnImage(image);
+  }
 }
 
-function makeButton(name, penImage) {
+function makeButton(name, image, height, width, top, left) {
   const button = document.createElement("input");
   button.setAttribute("id", `btn_${name}_highlighters`);
   button.setAttribute("type", "image");
 
-  console.log(highlightColor);
-  button.src = penImage;
-  button.style.height = "35px";
-  button.style.width = "35px";
-  button.style.display = "none";
-  // button.style.transform = "rotate(270deg)"
+  button.src = image;
+  button.style.height = `${height}px`;
+  button.style.width = `${width}px`;
+
+  button.style.top = top ? `${top}px` : null;
+  button.style.left = left ? `${left}px` : null;
 
   return button;
 }
@@ -506,74 +476,37 @@ function makeButton(name, penImage) {
 function makeToolBar() {
   const rootDiv = document.createElement("div");
   rootDiv.setAttribute("id", "toolBar-highlighters");
-
   rootDiv.style.cssText = toolBarCSS;
 
-  // 삭제버튼 삽입
-  const userImageDiv = document.createElement("input");
-  userImageDiv.setAttribute("type", "image");
-  userImageDiv.setAttribute("id", "userImageDiv-highlighters");
-  userImageDiv.setAttribute(
-    "src",
-    "https://cdn-icons-png.flaticon.com/512/1946/1946429.png"
-  );
-  userImageDiv.style.height = "22px";
-  userImageDiv.style.width = "22px";
-  userImageDiv.style.position = "relative";
-  userImageDiv.style.top = "9px";
-  userImageDiv.style.left = "10px";
-  userImageDiv.style.borderRadius = "15px";
+  // 유저 이미지 삽입
+  const userImageButton = makeButton("userImage", userImage, 22, 22, 9, 10);
+  userImageButton.style.position = "relative";
+  userImageButton.style.borderRadius = "15px";
 
   // 삭제버튼 삽입
-  const deleteButton = document.createElement("input");
-  deleteButton.setAttribute("type", "image");
-  deleteButton.setAttribute("id", "deleteButton-highlighters");
-  deleteButton.setAttribute(
-    "src",
-    "https://cdn-icons-png.flaticon.com/512/484/484662.png"
-  );
-  deleteButton.style.height = "20px";
-  deleteButton.style.width = "20px";
+  const deleteImage = "https://cdn-icons-png.flaticon.com/512/484/484662.png";
+  const deleteButton = makeButton("delete", deleteImage, 20, 20, 8, 22);
   deleteButton.style.position = "relative";
-  deleteButton.style.top = "8px";
-  deleteButton.style.left = "22px";
   deleteButton.addEventListener("click", () => deleteHighlight(curNode));
 
   // 홈버튼 삽입
-  const homeButton = document.createElement("input");
-  homeButton.setAttribute("type", "image");
-  homeButton.setAttribute("id", "homeButton-highlighters");
-  homeButton.setAttribute(
-    "src",
-    "https://cdn-icons-png.flaticon.com/512/1946/1946488.png"
-  );
-  homeButton.style.height = "20px";
-  homeButton.style.width = "20px";
+  const homeImage = "https://cdn-icons-png.flaticon.com/512/1946/1946488.png";
+  const homeButton = makeButton("home", homeImage, 20, 20, 8, 35);
   homeButton.style.position = "relative";
-  homeButton.style.top = "8px";
-  homeButton.style.left = "35px";
   homeButton.addEventListener("click", () =>
     window.open("https://highlighters.site/")
   );
 
-  rootDiv.appendChild(userImageDiv);
+  rootDiv.appendChild(userImageButton);
   rootDiv.appendChild(deleteButton);
   rootDiv.appendChild(homeButton);
 
   return rootDiv;
 }
 
-async function onWindowReady() {
-  if (
-    window.location.href === "https://highlighters.site/" ||
-    window.location.href === "http://localhost:3000/"
-  ) {
-    return;
-  }
-
+async function initHighlighters() {
   const highlightColorInSync = await chrome.storage.sync.get("highlightColor");
   highlightColor = highlightColorInSync.highlightColor;
-  console.log("highlight color", highlightColor);
 
   let pen_src;
   switch (highlightColor) {
@@ -596,38 +529,39 @@ async function onWindowReady() {
 
   const html = document.querySelector("html");
 
-  const textPenButton = makeButton("text", pen_src);
-  const imagePenButton = makeButton("image", pen_src);
-  const toolBar = makeToolBar();
+  const textPenButton = makeButton("text", pen_src, 35, 35);
+  textPenButton.style.display = "none";
+  textPenButton.addEventListener("click", postHighlight);
 
-  textPenButton.addEventListener("click", highlight);
+  const imagePenButton = makeButton("image", pen_src, 35, 35);
+  imagePenButton.style.display = "none";
   imagePenButton.addEventListener("click", highlightImage);
   imagePenButton.addEventListener("mouseover", () => {
     imagePenButton.style.display = "block";
   });
 
+  const toolBar = makeToolBar();
+
   html.appendChild(textPenButton);
   html.appendChild(imagePenButton);
   html.appendChild(toolBar);
 
-  // 하이라이트 가져오기
-  getUserInfo();
+  getUserImage();
 }
-//
+
 /* contentscript 시작 */
-window.onload = onWindowReady;
+initHighlighters();
 
 // 드래그하고 마우스를 떼면 selection 객체 생성
 document.onmouseup = function (e) {
-  if (
-    window.location.href === "https://highlighters.site/" ||
-    window.location.href === "http://localhost:3000/"
-  ) {
-    return;
-  }
+  // Highlighters가 작동 안해야하는 웹 사이트(blackList) 체크
+  const currentURL = window.location.href;
+  for (const url of blackList) if (currentURL === url) return;
+
   const button = document.getElementById("btn_text_highlighters");
   const sel = document.getSelection();
 
+  // 유저가 드래그하지 않고 mouseup 이벤트 발생 했을 때 == 클릭 했을 때
   if (sel.isCollapsed || sel.toString() === highlightStr) {
     button.style.display = "none";
     return;
@@ -642,7 +576,7 @@ document.onmouseup = function (e) {
     const divLeft = direction ? e.pageX + 10 : e.pageX - 40;
     button.style.transform = direction ? "rotate(0deg)" : "rotate(180deg)";
 
-    // 레이어 위치를 변경한다.
+    // Highlight 버튼 위치를 변경한다.
     button.style.top = divTop + "px";
     button.style.left = divLeft + "px";
     button.style.position = "absolute";
@@ -775,11 +709,6 @@ const rehighlightVideo = (highlight) => {
 
   const barPos = (parseInt(highlight.contents) / youtubePlayer.duration) * 100;
   highlightYTP.style.left = `${barPos}%`;
-  // highlightYTP.style.height = "100%";
-  // highlightYTP.style.width = "4px";
-  // highlightYTP.style.backgroundColor = highlight.color;
-  // highlightYTP.style.cursor = "pointer";
-  // highlightYTP.style.zIndex = "2147483647";
 
   let pin_src;
   switch (highlight.color) {
@@ -818,8 +747,8 @@ const rehighlightVideo = (highlight) => {
 chrome.runtime.onMessage.addListener(async (request, sender, sendResponse) => {
   switch (request.greeting) {
     case "getHighlight":
-      const highlights = request.data ? request.data : [];
-      console.log("[cs] getHighlight", highlights);
+      const highlightList = request.data ? request.data : [];
+      console.log("[cs] getHighlight", highlightList);
 
       const progressBarContainer = document.querySelector(
         ".ytp-progress-bar-container"
@@ -834,7 +763,7 @@ chrome.runtime.onMessage.addListener(async (request, sender, sendResponse) => {
         }
       }
 
-      for (const highlight of highlights) {
+      for (const highlight of highlightList) {
         try {
           if (highlight.type === 1) rehighlightText(highlight);
           else if (highlight.type === 2) rehighlightImage(highlight);
@@ -844,13 +773,12 @@ chrome.runtime.onMessage.addListener(async (request, sender, sendResponse) => {
         }
       }
 
-      makeEventOnImage();
+      checkImages();
       sendResponse({ farewell: "good" });
       break;
 
     case "newVideo":
       currentVideo = request.videoID;
-      console.log("currentVideo", currentVideo);
       newVideoLoaded();
       break;
 
@@ -871,11 +799,10 @@ chrome.runtime.onMessage.addListener(async (request, sender, sendResponse) => {
       );
       const description = ogDescription != null ? ogDescription.content : "";
 
-      console.log(title, image, description);
       sendResponse({
-        title: title,
-        image: image,
-        description: description,
+        title,
+        image,
+        description,
       });
       break;
 
