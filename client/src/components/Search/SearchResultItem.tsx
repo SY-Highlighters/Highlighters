@@ -11,7 +11,7 @@ const SearchResultItem = (props: any) => {
   const month = date.getMonth() + 1;
   const day = date.getDate();
   let highlightContent;
-  // console.log("props", props);
+  console.log("props", props);
   // 타이틀에 검색어 들어있는지 검사
   let titleContent;
   // const title = props.searchTitle ? props.searchTitle : props.title;
@@ -38,68 +38,85 @@ const SearchResultItem = (props: any) => {
   let colorPattern = /#[a-z0-9]{6}-/;
   // const match = input.match(pattern);
   // console.log(match[0]); // "#bbf7d0-"
+  // 엘라스틱 ver
+  // if (props.searchContent) {
+  //   highlightContent = props.searchContent.map(
+  //     (content: any, index: number) => {
+  //       // #부터 -까지 파싱
+  //       let match = content.match(colorPattern);
+  //       if (match === null) {
+  //         return;
+  //       }
+  //       let newColor = match[0].slice(0, 7);
+  //       // console.log("color", newColor, content);
+  //       if (newColor === null) {
+  //         if (content === "undefined") {
+  //           return;
+  //         }
 
-  if (props.searchContent) {
-    highlightContent = props.searchContent.map(
-      (content: any, index: number) => {
-        // #부터 -까지 파싱
-        let match = content.match(colorPattern);
-        if (match === null) {
-          return;
-        }
-        let newColor = match[0].slice(0, 7);
-        // console.log("color", newColor, content);
-        if (newColor === null) {
-          if (content === "undefined") {
-            return;
-          }
+  //         let pattern = /<em>(.*?)<\/em>/g;
+  //         let newStr = content.replace(
+  //           pattern,
+  //           '<span style="font-weight:bold; color:#0284c7;">$1</span>'
+  //         );
+  //         // console.log("newStr", newStr);
+  //         return (
+  //           <li key={index}>
+  //             <span className="text-sm text-black ">
+  //               <span
+  //                 dangerouslySetInnerHTML={{ __html: newStr }}
+  //                 style={{ backgroundColor: `#${color!}` }}
+  //               ></span>
+  //             </span>
+  //           </li>
+  //         );
+  //       } else {
+  //         color = newColor;
+  //         // console.log("컬러 있을떄", color);
+  //         // 첫번째 공백 부터 시작하기
+  //         let newContent = content.split("-").slice(1).join(" ");
+  //         if (newContent === "undefined") {
+  //           return;
+  //         } else if (newContent.length > 100) {
+  //           newContent = newContent.slice(0, 100) + "...";
+  //         }
 
-          let pattern = /<em>(.*?)<\/em>/g;
-          let newStr = content.replace(
-            pattern,
-            '<span style="font-weight:bold; color:#0284c7;">$1</span>'
-          );
-          // console.log("newStr", newStr);
-          return (
-            <li key={index}>
-              <span className="text-sm text-black ">
-                <span
-                  dangerouslySetInnerHTML={{ __html: newStr }}
-                  style={{ backgroundColor: `#${color!}` }}
-                ></span>
-              </span>
-            </li>
-          );
-        } else {
-          color = newColor;
-          // console.log("컬러 있을떄", color);
-          // 첫번째 공백 부터 시작하기
-          let newContent = content.split("-").slice(1).join(" ");
-          if (newContent === "undefined") {
-            return;
-          } else if (newContent.length > 100) {
-            newContent = newContent.slice(0, 100) + "...";
-          }
+  //         let pattern = /<em>(.*?)<\/em>/g;
+  //         let newStr = newContent.replace(
+  //           pattern,
+  //           '<span style="font-weight:bold; color:#0284c7;">$1</span>'
+  //         );
+  //         // console.log("newStr", newStr);
+  //         return (
+  //           <li key={index}>
+  //             <span className="text-sm text-black ">
+  //               <span
+  //                 dangerouslySetInnerHTML={{ __html: newStr }}
+  //                 style={{ backgroundColor: `${color!}` }}
+  //               ></span>
+  //             </span>
+  //           </li>
+  //         );
+  //       }
+  //     }
+  //   );
+  // }
+  // 일반 검색용
+  if (props.resultinfo.length > 0) {
+    highlightContent = props.resultinfo.map((content: any, index: number) => {
+      return (
+        <li key={index}>
+          <span
+            className="text-sm text-black "
+            style={{ backgroundColor: `${content.highlight.color!}` }}
+          >
+            {content.highlight.contents.slice(0, 100)}
+          </span>
+        </li>
+      );
+    });
 
-          let pattern = /<em>(.*?)<\/em>/g;
-          let newStr = newContent.replace(
-            pattern,
-            '<span style="font-weight:bold; color:#0284c7;">$1</span>'
-          );
-          // console.log("newStr", newStr);
-          return (
-            <li key={index}>
-              <span className="text-sm text-black ">
-                <span
-                  dangerouslySetInnerHTML={{ __html: newStr }}
-                  style={{ backgroundColor: `${color!}` }}
-                ></span>
-              </span>
-            </li>
-          );
-        }
-      }
-    );
+    // #부터 -까지 파싱
   }
   return (
     // <li className="py-5">

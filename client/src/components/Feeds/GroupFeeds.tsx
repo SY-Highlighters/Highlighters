@@ -5,17 +5,17 @@ import {
   Squares2X2Icon,
   HomeIcon,
 } from "@heroicons/react/24/outline";
-import AvailableFeeds from "./FeedsInGroup";
+import FeedsInGroup from "./FeedsInGroup";
 import { useRecoilState, useSetRecoilState } from "recoil";
 
 import { mainSectionState, changeMainSectionState } from "../../states/atom";
 
-const Feed = () => {
+const GroupFeeds = () => {
   const [mainSectionNum, setMainSectionNum] = useRecoilState(mainSectionState);
   // const setChangeMainSection = useSetRecoilState(changeMainSectionState);
-    const [changeMainSection, setChangeMainSection] = useRecoilState(
-      changeMainSectionState
-    );
+  const [changeMainSection, setChangeMainSection] = useRecoilState(
+    changeMainSectionState
+  );
   const handleBookmarkClick = () => {
     // console.log("bookmark click");
     // setBookmark(!bookmark);
@@ -63,10 +63,10 @@ const Feed = () => {
         </div>
       </div>
       {/* <Suspense fallback={<FeedSkeleton/>}> */}
-      <AvailableFeeds></AvailableFeeds>
+      <FeedsInGroup></FeedsInGroup>
       {/* </Suspense> */}
     </div>
   );
 };
 
-export default Feed;
+export default GroupFeeds;

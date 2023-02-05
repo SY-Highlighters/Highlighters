@@ -114,6 +114,10 @@ export class FeedService {
       });
     }
     try {
+      const count = await this.prismaService.feed.count({
+        where: condition,
+      });
+
       const feeds = await this.prismaService.feed.findMany({
         where: condition,
         orderBy: { updatedAt: 'desc' },
@@ -161,7 +165,7 @@ export class FeedService {
       });
       return {
         currentPage: page,
-        totalPage: Math.ceil(feeds.length / take),
+        totalPage: Math.ceil(count / take),
         feeds,
       };
     } catch (e) {

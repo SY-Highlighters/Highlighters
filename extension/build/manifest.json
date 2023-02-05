@@ -6,12 +6,7 @@
   "background": {
     "service_worker": "background.js"
   },
-  "permissions": [
-    "storage",
-    "tabs",
-    "cookies",
-    "notifications"
-  ],
+  "permissions": ["storage", "tabs", "cookies", "notifications", "action"],
   "host_permissions": ["<all_urls>", "http://localhost/"],
   "action": {
     "default_icon": {
@@ -26,7 +21,7 @@
     {
       "matches": ["<all_urls>"],
       "js": ["contentscript.js"],
-      "run_at": "document_start"
+      "run_at": "document_end"
     }
   ]
 }

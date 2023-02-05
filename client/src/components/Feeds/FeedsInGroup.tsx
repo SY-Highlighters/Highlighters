@@ -6,7 +6,7 @@ import { useFeedsInGroup } from "../../hooks/useFeedsInGroup";
 import FeedSkeleton from "../UI/FeedSkeleton";
 import LazyLoad from "react-lazy-load";
 
-const AvailableFeeds = () => {
+const FeedsInGroup = () => {
   const {
     getBoard,
     getNextPage,
@@ -95,59 +95,59 @@ const AvailableFeeds = () => {
                         </div>
                       );
                     } else {
-                      if (idx < 4) {
-                        return (
-                          <div key={feed.id} className="">
-                            <FeedItem
-                              idx={idx}
-                              id={feed.id}
-                              key={feed.id}
-                              title={feed.title}
-                              description={feed.og.description}
-                              og_image={feed.og.image}
-                              url={feed.url}
-                              highlight={feed.highlight}
-                              date={feed.createdAt}
-                              tag={feed.tag}
-                              writer={feed.user.nickname}
-                              writerImg={feed.user.image}
-                              commentLen={feed.comment.length}
-                              bookmarked={
-                                feed.bookmark.length !== 0 ? true : false
-                              }
-                              bookmarkId={feed.bookmark[0]}
-                              summary={feed.summary}
-                            />
-                          </div>
-                        );
-                      } else {
-                        return (
-                          <LazyLoad>
-                            <div key={feed.id} className="">
-                              <FeedItem
-                                idx={idx}
-                                id={feed.id}
-                                key={feed.id}
-                                title={feed.title}
-                                description={feed.og.description}
-                                og_image={feed.og.image}
-                                url={feed.url}
-                                highlight={feed.highlight}
-                                date={feed.createdAt}
-                                tag={feed.tag}
-                                writer={feed.user.nickname}
-                                writerImg={feed.user.image}
-                                commentLen={feed.comment.length}
-                                bookmarked={
-                                  feed.bookmark.length !== 0 ? true : false
-                                }
-                                bookmarkId={feed.bookmark[0]}
-                                summary={feed.summary}
-                              />
-                            </div>
-                          </LazyLoad>
-                        );
-                      }
+                      // if (idx < 3) {
+                      return (
+                        <div key={feed.id} className="">
+                          <FeedItem
+                            idx={idx}
+                            id={feed.id}
+                            key={feed.id}
+                            title={feed.title}
+                            description={feed.og.description}
+                            og_image={feed.og.image}
+                            url={feed.url}
+                            highlight={feed.highlight}
+                            date={feed.createdAt}
+                            tag={feed.tag}
+                            writer={feed.user.nickname}
+                            writerImg={feed.user.image}
+                            commentLen={feed.comment.length}
+                            bookmarked={
+                              feed.bookmark.length !== 0 ? true : false
+                            }
+                            bookmarkId={feed.bookmark[0]}
+                            summary={feed.summary}
+                          />
+                        </div>
+                      );
+                      // } else {
+                      //   return (
+                      //     <LazyLoad>
+                      //       <div key={feed.id} className="">
+                      //         <FeedItem
+                      //           idx={idx}
+                      //           id={feed.id}
+                      //           key={feed.id}
+                      //           title={feed.title}
+                      //           description={feed.og.description}
+                      //           og_image={feed.og.image}
+                      //           url={feed.url}
+                      //           highlight={feed.highlight}
+                      //           date={feed.createdAt}
+                      //           tag={feed.tag}
+                      //           writer={feed.user.nickname}
+                      //           writerImg={feed.user.image}
+                      //           commentLen={feed.comment.length}
+                      //           bookmarked={
+                      //             feed.bookmark.length !== 0 ? true : false
+                      //           }
+                      //           bookmarkId={feed.bookmark[0]}
+                      //           summary={feed.summary}
+                      //         />
+                      //       </div>
+                      //     </LazyLoad>
+                      //   );
+                      // }
                     }
                   });
                 })
@@ -159,4 +159,4 @@ const AvailableFeeds = () => {
   );
 };
 
-export default AvailableFeeds;
+export default FeedsInGroup;
