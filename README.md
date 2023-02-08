@@ -144,9 +144,10 @@
   
 - 많은 피드들을 한 눈에 볼 수 있습니다.
    <div>
-    <img src="https://user-images.githubusercontent.com/101175828/216556511-2ff48f42-b4cf-4c13-9d25-f6ba0faec531.gif"> </img>
+    <img src="https://user-images.githubusercontent.com/101175828/217535465-8ea6a78f-2022-4d3a-a10e-a6ec2477c9d3.png"> </img>
   </div>
 <p align="right">(<a href="#readme-top">맨 위로</a>)</p>
+
 
 <!-- 아키텍처 -->
 
