@@ -138,7 +138,7 @@
 
 - 피드에 댓글을 달 수 있습니다.
    <div>
-    <img height="400" width="500"src="https://user-images.githubusercontent.com/101175828/216555375-3e1b4e7c-75fb-45c0-aad3-832f9fee1806.png"> </img>
+    <img height="300" width="500"src="https://user-images.githubusercontent.com/101175828/216555375-3e1b4e7c-75fb-45c0-aad3-832f9fee1806.png"> </img>
   </div>
 #### 10. 그리드뷰 보기
   
