@@ -12,6 +12,9 @@
   <p align="center">
    Link Sharing & Archiving for Collaboration
   </p>
+  <p align="center">
+    <b> Highlighters: 크롬 익스텐션을 통해 브라우저에서 텍스트/이미지/동영상을 하이라이팅하고, 공유 및 아카이빙 할 수 있는 그룹 협업 툴</b>
+  </p>
 </div>
 
 <!-- TABLE OF CONTENTS -->
