@@ -166,7 +166,7 @@
 
 ## 프로젝트 포스터
 
-![image](https://user-images.githubusercontent.com/101175828/215235500-a329f9fd-6251-4e7e-8e96-36a33113678f.png)
+![image](https://user-images.githubusercontent.com/109822768/219306111-d702e6cd-c619-45ef-9aa5-a850e5e0158b.png)
 
 <p align="right">(<a href="#readme-top">맨 위로</a>)</p>
 
