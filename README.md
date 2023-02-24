@@ -45,6 +45,8 @@
 
 발표영상 : [바로가기](https://www.youtube.com/watch?v=1hC4BrA4MJI)
 
+크롬 익스텐션 스토어 : [바로가기](https://chrome.google.com/webstore/detail/highlighters/hcagahefhiieeemlfjfhbnhnaedcpdai?hl=ko)
+
 <p align="right">(<a href="#readme-top">맨 위로</a>)</p>
 
 <a name="Intro"> </a>
