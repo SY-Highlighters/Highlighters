@@ -1,19 +1,15 @@
-import FeedItem from "../Feeds/FeedItem/FeedItem";
-import { useRecoilState, useRecoilValue } from "recoil";
-import { feedsTagListState, GroupTagListState } from "../../states/atom";
+
 import { useCookies } from "react-cookie";
-import { useEffect, useState } from "react";
 import axios from "axios";
 import { useQuery } from "react-query";
 import { TagEditItem } from "../Tags/TagItem/TagEditItem";
-import { ArchiveBoxXMarkIcon, HashtagIcon } from "@heroicons/react/24/outline";
+import { HashtagIcon } from "@heroicons/react/24/outline";
 import { useMutation } from "react-query";
-import { is } from "date-fns/locale";
 
-const GroupTagListEdit = (props: any) => {
+
+
+const GroupTagListEdit: React.FunctionComponent<GroupTagListProps> = (props) => {
   const [cookies] = useCookies(["logCookie"]);
-  const [clickedTagEdit, setClickedTagEdit] = useState(false);
-  const [groupTagList, setGroupTagList] = useRecoilState(GroupTagListState);
 
   const {
     data: tagEditList,
