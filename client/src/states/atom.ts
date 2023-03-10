@@ -28,12 +28,12 @@ export const clickedGroupTagDelState = atom<any>({
 });
 /* 피드 */
 //  그룹 피드 리스트
-export const feedsInGroupState = atom<any>({
+export const feedsInGroupState = atom<[]>({
   key: "feedsInGroupState",
   default: [],
 });
 // 태그에 해당하는 피드 리스트 => 버리자
-export const feedsTagListState = atom<any>({
+export const feedsTagListState = atom<[]>({
   key: "feedsTagListState",
   default: [],
 });

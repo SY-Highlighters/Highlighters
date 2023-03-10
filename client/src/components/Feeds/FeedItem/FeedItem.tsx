@@ -246,7 +246,7 @@ const FeedItem = (props: any) => {
     setIsBookmarked(!isBookmarked);
   };
   // 댓글 수 콜백
-  const commentCountCallback = (action: any) => {
+  const commentCountCallback = (action: string) => {
     if (action === "add") {
       setCommentLen(commentLen + 1);
     } else if (action === "del") {

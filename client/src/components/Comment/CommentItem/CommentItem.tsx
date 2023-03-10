@@ -11,7 +11,6 @@ import axios from "axios";
 import Swal from "sweetalert2";
 export function CommentItem(props: any) {
   const [cookies] = useCookies(["logCookie"]);
-  const currentFeed = useRecoilValue(currentFeedState);
   const date = new Date(props.date);
   const year = date.getFullYear();
   const month = date.getMonth() + 1;

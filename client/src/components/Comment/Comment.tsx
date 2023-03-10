@@ -12,8 +12,9 @@ export function Comment(props: any) {
   const [commentList, setCommentList] = useState([]);
   const [commentReload, setcommentReload] = useRecoilState(commentReloadState);
   // 유저 데이터 가져오기
-  const { data: user, isSuccess, isLoading, error } = useUserData(cookies);
+  const { data: user } = useUserData();
   // 코멘트 변경시 리로드
+  // 캐싱은 ok, 추가되거나 삭제될때 보통 서버에서 데이터를 다시 가져오는 듯?
   useEffect(() => {
     async function fetchData() {
       const response = await getFeedComment(currentFeed.feed_id, cookies);
@@ -27,7 +28,7 @@ export function Comment(props: any) {
 
   return (
     <div>
-      <CommentInput onFunc={props.onFunc}></CommentInput>
+      <CommentInput onFunc={props.onFunc} userImg={user?.image}></CommentInput>
       <ul>
         {commentList.map((commentItem: any) => (
           <CommentItem
@@ -38,7 +39,7 @@ export function Comment(props: any) {
             writer={commentItem.nickname}
             date={commentItem.createdAt}
             profileImg={commentItem.profile_image}
-            userId={user.nickname}
+            userId={user?.nickname}
           ></CommentItem>
         ))}
       </ul>
