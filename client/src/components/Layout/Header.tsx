@@ -34,7 +34,7 @@ export default function Header() {
   );
   // const resetFeeds = useResetRecoilState(groupFeedListState);
   // react-query 사용 시 server state
-  const { data: user, isSuccess } = useUserData(cookies);
+  const { data: user, isSuccess } = useUserData();
 
   const logout = async () => {
     queryClient.removeQueries();
@@ -201,7 +201,7 @@ export default function Header() {
           </div>
         </div>
       )}
-      {optionModalToggle && <OptionModal userImg={user.image}></OptionModal>}
+      {optionModalToggle && <OptionModal userImg={user?.image}></OptionModal>}
       {/* 모바일 메뉴 */}
       {/* <div onClick={setNavbarOpen}>
         <ListBulletIcon className="absolute block text-white cursor-pointer h-7 right-2 top-3 hover:opacity-75 lg:hidden"></ListBulletIcon>

@@ -1,11 +1,9 @@
-import { useCookies } from "react-cookie";
 import { useUserData } from "../../hooks/useUserData";
 
 const UserInfo = () => {
-  const [cookies] = useCookies(["logCookie"]);
 
   // react-query 사용 시 server state
-  const { data: user, isSuccess } = useUserData(cookies);
+  const { data: user, isSuccess } = useUserData();
 
   if (isSuccess) {
     return (

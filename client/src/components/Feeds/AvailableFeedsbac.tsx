@@ -10,7 +10,7 @@ const AvailableFeeds = () => {
   const [cookies] = useCookies(["logCookie"]);
 
   // react query 캐시에서 유저 데이터 가져옴
-  const { data: user } = useUserData(cookies);
+  const { data: user } = useUserData();
 
   const groupId = user?.group_id;
 

@@ -26,13 +26,12 @@ import DayFeeds from "../Calender/DayFeeds";
 import BookmarkFeeds from "../Bookmarks/BookmarkFeeds";
 import TagFeeds from "../Tags/TagFeeds";
 export function Main() {
-  const [cookies] = useCookies(["logCookie"]);
   const [changeMainSection, setChangeMainSection] = useRecoilState(
     changeMainSectionState
   );
   const mainSectionNum = useRecoilValue(mainSectionState);
   const [tagModal, setTagModal] = useRecoilState(tagModalVisble);
-  const { data: user, isSuccess } = useUserData(cookies);
+  const { data: user, isSuccess } = useUserData();
 
   const MainSection = (setionNum: number) => {
     switch (setionNum) {

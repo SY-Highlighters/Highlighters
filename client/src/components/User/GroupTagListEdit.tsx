@@ -8,7 +8,7 @@ import { useMutation } from "react-query";
 
 
 
-const GroupTagListEdit: React.FunctionComponent<GroupTagListProps> = (props) => {
+const GroupTagListEdit = (props: any) => {
   const [cookies] = useCookies(["logCookie"]);
 
   const {
