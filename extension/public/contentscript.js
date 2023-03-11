@@ -33,17 +33,6 @@ const backgroundCSS = `
     z-index: 999;
 `;
 
-const pen_purple =
-  "https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FbhTyoz%2FbtrWYMqgMN8%2F1auPxBjwj2dcxtiQ4qTNP1%2Fimg.png";
-const pen_blue =
-  "https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FbSTxN4%2FbtrWS3s6Nny%2FUAwdw2EdlUzkfEp6ZOxLM0%2Fimg.png";
-const pen_yellow =
-  "https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FcwmKe7%2FbtrWZXkQKtl%2FVVl4FYkjMUQfhzT6EBJSt0%2Fimg.png";
-const pen_green =
-  "https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FbuwOGM%2FbtrWX5pUxf0%2Faa9V7hS48VqJgeKrNjLykK%2Fimg.png";
-const pen_red =
-  "https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FcDpb7P%2FbtrWREgrRTF%2FwcDFX51rqGcVThfEJyLXgK%2Fimg.png";
-
 function getUserImage() {
   chrome.runtime.sendMessage(
     {
@@ -504,12 +493,20 @@ function makeToolBar() {
   return rootDiv;
 }
 
-async function initHighlighters() {
-  const highlightColorInSync = await chrome.storage.sync.get("highlightColor");
-  highlightColor = highlightColorInSync.highlightColor;
+function setPenColor(penColor) {
+  const pen_purple =
+    "https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FbhTyoz%2FbtrWYMqgMN8%2F1auPxBjwj2dcxtiQ4qTNP1%2Fimg.png";
+  const pen_blue =
+    "https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FbSTxN4%2FbtrWS3s6Nny%2FUAwdw2EdlUzkfEp6ZOxLM0%2Fimg.png";
+  const pen_yellow =
+    "https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FcwmKe7%2FbtrWZXkQKtl%2FVVl4FYkjMUQfhzT6EBJSt0%2Fimg.png";
+  const pen_green =
+    "https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FbuwOGM%2FbtrWX5pUxf0%2Faa9V7hS48VqJgeKrNjLykK%2Fimg.png";
+  const pen_red =
+    "https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FcDpb7P%2FbtrWREgrRTF%2FwcDFX51rqGcVThfEJyLXgK%2Fimg.png";
 
   let pen_src;
-  switch (highlightColor) {
+  switch (penColor) {
     case "#e9d5ff":
       pen_src = pen_purple;
       break;
@@ -527,7 +524,14 @@ async function initHighlighters() {
       break;
   }
 
+  return pen_src;
+}
+
+async function initHighlighters() {
   const html = document.querySelector("html");
+  const highlightColorInSync = await chrome.storage.sync.get("highlightColor");
+  highlightColor = highlightColorInSync.highlightColor;
+  const pen_src = setPenColor(highlightColor);
 
   const textPenButton = makeButton("text", pen_src, 35, 35);
   textPenButton.style.display = "none";
@@ -748,7 +752,7 @@ chrome.runtime.onMessage.addListener(async (request, sender, sendResponse) => {
   switch (request.greeting) {
     case "getHighlight":
       const highlightList = request.data ? request.data : [];
-      console.log("[cs] getHighlight", highlightList);
+      // [테스트용] console.log("[cs] getHighlight", highlightList);
 
       const progressBarContainer = document.querySelector(
         ".ytp-progress-bar-container"
@@ -820,33 +824,12 @@ chrome.runtime.onMessage.addListener(async (request, sender, sendResponse) => {
       console.log("[contentscript]: changeCurrentColor: ", request.data);
       const textPenButton = document.getElementById("btn_text_highlighters");
       const imagePenButton = document.getElementById("btn_image_highlighters");
-
-      let pen_src;
-      switch (request.data) {
-        case "#e9d5ff":
-          pen_src = pen_purple;
-          break;
-        case "#bfdbfe":
-          pen_src = pen_blue;
-          break;
-        case "#bbf7d0":
-          pen_src = pen_green;
-          break;
-        case "#fecaca":
-          pen_src = pen_red;
-          break;
-        default:
-          pen_src = pen_yellow;
-          break;
-      }
+      const pen_src = setPenColor(request.data);
 
       textPenButton.src = pen_src;
       imagePenButton.src = pen_src;
       sendResponse({ response: "ok" });
       break;
-    // try {
-
-    // }
 
     default:
       console.log(request, sender);
