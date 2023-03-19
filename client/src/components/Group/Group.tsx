@@ -1,5 +1,5 @@
 import { useRecoilValue } from "recoil";
-import { groupModalVisble } from "../../states/atom";
+import { groupModalVisble } from "../../atoms/atom";
 import GroupModal from "./Modal/GroupModal";
 // import GroupNotJoined from "./GroupNotJoined";
 // import GroupJoined from "./GroupJoined";
@@ -14,7 +14,7 @@ export default function Group(props: any) {
   const [cookies] = useCookies(["logCookie"]);
 
   // 유저 데이터 요청
-  // const { data: user, isSuccess } = useUserData(cookies);
+  const { data: user, isSuccess } = useUserData();
 
   // if (isSuccess) {
   return (

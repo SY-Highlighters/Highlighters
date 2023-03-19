@@ -8,7 +8,7 @@ import {
 import FeedsInGroup from "./FeedsInGroup";
 import { useRecoilState, useSetRecoilState } from "recoil";
 
-import { mainSectionState, changeMainSectionState } from "../../states/atom";
+import { mainSectionState, changeMainSectionState } from "../../atoms/atom";
 
 const GroupFeeds = () => {
   const [mainSectionNum, setMainSectionNum] = useRecoilState(mainSectionState);

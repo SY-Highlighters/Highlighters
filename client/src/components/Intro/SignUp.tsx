@@ -1,8 +1,7 @@
 import axios from "axios";
-import { Fragment,useState } from "react";
+import { Fragment, useState } from "react";
 import { useSetRecoilState, useRecoilState } from "recoil";
-import { logModalVisble, sighUpCheck, userInfoState } from "../../states/atom";
-import { useCookies } from "react-cookie";
+import {  sighUpCheck,  } from "../../atoms/atom";
 import Swal from "sweetalert2";
 
 export default function SignUp() {
@@ -10,7 +9,7 @@ export default function SignUp() {
   const [nickname, setNickname] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  
+
   const nickNameHandler = (e: any) => {
     setNickname(e.target.value);
   };
@@ -20,7 +19,7 @@ export default function SignUp() {
   const passwordHandler = (e: any) => {
     setPassword(e.target.value);
   };
-  
+
   // 비밀번호와 비밀 번호 확인 일치 여부
   // const [passwordCheck, setPasswordCheck] = useState(false);
   // const [passwordError, setPasswordError] = useState(false);

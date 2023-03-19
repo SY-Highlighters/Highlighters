@@ -8,21 +8,17 @@ import {
 } from "@heroicons/react/24/outline";
 import {
   useRecoilState,
-  useRecoilValue,
-  useResetRecoilState,
-  useSetRecoilState,
 } from "recoil";
-import { mainSectionState } from "../../states/atom";
+import { mainSectionState } from "../../atoms/atom";
 import { useCookies } from "react-cookie";
-import { userInfoState } from "../../states/atom";
 import axios from "axios";
 import { useQuery } from "react-query";
-const user = {
-  name: "김성태",
-  email: "tom@example.com",
-  imageUrl:
-    "https://velog.velcdn.com/images/chobae/post/9ef630b0-c0f3-462d-a432-0bbc5a8a6e5f/image.png",
-};
+// const user = {
+//   name: "김성태",
+//   email: "tom@example.com",
+//   imageUrl:
+//     "https://velog.velcdn.com/images/chobae/post/9ef630b0-c0f3-462d-a432-0bbc5a8a6e5f/image.png",
+// };
 const navigation: any[] = [];
 // 오른쪽 프로필 메뉴
 const userNavigation = [
@@ -193,7 +189,6 @@ const Headerasd: React.FC = () => {
                         <div>
                           <Menu.Button className="flex items-center max-w-xs text-sm bg-white rounded-full focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
                             <span className="sr-only">Open user menu</span>
-
                           </Menu.Button>
                         </div>
 

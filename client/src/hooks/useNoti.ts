@@ -1,7 +1,7 @@
 import { useInfiniteQuery } from "react-query";
 import axios from "axios";
 import { useCookies } from "react-cookie";
-import { testNoti } from "../states/atom";
+import { testNoti } from "../atoms/atom";
 import { useRecoilState } from "recoil";
 export const useNoti = () => {
   const [cookies] = useCookies(["logCookie"]);
@@ -53,7 +53,7 @@ export const useNoti = () => {
       //     ...pageData.board_page.data.data,
       //   ];
       // });
-    
+
       setTestNoti(data);
       // console.log("testNt", testNt);
     },

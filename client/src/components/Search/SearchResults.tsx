@@ -7,7 +7,7 @@ import {
   MegaphoneIcon,
   HomeIcon,
 } from "@heroicons/react/24/outline";
-import { searchKeywordState, mainSectionState } from "../../states/atom";
+import { searchKeywordState, mainSectionState } from "../../atoms/atom";
 import { useRecoilState } from "recoil";
 import SearchResultItem from "./SearchResultItem";
 
@@ -136,7 +136,7 @@ const SearchResults = () => {
         </div>
       </div>
       {/*  검색결과 없을 */}
-      { searchComplete && searchResultFeeds.length === 0 ? (
+      {searchComplete && searchResultFeeds.length === 0 ? (
         <div
           className="flex justify-center w-full h-full pt-10 mt-5 bg-white rounded-md shadow-md "
           style={{ height: "80vh" }}

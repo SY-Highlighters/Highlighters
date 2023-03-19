@@ -4,7 +4,7 @@ import {
   feedsTagListState,
   clickedGroupTagDelState,
   GroupTagListState,
-} from "../../states/atom";
+} from "../../atoms/atom";
 import { useCookies } from "react-cookie";
 import React, { useEffect, useState, Suspense, lazy } from "react";
 import axios from "axios";
@@ -38,7 +38,7 @@ const GroupTag = (props: any) => {
       }
       style={{
         // height: "35vh"
-        maxHeight: "35vh"
+        maxHeight: "35vh",
       }}
     >
       <div className="mx-6 mt-5 mb-2">

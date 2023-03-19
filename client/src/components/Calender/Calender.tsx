@@ -17,12 +17,11 @@ import {
 } from "date-fns";
 import { Fragment, useEffect, useState } from "react";
 import { useSetRecoilState } from "recoil";
-import { selectedDayState, mainSectionState } from "../../states/atom";
+import { selectedDayState, mainSectionState } from "../../atoms/atom";
 import { throttle } from "lodash";
 import { useQuery } from "react-query";
 import { useCookies } from "react-cookie";
 import axios from "axios";
-
 
 function classNames(...classes: any) {
   return classes.filter(Boolean).join(" ");

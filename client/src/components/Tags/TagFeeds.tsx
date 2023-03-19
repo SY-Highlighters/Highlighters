@@ -12,12 +12,11 @@ import {
   feedsInGroupState,
   tagsInFeedState,
   clickedTagState,
-  userInfoState,
   feedsTagListState,
   changeMainSectionState,
   mainSectionState,
-} from "../../states/atom";
-
+} from "../../atoms/atom";
+import { userInfo} from "../../atoms/user";
 const TagFeeds = () => {
   const [mainSectionNum, setMainSectionNum] = useRecoilState(mainSectionState);
 

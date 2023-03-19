@@ -1,12 +1,7 @@
 import FeedItem from "../Feeds/FeedItem/FeedItem";
 import { useRecoilState, useRecoilValue, useResetRecoilState } from "recoil";
-import {
-  feedsInGroupState,
-  tagsInFeedState,
-  clickedTagState,
-  userInfoState,
-  feedsTagListState,
-} from "../../states/atom";
+import { clickedTagState, feedsTagListState } from "../../atoms/atom";
+import { userInfo } from "../../atoms/user";
 import { useCookies } from "react-cookie";
 // import { useEffect, useState } from "react";
 import axios from "axios";
@@ -21,8 +16,13 @@ const TagsInFeeds = () => {
   // const [feedsTagList, setFeedsTagList] = useState([]);
   const clickedTag = useRecoilValue(clickedTagState);
   const [ref, isView] = useInView();
-  const { getBoard, getNextPage, getBoardIsSuccess, getNextPageIsPossible,status } =
-    useFeedsInTag(clickedTag.tag_name);
+  const {
+    getBoard,
+    getNextPage,
+    getBoardIsSuccess,
+    getNextPageIsPossible,
+    status,
+  } = useFeedsInTag(clickedTag.tag_name);
 
   const resetClickedTag = useResetRecoilState(clickedTagState);
 

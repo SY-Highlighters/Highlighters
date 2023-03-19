@@ -1,6 +1,6 @@
 import React, { Fragment } from "react";
 import { useSetRecoilState } from "recoil";
-import { groupJoinState, groupModalVisble } from "../../../states/atom";
+import { groupJoinState, groupModalVisble } from "../../../atoms/atom";
 import axios from "axios";
 import Swal from "sweetalert2";
 

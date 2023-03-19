@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useCookies } from "react-cookie";
 import axios from "axios";
-import { reloadNotiState } from "../../../states/atom";
+import { reloadNotiState } from "../../../atoms/atom";
 import { useRecoilState } from "recoil";
 const host_url = `${process.env.REACT_APP_HOST}/api/noti/delete`;
 export default function NotiItem(props: any) {

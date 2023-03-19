@@ -13,7 +13,7 @@ import Intro from "./components/Intro/Intro";
 import LoginModal from "./components/Intro/LoginModal";
 // state management section
 import { useRecoilValue } from "recoil";
-import { logModalVisble, userInfoState } from "./states/atom";
+import { logModalVisble} from "./atoms/atom";
 
 function App() {
   const loginModalState = useRecoilValue(logModalVisble);

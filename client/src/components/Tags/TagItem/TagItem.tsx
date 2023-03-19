@@ -6,7 +6,7 @@ import {
   tagsInFeedState,
   tagsCreateState,
   tagsDelState,
-} from "../../../states/atom";
+} from "../../../atoms/atom";
 import axios from "axios";
 import { useCookies } from "react-cookie";
 import Swal from "sweetalert2";

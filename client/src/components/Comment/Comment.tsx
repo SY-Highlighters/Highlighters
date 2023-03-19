@@ -3,7 +3,7 @@ import { CommentItem } from "./CommentItem/CommentItem";
 import { useEffect, useState } from "react";
 import { useCookies } from "react-cookie";
 import axios from "axios";
-import { currentFeedState, commentReloadState } from "../../states/atom";
+import { currentFeedState, commentReloadState } from "../../atoms/atom";
 import { useRecoilValue, useRecoilState } from "recoil";
 import { useUserData } from "../../hooks/useUserData";
 export function Comment(props: any) {

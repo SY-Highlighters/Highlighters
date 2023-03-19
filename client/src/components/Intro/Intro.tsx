@@ -1,4 +1,4 @@
-import { logModalVisble } from "../../states/atom";
+import { logModalVisble } from "../../atoms/atom";
 import { useRecoilState } from "recoil";
 export default function Intro() {
   const [loginModalState, setLoginModalState] = useRecoilState(logModalVisble);

@@ -4,37 +4,33 @@ import {
   useRecoilValue,
   useResetRecoilState,
 } from "recoil";
-import { tagModalVisble, sighUpCheck } from "../../states/atom";
+import { tagModalVisble, sighUpCheck } from "../../atoms/atom";
 import {
   tagsInFeedState,
-  userInfoState,
   currentFeedState,
   tagsCreateState,
   tagsDelState,
-} from "../../states/atom";
+} from "../../atoms/atom";
 import { useCookies } from "react-cookie";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { TagEditItem } from "./TagItem/TagEditItem";
 import Swal from "sweetalert2";
 import { ArrowRightCircleIcon } from "@heroicons/react/24/outline";
-import GroupTag from "../User/GroupTag";
 import GroupTagList from "../User/GroupTagList";
-import { useQuery } from "react-query";
 
 export function FeedTagEditModal(props: any) {
   const setTagModal = useSetRecoilState(tagModalVisble);
   const currentFeed = useRecoilValue(currentFeedState);
   // console.log("이거임", currentFeed);
   // 그룹 태그 리스트 전역
-  const [cookies, setCookie, removeCookie] = useCookies(["logCookie"]);
+  const [cookies] = useCookies(["logCookie"]);
   const [inputValue, setInputValue] = useState("");
   // const tagName = useRecoilValue(tagNameState);
   const [tagList, setTagList] = useRecoilState(tagsInFeedState);
   const [tagsCreate, setTagsCreate] = useRecoilState(tagsCreateState);
   const [tagsDel, setTagsDel] = useRecoilState(tagsDelState);
   const resetTagsInFeedState = useResetRecoilState(tagsInFeedState);
-  const [imgUrl, setImgUrl] = useState("");
   const resetCreTags = useResetRecoilState(tagsCreateState);
   const resetDelTags = useResetRecoilState(tagsDelState);
 

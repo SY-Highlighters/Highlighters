@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { CalendarDaysIcon } from "@heroicons/react/24/outline";
 import { useInView } from "react-intersection-observer";
 import { useRecoilValue } from "recoil";
-import { selectedDayState } from "../../states/atom";
+import { selectedDayState } from "../../atoms/atom";
 import { useFeedsInDay } from "../../hooks/useFeedsInDay";
 import FeedSkeleton from "../UI/FeedSkeleton";
 export function FeedsInDay(props: any) {
@@ -20,7 +20,7 @@ export function FeedsInDay(props: any) {
     getNextPageIsPossible,
     status,
   } = useFeedsInDay(date);
-  console.log("여기야", getBoard);
+  // console.log("여기야", getBoard);
   useEffect(() => {
     // 맨 마지막 요소를 보고있고 페이지가 존재하면
     if (isView && getNextPageIsPossible) {

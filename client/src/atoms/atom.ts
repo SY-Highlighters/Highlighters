@@ -16,11 +16,7 @@ export const tagsInFeedState = atom<any>({
   default: [],
 });
 
-// 그룹의 전체 태그 리스트
-export const tagsInGroupState = atom<any>({
-  key: "tagsInGroupState",
-  default: [],
-});
+
 // 태그 삭제 (그룹 태그 삭제시)
 export const clickedGroupTagDelState = atom<any>({
   key: "clickedGroupTagDelState",
@@ -88,16 +84,7 @@ export const mainSectionState = atom<number>({
   default: 0,
 });
 /* 유저 정보 */
-// 유저 정보 state
-export const userInfoState = atom<any>({
-  key: "userInfoState",
-  default: {
-    nickname: "",
-    img: "",
-    groupName: "",
-    groupId: "",
-  },
-});
+
 
 export const currentFeedState = atom<{ feed_id: number; feed_title: string }>({
   key: "currentFeedState",

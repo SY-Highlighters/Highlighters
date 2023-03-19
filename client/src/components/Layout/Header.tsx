@@ -11,7 +11,7 @@ import {
   mainSectionState,
   optionModalToggleState,
   searchKeywordState,
-} from "../../states/atom";
+} from "../../atoms/atom";
 import { useCookies } from "react-cookie";
 import axios from "axios";
 import { useQuery } from "react-query";

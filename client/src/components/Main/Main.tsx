@@ -8,7 +8,7 @@ import {
   changeMainSectionState,
   mainSectionState,
   tagModalVisble,
-} from "../../states/atom";
+} from "../../atoms/atom";
 import Noti from "../Noti/Noti";
 import User from "../User/User";
 import { useCookies } from "react-cookie";
@@ -72,7 +72,6 @@ export function Main() {
       )}
       {/* 그리드 화면 */}
       {/*  닫기 버튼 */}
-
 
       {/* 태그 편집 모달 */}
       {tagModal === 1 && <FeedTagEditModal></FeedTagEditModal>}

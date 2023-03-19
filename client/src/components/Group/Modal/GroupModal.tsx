@@ -4,7 +4,7 @@ import {
   groupAddState,
   groupJoinState,
   groupInviteState,
-} from "../../../states/atom";
+} from "../../../atoms/atom";
 import GroupAdd from "./GroupAdd";
 import GroupJoin from "./GroupJoin";
 import GroupInvite from "./GroupInvite";

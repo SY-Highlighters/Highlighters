@@ -16,7 +16,7 @@ import FeedSkeleton from "../UI/FeedSkeleton";
 import GridItem from "./GridItem/GridItem";
 import { useFeedsInGrid } from "../../hooks/useFeedsInGrid";
 import GridSkeleton from "../UI/GridSkeleton";
-import { mainSectionState, clickedTagState } from "../../states/atom";
+import { mainSectionState, clickedTagState } from "../../atoms/atom";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { useFeedsInBookmark } from "../../hooks/useFeedsInBookmark";
 import { useFeedsInDay } from "../../hooks/useFeedsInDay";

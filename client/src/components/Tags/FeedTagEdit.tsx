@@ -4,7 +4,7 @@ import {
   tagsInFeedState,
   tagModalVisble,
   currentFeedState,
-} from "../../states/atom";
+} from "../../atoms/atom";
 
 export function FeedTagEdit(props: any) {
   const setTagList = useSetRecoilState(tagsInFeedState);

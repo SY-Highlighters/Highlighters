@@ -1,5 +1,5 @@
 import { CalendarIcon } from "@heroicons/react/20/solid";
-import { searchKeywordState } from "../../states/atom";
+import { searchKeywordState } from "../../atoms/atom";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import { preProcessFile } from "typescript";
 

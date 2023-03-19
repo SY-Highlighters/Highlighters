@@ -1,5 +1,5 @@
 import { useSetRecoilState } from "recoil";
-import { logModalVisble, sighUpCheck } from "../../states/atom";
+import { logModalVisble, sighUpCheck } from "../../atoms/atom";
 import SignIn from "./SignIn";
 import SignUp from "./SignUp";
 import { GoogleOAuthProvider, GoogleLogin } from "@react-oauth/google";

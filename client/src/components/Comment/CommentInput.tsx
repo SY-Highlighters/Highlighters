@@ -1,5 +1,5 @@
 import { useSetRecoilState, useRecoilValue } from "recoil";
-import { currentFeedState, commentReloadState } from "../../states/atom";
+import { currentFeedState, commentReloadState } from "../../atoms/atom";
 import { useCookies } from "react-cookie";
 import { useRef } from "react";
 import axios from "axios";
@@ -17,7 +17,7 @@ export function CommentInput(props: any) {
     //인풋 안에 값 비우기
     const formData = new FormData(e.currentTarget);
     const comment = formData.get("comment") as string;
-    
+
     inputRef.current!.value = "";
     await axios
       .post(
@@ -57,7 +57,7 @@ export function CommentInput(props: any) {
         <div className="w-full mr-3">
           <input
             // onKeyDown={handleKeyPress}
-            ref = {inputRef}
+            ref={inputRef}
             name="comment"
             className="w-full h-10 px-3 mt-1 text-base text-gray-700 placeholder-gray-300 border rounded-lg ml-7 focus:shadow-outline"
             type="text"

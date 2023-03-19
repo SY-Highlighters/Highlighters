@@ -4,12 +4,11 @@ import {
   useRecoilValue,
   useResetRecoilState,
 } from "recoil";
-import { tagModalVisble, sighUpCheck } from "../../states/atom";
+import { tagModalVisble, sighUpCheck } from "../../atoms/atom";
 import {
   tagsInFeedState,
-  userInfoState,
   currentFeedState,
-} from "../../states/atom";
+} from "../../atoms/atom";
 import { useCookies } from "react-cookie";
 import { useEffect, useState } from "react";
 import axios from "axios";
@@ -18,12 +17,10 @@ import {
   ArrowPathIcon,
   ArrowRightCircleIcon,
 } from "@heroicons/react/24/outline";
-import GroupTag from "../User/GroupTag";
-import GrouptagList from "../User/GroupTagList";
-import { optionModalToggleState } from "../../states/atom";
+import { optionModalToggleState } from "../../atoms/atom";
 import { useRef } from "react";
 export function OptionModal(props: any) {
-  const setTagModal = useSetRecoilState(tagModalVisble);
+  // const setTagModal = useSetRecoilState(tagModalVisble);
   const currentFeedId = useRecoilValue(currentFeedState);
   const [optionModalToggle, setOptionModalToggle] = useRecoilState(
     optionModalToggleState

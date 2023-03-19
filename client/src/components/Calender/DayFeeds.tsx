@@ -10,7 +10,7 @@ import {
   selectedDayState,
   changeMainSectionState,
   mainSectionState,
-} from "../../states/atom";
+} from "../../atoms/atom";
 const DayFeeds = () => {
   const [mainSectionNum, setMainSectionNum] = useRecoilState(mainSectionState);
 

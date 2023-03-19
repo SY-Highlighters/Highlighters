@@ -3,7 +3,7 @@ import { GoogleOAuthProvider, GoogleLogin } from "@react-oauth/google";
 import axios from "axios";
 import { useCookies } from "react-cookie";
 import Swal from "sweetalert2";
-import { logModalVisble } from "../../states/atom";
+import { logModalVisble } from "../../atoms/atom";
 import { useSetRecoilState } from "recoil";
 export function GoogleLoginButton() {
   const [cookies, setCookie, removeCookie] = useCookies(["logCookie"]);

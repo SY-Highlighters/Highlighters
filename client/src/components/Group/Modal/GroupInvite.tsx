@@ -1,6 +1,6 @@
 import React, { Fragment, useEffect, useState } from "react";
 import { useSetRecoilState } from "recoil";
-import { groupModalVisble, groupInviteState } from "../../../states/atom";
+import { groupModalVisble, groupInviteState } from "../../../atoms/atom";
 import axios from "axios";
 import { useCookies } from "react-cookie";
 import { ClipboardDocumentCheckIcon } from "@heroicons/react/24/outline";
@@ -14,7 +14,6 @@ export default function GroupInvite() {
   const [code, setCode] = useState("");
   const handleCopyClipBoard = async (text: string) => {
     try {
-
       await navigator.clipboard.writeText(text);
       Swal.fire({
         icon: "success",

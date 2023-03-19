@@ -2,7 +2,8 @@ import axios from "axios";
 import { Fragment } from "react";
 import { useSetRecoilState, useRecoilState, constSelector } from "recoil";
 import SignUp from "./SignUp";
-import { logModalVisble, sighUpCheck, userInfoState } from "../../states/atom";
+import { logModalVisble, sighUpCheck } from "../../atoms/atom";
+import { userInfo } from "../../atoms/user";
 import { useCookies } from "react-cookie";
 import Swal from "sweetalert2";
 import { GoogleLoginButton } from "./GoogleLoginButton";
@@ -12,7 +13,7 @@ export default function SignIn() {
   const [sighch, setSignUp] = useRecoilState(sighUpCheck);
   const [cookies, setCookie, removeCookie] = useCookies(["logCookie"]);
   const logModalDisable = useSetRecoilState(logModalVisble);
-  const setUserInfo = useSetRecoilState(userInfoState);
+  // const setUserInfo = useSetRecoilState(userInfo);
 
   const closeModal = () => {
     logModalDisable(!logModalVisble);

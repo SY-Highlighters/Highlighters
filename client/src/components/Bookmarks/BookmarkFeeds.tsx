@@ -5,7 +5,7 @@ import {
 } from "@heroicons/react/24/outline";
 import { FeedsInBookmark } from "./FeedsInBookmark";
 import { useRecoilState } from "recoil";
-import { mainSectionState, changeMainSectionState } from "../../states/atom";
+import { mainSectionState, changeMainSectionState } from "../../atoms/atom";
 const BookmarkFeeds = () => {
   const [mainSectionNum, setMainSectionNum] = useRecoilState(mainSectionState);
   const [changeMainSection, setChangeMainSection] = useRecoilState(

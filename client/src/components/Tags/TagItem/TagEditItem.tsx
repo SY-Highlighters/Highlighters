@@ -6,8 +6,7 @@ import {
   clickedGroupTagDelState,
   tagsCreateState,
   tagsDelState,
-  
-} from "../../../states/atom";
+} from "../../../atoms/atom";
 import Swal from "sweetalert2";
 import { useMutation } from "react-query";
 

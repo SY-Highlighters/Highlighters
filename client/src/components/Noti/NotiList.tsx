@@ -1,7 +1,7 @@
 import { MegaphoneIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { reloadNotiState, testNoti } from "../../states/atom";
+import { reloadNotiState, testNoti } from "../../atoms/atom";
 import NotiItem from "./NotiItem/NotiItem";
 import Calender from "../Calender/Calender";
 import { useNoti } from "../../hooks/useNoti";

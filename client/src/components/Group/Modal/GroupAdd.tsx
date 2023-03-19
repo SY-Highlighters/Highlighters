@@ -1,6 +1,6 @@
 import React, { Fragment } from "react";
 import { useSetRecoilState } from "recoil";
-import { groupAddState, groupModalVisble } from "../../../states/atom";
+import { groupAddState, groupModalVisble } from "../../../atoms/atom";
 import axios from "axios";
 import { useCookies } from "react-cookie";
 import Swal from "sweetalert2";

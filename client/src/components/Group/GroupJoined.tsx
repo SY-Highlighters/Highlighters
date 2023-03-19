@@ -5,19 +5,19 @@ import {
   groupJoinState,
   groupModalVisble,
   groupInviteState,
-  userInfoState,
   groupMemberVisibleState,
-} from "../../states/atom";
+} from "../../atoms/atom";
+import { userInfo } from "../../atoms/user";
 import { useGroupMember } from "../../hooks/useGroupMember";
 
 import { GroupMember } from "./GroupMember";
 import GroupModal from "./Modal/GroupModal";
 export default function GroupJoined(props: any) {
-  const [groupAdd, setGroupAdd] = useRecoilState(groupAddState);
-  const [groupJoin, setGroupJoin] = useRecoilState(groupJoinState);
+  // const [groupAdd, setGroupAdd] = useRecoilState(groupAddState);
+  // const [groupJoin, setGroupJoin] = useRecoilState(groupJoinState);
   const [groupInvite, setGroupInvite] = useRecoilState(groupInviteState);
   const [groupModal, setGroupModal] = useRecoilState(groupModalVisble);
-  const userData = useRecoilValue(userInfoState);
+  // const userData = useRecoilValue(userInfo);
   const [groupMemberVisible, setGroupMemberVisible] = useRecoilState(
     groupMemberVisibleState
   );

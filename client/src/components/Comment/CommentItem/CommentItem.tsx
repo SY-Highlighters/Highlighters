@@ -1,9 +1,4 @@
-import {
-  tagsInFeedState,
-  userInfoState,
-  currentFeedState,
-  commentReloadState,
-} from "../../../states/atom";
+import { commentReloadState } from "../../../atoms/atom";
 import { useSetRecoilState, useRecoilState, useRecoilValue } from "recoil";
 import { useCookies } from "react-cookie";
 import { useEffect, useState } from "react";

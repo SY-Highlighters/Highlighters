@@ -20,7 +20,7 @@ import {
   mainSectionState,
   clickedTagState,
   selectedDayState,
-} from "../../states/atom";
+} from "../../atoms/atom";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { useDaysInGrid } from "../../hooks/Grid/useDaysInGrid";
 const DaysGallery = () => {

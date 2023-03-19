@@ -8,7 +8,7 @@ import { useInView } from "react-intersection-observer";
 import NotiList from "./NotiList";
 import { useCookies } from "react-cookie";
 import { useRecoilValue, useResetRecoilState } from "recoil";
-import { testNoti } from "../../states/atom";
+import { testNoti } from "../../atoms/atom";
 const host_url = `${process.env.REACT_APP_HOST}/api/noti/deleteAll`;
 
 // const NotiList = lazy(() => import("./NotiList"));

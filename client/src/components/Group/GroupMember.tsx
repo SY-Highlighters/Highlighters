@@ -5,7 +5,7 @@ import {
   MegaphoneIcon,
 } from "@heroicons/react/24/outline";
 import { useRecoilState } from "recoil";
-import { groupModalVisble, groupMemberVisibleState } from "../../states/atom";
+import { groupModalVisble, groupMemberVisibleState } from "../../atoms/atom";
 import { useGroupMember } from "../../hooks/useGroupMember";
 
 export function GroupMember() {

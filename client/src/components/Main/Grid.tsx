@@ -1,7 +1,7 @@
 import GridSkeleton from "../UI/GridSkeleton";
 import Gallery from "./Gallery";
 import { Suspense, lazy } from "react";
-import { changeMainSectionState, mainSectionState } from "../../states/atom";
+import { changeMainSectionState, mainSectionState } from "../../atoms/atom";
 import { useRecoilState } from "recoil";
 import TagGallery from "../Grid/TagGallery";
 import DaysGallery from "../Grid/DaysGallery";
