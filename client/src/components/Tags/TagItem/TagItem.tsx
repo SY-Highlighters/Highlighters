@@ -1,19 +1,17 @@
 import { useSetRecoilState, useRecoilValue, useRecoilState } from "recoil";
 import {
-  clickedTagState,
+
   mainSectionState,
-  currentFeedState,
   tagsInFeedState,
   tagsCreateState,
   tagsDelState,
 } from "../../../atoms/atom";
-import axios from "axios";
-import { useCookies } from "react-cookie";
+import { activeTag } from "../../../atoms/tag";
 import Swal from "sweetalert2";
 export function TagItem(props: any) {
-  const setclickedTag = useSetRecoilState(clickedTagState);
+  const setActiveTag = useSetRecoilState(activeTag);
   const setMainSectionNum = useSetRecoilState(mainSectionState);
-  const currentFeedId = useRecoilValue(currentFeedState);
+  // const currentFeedId = useRecoilValue(currentFeedState);
   const [tagList, setTagList] = useRecoilState(tagsInFeedState);
   const [tagsCreate, setTagsCreate] = useRecoilState(tagsCreateState);
   const [tagsDel, setTagsDel] = useRecoilState(tagsDelState);
@@ -37,7 +35,7 @@ export function TagItem(props: any) {
     else {
       setMainSectionNum(2);
       // console.log("태그아이템 클릭", props.name, props.id);
-      setclickedTag({
+      setActiveTag({
         tag_name: props.name,
         tag_id: props.tag_id,
       });

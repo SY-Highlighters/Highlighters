@@ -1,29 +1,15 @@
-import { useState, useRef, useEffect } from "react";
-import axios from "axios";
-import { useCookies } from "react-cookie";
-import { useUserData } from "../../hooks/useUserData";
-import LazyImage from "../Main/LazyImage";
+import { useEffect } from "react";
+import { useRecoilValue } from "recoil";
 import {
-  DocumentIcon,
   DocumentPlusIcon,
-  MegaphoneIcon,
 } from "@heroicons/react/24/outline";
-import { QueryCache, useQuery, QueryClient, useQueryClient } from "react-query";
 import { useInView } from "react-intersection-observer";
-import { useFeedsInGroup } from "../../hooks/useFeedsInGroup";
-import Feed from "../../models/feed";
-import FeedSkeleton from "../UI/FeedSkeleton";
 import GridItem from "./GridItem/GridItem";
-import { useFeedsInGrid } from "../../hooks/useFeedsInGrid";
 import GridSkeleton from "../UI/GridSkeleton";
-import { mainSectionState, clickedTagState } from "../../atoms/atom";
-import { useRecoilState, useRecoilValue } from "recoil";
-import { useFeedsInBookmark } from "../../hooks/useFeedsInBookmark";
-import { useFeedsInDay } from "../../hooks/useFeedsInDay";
-import { useFeedsInTag } from "../../hooks/useFeedsInTag";
+import { activeTag } from "../../atoms/tag";
 import { useTagsInGrid } from "../../hooks/Grid/useTagsInGrid";
 const TagGallery = () => {
-  const clickedTag = useRecoilValue(clickedTagState);
+  const tagInfo = useRecoilValue(activeTag);
 
   const {
     getBoard,
@@ -31,7 +17,7 @@ const TagGallery = () => {
     getBoardIsSuccess,
     getNextPageIsPossible,
     status,
-  } = useTagsInGrid(clickedTag.tag_name);
+  } = useTagsInGrid(tagInfo.tag_name);
   const [ref, isView] = useInView();
   // 스크롤 위아래ㅏ
   // const scrollToTop = () => {

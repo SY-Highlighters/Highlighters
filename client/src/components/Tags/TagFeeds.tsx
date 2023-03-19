@@ -1,29 +1,26 @@
 import {
-  DocumentIcon,
-  StarIcon,
-  CalendarDaysIcon,
+
   Squares2X2Icon,
   HomeIcon,
 } from "@heroicons/react/24/outline";
 import TagsInFeeds from "./TagsInFeeds";
-import FeedItem from "../Feeds/FeedItem/FeedItem";
-import { useRecoilState, useRecoilValue, useResetRecoilState } from "recoil";
+
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import {
-  feedsInGroupState,
-  tagsInFeedState,
-  clickedTagState,
-  feedsTagListState,
   changeMainSectionState,
   mainSectionState,
 } from "../../atoms/atom";
-import { userInfo} from "../../atoms/user";
+import { activeTag } from "../../atoms/tag";
+
+// import { userInfo} from "../../atoms/user";
 const TagFeeds = () => {
-  const [mainSectionNum, setMainSectionNum] = useRecoilState(mainSectionState);
+  const setMainSectionNum =
+    useSetRecoilState(mainSectionState);
 
   const [changeMainSection, setChangeMainSection] = useRecoilState(
     changeMainSectionState
   );
-  const clickedTag = useRecoilValue(clickedTagState);
+  const tagInfo = useRecoilValue(activeTag);
   const clickedMainChange = () => {
     setChangeMainSection(!changeMainSection);
   };
@@ -37,7 +34,7 @@ const TagFeeds = () => {
         <div className="flex justify-between p-3 rounded-3xl">
           <div>
             <span className="inline-flex shadow-lg items-center mr-2 px-3 py-0.5 rounded-full text-xl font-bold bg-sky-100 text-sky-800">
-              # {clickedTag.tag_name}
+              # {tagInfo.tag_name}
             </span>
           </div>
           <div className="flex">

@@ -1,11 +1,8 @@
 import FeedItem from "../Feeds/FeedItem/FeedItem";
 import { useRecoilState, useRecoilValue, useResetRecoilState } from "recoil";
-import { clickedTagState, feedsTagListState } from "../../atoms/atom";
-import { userInfo } from "../../atoms/user";
-import { useCookies } from "react-cookie";
+import { activeTag } from "../../atoms/tag";
+// import { userInfo } from "../../atoms/user";
 // import { useEffect, useState } from "react";
-import axios from "axios";
-import { useQuery } from "react-query";
 import { useEffect } from "react";
 import { useFeedsInTag } from "../../hooks/useFeedsInTag";
 import { useInView } from "react-intersection-observer";
@@ -14,7 +11,7 @@ import FeedSkeleton from "../UI/FeedSkeleton";
 const TagsInFeeds = () => {
   // const [tagFeedList, setTagFeedList] = useRecoilState(feedsTagListState);
   // const [feedsTagList, setFeedsTagList] = useState([]);
-  const clickedTag = useRecoilValue(clickedTagState);
+  const tagInfo = useRecoilValue(activeTag);
   const [ref, isView] = useInView();
   const {
     getBoard,
@@ -22,9 +19,9 @@ const TagsInFeeds = () => {
     getBoardIsSuccess,
     getNextPageIsPossible,
     status,
-  } = useFeedsInTag(clickedTag.tag_name);
+  } = useFeedsInTag(tagInfo.tag_name);
 
-  const resetClickedTag = useResetRecoilState(clickedTagState);
+  // const resetClickedTag = useResetRecoilState(activeTag);
 
   useEffect(() => {
     // 맨 마지막 요소를 보고있고 페이지가 존재하면
@@ -32,7 +29,7 @@ const TagsInFeeds = () => {
     if (isView && getNextPageIsPossible) {
       getNextPage();
     }
-  }, [isView, getNextPage, getNextPageIsPossible, clickedTag.tag_name]);
+  }, [isView, getNextPage, getNextPageIsPossible, tagInfo.tag_name]);
   // clickTag가 변경시 새로운 쿼리를 요청
   // console.log("태그가져오기", getBoard);
   if (status === "loading") {

@@ -1,5 +1,3 @@
-import axios from "axios";
-import { useCookies } from "react-cookie";
 import { useRecoilState, useRecoilValue } from "recoil";
 import {
   tagsInFeedState,
@@ -7,19 +5,17 @@ import {
   tagsCreateState,
   tagsDelState,
 } from "../../../atoms/atom";
-import Swal from "sweetalert2";
-import { useMutation } from "react-query";
 
 export function TagEditItem(props: any) {
-  const [cookies, setCookie, removeCookie] = useCookies(["logCookie"]);
   const [tagsDel, setTagsDel] = useRecoilState(tagsDelState);
   const [tagList, setTagList] = useRecoilState(tagsInFeedState);
   const clickedGroupTagDel = useRecoilValue(clickedGroupTagDelState);
   const [tagsCreate, setTagsCreate] = useRecoilState(tagsCreateState);
   // const [tagsDel, setTagsDel] = useRecoilState(tagsDelState);
-  const host_url = clickedGroupTagDel
-    ? `${process.env.REACT_APP_HOST}/api/tag/web/delete`
-    : `${process.env.REACT_APP_HOST}/api/tag/delete`;
+  // const host_url = clickedGroupTagDel
+  //   ? `${process.env.REACT_APP_HOST}/api/tag/web/delete`
+  //   : `${process.env.REACT_APP_HOST}/api/tag/delete`;
+  // 태그 삭제 유형에 따라 다른 데이터 전송 (그룹 태그 삭제, 피드 태그 삭제)
   const data = clickedGroupTagDel
     ? { tag_name: props.tagName }
     : {
@@ -46,22 +42,22 @@ export function TagEditItem(props: any) {
   //   setTestDel(!testDel);
   // };
 
-  const deleteTag = useMutation(async (tagId) => {
-    try {
-      const res = await axios.delete(
-        `${process.env.REACT_APP_HOST}/api/tag/${tagId}`,
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${cookies.logCookie}`,
-          },
-        }
-      );
-      return res.data;
-    } catch (error) {
-      console.error(error);
-    }
-  });
+  // const deleteTag = useMutation(async (tagId) => {
+  //   try {
+  //     const res = await axios.delete(
+  //       `${process.env.REACT_APP_HOST}/api/tag/${tagId}`,
+  //       {
+  //         headers: {
+  //           "Content-Type": "application/json",
+  //           Authorization: `Bearer ${cookies.logCookie}`,
+  //         },
+  //       }
+  //     );
+  //     return res.data;
+  //   } catch (error) {
+  //     console.error(error);
+  //   }
+  // });
 
   const delClickHandler = () => {
     if (props.onFunc) {

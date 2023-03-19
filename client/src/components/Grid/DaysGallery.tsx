@@ -1,26 +1,10 @@
-import { useState, useRef, useEffect } from "react";
-import axios from "axios";
-import { useCookies } from "react-cookie";
-import { useUserData } from "../../hooks/useUserData";
-import LazyImage from "../Main/LazyImage";
-import {
-  DocumentIcon,
-  DocumentPlusIcon,
-  MegaphoneIcon,
-} from "@heroicons/react/24/outline";
-import { QueryCache, useQuery, QueryClient, useQueryClient } from "react-query";
+import { useEffect } from "react";
+import { DocumentPlusIcon } from "@heroicons/react/24/outline";
 import { useInView } from "react-intersection-observer";
-import { useFeedsInGroup } from "../../hooks/useFeedsInGroup";
-import Feed from "../../models/feed";
-import FeedSkeleton from "../UI/FeedSkeleton";
 import GridItem from "./GridItem/GridItem";
-import { useFeedsInGrid } from "../../hooks/useFeedsInGrid";
 import GridSkeleton from "../UI/GridSkeleton";
-import {
-  mainSectionState,
-  clickedTagState,
-  selectedDayState,
-} from "../../atoms/atom";
+import { selectedDayState } from "../../atoms/atom";
+import { activeTag } from "../../atoms/tag";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { useDaysInGrid } from "../../hooks/Grid/useDaysInGrid";
 const DaysGallery = () => {

@@ -1,14 +1,5 @@
 import { atom } from "recoil";
 
-/* 태그 */
-// 태그 클릭시 해당 태그 Id
-export const clickedTagState = atom<any>({
-  key: "clickedTagState",
-  default: {
-    tag_id: 0,
-    tag_name: "",
-  },
-});
 
 // 피드의 태그 리스트
 export const tagsInFeedState = atom<any>({
