@@ -45,3 +45,8 @@ services:
   #     - ./certbot:/etc/letsencrypt
   #     - ./https:/usr/share/nginx/html
   #   command: --dry-run certonly --webroot --webroot-path=/usr/share/nginx/html --email siaksiakx@gmail.com --agree-tos --no-eff-email -d highlighters.site -d www.highlighters.site --force-renewal
+#
+# 인증서 재발급
+# 1. docker-compose.yml에서 cerbot 주석 해제
+# 2. nginx.conf에서 TLS 인증서 주석 해제
+# 3. http -> https로 리다이렉트 주석 처리
