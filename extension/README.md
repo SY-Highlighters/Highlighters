@@ -4,7 +4,7 @@
 
 크롬 익스텐션 스토어 : [바로가기](https://chrome.google.com/webstore/detail/highlighters/hcagahefhiieeemlfjfhbnhnaedcpdai?hl=ko)
 
-사용 기술 스택
+개발 환경
 - Chrome Extension (manifest version 3)
 - React
 - Recoil
