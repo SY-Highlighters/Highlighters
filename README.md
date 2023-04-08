@@ -1,4 +1,4 @@
-# Highlighters
+# Highlighters [![Hits](https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fgithub.com%2FSY-Highlighters%2FHighlighters%2Ftree%2Fdevelop&count_bg=%233DB4C8&title_bg=%23555555&icon=krita.svg&icon_color=%23E7E7E7&title=Highlighters&edge_flat=false)](https://hits.seeyoufarm.com)
 
 <a name="readme-top"></a>
 
@@ -38,12 +38,12 @@
 
 ![image](https://user-images.githubusercontent.com/101175828/218977582-a2bea9ae-d4f8-485d-b9b8-98dfc61bf323.png)
 
-
 서비스 사용 설명서 : [바로가기](https://www.notion.so/yeriiin/Highlighters-b7074bda3ec542e7bd4002babca6e5fc)
 
 웹사이트 : [바로가기](https://highlighters.site/)
+
 - demo 계정 : test@test.com
-- demo 계정 비밀번호 : 1234 
+- demo 계정 비밀번호 : 1234
 - 익스텐션을 설치해야 그룹원들의 하이라이팅을 볼 수 있고, 피드를 추가할 수 있으니 아래의 스토어에서 설치 후 이용해주시면 감사하겠습니다.
 
 크롬 익스텐션 스토어 : [바로가기](https://chrome.google.com/webstore/detail/highlighters/hcagahefhiieeemlfjfhbnhnaedcpdai?hl=ko)
@@ -122,7 +122,6 @@
     <img width="400" height="230" src="https://user-images.githubusercontent.com/101175828/216561358-16fb58e4-8401-406f-bdb4-5a42b8dc047b.gif"> </img>
   </div>
 
-
 #### 7. 피드 아카이빙
 
 - **태그 별**로 피드를 모아볼 수 있습니다.
@@ -136,6 +135,7 @@
    </tr>
 
   </table>
+
 #### 8. 피드 검색
 
 - 오타가 있어도 의도한 검색결과를 제공해줍니다. (과금 문제로 현재는 일반 검색기능만 작동합니다.)
@@ -149,14 +149,14 @@
    <div>
     <img height="300" width="500"src="https://user-images.githubusercontent.com/101175828/216555375-3e1b4e7c-75fb-45c0-aad3-832f9fee1806.png"> </img>
   </div>
+
 #### 10. 그리드뷰 보기
-  
+
 - 많은 피드들을 한 눈에 볼 수 있습니다.
    <div>
     <img src="https://user-images.githubusercontent.com/101175828/217535465-8ea6a78f-2022-4d3a-a10e-a6ec2477c9d3.png"> </img>
   </div>
 <p align="right">(<a href="#readme-top">맨 위로</a>)</p>
-
 
 <!-- 아키텍처 -->
 
