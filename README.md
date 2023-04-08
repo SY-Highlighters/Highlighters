@@ -42,10 +42,13 @@
 서비스 사용 설명서 : [바로가기](https://www.notion.so/yeriiin/Highlighters-b7074bda3ec542e7bd4002babca6e5fc)
 
 웹사이트 : [바로가기](https://highlighters.site/)
-
-발표영상 : [바로가기](https://www.youtube.com/watch?v=1hC4BrA4MJI)
+- demo 계정 : test@test.com
+- demo 계정 비밀번호 : 1234 
+- 익스텐션을 설치해야 그룹원들의 하이라이팅을 볼 수 있고, 피드를 추가할 수 있으니 아래의 스토어에서 설치 후 이용해주시면 감사하겠습니다.
 
 크롬 익스텐션 스토어 : [바로가기](https://chrome.google.com/webstore/detail/highlighters/hcagahefhiieeemlfjfhbnhnaedcpdai?hl=ko)
+
+발표영상 : [바로가기](https://www.youtube.com/watch?v=1hC4BrA4MJI)
 
 <p align="right">(<a href="#readme-top">맨 위로</a>)</p>
 
