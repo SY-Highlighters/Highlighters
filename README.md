@@ -34,6 +34,16 @@
 
 프로젝트 기간 : 2022.12.23 ~ 2023.01.27 (5주)
 
+기술 스택:
+
+| 분류       | 기술                                                                                      |
+|------------|------------------------------------------------------------------------------------------|
+| **Frontend**   | <img src="https://img.shields.io/badge/react-61DAFB?style=for-the-badge&logo=react&logoColor=black"> <img src="https://img.shields.io/badge/react--query-FF4154?style=for-the-badge&logo=reactquery&logoColor=white"> <img src="https://img.shields.io/badge/recoil-362d59?style=for-the-badge&logo=recoil&logoColor=white"> <img src="https://img.shields.io/badge/tailwindcss-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white"> |
+| **Backend**              | <img src="https://img.shields.io/badge/nestjs-E0234E?style=for-the-badge&logo=nestjs&logoColor=white"> |
+| **Database**             | <img src="https://img.shields.io/badge/mysql-4479A1?style=for-the-badge&logo=mysql&logoColor=white"> <img src="https://img.shields.io/badge/elasticsearch-005571?style=for-the-badge&logo=elasticsearch&logoColor=white"> <img src="https://img.shields.io/badge/redis-DC382D?style=for-the-badge&logo=redis&logoColor=white"> |
+| **Infrastructure/DevOps** | <img src="https://img.shields.io/badge/docker-2496ED?style=for-the-badge&logo=docker&logoColor=white"> <img src="https://img.shields.io/badge/aws_lambda-FF9900?style=for-the-badge&logo=amazonaws&logoColor=white"> <img src="https://img.shields.io/badge/aws_s3-569A31?style=for-the-badge&logo=amazonaws&logoColor=white"> |
+
+
 팀원 : 5
 
 ![image](https://user-images.githubusercontent.com/101175828/218977582-a2bea9ae-d4f8-485d-b9b8-98dfc61bf323.png)
