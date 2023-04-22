@@ -1,4 +1,3 @@
-
 import { useCookies } from "react-cookie";
 import axios from "axios";
 import { useQuery } from "react-query";
@@ -6,9 +5,12 @@ import { TagEditItem } from "../Tags/TagItem/TagEditItem";
 import { HashtagIcon } from "@heroicons/react/24/outline";
 import { useMutation } from "react-query";
 
+interface TagEditQuery {
+  tag_name: string;
+  tag_id: number;
+}
 
-
-const GroupTagListEdit = (props: any) => {
+const GroupTagListEdit = () => {
   const [cookies] = useCookies(["logCookie"]);
 
   const {
@@ -39,7 +41,7 @@ const GroupTagListEdit = (props: any) => {
     }
   );
 
-  const { mutate, data } = useMutation(async (data: any) => {
+  const { mutate, data } = useMutation(async (data: TagEditQuery) => {
     try {
       const res = await axios.delete(
         `${process.env.REACT_APP_HOST}/api/tag/web/delete`,
@@ -59,13 +61,13 @@ const GroupTagListEdit = (props: any) => {
       console.error(error);
     }
   });
-  
+
   // if (isSuccess) {
   //   setGroupTagList(tagEditList);
   //   // console.log("tagEditList", tagEditList);
   // }
 
-  const deleteTagHandler = async (data: any) => {
+  const deleteTagHandler = async (data: TagEditQuery) => {
     try {
       await mutate(data);
       // console.log(data.tag_name);

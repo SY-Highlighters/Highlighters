@@ -4,7 +4,7 @@ import Swal from "sweetalert2";
 import { StarIcon } from "@heroicons/react/24/outline";
 
 export function Bookmarked(props: any) {
-  const [cookies, setCookie, removeCookie] = useCookies(["logCookie"]);
+  const [cookies] = useCookies(["logCookie"]);
 
   async function bookmarkToggleHandler() {
     //인풋 안에 값 비우기

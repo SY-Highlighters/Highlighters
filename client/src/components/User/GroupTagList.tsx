@@ -1,18 +1,12 @@
 import { useCookies } from "react-cookie";
-import { useEffect, useState } from "react";
 import axios from "axios";
 import { TagItem } from "../Tags/TagItem/TagItem";
 import { useQuery } from "react-query";
-import { ArchiveBoxXMarkIcon, HashtagIcon } from "@heroicons/react/24/outline";
-const GroupTagList = (props: any) => {
+import { HashtagIcon } from "@heroicons/react/24/outline";
+const GroupTagList = () => {
   const [cookies] = useCookies(["logCookie"]);
 
-  const {
-    data: tagList,
-    isSuccess,
-    isLoading,
-    error,
-  } = useQuery(
+  const { data: tagList, isSuccess } = useQuery(
     ["tagList"],
     async () => {
       try {
@@ -25,7 +19,6 @@ const GroupTagList = (props: any) => {
             },
           }
         );
-        // console.log(res.data.data);
         return res.data.data;
       } catch (err) {
         console.error(err);
@@ -35,8 +28,6 @@ const GroupTagList = (props: any) => {
       suspense: true,
     }
   );
-  // console.log(tagList);
-  useEffect(() => {}, []);
   return (
     <div className="">
       {isSuccess && tagList.length === 0 && (
@@ -58,7 +49,6 @@ const GroupTagList = (props: any) => {
               name={tag.tag_name}
               count={tag._count.tag_name}
               id={tag.id}
-              onFunc={props.onFunc}
             />
           </span>
         ))}

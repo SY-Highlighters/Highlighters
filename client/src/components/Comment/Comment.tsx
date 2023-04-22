@@ -6,7 +6,9 @@ import axios from "axios";
 import { currentFeedState, commentReloadState } from "../../atoms/atom";
 import { useRecoilValue, useRecoilState } from "recoil";
 import { useUserData } from "../../hooks/useUserData";
+
 export function Comment(props: any) {
+  
   const currentFeed = useRecoilValue(currentFeedState);
   const [cookies] = useCookies(["logCookie"]);
   const [commentList, setCommentList] = useState([]);

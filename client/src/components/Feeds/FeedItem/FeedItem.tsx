@@ -40,6 +40,7 @@ import YoutubeTimeStamp from "./YoutubeTimeStamp";
 import ThreeLineSummary from "../../summary/ThreeLineSummary";
 
 const dummary = "현재 네이버 뉴스만 지원합니다 😂";
+
 const FeedItem = (props: any) => {
   const [commentIsClicked, setCommentIsClicked] = useState(false);
   const setCurrentFeedId = useSetRecoilState(currentFeedState);
