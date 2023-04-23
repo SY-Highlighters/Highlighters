@@ -1,10 +1,10 @@
-import { useCookies } from "react-cookie";
 import { StarIcon } from "@heroicons/react/24/outline";
 import FeedItem from "../Feeds/FeedItem/FeedItem";
 import { useFeedsInBookmark } from "../../hooks/useFeedsInBookmark";
 import { useInView } from "react-intersection-observer";
 import { useEffect } from "react";
 import FeedSkeleton from "../UI/FeedSkeleton";
+import { FeedInfo } from "../../types/feed";
 
 export function FeedsInBookmark() {
   const [ref, isView] = useInView();
@@ -55,7 +55,7 @@ export function FeedsInBookmark() {
             getBoardIsSuccess && getBoard!.pages
               ? getBoard!.pages.map((page_data, page_num) => {
                   const board_page = page_data.board_page;
-                  return board_page.map((feed: any, idx: any) => {
+                  return board_page.map((feed: FeedInfo, idx: number) => {
                     if (
                       // 마지막 요소에 ref 달아주기
                       getBoard!.pages.length - 1 === page_num &&

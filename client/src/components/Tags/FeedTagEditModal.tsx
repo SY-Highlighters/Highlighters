@@ -214,9 +214,7 @@ export function FeedTagEditModal(props: any) {
             <div>
               <div className="flex justify-center mt-5 ml-2">
                 <GroupTagList
-                  onFunc={() => {
-                    // console.log("test");
-                  }}
+
                   onCss={"w-full mt-10 bg-white"}
                 ></GroupTagList>
               </div>

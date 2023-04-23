@@ -3,7 +3,7 @@ import axios from "axios";
 import { TagItem } from "../Tags/TagItem/TagItem";
 import { useQuery } from "react-query";
 import { HashtagIcon } from "@heroicons/react/24/outline";
-const GroupTagList = () => {
+const GroupTagList = (props:any) => {
   const [cookies] = useCookies(["logCookie"]);
 
   const { data: tagList, isSuccess } = useQuery(
