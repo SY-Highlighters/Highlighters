@@ -58,7 +58,9 @@
 
 크롬 익스텐션 스토어 : [바로가기](https://chrome.google.com/webstore/detail/highlighters/hcagahefhiieeemlfjfhbnhnaedcpdai?hl=ko)
 
-발표영상 : [바로가기](https://www.youtube.com/watch?v=1hC4BrA4MJI)
+시연 영상 : [바로가기](https://www.youtube.com/watch?v=1hC4BrA4MJI)
+
+현장 발표영상 : [바로가기](https://youtu.be/n9EOK_6DOe0)
 
 <p align="right">(<a href="#readme-top">맨 위로</a>)</p>
 
