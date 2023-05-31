@@ -44,7 +44,7 @@
 | **Database**              | <img src="https://img.shields.io/badge/mysql-4479A1?style=for-the-badge&logo=mysql&logoColor=white"> <img src="https://img.shields.io/badge/elasticsearch-005571?style=for-the-badge&logo=elasticsearch&logoColor=white"> <img src="https://img.shields.io/badge/redis-DC382D?style=for-the-badge&logo=redis&logoColor=white">                                                                                                                 |
 | **Infrastructure/DevOps** | <img src="https://img.shields.io/badge/docker-2496ED?style=for-the-badge&logo=docker&logoColor=white"> <img src="https://img.shields.io/badge/Nginx-009639?style=for-the-badge&logo=nginx&logoColor=white"> <img src="https://img.shields.io/badge/aws_lambda-FF9900?style=for-the-badge&logo=amazonaws&logoColor=white"> <img src="https://img.shields.io/badge/aws_s3-569A31?style=for-the-badge&logo=amazonaws&logoColor=white">            |
 
-팀원 : 박예린(TL/FE), 김현진(BE), 김성태(BE), 길인식(BE), 조성배(FE)
+팀원 : [박예린](https://github.com/yeriiiii)(TL/FE), [김현진](https://github.com/ChoHon)(BE), [김성태](https://github.com/devsungtae)(BE), [길인식](https://github.com/Louis-Gil)(BE), [조성배](https://github.com/ChoBae)(FE)
 
 서비스 사용 설명서 : [바로가기](https://www.notion.so/yeriiin/Highlighters-b7074bda3ec542e7bd4002babca6e5fc)
 
